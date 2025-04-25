@@ -1,0 +1,105 @@
+/* Định dạng chung */
+{
+
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Sidebar */
+nav {
+    width: 250px;
+    height: 100vh;
+    background: #066BBB;
+    padding: 20px;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+}
+
+nav .text-center img {
+    border: 3px solid #007bff;
+    padding: 3px;
+}
+
+nav .nav-link {
+    font-size: 16px;
+    padding: 10px;
+    transition: 0.3s;
+}
+
+nav .nav-link:hover {
+    background: 066BBB;
+    color: 066BBB !important;
+    border-radius: 5px;
+}
+
+/* Header */
+.navbar {
+    background-color: #066BBB !important;
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.navbar .navbar-brand {
+    display: flex;
+    align-items: center;
+}
+
+.navbar .navbar-brand img {
+    margin-right: 10px;
+}
+
+.navbar .d-flex a {
+    color: #FFFFFF !important;
+}
+
+.custom-nav .nav-link:hover {
+    background-color: #066BBB;
+    color: #FFFFFF !important;
+}
+/*nav trái*/
+ul {
+    padding: 0;
+
+}
+
+li {
+    margin-bottom: 15px ;
+
+}
+
+.custom-nav .nav-link {
+    font-weight: bold;
+    font-size: 18px ;
+    color: #343a40;
+    padding: 10px 15px;
+    border-radius: 8px;
+
+;
+}
+
+.custom-nav .nav-link:hover {
+    background-color: #066BBB;
+    color: #E8F9FF;
+}
+
+.custom-nav .nav-link i {
+    margin-right: 10px;
+}
+/* Main content */
+main {
+    min-height: 100vh;
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Footer */
+footer {
+    font-size: 14px;
+    color: #555;
+}
+.logo_website{
+
+
+    object-fit: cover;
+}

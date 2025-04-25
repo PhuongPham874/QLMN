@@ -1,0 +1,114 @@
+{% extends "home.html" %}
+
+{% block page_background %}
+<div style="display: flex; gap: 40px; padding: 30px 50px; height: 700px;">
+
+  <div style="display: flex; flex-direction: column">
+  <h2 style="color: #1d4ed8; margin-bottom: 20px;">CHẤM CÔNG: {{ nhan_vien.ten_nv }}</h2>
+  <!-- Cột bên trái: Lịch chấm công -->
+  <div id="calendar_container" style="flex: 1; overflow-y: auto; padding-right: 20px;">
+
+    {% for key, records in cham_cong_theo_thang.items %}
+      {% with key|slice:5 as year %}
+      {% with key|slice:"-2:" as month %}
+
+          <h3 style="margin-bottom: 10px;">Tháng {{ month }} / {{ year }}</h3>
+
+          <div class="calendar-wrapper">
+            <div id="thang_{{ year }}_{{ month }}" style="margin-bottom: 40px;">
+            <div class="calendar">
+              {% for day in records|dictsort:"ngay.day" %}
+                <div class="day {% if day.trang_thai == 0 %}dung_gio{% elif day.trang_thai == 1 %}nghi{% elif day.trang_thai == 2 %}muon{% endif %}">
+                  <div class="circle">{{ day.ngay.day }}</div>
+                </div>
+              {% endfor %}
+            </div>
+          </div>
+        </div>
+      {% endwith %}
+      {% endwith %}
+    {% empty %}
+      <p>Không có dữ liệu chấm công.</p>
+    {% endfor %}
+  </div>
+  </div>
+
+  <!-- Cột bên phải: Bộ lọc -->
+  <!-- Cột bên phải: Bộ lọc -->
+  <div style="width: 250px;">
+    <h3 style="margin-bottom: 10px;">Lọc theo tháng</h3>
+    <select id="thang_select" style="width: 100%; padding: 8px; margin-bottom: 12px;">
+      {% for key in cham_cong_theo_thang.keys %}
+        {% with key|slice:5 as year %}
+        {% with key|slice:"-2:" as month %}
+          <option value="thang_{{ year }}_{{ month }}">Tháng {{ month }} / {{ year }}</option>
+        {% endwith %}
+        {% endwith %}
+      {% endfor %}
+    </select>
+    <button onclick="scrollToMonth()" style="width: 100%; padding: 10px; background-color: #1d4ed8; color: white; border: none; border-radius: 5px;">Đi đến tháng</button>
+  </div>
+
+  </div>
+</div>
+</div>
+
+<!-- CSS -->
+<style>
+.calendar-wrapper {
+  background: linear-gradient(135deg, #C3E5FF, #ffffff);
+  border-radius: 12px;
+  padding: 20px;
+  width: 100%;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.calendar {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 15px;
+  margin-top: 15px;
+}
+
+.day {
+  text-align: center;
+  font-weight: bold;
+}
+
+.circle {
+  width: 80px;
+  height: 80px;
+  line-height: 80px;
+  font-size: 20px;
+  border-radius: 50%;
+  background-color: white;
+  border: 2px solid #ddd;
+  display: inline-block;
+}
+
+.dung_gio .circle {
+  background-color: #A7F3D0;
+  border-color: green;
+}
+.nghi .circle {
+  background-color: #FCA5A5;
+  border-color: red;
+}
+.muon .circle {
+  background-color: #FDE68A;
+  border-color: #b45309;
+}
+</style>
+
+<!-- Script -->
+<script>
+function scrollToMonth() {
+  const selectedId = document.getElementById("thang_select").value;
+  const target = document.getElementById(selectedId);
+  if (target) {
+    target.scrollIntoView({ behavior: 'smooth' });
+  }
+}
+</script>
+
+{% endblock %}

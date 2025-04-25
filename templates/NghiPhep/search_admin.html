@@ -1,0 +1,36 @@
+{% extends 'NghiPhep/NP_list_admin.html' %}
+
+{% block titleNP %}
+    <div class="titleNP" style="width: 90%" onclick="window.location.href='{% url 'DanhSachNP' %}'">DANH SÁCH ĐƠN NGHỈ PHÉP</div>
+{% endblock %}
+
+{% block profile %}
+<span> <strong>Nhân viên:</strong> {{search_text}} </span>
+<br>
+<span> <strong>Vị trí công việc:</strong>  {{search_text.vi_tri_cong_viec}} </span>
+<br>
+<span> <strong>Tổ: </strong>  {{search_text.to_phong_ban}} </span>
+{% endblock %}
+
+{% block javascript %}
+        document.getElementById("quaylai").addEventListener("click", function(){
+            window.location.href = '{% url 'DanhSachNP' %}';
+        });
+{% endblock %}
+
+
+{% block btnAdd %}
+    <form class="form-search" action="{% url 'TimKiemNV' %}" style="width: 55%; display: flex; gap:10px">
+        <div class="form-group mb-0" style="margin-right: 15px"  >
+            {{ form.nhan_vien }}
+        </div>
+        <button class="timkiem" type="submit" style="width: 30%">Tìm kiếm</button>
+    </form>
+{% endblock %}
+
+{% block header %}
+{% endblock %}
+
+{% block locdanhsach %}
+
+{% endblock %}

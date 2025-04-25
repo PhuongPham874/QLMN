@@ -1,0 +1,190 @@
+{% extends 'NghiPhep/NP_list.html' %}
+
+{% block CSS %}
+    .inputghichu{
+        width: 580px;
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 10px;
+    }
+{% endblock %}
+
+{% block title %}
+    Danh sách các đơn nghỉ phép - {{year}}
+{% endblock %}
+
+
+
+{% block content %}
+    <div class="button">
+        {% block titleNP %}
+        <div class="titleNP" style="width: 70% " onclick="window.location.href='{% url 'DanhSachNP' %}'">DANH SÁCH ĐƠN NGHỈ PHÉP - {{year}}</div>
+        {% endblock %}
+        {% block btnAdd %}
+            <form method="get" action="{% url 'DanhSachNP' %}" style="width:10%; height: 15px">
+                    <select name="year" class="form-control" onchange="this.form.submit()">
+                        {% for y in years %}
+                            <option value="{{ y }}" {% if y == year %}selected{% endif %}>{{ y }}</option>
+                        {% endfor %}
+                    </select>
+            </form>
+        {% endblock %}
+    </div>
+
+
+
+     <div class="header" style="width: 70%">
+         {% block header %}
+             <form class="form-search" action="{% url 'TimKiemNV' %}">
+                <label  style="font-weight: 500; margin-bottom: 0;">Chọn nhân viên:</label>
+                <div class="form-group mb-0">
+                    {{ form.nhan_vien }}
+                </div>
+                <button class="timkiem" type="submit">Tìm kiếm</button>
+            </form>
+        {% endblock %}
+
+     </div>
+    <div class="ndung" style='display: flex; gap: 90px'>
+
+        <div class="ndungNP" style=" width: 80%; padding: 20px;box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);background-color: #ffffff;border-radius: 10px;height: auto;">
+            {% block profile %}
+            {% endblock %}
+             {% for status, danh_sach in nghiphep.items %}
+                <br>
+                <span class="trangthai" style="font-size: 25px;">{{status}}</span>
+                {% if danh_sach %}
+                    <ul class="list-group">
+                      {% for item in danh_sach %}
+                        <span class="ngaytao">{{ item.nhan_vien.ten_nv }}</span>
+                        <li class="list-group-item">
+                          <span class="text-info">Loại nghỉ phép: </span>
+                          <span>{{item.loai_nghi }} </span>
+                          <br>
+                          <span class="text-info">Ngày bắt đầu: </span>
+                          <span>{{ item.ngay_bat_dau }}</span>
+                          <br>
+                          <span class="text-info">Ngày kết thúc: </span>
+                          <span>{{ item.ngay_ket_thuc }}</span>
+                          <br>
+                          <span class="text-info">Lý do: </span>
+                          <span >{{ item.ly_do }}</span>
+
+                          <br>
+                          {% if item.trang_thai_don == 'Đang chờ duyệt' %}
+                            <form method="post" action="{% url 'XulyNP' item.id %}">
+                                {% csrf_token %}
+                                <div class="inputghichu">
+                                    <span class="text-info">Ghi chú: </span>
+                                    {{ formghichu.as_p }}
+                                </div>
+                                {% if messages %}
+                                    {% for message in messages %}
+                                        <div class="alert alert-danger">{{ message }}</div>
+                                    {% endfor %}
+                                {% endif %}
+                                    <div class="duyet_tuchoi">
+                                    <button type="submit"  name="action" value="duyet" class="btn btn-primary btn-sm active" id="duyet">Duyệt</button>
+                                    <button type="submit"  name="action" value="tuchoi" class="btn btn-primary btn-sm active" id="tuchoi">Từ chối</button>
+                                </div>
+                            </form>
+                          {% else %}
+                                {% if item.ghi_chu == "" %}
+                                    <span class="text-info">Ghi chú: </span>
+                                    <span>Không</span>
+                                {% else %}
+                                    <span class="text-info">Ghi chú: </span>
+                                    <span>{{ item.ghi_chu }}</span>
+                                {% endif %}
+                          {% endif %}
+                            <br>
+                        <button onclick="toggleHistory({{ item.id }})" style="background: none; border: none; color: #066BBB; padding: 0; font: inherit; cursor: pointer;text-decoration: underline;font-style: italic;">
+                          Xem lịch sử
+                        </button>
+
+                        <div id="historyContent-{{ item.id }}" style="display: none;">
+                          <div class="notification-item">
+                            <div class="notification-header">
+                              <img src="{{ item.nhan_vien.anh_ca_nhan }}" alt="Avatar" class="avatar">
+                              <div class="info">
+                                <div style="font-size: 12px">
+                                  <span class="name">{{ item.nhan_vien.ten_nv }}</span>
+                                  - Đã tạo đơn vào ngày: {{ item.ngay_tao_don }}
+                                </div>
+                                <div class="leave-type">{{ item.loai_nghi }}</div>
+                              </div>
+                            </div>
+                            <div class="notification-header" style="margin-left: 50px; margin-top: 15px">
+                              <img src="{{ item.nguoi_duyet.anh_ca_nhan }}" alt="Avatar" class="avatar">
+                              <div class="info nguoiduyet">
+                                <div style="font-size: 12px">
+                                  <span class="name">{{ item.nguoi_duyet.ten_nv }}</span>
+                                  - Đã xử lý đơn vào ngày: {{ item.ngay_duyet }}
+                                </div>
+                                  <div class="leave-type">{{ item.nguoi_duyet.chuc_vu }} {{ item.nguoi_duyet.to_phong_ban }} </div>
+                              </div>
+                            </div>
+
+                            <div class="status-change">
+                              <span class="dot">•</span>
+                              Chờ duyệt
+                              <i class="fa-solid fa-arrow-right"></i>
+                              <span class="status-text">
+                                {% if item.trang_thai_don == "Đã duyệt" %}
+                                  <span class="approved">Được duyệt</span>
+                                {% elif item.trang_thai_don == "Bị từ chối" %}
+                                  <span class="rejected">Từ chối</span>
+                                {% else %}
+                                  <span class="waiting">Đang chờ</span>
+                                {% endif %}
+                              </span>
+                            </div>
+                          </div>
+                        </div>
+                    </li>
+                  {% endfor %}
+                </ul>
+                {% else %}
+                    <p>Không có đơn nghỉ phép nào</p>
+                {% endif %}
+                <hr>
+            {% endfor %}
+        </div>
+
+        {% block locdanhsach %}
+        <div class="ndungloc" style="width:30%; max-height: 500px;">
+
+           <div class="TitleLoc" style="display: flex; gap: 10px; align-items: left;">
+                <i class="fa-sharp fa-solid fa-filter" style="font-size: 20px;"></i>
+                <p style="margin: 0; font-size: 15px; font-weight: 600;">Lọc</p>
+            </div>
+            <ul id="dongloc" style="width: 80%; margin-top: 20px; ">
+                <li class="li hover:bg-blue-100" >
+                    <a href="{% url 'DanhSachNP'  %}?year={{ year }}" class="font-bold hover:text-blue-600">
+                        Tất cả ({{ so_don }})
+                    </a>
+                </li>
+                <li>
+                    <a href="{% url 'loc_don_nghi_phep_admin' %}?trang_thai=Đang chờ duyệt&year={{ year }}" class=" font-bold hover:text-blue-600">
+                        Chờ duyệt ({{ so_don_dang_duyet.count }})
+                    </a>
+                </li>
+                <li>
+                    <a href="{% url 'loc_don_nghi_phep_admin' %}?trang_thai=Đã duyệt&year={{ year }}" class=" font-bold hover:text-blue-600">
+                        Đã duyệt ({{ so_don_da_duyet.count }})
+                    </a>
+                </li>
+                <li>
+                    <a href="{% url 'loc_don_nghi_phep_admin' %}?trang_thai=Bị từ chối&year={{ year }}" class=" font-bold hover:text-blue-600">
+                        Từ chối ({{ so_don_dang_bi_tu_choi.count }})
+                    </a>
+                </li>
+            </ul>
+
+        </div>
+        {% endblock %}
+    </div>
+{% endblock %}
+
+
+

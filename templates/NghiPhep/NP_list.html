@@ -1,0 +1,512 @@
+{% extends 'home.html' %}
+
+{% block extra_css %}
+<style>
+    body{
+    margin: 0;
+
+    }
+    .content{
+        margin-left: 20px;
+        display: flex;
+        flex-direction: column;
+        width: 80%;
+        padding: 20px;
+
+    }
+    .ndungNp{
+        width: 100%;
+        padding: 20px;
+        box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+        background-color: #ffffff;
+        border-radius: 10px;
+
+        height: auto;
+    }
+    .ndungloc{
+        padding: 20px;
+        box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+        background-color: #ffffff;
+        border-radius: 10px;
+        height: 500px;  /* Cố định chiều cao */
+        overflow-y: auto;
+    }
+    .trangthai {
+        font-size: 20px;
+        font-weight: bold;
+        font-style: italic;
+    }
+    .button{
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 20px;
+    }
+    .titleNP{
+        font-size: 30px;
+        font-weight: bold;
+        font-style: italic;
+    }
+    .text_search{
+        width: 300px;
+        height: 30px;
+        display: flex;
+        border: 1px solid;
+        border-radius: 8px 8px 8px 8px;
+        padding: 5px;
+        font-size: 15px;
+        align-items: center;
+    }
+    input.form-control.mr-sm-2[type="date"] {
+        border: none;
+        outline: none;
+        box-shadow: none;
+        background-color: transparent; /* tùy chọn nếu bạn muốn nền trong suốt */
+        font-size: 13px;
+    }
+    .form-search{
+        width: 70%;
+        display: flex;
+        align-items: center;
+        margin-bottom: 20px;
+        justify-content: space-between;
+    }
+    .fa-magnifying-glass{
+        font-size: 20px
+    }
+    .my-sm-0{
+        padding:10px;
+        background-color:#ABDAFF ;
+        color: black;
+        font-size:16px;
+    }
+    .quaylai{
+        padding: 10px ;
+        border-radius:5px;
+        font-size: 15px;
+        text-align: center;
+        background-color:#D9D9D9 ;
+        color: black;
+        border: 1px solid;
+    }
+    .themmoi{
+        width: 150px;
+        height: 35px;
+        padding: 5px ;
+        border-radius:10px;
+        font-size: 15px;
+        text-align: center;
+        background-color:#066BBB ;
+        color: white;
+        border: 1px solid;
+    }
+    .list-group-item{
+        width: 600px;
+        background: linear-gradient(to right, #DDF0FF, #FFFFFF);
+    }
+    .text-info{
+        color: #066BBB !important;
+        font-weight: bold;
+        font-style: italic;
+    }
+
+    .timkiem {
+        background-color: #ABDAFF;
+        color: #000;
+        border-radius: 6px;
+        padding: 10px 20px;
+        font-size: 16px;
+        cursor: pointer;
+        height: 30px;
+        transition: background-color 0.3s ease;
+        border: 0px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .timkiem:hover {
+        background-color: #066BBB;          /* xanh dương đậm khi hover */
+        color: white;                       /* đổi màu chữ trắng nếu cần nổi bật hơn */
+    }
+    .edit_delete{
+        width: 150px;
+        display: flex;
+        justify-content: space-between;
+    }
+    .delete{
+        background: red;
+        color: white;
+        border: 0px;
+    }
+    .np-container {
+    display: flex;
+    gap: 30px;
+    flex-wrap: wrap; /* để tránh tràn nếu màn hình nhỏ */
+    margin-bottom: 24px;
+    }
+
+    .np-card {
+        width: 170px; /* tăng chiều rộng để dòng chữ dài không bị xuống dòng */
+        border-radius: 12px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+        background: white;
+        font-family: Arial, sans-serif;
+    }
+
+    .np-accent {
+        height: 6px;
+        background-color: #066BBB; /* màu xanh dương */
+        border-top-left-radius: 12px;
+        border-top-right-radius: 12px;
+    }
+
+    .np-content {
+        padding: 6px;
+        text-align: left;
+    }
+
+    .np-title {
+        font-size: 13px;
+        color: #444;
+        margin-bottom: 10px;
+        font-weight: 500;
+        white-space: nowrap;
+    }
+
+    .np-number {
+        font-size: 18px;
+        font-weight: bold;
+        color: #111;
+    }
+    .font-bold{
+        color: black;
+        text-decoration: none;
+
+    }
+    li{
+        list-style-type: none;
+    }
+
+    #dongloc li:hover {
+        background-color: #066BBB;
+        color: white;
+        padding-left: 10px;
+        padding-right: 10px;
+        border-radius:5px;
+    }
+
+    #dongloc li a {
+        font-size: 16px;
+        transition: all 0.3s ease;
+    }
+
+    #dongloc li:hover a {
+        color: white;
+    }
+    .header{
+        display: flex;
+        justify-content: space-between;
+    }
+    .avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;  /* Hình tròn */
+      object-fit: cover;   /* Cắt ảnh cho vừa khung */
+      border: 1px solid #ccc; /* Viền nhẹ nếu thích */
+    }
+    .notification-item {
+        padding: 10px;
+      border-bottom: 1px solid #ddd;
+      font-family: Arial, sans-serif;
+      font-size: 14px;
+    }
+
+    .notification-header {
+      display: flex;
+      align-items: center;
+    }
+
+    .avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      object-fit: cover;
+      margin-right: 10px;
+    }
+
+    .info {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .name {
+      font-weight: bold;
+      font-size: 14px;
+    }
+
+    .time {
+      color: #999;
+      font-size: 12px;
+      margin-top: 1px;
+    }
+
+    .leave-type {
+      font-size: 13px;
+      margin-top: 5px;
+    }
+
+    .status-change {
+      margin-left: 50px;
+      margin-top: 10px;
+      font-size: 13px;
+      color: #555;
+    }
+
+    .dot {
+      color: #999;
+      margin-right: 3px;
+    }
+
+    .status-text .approved {
+      color: #2e8bff;
+      font-weight: 500;
+    }
+
+    .status-text .rejected {
+      color: red;
+      font-weight: 500;
+    }
+
+    .status-text .waiting {
+      color: gray;
+      font-weight: 500;
+    }
+
+    .status-note {
+      font-style: italic;
+      color: #888;
+      margin-left: 4px;
+    }
+
+    {% block CSS %}
+    {% endblock %}
+</style>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        let elements = document.querySelectorAll(".trangthai");
+        elements.forEach(element => {
+            if (element.innerText.trim() === "Đã duyệt") {
+                element.style.color = "#72C05B";
+                element.style.fontWeight = "bold";
+            }
+            if (element.innerText.trim() === "Bị từ chối") {
+                element.style.color = "#FF0000";
+                element.style.fontWeight = "bold";
+            }
+            if (element.innerText.trim() === "Đang chờ duyệt") {
+                element.style.color = "#FFC700";
+                element.style.fontWeight = "bold";
+            }
+        });
+
+        document.getElementById('themmoi').addEventListener('click', function() {
+            window.location.href = "{% url 'AddNghiPhep' %}";
+        });
+
+    });
+    function toggleHistory(itemId) {
+  const btn = document.querySelector(`button[onclick="toggleHistory(${itemId})"]`);
+  const content = document.getElementById(`historyContent-${itemId}`);
+
+    if (content.style.display === "none") {
+      content.style.display = "block";
+      btn.textContent = "Ẩn lịch sử";
+    } else {
+      content.style.display = "none";
+      btn.textContent = "Xem lịch sử";
+    }
+  }
+</script>
+{% endblock %}
+
+{% block title %}
+    Danh sách Nghỉ phép - {{nhan_vien}}
+{% endblock %}
+
+{% block page_background %}
+<div class="content">
+    {% block content %}
+    <div class="button">
+        {% block titleNP %}
+            <div class="titleNP">Đơn nghỉ phép - {{nhan_vien.ten_nv}} </div>
+        {% endblock %}
+
+        {% block btnAdd %}
+            <button type="button" class="themmoi" id="themmoi"><i class="fa-solid fa-plus" ></i>  Thêm mới</button>
+        {% endblock %}
+
+
+    </div>
+    <div class="np-container">
+        <div class="np-card">
+            <div class="np-accent"></div>
+            <div class="np-content">
+                <div class="np-title">Số ngày Nghỉ phép năm</div>
+                <div class="np-number">{{so_nghi_phep_nam}}</div>
+            </div>
+        </div>
+        <div class="np-card">
+            <div class="np-accent"></div>
+            <div class="np-content">
+                <div class="np-title">Số ngày Đã nghỉ</div>
+                <div class="np-number">{{so_ngay_da_nghi}}</div>
+            </div>
+        </div>
+        <div class="np-card">
+            <div class="np-accent"></div>
+            <div class="np-content">
+                <div class="np-title">Số ngày Phép năm còn lại</div>
+                <div class="np-number">{{PN_con_lai}}</div>
+            </div>
+        </div>
+    </div>
+    <div class="ndung" style="display: flex; gap: 90px">
+        <div class="ndungNp">
+
+            <div class="header">
+                <form class="form-search" action="{% url 'TimKiemNP' %}">
+                <div class="text_search">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                    <input class="form-control mr-sm-2" type="date" placeholder=" Tìm kiếm Ngày bắt đầu Nghỉ:" aria-label="Tìm kiếm Ngày bắt đầu Nghỉ:" name="search" >
+                </div>
+                <button class="timkiem" type="submit">Tìm kiếm</button>
+
+                </form>
+                <form method="get" action="{% url 'DanhSachNP_NV' %}" style="width:15%; height: 15px">
+                        <select name="year" class="form-control" onchange="this.form.submit()">
+                            {% for y in years %}
+                                <option value="{{ y }}" {% if y == year %}selected{% endif %}>{{ y }}</option>
+                            {% endfor %}
+                        </select>
+                </form>
+            </div>
+
+
+            {% if NP_list %}
+                <ul class="list-group">
+                  {% for item in NP_list %}
+                    <span class="trangthai">{{ item.trang_thai_don }}</span>
+                    <li class="list-group-item">
+                      <span class="text-info">Loại nghỉ phép: </span>
+                      <span>{{item.loai_nghi }} </span>
+                      <br>
+                      <span class="text-info">Ngày bắt đầu: </span>
+                      <span>{{ item.ngay_bat_dau }}</span>
+                      <br>
+                      <span class="text-info">Ngày đi làm lại: </span>
+                      <span>{{ item.ngay_ket_thuc }}</span>
+                      <br>
+                      <span class="text-info">Lý do: </span>
+                      <span >{{ item.ly_do }}</span>
+                      <br>
+                        {% if item.ghi_chu == "" %}
+                        <span class="text-info">Ghi chú: </span>
+                        <span>Không</span>
+                        {% else %}
+                        <span class="text-info">Ghi chú: </span>
+                        <span>{{ item.ghi_chu }}</span>
+                        {% endif %}
+                      {% if item.trang_thai_don == "Đang chờ duyệt" %}
+                        <br>
+                      <div class="edit_delete">
+                          <a class="btn btn-primary btn-sm active" aria-pressed="true" href="{% url 'EditNghiPhep' nghiphep_pk=item.id %}"> Chỉnh sửa  </a>
+                          <a class="btn btn-primary btn-sm delete" aria-pressed="true" href="{% url 'DeleteNghiPhep' nghiphep_pk=item.id %}"> Xóa </a>
+                      </div>
+                      {% endif %}
+                        <br>
+                        <button onclick="toggleHistory({{ item.id }})" style="background: none; border: none; color: #066BBB; padding: 0; font: inherit; cursor: pointer;text-decoration: underline;font-style: italic;">
+                          Xem lịch sử
+                        </button>
+
+                        <div id="historyContent-{{ item.id }}" style="display: none;">
+                          <div class="notification-item">
+                            <div class="notification-header">
+                              <img src="{{ item.nhan_vien.anh_ca_nhan }}" alt="Avatar" class="avatar">
+                              <div class="info">
+                                <div style="font-size: 12px">
+                                  <span class="name">{{ item.nhan_vien.ten_nv }}</span>
+                                  - Đã tạo đơn vào ngày: {{ item.ngay_tao_don }}
+                                </div>
+                                <div class="leave-type">{{ item.loai_nghi }}</div>
+                              </div>
+                            </div>
+                            <div class="notification-header" style="margin-left: 50px; margin-top: 15px">
+                              <img src="{{ item.nguoi_duyet.anh_ca_nhan }}" alt="Avatar" class="avatar">
+                              <div class="info nguoiduyet">
+                                <div style="font-size: 12px">
+                                  <span class="name">{{ item.nguoi_duyet.ten_nv }}</span>
+                                  - Đã xử lý đơn vào ngày: {{ item.ngay_duyet }}
+                                </div>
+                                <div class="leave-type">{{ item.nguoi_duyet.chuc_vu }} {{ item.nguoi_duyet.to_phong_ban }} </div>
+                              </div>
+                            </div>
+
+                            <div class="status-change">
+                              <span class="dot">•</span>
+                              Chờ duyệt
+                              <i class="fa-solid fa-arrow-right"></i>
+                              <span class="status-text">
+                                {% if item.trang_thai_don == "Đã duyệt" %}
+                                  <span class="approved">Được duyệt</span>
+                                {% elif item.trang_thai_don == "Bị từ chối" %}
+                                  <span class="rejected">Từ chối</span>
+                                {% else %}
+                                  <span class="waiting">Đang chờ</span>
+                                {% endif %}
+                              </span>
+                            </div>
+                          </div>
+                        </div>
+                    </li>
+                  {% endfor %}
+                </ul>
+            {% else %}
+                <p>Không có đơn nghỉ phép nào</p>
+            {% endif %}
+        </div>
+
+        <div class="ndungloc" style="width:30%; max-height: 500px;">
+           <div class="TitleLoc" style="display: flex; gap: 10px; align-items: left;">
+                <i class="fa-sharp fa-solid fa-filter" style="font-size: 20px;"></i>
+                <p style="margin: 0; font-size: 15px; font-weight: 600;">Lọc</p>
+            </div>
+            <ul id="dongloc" style="width: 80%; margin-top: 20px; ">
+                <li class="li hover:bg-blue-100" >
+                    <a href="{% url 'DanhSachNP_NV'  %}?year={{ year }}" class="font-bold hover:text-blue-600">
+                        Tất cả ({{ so_don }})
+                    </a>
+                </li>
+                <li>
+                    <a href="{% url 'loc_don_nghi_phep' %}?trang_thai=Đang chờ duyệt&year={{ year }}" class=" font-bold hover:text-blue-600">
+                        Chờ duyệt ({{ so_don_dang_duyet.count }})
+                    </a>
+                </li>
+                <li>
+                    <a href="{% url 'loc_don_nghi_phep' %}?trang_thai=Đã duyệt&year={{ year }}" class=" font-bold hover:text-blue-600">
+                        Đã duyệt ({{ so_don_da_duyet.count }})
+                    </a>
+                </li>
+                <li>
+                    <a href="{% url 'loc_don_nghi_phep' %}?trang_thai=Bị từ chối&year={{ year }}" class=" font-bold hover:text-blue-600">
+                        Từ chối ({{ so_don_dang_bi_tu_choi.count }})
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+    {% endblock %}
+</div>
+{% endblock %}

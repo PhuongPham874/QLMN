@@ -1,0 +1,88 @@
+{% extends "home.html" %}
+
+{% block extra_css %}
+    <style>
+
+        .content{
+            width: 1100px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: flex-start;
+
+        }
+        .ndung{
+            width: 1100px;
+            padding: 20px;
+            margin-left: 20px;
+            display: flex;
+            flex-direction: column;
+        }
+    }
+
+        table{
+        width: 450px;
+        align-items: center;
+        margin-bottom: 20px;
+        justify-content: space-between;
+    }
+        .btn{
+        padding: 10px ;
+        border-radius:5px;
+        font-size: 15px;
+        text-align: center;
+        background-color:#D9D9D9 ;
+        color: black;
+        border: 1px solid;
+    }
+        .button{
+            padding: 20px;
+        }
+
+    </style>
+
+{% endblock %}
+
+{% block page_background %}
+<main class="content" style="background-color: #ffffff; padding: 10px;">
+    <div class="button">
+        <button class="btn btn-secondary" onclick="window.history.back()" style="font-size: 16px; padding: 10px 30px;">Quay lại</button>
+    </div>
+    <div class="ndung">
+        <h1 class="header-title" style="color: #000000; font-size: 30px; font-weight: bold; text-align: center; width: 100%;">DANH SÁCH HỒ SƠ NHÂN VIÊN</h1>
+        <div class="container mt-4" style="background-color: #FFFBFB; border: 2px solid #C1C3C8; padding: 20px; border-radius: 10px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
+            <div style="margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center;">
+                <div style="position: relative; width: 100%; max-width: 300px;">
+                    <i class="fa fa-search" style="position: absolute; top: 13px; left: 10px; color: #333;"></i>
+                    <input type="text" class="form-control" id="searchInput" placeholder="Tìm kiếm..." style="font-size: 16px; padding: 10px 10px 10px 30px; width: 100%; border-radius: 5px;">
+                </div>
+                <a href="{% url 'ThemMoiHoSo' %}" class="btn btn-success" style="margin-left: 20px; background-color: #65ABE3; color: white;">+ Thêm mới</a>
+            </div>
+            <table class="table" style="border-radius: 10px; width: 100%; ">
+                <thead style="background-color: #008CBA; color: white;">
+                    <tr>
+                        <th style="background-color: #65ABE3; color: white;width: 7%;">MNV</th>
+                        <th style="background-color: #65ABE3; color: white;width: 25%;">Họ và tên</th>
+                        <th style="background-color: #65ABE3; color: white;width: 15%;">SĐT</th>
+                        <th style="background-color: #65ABE3; color: white;width: 38%;">Địa chỉ</th>
+                        <th style="background-color: #65ABE3; color: white;width: 15%;">Vị trí</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    {% for nhan_vien in nhan_vien_list %}
+                    <tr >
+                        <td style="background-color: #FFFBFB; text-align: center;">{{ nhan_vien.id }}</td>  <!-- Hiển thị Mã NV (là id của nhân viên) -->
+                        <td style="background-color: #FFFBFB;">{{ nhan_vien.ten_nv }}</td>
+                        <td style="background-color: #FFFBFB;">{{ nhan_vien.so_dien_thoai }}</td>
+                        <td style="background-color: #FFFBFB;">{{ nhan_vien.dia_chi }}</td>
+                        <td style="background-color: #FFFBFB;">{{ nhan_vien.vi_tri_cong_viec }}</td>  <!-- Hiển thị vị trí công việc -->
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</main>
+{% endblock %}
