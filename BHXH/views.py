@@ -11,7 +11,7 @@ def tinh_tong_tien_bhxh(nhan_vien, nhan_vien_dong, truong_dong):
     return tong_tien
 def bhxh(request):
     bhxh_list = BHXH.objects.all()  # Lấy tất cả các đối tượng BHXH
-    return render(request, 'BHXH.html', {'bhxh_list': bhxh_list})
+    return render(request, 'BHXH/BHXH.html', {'bhxh_list': bhxh_list})
 def themmoiBHXH(request):
     # Lấy danh sách nhân viên chưa có BHXH
     nhan_vien_choices = NhanVien.objects.filter(
@@ -39,7 +39,7 @@ def themmoiBHXH(request):
     else:
         form = BHXHform()
         form.fields['ten_nv'].queryset = nhan_vien_choices
-    return render(request, 'ThemBHXH.html', {'form': form})
+    return render(request, 'BHXH/ThemBHXH.html', {'form': form})
 def chinhsuaBHXH(request, ma_nv):
     bhxh = get_object_or_404(BHXH, nhan_vien_id=ma_nv)
     if request.method == 'POST':
@@ -63,7 +63,7 @@ def thongtinchitiet(request,ma_nv):
     for dong in dongbhchitiet:
         Total += dong.tong_tien
     context = {'bh':bhxhchitiet,'dongbh':dongbhchitiet,'Total':Total,'solanthamgia':so_lan_tham_gia}
-    return render(request,'Hienthichitiet.html',context)
+    return render(request,'BHXH/Hienthichitiet.html',context)
 def dong_bhxh(request):
     if request.method == "POST":
         form = DongBHXHForm(request.POST)
@@ -90,7 +90,7 @@ def dong_bhxh(request):
             messages.error(request, 'Vui lòng nhập đầy đủ ngày bắt đầu và ngày kết thúc.')
     else:
         form = DongBHXHForm()
-    return render(request, 'Noptien.html', {'form': form})
+    return render(request, 'BHXH/Noptien.html', {'form': form})
 
 
 
