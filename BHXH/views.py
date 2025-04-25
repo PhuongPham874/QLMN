@@ -1,63 +1,98 @@
+from django.core.management.commands.runserver import naiveip_re
 from django.shortcuts import render,redirect,get_object_or_404
-from HOME.models import *
 from django.contrib import messages
-from django.contrib.auth.decorators import login_required
-
+from HOME.models import BHXH,NhanVien,HopDongLaoDong,DONGBHXH
+from .forms import *
 def tinh_tong_tien_bhxh(nhan_vien, nhan_vien_dong, truong_dong):
     hop_dong = HopDongLaoDong.objects.get(nhan_vien=nhan_vien)
-    muc_luong = hop_dong.muc_luong  # Lấy mức lương từ hợp đồng
+    muc_luong = hop_dong.luong
         # Tính tổng tiền BHXH: (nhân viên đóng + trường đóng) * mức lương
     tong_tien = ((nhan_vien_dong / 100) * muc_luong) + ((truong_dong / 100) * muc_luong)
     return tong_tien
-
 def bhxh(request):
     bhxh_list = BHXH.objects.all()  # Lấy tất cả các đối tượng BHXH
-    for bhxh in bhxh_list:
-        for bhxh in bhxh_list:
-            # Gọi hàm tính tổng tiền BHXH
-            bhxh.tong_tien_bhxh = tinh_tong_tien_bhxh(bhxh.nhan_vien, bhxh.nhan_vien_dong, bhxh.truong_dong)
-    return render(request, 'BHXH/BHXH.html', {'bhxh_list': bhxh_list})
-
+    return render(request, 'BHXH.html', {'bhxh_list': bhxh_list})
+def themmoiBHXH(request):
+    # Lấy danh sách nhân viên chưa có BHXH
+    nhan_vien_choices = NhanVien.objects.filter(
+        id__in=[nv.id for nv in NhanVien.objects.all() if not BHXH.objects.filter(nhan_vien=nv).exists()]
+    )
+    if request.method == 'POST':
+        form = BHXHform(request.POST)
+        form.fields['ten_nv'].queryset = nhan_vien_choices
+        if form.is_valid():
+            nhan_vien = form.cleaned_data['ten_nv']
+            hopdong = HopDongLaoDong.objects.filter(
+                nhan_vien=nhan_vien,
+                loai_hop_dong='Hợp đồng có thời hạn',
+                trang_thai_hop_dong='Đang hiệu lực'
+            ).first()
+            if not hopdong:
+                messages.error(request, "Không có thông tin BHXH của nhân viên này")
+                return render(request, 'ThemBHXH.html', {'form': form})
+            # Nếu có hợp đồng phù hợp, lưu form
+            instance = form.save(commit=False)
+            instance.nhan_vien = nhan_vien
+            instance.save()
+            messages.success(request, "Thêm mới BHXH thành công!")
+            return redirect('bhxh_list')
+    else:
+        form = BHXHform()
+        form.fields['ten_nv'].queryset = nhan_vien_choices
+    return render(request, 'ThemBHXH.html', {'form': form})
 def chinhsuaBHXH(request, ma_nv):
     bhxh = get_object_or_404(BHXH, nhan_vien_id=ma_nv)
-    bhxh.tong_tien_bhxh = tinh_tong_tien_bhxh(bhxh.nhan_vien, bhxh.nhan_vien_dong, bhxh.truong_dong)
     if request.method == 'POST':
-        # Lấy dữ liệu từ form
-        maBHXH = request.POST.get('maBHXH')
-        ngayBatDauDong = request.POST.get('ngayBatDauDong')
-        # Cập nhật thông tin
-        bhxh.ma_bhxh = maBHXH
-        bhxh.thoi_gian_bat_dau_dong = ngayBatDauDong
-        bhxh.save()
-        # Thông báo thành công
-        messages.success(request, "Chỉnh sửa thông tin thành công")
-        return redirect('bhxh_list')
-    return render(request, 'BHXH/chinhsuatt.html', {'bhxh': bhxh,'ten_nhan_vien': bhxh.nhan_vien.ten_nv,'ma_nv': bhxh.nhan_vien_id,})
+        form = updateBHXH(request.POST, instance=bhxh)
+        if form.is_valid():
+            form.save()  # Lưu thông tin vào cơ sở dữ liệu
+            messages.success(request, "Chỉnh sửa thông tin thành công")
+            return redirect('bhxh_list')
+        else:
+            print("Form is invalid")
+            print(form.errors)
+    else:
+        form = updateBHXH(instance=bhxh)
+    return render(request, "ChinhsuaBHXH.html", {"form": form,"bhxh": bhxh})
+def thongtinchitiet(request,ma_nv):
+    nhan_vien_obj = get_object_or_404(NhanVien, id=ma_nv)
+    bhxhchitiet = BHXH.objects.get(nhan_vien = nhan_vien_obj)
+    dongbhchitiet = DONGBHXH.objects.filter(nhan_vien = nhan_vien_obj)
+    so_lan_tham_gia = dongbhchitiet.count()
+    Total=0
+    for dong in dongbhchitiet:
+        Total += dong.tong_tien
+    context = {'bh':bhxhchitiet,'dongbh':dongbhchitiet,'Total':Total,'solanthamgia':so_lan_tham_gia}
+    return render(request,'Hienthichitiet.html',context)
+def dong_bhxh(request):
+    if request.method == "POST":
+        form = DongBHXHForm(request.POST)
+        if form.is_valid():
+            ngay_bat_dau = form.cleaned_data['ngay_bat_dau']
+            ngay_ket_thuc = form.cleaned_data['ngay_ket_thuc']
+            bhxh_list = BHXH.objects.select_related('nhan_vien')  # Lấy danh sách BHXH với liên kết nhân viên
+            created_count = 0
+            for bhxh in bhxh_list:
+                nhan_vien = bhxh.nhan_vien
+                tong_tien = tinh_tong_tien_bhxh(nhan_vien, bhxh.nhan_vien_dong, bhxh.truong_dong)
+                # Tạo bản ghi mới và lưu
+                dong = DONGBHXH(
+                    nhan_vien=nhan_vien,
+                    ngay_bat_dau=ngay_bat_dau,
+                    ngay_ket_thuc=ngay_ket_thuc,
+                    tong_tien=tong_tien
+                )
+                dong.save()
+                created_count += 1
+            messages.success(request, f'Đã nộp tiền BHXH cho {created_count} nhân viên.')
+            return redirect('bhxh_list')
+        else:
+            messages.error(request, 'Vui lòng nhập đầy đủ ngày bắt đầu và ngày kết thúc.')
+    else:
+        form = DongBHXHForm()
+    return render(request, 'Noptien.html', {'form': form})
 
-@login_required
-def thong_tin_bhxh(request):
-    nhan_vien = NhanVien.objects.get(user=request.user)  # Lấy nhân viên từ user đã đăng nhập
-    try:
-        bhxh = BHXH.objects.get(nhan_vien=nhan_vien)  # Tìm thông tin BHXH của nhân viên
-    except BHXH.DoesNotExist:
-        bhxh = None  # Nếu không có thông tin BHXH, trả về None
-    return render(request, 'BHXH/ThongtinBHXHuser.html', {'bhxh': bhxh, 'nhan_vien': nhan_vien})
 
-def themmoiBHXH(request):
-    # Tạo danh sách nhân viên chưa có BHXH
-    nhan_vien_choices = []
-    all_nhan_vien = NhanVien.objects.all()
-    for nhan_vien in all_nhan_vien:
-        # Kiểm tra nếu nhân viên chưa có BHXH
-        if not BHXH.objects.filter(nhan_vien=nhan_vien).exists():
-            nhan_vien_choices.append(nhan_vien)
-    if request.method == 'POST':
-        # Lấy dữ liệu từ form
-        tenNhanVien = request.POST.get('tenNhanVien')
-        maBHXH = request.POST.get('maBHXH')
-        nhanVienDong = request.POST.get('nhanVienDong')
-        truongDong = request.POST.get('truongDong')
-        tongTienBHXH = request.POST.get('tongTienBHXH')
-        ngayBatDauDong = request.POST.get('ngayBatDauDong')
-        # Tìm nhân viên theo mã nhân viên được chọn
-    return render(request, 'BHXH/themmoiBHXH.html', {'nhan_vien_choices': nhan_vien_choices}, )
+
+
+
