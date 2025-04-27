@@ -1,0 +1,39 @@
+{% extends "home.html" %}
+
+{% block page_background %}
+<div class="p-6">
+    <div class="flex items-center justify-between mb-6">
+        <h1 class="text-2xl font-bold text-gray-800">📋 Danh sách nhân viên</h1>
+        <a href="{% url 'cham_cong_bang_khuon_mat' %}" class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg shadow">
+            👤 Chấm công bằng khuôn mặt
+        </a>
+    </div>
+
+    <div class="bg-white rounded-xl shadow p-4">
+        <table class="min-w-full table-auto border-collapse">
+            <thead>
+                <tr class="bg-gray-100 text-gray-700 text-left">
+                    <th class="py-2 px-4">Mã nhân viên</th>
+                    <th class="py-2 px-4">Họ và tên</th>
+                    <th class="py-2 px-4">Email</th>
+                    <th class="py-2 px-4">Phòng ban</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for nv in nhan_viens %}
+                <tr class="border-t hover:bg-gray-50">
+                    <td class="py-2 px-4 font-mono">{{ nv.id }}</td>
+                    <td class="py-2 px-4">{{ nv.ten_nv }}</td>
+                    <td class="py-2 px-4">{{ nv.user.email }}</td>
+                    <td class="py-2 px-4">{{ nv.to_phong_ban }}</td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="4" class="py-4 px-4 text-center text-gray-400">Không có nhân viên nào.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

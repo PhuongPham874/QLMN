@@ -125,7 +125,7 @@ STATIC_URL = '/static/'
 
 # Khai báo đường dẫn thư mục static
 STATICFILES_DIRS = [
-    r"D:\PYTHON\QLMN\static",  # Sử dụng raw string (r"") để tránh lỗi escape ký tự '\'
+    r"C:\Users\HP\Desktop\LTW\QLMN1\QLMN\static",  # Sử dụng raw string (r"") để tránh lỗi escape ký tự '\'
 ]
 
 # Default primary key field type
