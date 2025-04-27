@@ -1,4 +1,5 @@
 {% extends "home.html" %}
+
 {% block extra_css %}
     <style>
 
@@ -16,11 +17,15 @@
             margin-left: 20px;
             display: flex;
             flex-direction: column;
-            justify-content: center;
-            align-items: center;
         }
     }
 
+        table{
+        width: 450px;
+        align-items: center;
+        margin-bottom: 20px;
+        justify-content: space-between;
+    }
         .btn{
         padding: 10px ;
         border-radius:5px;
@@ -35,116 +40,134 @@
         }
 
     </style>
-
 {% endblock %}
-
 {% block page_background %}
 <main class="content" style="background-color: #ffffff; padding: 10px;">
 
-    <div class="button" style="display: flex; justify-content: flex-start; align-items: center;">
+    <div class="button" style="display: flex; justify-content: space-between; align-items: center;">
         <button class="btn btn-secondary" onclick="window.history.back()" style="font-size: 16px; padding: 10px 30px;">Quay lại</button>
     </div>
-
     <div class="ndung">
-        <h1 class="header-title" style="color: #000000; font-size: 30px; font-weight: bold; text-align: left; margin-left: 20px; font-style: italic;">THÔNG TIN CHI TIẾT NHÂN VIÊN - {{nhan_vien.ten_nv}}</h1>
-        <div class="container mt-4" style="background-color: #f0f8ff; padding: 40px; border-radius: 10px; max-width: 100%; margin-right: 0;">
-            <h3 class="line-title" style="position: relative; text-align: center; font-size: 22px; font-weight: bold; color: #008CBA; margin: 20px 0;">
-                <span style="position: absolute; left: 0; top: 50%; width: 35%; height: 1px; background-color: #008CBA;"></span>
-                Thông Tin Cá Nhân
-                <span style="position: absolute; right: 0; top: 50%; width: 35%; height: 1px; background-color: #008CBA;"></span>
-            </h3>
-            <div class="row">
 
-                <div class="col-md-6 left-column" style="padding: 10px;">
-                    <img src="{{ nhan_vien.anh_ca_nhan }}" alt="Ảnh cá nhân" class="img-fluid rounded-circle mb-3" style="width: 150px; height: 150px; object-fit: cover;">
+        <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            <h1 class="header-title" style="color: #000000; font-size: 30px; font-weight: bold; text-align: center; width: 100%;">THÊM MỚI HỒ SƠ NHÂN VIÊN</h1>
+            <div class="container mt-4" style="background-color: #f0f8ff; padding: 40px; border-radius: 10px;">
+                <h4 class="header-title" style="display: flex; justify-content: space-between; font-size: 30px; font-weight: bold; margin-bottom: 20px; margin-top: -39px;margin-right:-40px;margin-left:-40px;">
+                    <a href="{% url 'NVXemHoSo' %}" style="border: 2px solid #000000; text-decoration: none; color: white; width: 50%; text-align: center; padding: 10px; background-color: #008CBA; border-top-left-radius: 5px; border-bottom-left-radius: 5px;">
+                        Thông Tin Cá Nhân
+                    </a>
+                    <a href="{% url 'NVXemHoSoHDLD' %}" style="text-decoration: none; color: white; width: 50%; text-align: center; padding: 10px; background-color: #65ABE3; border-top-right-radius: 5px; border-bottom-right-radius: 5px;">
+                        Hợp Đồng Lao Động
+                    </a>
+                </h4>
 
-                    <div class="form-group" style="margin-bottom: 15px;">
-                        <label for="so_cccd" style="font-weight: bold; font-size: 16px; color: #333; margin-right: 10px; text-align: right;">Số CCCD:</label>
-                        <span style="font-size: 16px; color: #333;">{{ nhan_vien.so_cccd }}</span>
+
+                <div class="row">
+                    <div class="col-md-6 left-column" style="padding: 10px;">
+                        <div class="form-group" style="display: flex; align-items: center; margin-bottom: 15px;">
+                            <label for="anh_ca_nhan" style="width: 180px; font-weight: bold; font-size: 16px; color: #333; margin-right: 10px; text-align: left;">Ảnh cá nhân</label>
+                            <div style="font-size: 16px;">{{ nhan_vien.anh_ca_nhan }}</div>
+                        </div>
+
+                        <div class="form-group" style="display: flex; align-items: center; margin-bottom: 15px;">
+                            <label for="ten_nv" style="width: 180px; font-weight: bold; font-size: 16px; color: #333; margin-right: 10px; text-align: left;">Họ và tên:</label>
+                            <div style="font-size: 16px;">{{ nhan_vien.ten_nv }}</div>
+                        </div>
+
+                        <div class="form-group" style="display: flex; align-items: center; margin-bottom: 15px;">
+                            <label for="gioi_tinh" style="width: 180px; font-weight: bold; font-size: 16px; color: #333; margin-right: 10px; text-align: left;">Giới tính:</label>
+                            <div style="font-size: 16px;">{{ nhan_vien.gioi_tinh }}</div>
+                        </div>
+
+
+                        <div class="form-group" style="display: flex; align-items: center; margin-bottom: 15px;">
+                            <label for="ngay_sinh" style="width: 180px; font-weight: bold; font-size: 16px; color: #333; margin-right: 10px; text-align: left;">Ngày sinh:</label>
+                            <div style="font-size: 16px;">{{ nhan_vien.ngay_sinh }}</div>
+                        </div>
+
+                        <div class="form-group" style="display: flex; align-items: center; margin-bottom: 15px;">
+                            <label for="so_dien_thoai" style="width: 180px; font-weight: bold; font-size: 16px; color: #333; margin-right: 10px; text-align: left;">Số điện thoại:</label>
+                            <div style="font-size: 16px;">{{ nhan_vien.so_dien_thoai }}</div>
+                        </div>
+
+                        <div class="form-group" style="display: flex; align-items: center; margin-bottom: 15px;">
+                            <label for="email" style="width: 180px; font-weight: bold; font-size: 16px; color: #333; margin-right: 10px; text-align: left;">Email:</label>
+                            <div style="font-size: 16px;">{{ nhan_vien.email }}</div>
+                        </div>
+
+                        <div class="form-group" style="display: flex; align-items: center; margin-bottom: 15px;">
+                            <label for="So_cccd" style="width: 180px; font-weight: bold; font-size: 16px; color: #333; margin-right: 10px; text-align: left;">Số CCCD:</label>
+                            <div style="font-size: 16px;">{{ nhan_vien.so_cccd }}</div>
+
+                        </div>
                     </div>
 
-                    <div class="form-group" style="margin-bottom: 15px;">
-                        <label for="trinh_do_hoc_van" style="font-weight: bold; font-size: 16px; color: #333; margin-right: 10px; text-align: right;">Trình độ học vấn:</label>
-                        <span style="font-size: 16px; color: #333;">{{ nhan_vien.trinh_do_hoc_van }}</span>
-                    </div>
+                    <div class="col-md-6 right-column" style="padding: 10px;">
+                        <div class="form-group" style="display: flex; align-items: center; margin-bottom: 10px;">
+                            <label for="vi_tri_cong_viec" style="width: 150px; font-weight: bold; font-size: 16px; color: #333; margin-right: 35px; text-align: left;">Vị trí làm việc:</label>
+                            <div style="font-size: 16px; margin-right: 5px;margin-left: 5px;">{{ nhan_vien.vi_tri_cong_viec }}</div>
+                            <div class="form-group" style="display: flex; align-items: center; margin-bottom: 0px;">
+                                <label for="chuc_vu" style="width: 80px; font-weight: bold; font-size: 16px; color: #333; margin-left: 35px; margin-right: 5px; ">Chức vụ:</label>
+                                <div style="font-size: 16px;margin-left: 0px;">{{ nhan_vien.chuc_vu }}</div>
 
-                    <div class="form-group" style="margin-bottom: 15px;">
-                        <label for="vi_tri_cong_viec" style="font-weight: bold; font-size: 16px; color: #333; margin-right: 10px; text-align: right;">Vị trí công việc:</label>
-                        <span style="font-size: 16px; color: #333;">{{ nhan_vien.vi_tri_cong_viec }}</span>
-                    </div>
+                            </div>
+                        </div>
 
-                    <div class="form-group" style="margin-bottom: 15px;">
-                        <label for="kinh_nghiem" style="font-weight: bold; font-size: 16px; color: #333; margin-right: 10px; text-align: right;">Kinh nghiệm làm việc:</label>
-                        <span style="font-size: 16px; color: #333;">{{ nhan_vien.kinh_nghiem_lam_viec }}</span>
+                        <div class="form-group" style="display: flex; align-items: center; margin-bottom: 10px;">
+                            <label for="to_phong_ban" style="width: 180px; font-weight: bold; font-size: 16px; color: #333; margin-right: 10px; text-align: left;">Tổ (Phòng ban):</label>
+                            <div style="font-size: 16px;">{{ nhan_vien.to_phong_ban }}</div>
+
+                        </div>
+
+                        <div class="form-group" style="display: flex; align-items: center; margin-bottom: 10px;">
+                            <label for="trinh_do_hoc_van" style="width: 150px; font-weight: bold; font-size: 16px; color: #333; margin-right: 35px; text-align: left;">Trình độ học vấn:</label>
+                            <div style="font-size: 16px; margin-right: 5px;margin-left: 5px;">{{ nhan_vien.trinh_do_hoc_van }}</div>
+                            <div class="form-group" style="display: flex; align-items: center; margin-bottom: 0px;">
+                                <label for="nam_tn" style="width: 80px; font-weight: bold; font-size: 16px; color: #333; margin-left: 55px; margin-right: 5px; ">Năm TN:</label>
+                                <div style="font-size: 16px;margin-left: 0px;">{{ nhan_vien.nam_tn }}</div>
+                            </div>
+                        </div>
+
+                        <div class="form-group" style="display: flex; align-items: center; margin-bottom: 10px;">
+                            <label for="chuyen_nganh" style="width: 180px; font-weight: bold; font-size: 16px; color: #333; margin-right: 10px; text-align: left;">Chuyên ngành:</label>
+                            <div style="font-size: 16px;">{{ nhan_vien.chuyen_nganh }}</div>
+
+                        </div>
+
+                        <div class="form-group" style="display: flex; align-items: center; margin-bottom: 10px;">
+                            <label for="noi_dao_tao" style="width: 180px; font-weight: bold; font-size: 16px; color: #333; margin-right: 10px; text-align: left;">Nơi đào tạo:</label>
+                            <div style="font-size: 16px;">{{ nhan_vien.noi_dao_tao }}</div>
+
+                        </div>
+
+                        <div class="form-group" style="display: flex; align-items: center; margin-bottom: 10px;">
+                            <label for="ngay_cap" style="width: 180px; font-weight: bold; font-size: 16px; color: #333; margin-right: 10px; text-align: left;">Ngày cấp:</label>
+                            <div style="font-size: 16px;">{{ nhan_vien.ngay_cap }}</div>
+
+                        </div>
+
                     </div>
                 </div>
 
-                <div class="col-md-6 right-column" style="padding: 10px;">
-                    <div class="form-group" style="margin-bottom: 15px;">
-                        <label for="ten_nv" style="font-weight: bold; font-size: 16px; color: #333; margin-right: 10px; text-align: right;">Tên nhân viên:</label>
-                        <span style="font-size: 16px; color: #333;">{{ nhan_vien.ten_nv }}</span>
-                    </div>
+                <!-- Nơi cấp và Địa chỉ tạm trú kéo dài -->
+                <div class="form-group" style="display: flex; align-items: center; margin-bottom: 15px;">
+                    <label for="noi_cap" style="width: 140px; font-weight: bold; font-size: 16px; color: #333; margin-right: 47px; text-align: left;">Nơi cấp:</label>
+                    <div style="font-size: 16px;">{{ nhan_vien.noi_cap }}</div>
 
-                    <div class="form-group" style="margin-bottom: 15px;">
-                        <label for="ngay_sinh" style="font-weight: bold; font-size: 16px; color: #333; margin-right: 10px; text-align: right;">Ngày sinh:</label>
-                        <span style="font-size: 16px; color: #333;">{{ nhan_vien.ngay_sinh }}</span>
-                    </div>
-
-                    <div class="form-group" style="margin-bottom: 15px;">
-                        <label for="so_dien_thoai" style="font-weight: bold; font-size: 16px; color: #333; margin-right: 10px; text-align: right;">Số điện thoại:</label>
-                        <span style="font-size: 16px; color: #333;">{{ nhan_vien.so_dien_thoai }}</span>
-                    </div>
-
-                    <div class="form-group" style="margin-bottom: 15px;">
-                        <label for="email" style="font-weight: bold; font-size: 16px; color: #333; margin-right: 10px; text-align: right;">Email:</label>
-                        <span style="font-size: 16px; color: #333;">{{ nhan_vien.email }}</span>
-                    </div>
-
-                    <div class="form-group" style="margin-bottom: 15px;">
-                        <label for="dia_chi" style="font-weight: bold; font-size: 16px; color: #333; margin-right: 10px; text-align: right;">Địa chỉ:</label>
-                        <span style="font-size: 16px; color: #333;">{{ nhan_vien.dia_chi }}</span>
-                    </div>
                 </div>
+
+                <div class="form-group" style="display: flex; align-items: center; margin-bottom: 15px;">
+                    <label for="dia_chi_tam_tru" style="width: 140px; font-weight: bold; font-size: 16px; color: #333; margin-right: 47px; text-align: left;">Địa chỉ tạm trú:</label>
+                    <div style="font-size: 16px;">{{ nhan_vien.dia_chi_tam_tru}}</div>
+
+                </div>
+
             </div>
-
-            <h3 class="line-title" style="position: relative; text-align: center; font-size: 22px; font-weight: bold; color: #008CBA; margin: 20px 0;">
-                <span style="position: absolute; left: 0; top: 50%; width: 35%; height: 1px; background-color: #008CBA;"></span>
-                Hợp Đồng Lao Động
-                <span style="position: absolute; right: 0; top: 50%; width: 35%; height: 1px; background-color: #008CBA;"></span>
-            </h3>
-
-            <div class="row">
-                <div class="col-md-6">
-                    <div class="form-group" style="margin-bottom: 15px;">
-                        <label for="loai_hop_dong" style="font-weight: bold; font-size: 16px; color: #333; margin-right: 10px; text-align: right;">Loại hợp đồng:</label>
-                        <span style="font-size: 16px; color: #333;">{{ hop_dong.loai_hop_dong }}</span>
-                    </div>
-
-                    <div class="form-group" style="margin-bottom: 15px;">
-                        <label for="thoi_han_hop_dong" style="font-weight: bold; font-size: 16px; color: #333; margin-right: 10px; text-align: right;">Thời hạn hợp đồng:</label>
-                        <span style="font-size: 16px; color: #333;">{{ hop_dong.thoi_han_hop_dong }}</span>
-                    </div>
-
-                    <div class="form-group" style="margin-bottom: 15px;">
-                        <label for="ngay_vao_lam" style="font-weight: bold; font-size: 16px; color: #333; margin-right: 10px; text-align: right;">Ngày vào làm:</label>
-                        <span style="font-size: 16px; color: #333;">{{ hop_dong.ngay_vao_lam }}</span>
-                    </div>
-                </div>
-
-                <div class="col-md-6">
-                    <div class="form-group" style="margin-bottom: 15px;">
-                        <label for="muc_luong" style="font-weight: bold; font-size: 16px; color: #333; margin-right: 10px; text-align: right;">Mức lương cơ bản:</label>
-                        <span style="font-size: 16px; color: #333;">{{ hop_dong.muc_luong }}</span>
-                    </div>
-
-                    <div class="form-group" style="margin-bottom: 15px;">
-                        <label for="trang_thai_hop_dong" style="font-weight: bold; font-size: 16px; color: #333; margin-right: 10px; text-align: right;">Trạng thái hợp đồng:</label>
-                        <span style="font-size: 16px; color: #333;">{{ hop_dong.trang_thai_hop_dong }}</span>
-                    </div>
-
-                </div>
-            </div>
-        </div>
+        </form>
     </div>
 </main>
+
+
 {% endblock %}
+

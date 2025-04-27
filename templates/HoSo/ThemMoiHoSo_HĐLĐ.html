@@ -1,0 +1,193 @@
+{% extends "home.html" %}
+
+{% block extra_css %}
+    <style>
+
+        .content{
+            width: 1100px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: flex-start;
+
+        }
+        .ndung{
+            width: 1100px;
+            padding: 20px;
+            margin-left: 20px;
+            display: flex;
+            flex-direction: column;
+        }
+    }
+
+        table{
+        width: 450px;
+        align-items: center;
+        margin-bottom: 20px;
+        justify-content: space-between;
+    }
+        .btn{
+        padding: 10px ;
+        border-radius:5px;
+        font-size: 15px;
+        text-align: center;
+        background-color:#D9D9D9 ;
+        color: black;
+        border: 1px solid;
+    }
+        .button{
+            padding: 20px;
+        }
+
+    </style>
+{% endblock %}
+{% block page_background %}
+<main class="content" style="background-color: #ffffff; padding: 10px;">
+
+    <div class="button" style="display: flex; justify-content: space-between; align-items: center;">
+        <button class="btn btn-secondary" onclick="window.history.back()" style="font-size: 16px; padding: 10px 30px;">Quay lại</button>
+    </div>
+    <div class="ndung">
+
+        <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            <h1 class="header-title" style="color: #000000; font-size: 30px; font-weight: bold; text-align: center; width: 100%;">THÊM MỚI HỒ SƠ NHÂN VIÊN</h1>
+            <div class="container mt-4" style="background-color: #f0f8ff; padding: 40px; border-radius: 10px;">
+                <h4 class="header-title" style="display: flex; justify-content: space-between; font-size: 30px; font-weight: bold; margin-bottom: 20px; margin-top: -39px; margin-right:-40px; margin-left:-40px;">
+                    <a href="{% url 'ThemMoiHoSo' %}" style="background-color: #65ABE3; color: white; width: 50%; text-align: center; padding: 10px; border-top-left-radius: 5px; border-bottom-left-radius: 5px; text-decoration: none;">
+                        Thông Tin Cá Nhân
+                    </a>
+                    <a href="{% url 'themmoi_hdld' %}" style=" border: 2px solid #000000; background-color: #008CBA; color: white; width: 50%; text-align: center; padding: 10px; border-top-right-radius: 5px; border-bottom-right-radius: 5px; text-decoration: none;">
+                        Hợp Đồng Lao Động
+                    </a>
+                </h4>
+
+                <div class="row" style="border-radius: 5px; border: 3px solid #ccc; padding: 10px;" >
+                    <div class="col-md-6 left-column" style="padding: 10px;">
+                        <div class="form-group" style="display: flex; align-items: center; margin-bottom: 15px;">
+                            <label for="ten_nv" style="width: 180px; font-weight: bold; font-size: 16px; color: #333; margin-right: 10px; text-align: left;">Họ và tên:</label>
+
+                        </div>
+
+                        <div class="form-group" style="display: flex; align-items: center; margin-bottom: 15px;">
+                            <label for="ma_nv" style="width: 180px; font-weight: bold; font-size: 16px; color: #333; margin-right: 10px; text-align: left;">Mã nhân viên:</label>
+
+                        </div>
+                    </div>
+
+                    <div class="col-md-6 left-column" style="padding: 10px;">
+                        <div class="form-group" style="display: flex; align-items: center; margin-bottom: 15px;">
+                            <label for="vi_tri_cong_viec" style="width: 180px; font-weight: bold; font-size: 16px; color: #333; margin-right: 10px; text-align: left;">Vị trí làm việc:</label>
+
+                        </div>
+
+                        <div class="form-group" style="display: flex; align-items: center; margin-bottom: 15px;">
+                            <label for="to_phong_ban" style="width: 180px; font-weight: bold; font-size: 16px; color: #333; margin-right: 10px; text-align: left;">Tổ (Phòng ban):</label>
+
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6 left-column" style="padding: 10px; margin-top: 20px;">
+
+                        <div class="form-group" style="display: flex; align-items: center; margin-bottom: 15px;">
+                            <label for="so_hd" style="width: 180px; font-weight: bold; font-size: 16px; color: #333; margin-right: 10px; text-align: left;">Số hợp đồng:</label>
+                            <input type="text" class="form-control" id="so_hd" name="so_hd" style="font-size: 16px; padding: 8px; border-radius: 5px;">
+                        </div>
+
+                        <div class="form-group" style="display: flex; align-items: center; margin-bottom: 10px;">
+                            <label for="thoi_han_hd" style="width: 450px; font-weight: bold; font-size: 16px; color: #333; margin-right: 10px; text-align: left;">Thời hạn HĐ:</label>
+                            <input type="text" class="form-control" id="thoi_han_hd" name="thoi_han_hd" style="font-size: 16px; padding: 8px; border-radius: 5px;">
+                            <div class="form-group" style="display: flex; align-items: center; margin-bottom: 10px;">
+                                <label for="thoi_han_hd" style="width: 180px; font-weight: bold; font-size: 16px; color: #333; margin-left: 10px; text-align: left;"> Tháng </label>
+                            </div>
+                        </div>
+
+                        <div class="form-group" style="display: flex; align-items: center; margin-bottom: 15px;">
+                            <label for="tu_ngay" style="width: 180px; font-weight: bold; font-size: 16px; color: #333; margin-right: 10px; text-align: left;">Từ ngày:</label>
+                            <input type="date" class="form-control" id="tu_ngay" name="tu_ngay" style="font-size: 16px; padding: 8px; border-radius: 5px;">
+                        </div>
+
+                        <div class="form-group" style="display: flex; align-items: center; margin-bottom: 15px;">
+                            <label for="ngay_ky" style="width: 180px; font-weight: bold; font-size: 16px; color: #333; margin-right: 10px; text-align: left;">Ngày ký:</label>
+                            <input type="date" class="form-control" id="ngay_ky" name="ngay_ky" style="font-size: 16px; padding: 8px; border-radius: 5px;">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="danh_sach_phu_cap" style="width: 180px; font-weight: bold; font-size: 16px; color: #333; margin-right: 10px; text-align: left;">DS phụ cấp:</label>
+                            <div>
+                                <input type="checkbox" id="phu_cap_tham_nien" name="phu_cap_tham_nien" style="margin-left: 140px; margin-bottom: 30px;">
+                                <label for="phu_cap_tham_nien" >Phụ cấp thâm niên</label><br>
+
+                                <input type="checkbox" id="phu_cap_di_lai" name="phu_cap_di_lai" style="margin-left: 140px;margin-bottom: 30px;">
+                                <label for="phu_cap_di_lai">Phụ cấp đi lại</label><br>
+
+                                <input type="checkbox" id="phu_cap_dung_lop" name="phu_cap_dung_lop" style="margin-left: 140px;margin-bottom: 30px;">
+                                <label for="phu_cap_dung_lop"> Phụ cấp đúng lớp</label><br>
+                            </div>
+                        </div>
+
+                    </div>
+
+
+                    <div class="col-md-6 right-column" style="padding: 10px; margin-top: 20px;">
+
+
+                        <div class="form-group" style="display: flex; align-items: center; margin-bottom: 15px;">
+                            <label for="loai_hop_dong" style="width: 180px; font-weight: bold; font-size: 16px; color: #333; margin-right: 10px; text-align: left;">Loại hợp đồng:</label>
+                            <select class="form-control" id="loai_hop_dong" name="loai_hop_dong" style="font-size: 16px; padding: 8px; border-radius: 5px;">
+                                <option value="Hợp đồng thử việc">Hợp đồng thử việc </option>
+                                <option value="Hợp đồng có thời hạn">Hợp đồng có thời hạn</option>
+                            </select>
+                        </div>
+
+
+                        <div class="form-group" style="display: flex; align-items: center; margin-bottom: 15px;">
+                            <label for="luong" style="width: 180px; font-weight: bold; font-size: 16px; color: #333; margin-right: 10px; text-align: left;">Lương:</label>
+                            <input type="text" class="form-control" id="luong" name="luong" style="font-size: 16px; padding: 8px; border-radius: 5px;">
+                        </div>
+
+                        <div class="form-group" style="display: flex; align-items: center; margin-bottom: 10px;">
+                            <label for="den_ngay" style="width: 180px; font-weight: bold; font-size: 16px; color: #333; margin-right: 10px; text-align: left;">Đến ngày:</label>
+                            <input type="date" class="form-control" id="den_ngay" name="den_ngay" style="font-size: 16px; padding: 8px; border-radius: 5px;">
+                        </div>
+
+                        <div class="form-group" style="display: flex; align-items: center; margin-bottom: 15px;">
+                            <label for="trang_thai_hd" style="width: 180px; font-weight: bold; font-size: 16px; color: #333; margin-right: 10px; text-align: left;">Trạng thái HĐ:</label>
+                            <select class="form-control" id="trang_thai_hd" name="trang_thai_hd" style="font-size: 16px; padding: 8px; border-radius: 5px;">
+                                <option value="Còn hiệu lực"> Còn hiệu lực </option>
+                                <option value="Sắp hết hạn"> Sắp hết hạn </option>
+                                <option value="Hết hiệu lực"> Hết hiệu lực </option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="gia_tri_phu_cap" style="font-weight: bold; font-size: 16px; color: #333; margin-right: 10px; text-align: left;">Giá trị phụ cấp:</label>
+                            <input type="text" class="form-control" id="gia_tri_phu_cap1" name="gia_tri_phu_cap1" style="margin-left: 140px;width: 340px; margin-bottom: 10px;">
+                            <input type="text" class="form-control" id="gia_tri_phu_cap2" name="gia_tri_phu_cap2" style="margin-left: 140px;width: 340px; margin-bottom: 10px;">
+                            <input type="text" class="form-control" id="gia_tri_phu_cap3" name="gia_tri_phu_cap3" style="margin-left: 140px;width: 340px; margin-bottom: 10px;">
+                        </div>
+                    </div>
+                </div>
+                <div style="display: flex; justify-content: flex-end; gap: 10px;">
+                    <!-- Nút Thêm Mới -->
+                    <button type="button" style="background-color: #D9D9D9; border: 1px solid #333; padding: 10px 20px; font-size: 16px; border-radius: 5px; color: #333; cursor: pointer;">
+                        Thêm mới
+                    </button>
+
+                    <!-- Nút Lưu -->
+                    <button type="submit" style="background-color: #008CBA; color: white; padding: 10px 20px; font-size: 16px; border-radius: 5px; cursor: pointer;">
+                        Lưu
+                    </button>
+                </div>
+            </div>
+    </div>
+
+            </div>
+        </form>
+    </div>
+</main>
+
+
+{% endblock %}
