@@ -1,4 +1,4 @@
-{% extends 'home.html' %}
+{% extends 'NghiPhep/NP_list.html' %}
 {% block title %}
     {% if instance %}
         Chỉnh sửa Đơn {{model_type}}
@@ -6,81 +6,95 @@
         Thêm mới Đơn {{model_type}}
     {% endif %}
 {% endblock %}
-{% block extra_css %}
+{% block CSS %}
 <style>
-    .content{
-        width:1200px!important;
-        padding: 20px;
-    }
+    body {
+            display: flex;!important
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(to right, #e0f7fa, #e1f5fe);
+            font-family: 'Arial', sans-serif;
 
-    .ndung{
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-    }
-    .formnhap{
-        width:700px;
-        background: linear-gradient(to right, #DDF0FF, #FFFFFF);
-        padding: 10px
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
+
         }
-    h2{
-        margin-top: 20px;
-        text-align:center;
-        margin-bottom: -10px
-    }
-    .text{
-        margin-top: 30px !important;
-        color: #066BBB !important;
-        font-weight: bold;
-        font-style: italic;
-        margin-left: 30px
-    }
-    span{
-        margin-top: 30px;
+        .wrapper {
+            background: linear-gradient(to right, #DDF0FF, #FFFFFF);
+            padding: 30px;
+            width: 85%;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
 
-    }
-    .label{
-        margin-right: 20px;
-        min-width: 30%
-    }
-    label{
-        min-width: 25%;
-        margin-top: 30px;
-        color: #066BBB !important;
-        font-weight: bold;
-        font-style: italic;
-    }
-
-    form{
-        display: flex;
-    flex-direction: column;
-    margin-left: 30px
-    }
-    input{
-        width: 15%
-    }
-    .quaylai{
-        padding: 10px ;
-        border-radius:5px;
-        font-size: 15px;
-        text-align: center;
-        background-color:#D9D9D9 ;
-        color: black;
-        border: 1px solid;
-        margin-bottom: 20px;
-        margin-left: 70px
-    }
-    .titleform{
-        font-size: 40px;
-        font-weight: bold;
-        font-style: italic;
-        margin-bottom: 20px;
-    }
+        }
+        .container {
+            width: 400px;
+            width: 90%
+        }
+        h1 {
+            text-align: center;
+            font-size: 28px;
+            margin-bottom: 20px;
+            font-weight: bold;
+        }
+        .info {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        .info label {
+            width: 140px;
+            font-weight: bold;
+            color: #2c3e50;
+        }
+        .info span {
+            font-weight: bold;
+            text-decoration: underline;
+        }
+        label {
+            display: block;
+            font-weight: bold;
+            margin-top: 10px;
+            margin-bottom: 5px;
+            color: #2c3e50;
+        }
+        .profile{
+            font-weight: bold;
+            margin-top: 10px;
+            margin-bottom: 5px;
+            color: #2c3e50;
+        }
+        input[type="text"],
+        input[type="date"],
+        select,
+        textarea {
+            width: 100%;
+            padding: 5px;
+            border: 1px solid #999;
+            border-radius: 8px;
+            box-sizing: border-box;
+            margin-bottom: 15px;
+            font-size: 14px;
+        }
+        textarea {
+            resize: none;
+        }
+        .submit-button {
+            width: 15%;
+            background-color: #4285F4;
+            color: white;
+            border: none;
+            padding: 10px;
+            height: 35px;
+            font-size: 18px;
+            border-radius: 10px;
+            cursor: pointer;
+            margin-top: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .submit-button:hover {
+            background-color: #357ae8;
+        }
 </style>
 
 <script>
@@ -93,37 +107,38 @@
 </script>
 
 {% endblock %}
-{% block page_background %}
-
-
+{% block formNP %}
 <div class="content">
-    <div class="button">
-    <button class="quaylai" id="quaylai"><i class="fa-solid fa-backward-step"></i>  Quay lại</button>
-    </div>
     <div class="ndung">
-        <div class="formnhap">
-        <h2 class="titleform">
-            ĐƠN NGHỈ PHÉP
-        </h2>
-        <div class="text">
-            <span class="label">Mã Nhân viên: </span><span style="font-weight: bold;font-size: 20px;text-decoration: underline"> {{nhan_vien.id}}</span>
-        </div>
-        <div class="text">
-            <span class="label">Tên Nhân viên:</span>  <span style="font-weight: bold;font-size: 20px;text-decoration: underline">{{nhan_vien.ten_nv}}</span>
-        </div>
-        <form method="post" >
-            {% csrf_token %}
-            {{ form.as_p }}
-            <p>
-              {% if instance %}
-                <input type="submit" class="btn btn-primary" value="Chỉnh sửa">
-              {% else %}
-                <input type="submit" class="btn btn-primary" value="Lưu">
-              {% endif %}
-            </p>
-        </form>
+        <div class="wrapper">
+        <div class="form-box">
+            <div class="container">
+                <h1>ĐƠN NGHỈ PHÉP</h1>
+
+                <p class="profile">Mã Nhân viên: <span style="font-size: 15px; font-style: italic">{{ nhan_vien.id }}</span> </p>
+                <p class="profile">Tên Nhân viên: <span style="font-size: 15px; font-style: italic">{{ nhan_vien.ten_nv }}</span> </p>
+                <br>
+
+                <form method="post">
+                    {% csrf_token %}
+
+                    <label>Loại nghỉ phép:</label>
+                    {{ form.loai_nghi }}
+
+                    <label>Ngày bắt đầu:</label>
+                    {{ form.ngay_bat_dau }}
+
+                    <label>Ngày kết thúc:</label>
+                    {{ form.ngay_ket_thuc }}
+
+                    <label>Lý do:</label>
+                    {{ form.ly_do }}
+
+                    <button type="submit" class="submit-button">Lưu</button>
+                </form>
+            </div>
         </div>
     </div>
 </div>
-
+</div>
 {% endblock %}

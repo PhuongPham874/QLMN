@@ -1,15 +1,35 @@
 {% extends 'NghiPhep/NP_list_admin.html' %}
 
+
+{% block CSS %}
+    .info {
+        display: flex;
+        flex-direction: row !important;
+        margin-top: -10px;
+        gap: 20px;
+        width: 40%;
+        align-items: center;
+        padding: 20px;
+        border-radius: 15px;
+    }
+{% endblock %}
+
+
 {% block titleNP %}
     <div class="titleNP" style="width: 90%" onclick="window.location.href='{% url 'DanhSachNP' %}'">DANH SÁCH ĐƠN NGHỈ PHÉP</div>
 {% endblock %}
 
 {% block profile %}
-<span> <strong>Nhân viên:</strong> {{search_text}} </span>
-<br>
-<span> <strong>Vị trí công việc:</strong>  {{search_text.vi_tri_cong_viec}} </span>
-<br>
-<span> <strong>Tổ: </strong>  {{search_text.to_phong_ban}} </span>
+    <div class="info">
+            <img src="{{ search_text.anh_ca_nhan }}" alt="Ảnh nhân viên"
+                 style="width: 100px; height: 100px; object-fit: cover; border-radius: 50px;">
+
+        <div style="display: flex; flex-direction: column; gap: 5px;  ">
+            <span><strong>Nhân viên:</strong> {{ search_text }}</span>
+            <span><strong>Vị trí công việc:</strong> {{ search_text.vi_tri_cong_viec }}</span>
+            <span><strong>Tổ:</strong> {{ search_text.to_phong_ban }}</span>
+        </div>
+    </div>
 {% endblock %}
 
 {% block javascript %}

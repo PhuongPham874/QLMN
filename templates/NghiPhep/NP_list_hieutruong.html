@@ -1,0 +1,57 @@
+{% extends 'NghiPhep/NP_list_admin.html' %}
+
+{% block btnAdd %}
+    <form method="get"
+          action="{% url 'DanhSachNP_HT' %}"
+          style="width:10%; height: 15px">
+            <select name="year" class="form-control" onchange="this.form.submit()">
+                {% for y in years %}
+                    <option value="{{ y }}" {% if y == year %}selected{% endif %}>{{ y }}</option>
+                {% endfor %}
+            </select>
+    </form>
+{% endblock %}
+
+{% block locdanhsach %}
+<div class="ndungloc" style="width:30%; max-height: 500px;">
+
+   <div class="TitleLoc" style="display: flex; gap: 10px; align-items: left;">
+        <i class="fa-sharp fa-solid fa-filter" style="font-size: 20px;"></i>
+        <p style="margin: 0; font-size: 15px; font-weight: 600;">Lọc</p>
+    </div>
+    <ul id="dongloc" style="width: 80%; margin-top: 20px; ">
+        <li class="li hover:bg-blue-100" >
+            <a href="{% url 'DanhSachNP_HT'  %}?year={{ year }}" class="font-bold hover:text-blue-600">
+                Tất cả ({{ so_don }})
+            </a>
+        </li>
+        <li>
+            <a href="{% url 'loc_don_nghi_phep_hieutruong' %}?trang_thai=Đang chờ duyệt&year={{ year }}" class=" font-bold hover:text-blue-600">
+                Chờ duyệt ({{ so_don_dang_duyet.count }})
+            </a>
+        </li>
+        <li>
+            <a href="{% url 'loc_don_nghi_phep_hieutruong' %}?trang_thai=Đã duyệt&year={{ year }}" class=" font-bold hover:text-blue-600">
+                Đã duyệt ({{ so_don_da_duyet.count }})
+            </a>
+        </li>
+        <li>
+            <a href="{% url 'loc_don_nghi_phep_hieutruong' %}?trang_thai=Bị từ chối&year={{ year }}" class=" font-bold hover:text-blue-600">
+                Từ chối ({{ so_don_dang_bi_tu_choi.count }})
+            </a>
+        </li>
+    </ul>
+
+</div>
+{% endblock %}
+
+
+{% block header %}
+     <form class="form-search" action="{% url 'TimKiemNV' %}">
+        <label  style="font-weight: 500; margin-bottom: 0;">Chọn nhân viên:</label>
+        <div class="form-group mb-0">
+            {{ form.nhan_vien }}
+        </div>
+        <button class="timkiem" type="submit">Tìm kiếm</button>
+    </form>
+{% endblock %}

@@ -7,11 +7,13 @@
         justify-content: space-between;
         margin-bottom: 10px;
     }
+
 {% endblock %}
 
 {% block title %}
     Danh sách các đơn nghỉ phép - {{year}}
 {% endblock %}
+
 
 
 
@@ -21,7 +23,9 @@
         <div class="titleNP" style="width: 70% " onclick="window.location.href='{% url 'DanhSachNP' %}'">DANH SÁCH ĐƠN NGHỈ PHÉP - {{year}}</div>
         {% endblock %}
         {% block btnAdd %}
-            <form method="get" action="{% url 'DanhSachNP' %}" style="width:10%; height: 15px">
+            <form method="get"
+                  action="{% url 'DanhSachNP' %}"
+                  style="width:10%; height: 15px">
                     <select name="year" class="form-control" onchange="this.form.submit()">
                         {% for y in years %}
                             <option value="{{ y }}" {% if y == year %}selected{% endif %}>{{ y }}</option>
@@ -30,8 +34,6 @@
             </form>
         {% endblock %}
     </div>
-
-
 
      <div class="header" style="width: 70%">
          {% block header %}
@@ -45,18 +47,18 @@
         {% endblock %}
 
      </div>
+    {% block profile %}
+    {% endblock %}
     <div class="ndung" style='display: flex; gap: 90px'>
-
         <div class="ndungNP" style=" width: 80%; padding: 20px;box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);background-color: #ffffff;border-radius: 10px;height: auto;">
-            {% block profile %}
-            {% endblock %}
+
              {% for status, danh_sach in nghiphep.items %}
                 <br>
                 <span class="trangthai" style="font-size: 25px;">{{status}}</span>
                 {% if danh_sach %}
                     <ul class="list-group">
                       {% for item in danh_sach %}
-                        <span class="ngaytao">{{ item.nhan_vien.ten_nv }}</span>
+                        <span class="ngaytao" style="font-size: 17px; font-style: italic; font-weight: bold;">{{ item.nhan_vien.ten_nv }}</span>
                         <li class="list-group-item">
                           <span class="text-info">Loại nghỉ phép: </span>
                           <span>{{item.loai_nghi }} </span>
