@@ -39,9 +39,14 @@
          {% block header %}
              <form class="form-search" action="{% url 'TimKiemNV' %}">
                 <label  style="font-weight: 500; margin-bottom: 0;">Chọn nhân viên:</label>
-                <div class="form-group mb-0">
-                    {{ form.nhan_vien }}
-                </div>
+                <select name="nhan_vien" id="nhan_vien" style="width: 200px; padding: 8px 12px; border-radius: 8px; font-size: 16px;">
+                    <option value="">-- Tất cả --</option>
+                    {% for nv in nhan_vien_quan_ly %}
+                      <option value="{{ nv.id }}">
+                        {{ nv.ten_nv }}
+                      </option>
+                    {% endfor %}
+                  </select>
                 <button class="timkiem" type="submit">Tìm kiếm</button>
             </form>
         {% endblock %}
@@ -51,7 +56,6 @@
     {% endblock %}
     <div class="ndung" style='display: flex; gap: 90px'>
         <div class="ndungNP" style=" width: 80%; padding: 20px;box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);background-color: #ffffff;border-radius: 10px;height: auto;">
-
              {% for status, danh_sach in nghiphep.items %}
                 <br>
                 <span class="trangthai" style="font-size: 25px;">{{status}}</span>

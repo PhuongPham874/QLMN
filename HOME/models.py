@@ -85,6 +85,8 @@ class HopDongLaoDong(models.Model):
    nhan_vien = models.ForeignKey(NhanVien, on_delete=models.CASCADE)
    vi_tri_lam_viec = models.CharField(max_length=50)
    to_phong_ban = models.CharField(max_length=50)
+   so_hop_dong = models.CharField(max_length=50)
+   thoi_han_hop_dong = models.IntegerField(verbose_name='Thời hạn hợp đồng')
    loai_hop_dong = models.CharField(max_length=100, choices=[
        ('Hợp đồng thử việc', 'Hợp đồng thử việc'),
        ('Hợp đồng có thời hạn', 'Hợp đồng có thời hạn')], default='Hợp đồng thử việc')
@@ -92,6 +94,7 @@ class HopDongLaoDong(models.Model):
    ngay_ky = models.DateField()
    tu_ngay = models.DateField()
    den_ngay = models.DateField()
+
 
 
    TRANG_THAI_HOP_DONG_CHOICES = [

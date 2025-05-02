@@ -1,8 +1,8 @@
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, get_object_or_404, redirect
 from django.utils import timezone
-from HOME.models import NghiPhep, NhanVien, HopDongLaoDong
-from .forms import NghiPhepForm, SearchForm, SearchNVForm, Ghichu, loai_nghi_phep
+from HOME.models import NghiPhep, NhanVien, HopDongLaoDong, PhuCapNhanVien
+from .forms import NghiPhepForm, SearchForm, Ghichu, loai_nghi_phep, SearchNVForm
 from django.contrib import messages
 from django.contrib.auth.models import User
 from datetime import datetime, date
@@ -147,15 +147,10 @@ def DS_NV_quan_ly(request,nhanvien):
     elif nhanvien.chuc_vu =="Hiệu Trưởng":
         nhan_vien_BGH = NhanVien.objects.filter(vi_tri_cong_viec__in=["Hiệu phó chuyên môn", "Hiệu phó hoạt động"]).exclude(id=nhanvien.id)
         nhan_vien_quan_ly = NhanVien.objects.exclude(user=user.id)
-
     thong_tin = ThongTinNPYear(request, year)
     year = thong_tin['year']
     years=thong_tin['years']
-
-
-    form = SearchNVForm(request.GET)
     return {
-        'form': form,
         'year': year,
         'years': years,
         'nhan_vien_quan_ly': nhan_vien_quan_ly,
@@ -184,9 +179,7 @@ def ThongTinNP_admin(request, nhanvien):
 
 @login_required
 def NghiPhep_list_admin(request):
-    print(f"Request user: {request.user}")
     nhanvien = get_object_or_404(NhanVien, user=request.user)
-    print(f"NhanVien object: {nhanvien}")
     thong_tin = DS_NV_quan_ly(request, nhanvien)
     nhan_vien_quan_ly = thong_tin['nhan_vien_quan_ly']
     year=thong_tin['year']
@@ -200,6 +193,7 @@ def NghiPhep_list_admin(request):
         'nghiphep':nghiphep_list,
         'nhan_vien': nhanvien,
         'formghichu': formghichu,
+        'nhan_vien_quan_ly': nhan_vien_quan_ly,
         **DS_NV_quan_ly(request, nhanvien),
         **ThongTinNP_admin(request, nhanvien)
     }
@@ -216,7 +210,6 @@ def NghiPhep_list_hieutruong(request):
         year = now().year
     else:
         year = int(year)
-
     danh_sach = NghiPhep.objects.filter(nhan_vien__in=nhan_vien_quan_ly, ngay_tao_don__year=year).order_by('-ngay_tao_don')
     status_labels = ['Đang chờ duyệt', 'Đã duyệt', 'Bị từ chối']
     nghiphep_list = {}
@@ -233,17 +226,18 @@ def NghiPhep_list_hieutruong(request):
         'so_don_da_duyet': danh_sach.filter(trang_thai_don='Đã duyệt'),
         'so_don_dang_bi_tu_choi': danh_sach.filter(trang_thai_don='Bị từ chối'),
         'nhan_vien': nhanvien,
+        'nhan_vien_quan_ly': nhan_vien_quan_ly,
     }
     return render(request, 'NghiPhep/NP_list_hieutruong.html', context)
 
 def NP_nv_search_admin(request):
     nhan_vien = get_object_or_404(NhanVien, user=request.user)
     context = DS_NV_quan_ly(request, nhan_vien)
-    form = context['form']
     nhan_vien_quan_ly = context['nhan_vien_quan_ly']
-    form.fields['nhan_vien'].queryset = nhan_vien_quan_ly
     nghiphep_list = {}
     search = ""
+    form = SearchNVForm(request.GET or None)
+    form.fields['nhan_vien'].queryset = nhan_vien_quan_ly
     if form.is_valid():
         search = form.cleaned_data.get("nhan_vien")
         if search:
@@ -253,14 +247,11 @@ def NP_nv_search_admin(request):
                     trang_thai_don=status,
                     nhan_vien=search
                 ).order_by('-ngay_tao_don')
-        else:
-            nghiphep_list = context['nghiphep']
-    else:
-        nghiphep_list = context['nghiphep']
     context.update({
         'search_text': search,
         'nghiphep': nghiphep_list,
-        'nhan_vien': nhan_vien
+        'nhan_vien': nhan_vien,
+        'nhan_vien_quan_ly': nhan_vien_quan_ly,
     })
     return render(request, "NghiPhep/search_admin.html", context)
 
@@ -268,11 +259,9 @@ def NP_nv_search_admin(request):
 def NP_nv_search_hieutruong(request):
     nhan_vien = get_object_or_404(NhanVien, user=request.user)
     context = DS_NV_quan_ly(request, nhan_vien)
-    form = context['form']
     nhan_vien_quan_ly = context['nhan_vien_BGH']
+    form = SearchNVForm(request.GET or None)
     form.fields['nhan_vien'].queryset = nhan_vien_quan_ly
-    year = context['year']
-    nhanvien = request.GET.get('nhan_vien')
     nghiphep_list = {}
     search = ""
     if form.is_valid():
@@ -284,16 +273,13 @@ def NP_nv_search_hieutruong(request):
                     trang_thai_don=status,
                     nhan_vien=search
                 ).order_by('-ngay_tao_don')
-        else:
-            nghiphep_list = context['nghiphep']
-    else:
-        nghiphep_list = context['nghiphep']
     context.update({
         'search_text': search,
         'nghiphep': nghiphep_list,
-        'nhan_vien': nhan_vien
+        'nhan_vien': nhan_vien,
+        'nhan_vien_quan_ly': nhan_vien_quan_ly,
     })
-    return render(request, "NghiPhep/search_admin.html", context)
+    return render(request, "NghiPhep/search_hieutruong.html", context)
 
 
 
@@ -420,4 +406,5 @@ def XulyNP(request, nghiphep_pk):
     else:
         form = Ghichu()
     return redirect("DanhSachNP")
+
 
