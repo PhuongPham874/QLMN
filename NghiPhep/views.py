@@ -94,15 +94,17 @@ def NghiPhep_list_nv(request):
 
 @login_required
 def NP_nv_search(request):
-    year = request.GET.get('year')
-    nhanvien = get_object_or_404(NhanVien, user=request.user)
+
+
     form = SearchForm(request.GET)
     search =""
     if form.is_valid(): #dap ung cac dk cua SearchForm
-        search = form.cleaned_data.get("search","")
-    nhanvien = get_object_or_404(NhanVien, user=request.user)
-    nghiphep_all_nv = NghiPhep.objects.filter(nhan_vien=nhanvien,ngay_tao_don__year=year )
-    danh_sach = nghiphep_all_nv.filter(ngay_bat_dau__lte=search, ngay_ket_thuc__gte=search)
+        search = form.cleaned_data.get("search","")#chuỗi
+        search_date = form.cleaned_data['search']  # Đây là đối tượng date
+        year = search_date.year
+        nhanvien = get_object_or_404(NhanVien, user=request.user)
+        nghiphep_all_nv = NghiPhep.objects.filter(nhan_vien=nhanvien,ngay_tao_don__year=year )
+        danh_sach = nghiphep_all_nv.filter(ngay_bat_dau__lte=search, ngay_ket_thuc__gte=search)
     return render(request, "NghiPhep/search.html",
                   {"search_text": search, "form" : form, "NP_list" : danh_sach, 'nhan_vien': nhanvien, **ThongTinNP(request, nhanvien, nghiphep_all_nv, year)})
 
@@ -342,10 +344,15 @@ def redirect_nghiphep_view(request):
 
 @login_required
 def EditNghiPhep (request, nghiphep_pk=None):
-
     year = request.GET.get('year')
+    if year is None:
+        year = now().year
+    else:
+        year = int(year)
     nhanvien = get_object_or_404(NhanVien, user = request.user)
     nghiphep_list_nv = NghiPhep.objects.filter(nhan_vien=nhanvien, ngay_tao_don__year=year).order_by('-ngay_tao_don')
+    thong_tin = ThongTinNP(request, nhanvien, nghiphep_list_nv, year)
+    pn_con_lai = thong_tin['PN_con_lai']
     if nghiphep_pk is not None:
         nghiphep = get_object_or_404(NghiPhep, pk=nghiphep_pk, nhan_vien=nhanvien)
     else:
@@ -353,16 +360,26 @@ def EditNghiPhep (request, nghiphep_pk=None):
     if request.method == "POST": #ng dung submit
         form = NghiPhepForm(request.POST, instance=nghiphep)
         if form.is_valid():
-            updated_nghiphep = form.save(commit=False)
-            if nghiphep is None:
-                updated_nghiphep.nhan_vien = nhanvien
-                updated_nghiphep.ngay_tao_don = timezone.now()
-                return redirect("DanhSachNghiPhep")
-            else :
-                updated_nghiphep.ngay_chinh_sua = timezone.now()
-                updated_nghiphep = form.save()
-                messages.success(request, "Đơn nghỉ phép {} được chỉnh sửa.".format(updated_nghiphep))
-                return redirect("DanhSachNghiPhep")
+            tt = form.cleaned_data
+            start = tt.get('ngay_bat_dau')
+            end = tt.get('ngay_ket_thuc')
+            loai_nghi = tt.get('loai_nghi')
+            if start and end:
+                so_ngay_nghi = (end - start).days + 1
+                if loai_nghi == 'Nghỉ phép năm' and so_ngay_nghi > pn_con_lai:
+                    form.add_error(None,
+                                   f"Số ngày nghỉ ({so_ngay_nghi}) vượt quá số ngày phép năm còn lại ({pn_con_lai}).")
+                else:
+                    updated_nghiphep = form.save(commit=False)
+                    if nghiphep is None:
+                        updated_nghiphep.nhan_vien = nhanvien
+                        updated_nghiphep.ngay_tao_don = timezone.now()
+                        return redirect("DanhSachNghiPhep")
+                    else :
+                        updated_nghiphep.ngay_chinh_sua = timezone.now()
+                        updated_nghiphep = form.save()
+                        messages.success(request, "Đơn nghỉ phép {} được chỉnh sửa.".format(updated_nghiphep))
+                        return redirect("DanhSachNghiPhep")
     else:
         form = NghiPhepForm(instance=nghiphep)
     return render(request, "NghiPhep/formNghiPhep.html", {"model_type": "Nghỉ Phép", "form": form, "instance": nghiphep, "nhan_vien": nhanvien, **ThongTinNP(request, nhanvien, nghiphep_list_nv, year)})

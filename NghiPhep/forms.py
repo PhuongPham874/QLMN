@@ -1,4 +1,6 @@
 from django import forms
+from rest_framework.exceptions import ValidationError
+
 from HOME.models import NghiPhep, NhanVien
 
 loai_nghi_phep = (
@@ -26,6 +28,14 @@ class NghiPhepForm(forms.ModelForm):
     class Meta:
         model = NghiPhep
         exclude = ["ghi_chu", "nhan_vien", "trang_thai_don","ngay_tao_don","ngay_chinh_sua","nguoi_duyet","ngay_duyet"]
+
+    def clean(self):
+        cleaned_data = super().clean()
+        start = cleaned_data.get('ngay_bat_dau')
+        end = cleaned_data.get('ngay_ket_thuc')
+
+        if start and end and end < start:
+            self.add_error('ngay_ket_thuc', "Ngày kết thúc không được nhỏ hơn ngày bắt đầu.")
 
 
 class SearchForm(forms.Form):

@@ -114,14 +114,19 @@
         <div class="form-box">
             <div class="container">
                 <h1>ĐƠN NGHỈ PHÉP</h1>
-
+                {% if form.non_field_errors %}
+                  <div class="alert alert-danger">
+                    {% for error in form.non_field_errors %}
+                      <div>{{ error }}</div>
+                    {% endfor %}
+                  </div>
+                {% endif %}
                 <p class="profile">Mã Nhân viên: <span style="font-size: 15px; font-style: italic">{{ nhan_vien.id }}</span> </p>
                 <p class="profile">Tên Nhân viên: <span style="font-size: 15px; font-style: italic">{{ nhan_vien.ten_nv }}</span> </p>
                 <br>
 
                 <form method="post">
                     {% csrf_token %}
-
                     <label>Loại nghỉ phép:</label>
                     {{ form.loai_nghi }}
 
@@ -130,7 +135,9 @@
 
                     <label>Ngày kết thúc:</label>
                     {{ form.ngay_ket_thuc }}
-
+                    {% for error in form.ngay_ket_thuc.errors %}
+                        <div class="text-danger">{{ error }}</div>
+                      {% endfor %}
                     <label>Lý do:</label>
                     {{ form.ly_do }}
 
