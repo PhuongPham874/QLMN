@@ -59,8 +59,9 @@ import cv2
 import time
 import os
 from deepface import DeepFace
-from django.http import JsonResponse
 from django.contrib.auth.decorators import login_required
+from django.contrib import messages
+from django.shortcuts import redirect, render
 from HOME.models import ChamCong, NhanVien
 from datetime import datetime
 from django.utils import timezone
@@ -70,7 +71,6 @@ import win32con
 # Đường dẫn đến thư mục dataset
 dataset_path = r"C:\Users\HP\Desktop\LTW\Dataset"
 
-# Hàm đặt cửa sổ OpenCV lên trên cùng
 def set_window_always_on_top(window_name="Webcam"):
     hwnd = win32gui.FindWindow(None, window_name)
     if hwnd:
@@ -82,20 +82,20 @@ def cham_cong_bang_khuon_mat(request):
     cap = cv2.VideoCapture(0)
 
     if not cap.isOpened():
-        return JsonResponse({"message": "❌ Không thể mở webcam"}, status=400)
+        messages.error(request, "❌ Không thể mở webcam.")
+        return redirect("danh_sach_nhan_vien")
 
     print("📸 Webcam đã mở. Chuẩn bị nhận diện sau 3 giây...")
     start_time = time.time()
     detection_started = False
 
-    result_message = "❌ Không nhận diện được khuôn mặt"
     recognized = False
     nhan_vien_id = None
 
     while True:
         ret, frame = cap.read()
         if not ret:
-            result_message = "❌ Không thể đọc frame từ webcam"
+            messages.error(request, "❌ Không thể đọc frame từ webcam.")
             break
 
         elapsed = time.time() - start_time
@@ -111,11 +111,8 @@ def cham_cong_bang_khuon_mat(request):
 
                 if len(result) > 0 and len(result[0]) > 0:
                     identity_path = result[0].iloc[0]["identity"]
-
-                    # Lấy ID từ folder cha
                     nhan_vien_folder = os.path.basename(os.path.dirname(identity_path))
                     nhan_vien_id = int(nhan_vien_folder)
-
                     recognized = True
 
                     cv2.putText(frame, f"Thanh cong, ID: {nhan_vien_id}", (30, 50),
@@ -130,7 +127,7 @@ def cham_cong_bang_khuon_mat(request):
 
             except Exception as e:
                 print("❌ Lỗi nhận diện:", e)
-                result_message = f"❌ Lỗi nhận diện: {str(e)}"
+                messages.error(request, f"❌ Lỗi nhận diện: {str(e)}")
                 break
 
         cv2.imshow("Webcam", frame)
@@ -150,13 +147,7 @@ def cham_cong_bang_khuon_mat(request):
             ngay = now.day
             thang = now.month
             nam = now.year
-            gio_vao = now.time()
-
-            # Xác định trạng thái
-            if gio_vao.hour < 8 or (gio_vao.hour == 8 and gio_vao.minute <= 0):
-                trang_thai = 0  # Đúng giờ
-            else:
-                trang_thai = 2  # Muộn
+            current_time = now.time()
 
             cham_cong, created = ChamCong.objects.get_or_create(
                 nhan_vien=nhan_vien,
@@ -164,17 +155,23 @@ def cham_cong_bang_khuon_mat(request):
                 thang=thang,
                 nam=nam,
                 defaults={
-                    'gio_vao': gio_vao,
-                    'trang_thai': trang_thai
+                    'gio_vao': current_time,
+                    'trang_thai': 0 if current_time.hour < 8 or (current_time.hour == 8 and current_time.minute <= 0) else 2
                 }
             )
 
-            if not created:
-                return JsonResponse({"message": f"🟡 Nhân viên ID {nhan_vien_id} đã chấm công hôm nay rồi."})
-
-            return JsonResponse({"message": f"🟢 Chấm công thành công cho nhân viên ID {nhan_vien_id}"})
-
+            if created:
+                messages.success(request, f"🟢 Chấm công thành công cho nhân viên ID {nhan_vien_id} (Giờ vào).")
+            else:
+                if cham_cong.gio_ra is None:
+                    cham_cong.gio_ra = current_time
+                    cham_cong.save()
+                    messages.success(request, f"🔵 Đã cập nhật giờ ra cho nhân viên ID {nhan_vien_id}.")
+                else:
+                    messages.warning(request, f"🟡 Nhân viên ID {nhan_vien_id} đã chấm công đầy đủ hôm nay.")
         except NhanVien.DoesNotExist:
-            return JsonResponse({"message": f"❌ Không tìm thấy nhân viên ID {nhan_vien_id} trong hệ thống"}, status=404)
+            messages.error(request, f"❌ Không tìm thấy nhân viên ID {nhan_vien_id} trong hệ thống")
+    elif not recognized:
+        messages.error(request, "❌ Không nhận diện được khuôn mặt.")
 
-    return JsonResponse({"message": result_message}, status=400)
+    return redirect("cham_cong")
