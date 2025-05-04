@@ -21,10 +21,10 @@ def cham_cong(request):
         key = record.ngay.strftime("%Y-%m")  # dạng: 2025-04
         cham_cong_theo_thang[key].append(record)
 
-    # Sắp xếp key mới nhất lên trước
+
     cham_cong_theo_thang = dict(sorted(cham_cong_theo_thang.items(), reverse=True))
 
-    # Lấy danh sách tháng và năm có trong dữ liệu
+
     months = ChamCong.objects.filter(nhan_vien=nhan_vien).values('ngay__month').distinct().order_by('ngay__month')
     years = ChamCong.objects.filter(nhan_vien=nhan_vien).values('ngay__year').distinct().order_by('ngay__year')
 

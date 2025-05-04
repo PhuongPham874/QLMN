@@ -51,7 +51,7 @@
 
         <form method="POST" enctype="multipart/form-data">
             {% csrf_token %}
-            <h1 class="header-title" style="color: #000000; font-size: 30px; font-weight: bold; text-align: center; width: 100%;">THÊM MỚI HỒ SƠ NHÂN VIÊN</h1>
+            <h1 class="header-title" style="color: #000000; font-size: 30px; font-weight: bold; text-align: center; width: 100%;">THÔNG TIN HỒ SƠ CHI TIẾT</h1>
             <div class="container mt-4" style="background-color: #f0f8ff; padding: 40px; border-radius: 10px;">
                 <h4 class="header-title" style="display: flex; justify-content: space-between; font-size: 30px; font-weight: bold; margin-bottom: 20px; margin-top: -39px;margin-right:-40px;margin-left:-40px;">
                     <a href="{% url 'NVXemHoSo' %}" style="border: 2px solid #000000; text-decoration: none; color: white; width: 50%; text-align: center; padding: 10px; background-color: #008CBA; border-top-left-radius: 5px; border-bottom-left-radius: 5px;">
@@ -67,8 +67,11 @@
                     <div class="col-md-6 left-column" style="padding: 10px;">
                         <div class="form-group" style="display: flex; align-items: center; margin-bottom: 15px;">
                             <label for="anh_ca_nhan" style="width: 180px; font-weight: bold; font-size: 16px; color: #333; margin-right: 10px; text-align: left;">Ảnh cá nhân</label>
-                            <div style="font-size: 16px;">{{ nhan_vien.anh_ca_nhan }}</div>
+                            <img src="{{ nhan_vien.anh_ca_nhan.url }}" alt="User Avatar" class="rounded-circle" width="80" height="80">
+
+
                         </div>
+
 
                         <div class="form-group" style="display: flex; align-items: center; margin-bottom: 15px;">
                             <label for="ten_nv" style="width: 180px; font-weight: bold; font-size: 16px; color: #333; margin-right: 10px; text-align: left;">Họ và tên:</label>
@@ -77,7 +80,7 @@
 
                         <div class="form-group" style="display: flex; align-items: center; margin-bottom: 15px;">
                             <label for="gioi_tinh" style="width: 180px; font-weight: bold; font-size: 16px; color: #333; margin-right: 10px; text-align: left;">Giới tính:</label>
-                            <div style="font-size: 16px;">{{ nhan_vien.gioi_tinh }}</div>
+                            <div style="font-size: 16px;">{{ nhan_vien.get_gioi_tinh_display  }}</div>
                         </div>
 
 
@@ -103,7 +106,7 @@
                         </div>
                     </div>
 
-                    <div class="col-md-6 right-column" style="padding: 10px;">
+                    <div class="col-md-6 right-column" style="padding: 10px; margin-top: 91px">
                         <div class="form-group" style="display: flex; align-items: center; margin-bottom: 10px;">
                             <label for="vi_tri_cong_viec" style="width: 150px; font-weight: bold; font-size: 16px; color: #333; margin-right: 35px; text-align: left;">Vị trí làm việc:</label>
                             <div style="font-size: 16px; margin-right: 5px;margin-left: 5px;">{{ nhan_vien.vi_tri_cong_viec }}</div>
@@ -114,13 +117,13 @@
                             </div>
                         </div>
 
-                        <div class="form-group" style="display: flex; align-items: center; margin-bottom: 10px;">
+                        <div class="form-group" style="display: flex; align-items: center; margin-top: 15px;">
                             <label for="to_phong_ban" style="width: 180px; font-weight: bold; font-size: 16px; color: #333; margin-right: 10px; text-align: left;">Tổ (Phòng ban):</label>
                             <div style="font-size: 16px;">{{ nhan_vien.to_phong_ban }}</div>
 
                         </div>
 
-                        <div class="form-group" style="display: flex; align-items: center; margin-bottom: 10px;">
+                        <div class="form-group" style="display: flex; align-items: center; margin-bottom: 10px;Margin-top: 15px;">
                             <label for="trinh_do_hoc_van" style="width: 150px; font-weight: bold; font-size: 16px; color: #333; margin-right: 35px; text-align: left;">Trình độ học vấn:</label>
                             <div style="font-size: 16px; margin-right: 5px;margin-left: 5px;">{{ nhan_vien.trinh_do_hoc_van }}</div>
                             <div class="form-group" style="display: flex; align-items: center; margin-bottom: 0px;">
@@ -129,7 +132,7 @@
                             </div>
                         </div>
 
-                        <div class="form-group" style="display: flex; align-items: center; margin-bottom: 10px;">
+                        <div class="form-group" style="display: flex; align-items: center; margin-bottom: 15px; margin-top: 15px;">
                             <label for="chuyen_nganh" style="width: 180px; font-weight: bold; font-size: 16px; color: #333; margin-right: 10px; text-align: left;">Chuyên ngành:</label>
                             <div style="font-size: 16px;">{{ nhan_vien.chuyen_nganh }}</div>
 
@@ -141,7 +144,7 @@
 
                         </div>
 
-                        <div class="form-group" style="display: flex; align-items: center; margin-bottom: 10px;">
+                        <div class="form-group" style="display: flex; align-items: center; margin-bottom: 10px; margin-top: 15px;">
                             <label for="ngay_cap" style="width: 180px; font-weight: bold; font-size: 16px; color: #333; margin-right: 10px; text-align: left;">Ngày cấp:</label>
                             <div style="font-size: 16px;">{{ nhan_vien.ngay_cap }}</div>
 

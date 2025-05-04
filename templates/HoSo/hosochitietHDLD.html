@@ -2,67 +2,93 @@
 
 {% block extra_css %}
     <style>
-
-        .content{
+        .content {
             width: 1100px;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: flex-start;
-
         }
-        .ndung{
+
+        .ndung {
             width: 1100px;
             padding: 20px;
             margin-left: 20px;
             display: flex;
             flex-direction: column;
         }
-    }
 
-        table{
-        width: 450px;
-        align-items: center;
-        margin-bottom: 20px;
-        justify-content: space-between;
-    }
-        .btn{
-        padding: 10px ;
-        border-radius:5px;
-        font-size: 15px;
-        text-align: center;
-        background-color:#D9D9D9 ;
-        color: black;
-        border: 1px solid;
-    }
-        .button{
-            padding: 20px;
+        table {
+            width: 50%; /* Giảm chiều dài bảng */
+            margin-left: 180px ; /* Căn giữa bảng trên trang */
+            border-collapse: collapse; /* Gộp các đường viền của bảng */
+            background-color: #f2f9fd; /* Nền màu sáng nhẹ */
+            }
+
+            th, td {
+                padding: 8px; /* Giảm khoảng cách bên trong các ô */
+                text-align: center; /* Căn giữa nội dung của tất cả các ô trong bảng */
+                border: 1px solid #ddd; /* Khung viền nhẹ cho bảng */
+                font-size: 14px; /* Giảm kích thước chữ */
+            }
+
+            th {
+                background-color: #cce7ff; /* Màu nền nhẹ cho tiêu đề */
+                font-weight: bold;
+            }
+
+            tr:nth-child(even) {
+                background-color: #e6f7ff; /* Đổi màu nền cho hàng chẵn để dễ đọc */
+            }
+
+            tr:hover {
+                background-color: #f1f8ff; /* Hiệu ứng khi hover */
+            }
+
+        .btn {
+            padding: 10px;
+            border-radius: 5px;
+            font-size: 15px;
+            text-align: center;
+            background-color: #D9D9D9;
+            color: black;
+            border: 1px solid;
         }
 
+        .button {
+            padding: 20px;
+        }
     </style>
 {% endblock %}
+
 {% block page_background %}
 <main class="content" style="background-color: #ffffff; padding: 10px;">
-
     <div class="button" style="display: flex; justify-content: space-between; align-items: center;">
-        <button class="btn btn-secondary" onclick="window.history.back()" style="font-size: 16px; padding: 10px 30px;">Quay lại</button>
+        <button class="btn btn-secondary" onclick="window.history.back()" style="font-size: 16px; padding: 10px 30px;">
+            Quay lại
+        </button>
     </div>
-    <div class="ndung">
 
+    <div class="ndung">
         <form method="POST" enctype="multipart/form-data">
             {% csrf_token %}
             <h1 class="header-title" style="color: #000000; font-size: 30px; font-weight: bold; text-align: center; width: 100%;">THÊM MỚI HỒ SƠ NHÂN VIÊN</h1>
             <div class="container mt-4" style="background-color: #f0f8ff; padding: 40px; border-radius: 10px;">
-                <h4 class="header-title" style="display: flex; justify-content: space-between; font-size: 30px; font-weight: bold; margin-bottom: 20px; margin-top: -39px; margin-right:-40px; margin-left:-40px;">
-                    <a href="{% url 'QLXemHoSo' nhan_vien.id %}"style="background-color: #65ABE3; color: white; width: 50%; text-align: center; padding: 10px; border-top-left-radius: 5px; border-bottom-left-radius: 5px; text-decoration: none;">
+               <h4 class="header-title" style="display: flex; justify-content: space-between; font-size: 30px; font-weight: bold; margin-bottom: 20px; margin-top: -39px; margin-right:-40px;margin-left:-40px;">
+                    <a href="{% url 'QLXemHoSo' nhan_vien.id %}" style="background-color: #65ABE3; color: white; width: 50%; text-align: center; padding: 10px; border-top-left-radius: 5px; border-bottom-left-radius: 5px; text-decoration: none;">
                         Thông Tin Cá Nhân
                     </a>
-                    <a href="{% url 'QLXemHoSoHDLD' hop_dong.id %}" style=" border: 2px solid #000000; background-color: #008CBA; color: white; width: 50%; text-align: center; padding: 10px; border-top-right-radius: 5px; border-bottom-right-radius: 5px; text-decoration: none;">
+
+                    {% if hop_dong %}
+                    <a href="{% url 'QLXemHoSoHDLD' nhan_vien.id %}"
+                       style="border: 2px solid #000000; background-color: #008CBA; color: white; width: 50%; text-align: center; padding: 10px;
+                              border-top-right-radius: 5px; border-bottom-right-radius: 5px; text-decoration: none;">
                         Hợp Đồng Lao Động
                     </a>
+                    {% endif %}
                 </h4>
 
-                <div class="row" style="border-radius: 5px; border: 3px solid #ccc; padding: 10px;" >
+                <div class="row" style="border-radius: 5px; border: 3px solid #ccc; padding: 10px;">
                     <div class="col-md-6 left-column" style="padding: 10px;">
                         <div class="form-group" style="display: flex; align-items: center; margin-bottom: 15px;">
                             <label for="ten_nv" style="width: 180px; font-weight: bold; font-size: 16px; color: #333; margin-right: 10px; text-align: left;">Họ và tên:</label>
@@ -71,7 +97,7 @@
 
                         <div class="form-group" style="display: flex; align-items: center; margin-bottom: 15px;">
                             <label for="ma_nv" style="width: 180px; font-weight: bold; font-size: 16px; color: #333; margin-right: 10px; text-align: left;">Mã nhân viên:</label>
-                            <div style="font-size: 16px;">{{ nhan_vien.id  }}</div>
+                            <div style="font-size: 16px;">{{ nhan_vien.id }}</div>
                         </div>
                     </div>
 
@@ -90,18 +116,14 @@
 
                 <div class="row">
                     <div class="col-md-6 left-column" style="padding: 10px; margin-top: 20px;">
-
                         <div class="form-group" style="display: flex; align-items: center; margin-bottom: 15px;">
-                            <label for="so_hd" style="width: 180px; font-weight: bold; font-size: 16px; color: #333; margin-right: 10px; text-align: left;">Số hợp đồng:</label>
+                            <label for="so_hop_dong" style="width: 180px; font-weight: bold; font-size: 16px; color: #333; margin-right: 10px; text-align: left;">Số hợp đồng:</label>
                             <div style="font-size: 16px;">{{ hop_dong.so_hop_dong }}</div>
                         </div>
 
                         <div class="form-group" style="display: flex; align-items: center; margin-bottom: 10px;">
-                            <label for="thoi_han_hd" style="width: 450px; font-weight: bold; font-size: 16px; color: #333; margin-right: 10px; text-align: left;">Thời hạn HĐ:</label>
-                            <div style="font-size: 16px;">{{ hop_dong.thoi_han_hop_dong}}</div>
-                            <div class="form-group" style="display: flex; align-items: center; margin-bottom: 10px;">
-                                <label for="thoi_han_hd" style="width: 180px; font-weight: bold; font-size: 16px; color: #333; margin-left: 10px; text-align: left;"> Tháng </label>
-                            </div>
+                            <label for="thoi_han_hop_dong" style="width: 185px; font-weight: bold; font-size: 16px; color: #333; margin-right: 5px; text-align: left;">Thời hạn HĐ:</label>
+                            <div style="font-size: 16px; text-align: left;">{{ hop_dong.thoi_han_hop_dong }}</div>
                         </div>
 
                         <div class="form-group" style="display: flex; align-items: center; margin-bottom: 15px;">
@@ -113,23 +135,17 @@
                             <label for="ngay_ky" style="width: 180px; font-weight: bold; font-size: 16px; color: #333; margin-right: 10px; text-align: left;">Ngày ký:</label>
                             <div style="font-size: 16px;">{{ hop_dong.ngay_ky }}</div>
                         </div>
+                        <div class="form-group" style="display: flex; align-items: center; margin-bottom: 15px;">
+                            <label for="danh_sach_phu_cap" style="width: 180px; font-weight: bold; font-size: 16px; color: #333; margin-right: 10px; text-align: left;">Danh sách phụ cấp:</label>
 
-                        <div class="form-group">
-                            <label for="danh_sach_phu_cap" style="width: 180px; font-weight: bold; font-size: 16px; color: #333; margin-right: 10px; text-align: left;">DS phụ cấp:</label>
-                            <div style="font-size: 16px;">{{ hop_dong.danh_sach_phu_cap }}</div>
                         </div>
-
                     </div>
 
-
                     <div class="col-md-6 right-column" style="padding: 10px; margin-top: 20px;">
-
-
                         <div class="form-group" style="display: flex; align-items: center; margin-bottom: 15px;">
                             <label for="loai_hop_dong" style="width: 180px; font-weight: bold; font-size: 16px; color: #333; margin-right: 10px; text-align: left;">Loại hợp đồng:</label>
                             <div style="font-size: 16px;">{{ hop_dong.loai_hop_dong }}</div>
                         </div>
-
 
                         <div class="form-group" style="display: flex; align-items: center; margin-bottom: 15px;">
                             <label for="luong" style="width: 180px; font-weight: bold; font-size: 16px; color: #333; margin-right: 10px; text-align: left;">Lương:</label>
@@ -142,28 +158,43 @@
                         </div>
 
                         <div class="form-group" style="display: flex; align-items: center; margin-bottom: 15px;">
-                            <label for="trang_thai_hd" style="width: 180px; font-weight: bold; font-size: 16px; color: #333; margin-right: 10px; text-align: left;">Trạng thái HĐ:</label>
+                            <label for="trang_thai_hop_dong" style="width: 180px; font-weight: bold; font-size: 16px; color: #333; margin-right: 10px; text-align: left;">Trạng thái HĐ:</label>
                             <div style="font-size: 16px;">{{ hop_dong.trang_thai_hop_dong }}</div>
                         </div>
-
-                        <div class="form-group">
-                            <label for="gia_tri_phu_cap" style="font-weight: bold; font-size: 16px; color: #333; margin-right: 10px; text-align: left;">Giá trị phụ cấp:</label>
-                            <div style="font-size: 16px;">{{ hop_dong.gia_tri_phu_cap }}</div>
-                        </div>
-                    </div>
-                    <div style="display: flex; justify-content: flex-end; gap: 10px;">
-                        <button type="button" style="background-color: #D9D9D9; border: 1px solid #333; padding: 10px 20px; font-size: 16px; border-radius: 5px; color: #333; cursor: pointer;">
-                            Chỉnh sửa
-                        </button>
                     </div>
                 </div>
 
-            </div>
-    </div>
+                <table border="1" cellpadding="5" cellspacing="0" STYLE="">
+                        <thead>
+                            <tr>
+                                <th>Số thứ tự</th>
+                                <th>Tên phụ cấp</th>
+                                <th>Giá trị</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for phu_cap_nv in phu_cap_nhan_vien_list %}
+                            <tr>
+                                <td>{{ forloop.counter }}</td>
+                                <td>{{ phu_cap_nv.phu_cap.ten_phu_cap }}</td>
+                                <td>{{ phu_cap_nv.phu_cap.gia_tri|floatformat:2 }}</td>
+                            </tr>
+                            {% empty %}
+                            <tr>
+                                <td colspan="3" style="text-align:center;">Không có phụ cấp</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+
+                <div style="display: flex; justify-content: flex-end; gap: 10px;">
+                    <button type="button" style="background-color: #D9D9D9; border: 1px solid #333; padding: 10px 20px; font-size: 16px; border-radius: 5px; color: #333; cursor: pointer;">
+                        Chỉnh sửa
+                    </button>
+                </div>
             </div>
         </form>
     </div>
 </main>
-
 
 {% endblock %}
