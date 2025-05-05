@@ -87,8 +87,13 @@ def them_moi_hop_dong(request, nhan_vien_id):
     if form.is_valid():
         hopdong = form.save(commit=False)
         hopdong.nhan_vien = nhan_vien
+        hopdong.vi_tri_lam_viec = nhan_vien.vi_tri_cong_viec
+        hopdong.to_phong_ban = nhan_vien.to_phong_ban
         hopdong.save()
         return redirect('DanhSachNhanVien')  # Chuyển hướng sau khi lưu hợp đồng
+    else:
+        # Nếu form không hợp lệ, in ra lỗi để kiểm tra
+        print(form.errors)
     return render(request, 'HoSo/ThemMoiHoSo_HDLD.html', {'form': form, 'nhan_vien': nhan_vien})
 
 
