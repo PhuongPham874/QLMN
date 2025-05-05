@@ -2,88 +2,113 @@
 {% load static %}
 
 {% block page_background %}
-<main class="p-4" style="flex-grow: 1; background-color: #f8f9fa; align-items: flex-start;">
+<main class="p-4" style="flex-grow: 1; background-color: white; align-items: flex-start;">
     <div class="container">
-        <div class="d-flex justify-content-between align-items-center mb-4">
-            <a href="{% url 'khen_thuong_list' %}" class="btn btn-secondary"
-               style="background-color: #e0e0e0; border: none; border-radius: 20px; padding: 10px 20px; font-size: 14px; color: #333; display: inline-flex; align-items: center; gap: 8px; transition: all 0.3s;">
-                <i class="fas fa-arrow-left" style="font-size: 12px;"></i> Quay lại
-            </a>
-        </div>
-        <div class="row justify-content-center">
-            <div class="col-md-8">
-                <div class="p-4" style="background: linear-gradient(to right, #ddf0ff, #ffffff)">
-                    <form method="post" enctype="multipart/form-data">
-                        {% csrf_token %}
-                        <div class="d-flex justify-content-center align-items-center mb-4">
-                            <h2 class="fw-bold">{% if is_edit %}CHỈNH SỬA KHEN THƯỞNG{% else %}THÊM MỚI KHEN THƯỞNG{% endif %}</h2>
-                        </div>
-                        <div class="mb-3 d-flex align-items-center">
-                            <label for="{{ form.nhan_vien.id_for_label }}" class="form-label fw-medium" style="color: #3A7DB8; width: 150px; margin-right: 20px;">Tên nhân viên</label>
-                            <div style="flex-grow: 1;">
-                                {{ form.nhan_vien }}
-                                <small class="form-text text-muted">{{ form.nhan_vien.help_text }}</small>
-                                {% if form.nhan_vien.errors %}
-                                    <div class="text-danger">{{ form.nhan_vien.errors }}</div>
-                                {% endif %}
+        <div style="background: white; border-radius: 15px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); padding: 20px;">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <a href="{% url 'ky_luat_khen_thuong' %}" class="btn btn-secondary"
+                   style="background-color: #e0e0e0; border: none; border-radius: 20px; padding: 10px 20px; font-size: 14px; color: #333; display: inline-flex; align-items: center; gap: 8px; transition: all 0.3s;">
+                    <i class="fas fa-arrow-left" style="font-size: 12px;"></i> Quay lại
+                </a>
+            </div>
+            <div class="row justify-content-center">
+                <div class="col-md-8">
+                    <div class="p-4" style="background: linear-gradient(to right, #ddf0ff, #ffffff); box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);">
+                        <form method="post" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            <div class="d-flex justify-content-center align-items-center mb-4">
+                                <h2 class="fw-bold">{% if is_edit %}CHỈNH SỬA KHEN THƯỞNG{% else %}THÊM MỚI KHEN THƯỞNG{% endif %}</h2>
                             </div>
-                        </div>
-                        <div class="mb-3 d-flex align-items-center">
-                            <label for="{{ form.gia_tri.id_for_label }}" class="form-label fw-medium" style="color: #3A7DB8; width: 150px; margin-right: 20px;">Giá trị</label>
-                            <div style="flex-grow: 1;">
-                                {{ form.gia_tri }}
-                                <small class="form-text text-muted">{{ form.gia_tri.help_text }}</small>
-                                {% if form.gia_tri.errors %}
-                                    <div class="text-danger">{{ form.gia_tri.errors }}</div>
-                                {% endif %}
+                            {% if form_errors %}
+                                <div class="alert alert-danger">
+                                    <ul>
+                                        {% for field, errors in form_errors.items %}
+                                            {% for error in errors %}
+                                                <li>{{ field }}: {{ error }}</li>
+                                            {% endfor %}
+                                        {% endfor %}
+                                    </ul>
+                                </div>
+                            {% endif %}
+                            <!-- Render trường trang_thai ẩn -->
+                            {{ form.trang_thai }}
+                            <div class="mb-3 d-flex align-items-center">
+                                <label for="{{ form.nhan_vien.id_for_label }}" class="form-label fw-medium" style="color: #3A7DB8; width: 150px; margin-right: 20px;">Tên nhân viên</label>
+                                <div style="flex-grow: 1;">
+                                    {{ form.nhan_vien }}
+                                    <small class="form-text text-muted">{{ form.nhan_vien.help_text }}</small>
+                                    {% if form.nhan_vien.errors %}
+                                        <div class="text-danger">{{ form.nhan_vien.errors }}</div>
+                                    {% endif %}
+                                </div>
                             </div>
-                        </div>
-                        <div class="mb-3 d-flex align-items-start">
-                            <label for="{{ form.ly_do.id_for_label }}" class="form-label fw-medium" style="color: #3A7DB8; width: 150px; margin-right: 20px;">Lý do</label>
-                            <div style="flex-grow: 1;">
-                                {{ form.ly_do }}
-                                <small class="form-text text-muted">{{ form.ly_do.help_text }}</small>
-                                {% if form.ly_do.errors %}
-                                    <div class="text-danger">{{ form.ly_do.errors }}</div>
-                                {% endif %}
+                            <div class="mb-3 d-flex align-items-center">
+                                <label for="{{ form.gia_tri.id_for_label }}" class="form-label fw-medium" style="color: #3A7DB8; width: 150px; margin-right: 20px;">Giá trị</label>
+                                <div style="flex-grow: 1;">
+                                    {{ form.gia_tri }}
+                                    <small class="form-text text-muted">{{ form.gia_tri.help_text }}</small>
+                                    {% if form.gia_tri.errors %}
+                                        <div class="text-danger">{{ form.gia_tri.errors }}</div>
+                                    {% endif %}
+                                </div>
                             </div>
-                        </div>
-                        <div class="mb-3 d-flex align-items-center">
-                            <label for="{{ form.nguoi_xac_nhan.id_for_label }}" class="form-label fw-medium" style="color: #3A7DB8; width: 150px; margin-right: 20px;">Người duyệt đơn</label>
-                            <div style="flex-grow: 1;">
-                                {{ form.nguoi_xac_nhan }}
-                                <small class="form-text text-muted">{{ form.nguoi_xac_nhan.help_text }}</small>
-                                {% if form.nguoi_xac_nhan.errors %}
-                                    <div class="text-danger">{{ form.nguoi_xac_nhan.errors }}</div>
-                                {% endif %}
+                            <div class="mb-3 d-flex align-items-start">
+                                <label for="{{ form.ly_do.id_for_label }}" class="form-label fw-medium" style="color: #3A7DB8; width: 150px; margin-right: 20px;">Lý do</label>
+                                <div style="flex-grow: 1;">
+                                    {{ form.ly_do }}
+                                    <small class="form-text text-muted">{{ form.ly_do.help_text }}</small>
+                                    {% if form.ly_do.errors %}
+                                        <div class="text-danger">{{ form.ly_do.errors }}</div>
+                                    {% endif %}
+                                </div>
                             </div>
-                        </div>
-                        <div class="mb-3 d-flex align-items-center">
-                            <label for="{{ form.minh_chung_file.id_for_label }}" class="form-label fw-medium" style="color: #3A7DB8; width: 150px; margin-right: 20px;">Minh chứng (File)</label>
-                            <div style="flex-grow: 1;">
-                                {{ form.minh_chung_file }}
-                                <small class="form-text text-muted">{{ form.minh_chung_file.help_text }}</small>
-                                {% if form.minh_chung_file.errors %}
-                                    <div class="text-danger">{{ form.minh_chung_file.errors }}</div>
-                                {% endif %}
+                            <div class="mb-3 d-flex align-items-center">
+                                <label for="{{ form.nguoi_tao_don.id_for_label }}" class="form-label fw-medium" style="color: #3A7DB8; width: 150px; margin-right: 20px;">Người tạo đơn</label>
+                                <div style="flex-grow: 1;">
+                                    {{ form.nguoi_tao_don }}
+                                    <small class="form-text text-muted">{{ form.nguoi_tao_don.help_text }}</small>
+                                    {% if form.nguoi_tao_don.errors %}
+                                        <div class="text-danger">{{ form.nguoi_tao_don.errors }}</div>
+                                    {% endif %}
+                                </div>
                             </div>
-                        </div>
-                        <div class="mb-3 d-flex align-items-center">
-                            <label for="{{ form.minh_chung_url.id_for_label }}" class="form-label fw-medium" style="color: #3A7DB8; width: 150px; margin-right: 20px;">Minh chứng (URL)</label>
-                            <div style="flex-grow: 1;">
-                                {{ form.minh_chung_url }}
-                                <small class="form-text text-muted">{{ form.minh_chung_url.help_text }}</small>
-                                {% if form.minh_chung_url.errors %}
-                                    <div class="text-danger">{{ form.minh_chung_url.errors }}</div>
-                                {% endif %}
+                            <div class="mb-3 d-flex align-items-center">
+                                <label for="{{ form.nguoi_xac_nhan.id_for_label }}" class="form-label fw-medium" style="color: #3A7DB8; width: 150px; margin-right: 20px;">Người duyệt đơn</label>
+                                <div style="flex-grow: 1;">
+                                    {{ form.nguoi_xac_nhan }}
+                                    <small class="form-text text-muted">{{ form.nguoi_xac_nhan.help_text }}</small>
+                                    {% if form.nguoi_xac_nhan.errors %}
+                                        <div class="text-danger">{{ form.nguoi_xac_nhan.errors }}</div>
+                                    {% endif %}
+                                </div>
                             </div>
-                        </div>
-                        <div class="d-flex justify-content-end mt-4">
-                            <button type="submit" class="btn btn-primary" style="border-radius: 15px; padding: 8px 30px; font-size: 16px;">
-                                Lưu
-                            </button>
-                        </div>
-                    </form>
+                            <div class="mb-3 d-flex align-items-center">
+                                <label for="{{ form.minh_chung_file.id_for_label }}" class="form-label fw-medium" style="color: #3A7DB8; width: 150px; margin-right: 20px;">Minh chứng (File)</label>
+                                <div style="flex-grow: 1;">
+                                    {{ form.minh_chung_file }}
+                                    <small class="form-text text-muted">{{ form.minh_chung_file.help_text }}</small>
+                                    {% if form.minh_chung_file.errors %}
+                                        <div class="text-danger">{{ form.minh_chung_file.errors }}</div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <div class="mb-3 d-flex align-items-center">
+                                <label for="{{ form.minh_chung_url.id_for_label }}" class="form-label fw-medium" style="color: #3A7DB8; width: 150px; margin-right: 20px;">Minh chứng (URL)</label>
+                                <div style="flex-grow: 1;">
+                                    {{ form.minh_chung_url }}
+                                    <small class="form-text text-muted">{{ form.minh_chung_url.help_text }}</small>
+                                    {% if form.minh_chung_url.errors %}
+                                        <div class="text-danger">{{ form.minh_chung_url.errors }}</div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <div class="d-flex justify-content-end mt-4">
+                                <button type="submit" class="btn btn-primary" style="border-radius: 15px; padding: 8px 30px; font-size: 16px;">
+                                    Lưu
+                                </button>
+                            </div>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>

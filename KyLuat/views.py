@@ -1,13 +1,122 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
-from HOME.models import KyLuat, NhanVien
+from HOME.models import KyLuat, KhenThuong, NhanVien
 from .forms import KyLuatForm
+from KhenThuong.forms import KhenThuongForm
 from django.core.exceptions import PermissionDenied
 from datetime import date
 import logging
 
 logger = logging.getLogger(__name__)
+
+@login_required
+def ky_luat_khen_thuong(request):
+    try:
+        nhan_vien = NhanVien.objects.get(user=request.user)
+    except NhanVien.DoesNotExist:
+        logger.error(f"Không tìm thấy nhân viên cho user {request.user.username}")
+        raise PermissionDenied("Bạn không phải nhân viên hợp lệ.")
+
+    # Định nghĩa allowed_roles
+    allowed_roles = ['Hiệu Trưởng', 'Hiệu phó chuyên môn', 'Hiệu phó hoạt động', 'Tổ trưởng']
+    has_permission = nhan_vien.chuc_vu and nhan_vien.chuc_vu in allowed_roles
+
+    # Lấy danh sách kỷ luật của chính người dùng
+    ky_luat_cua_toi = KyLuat.objects.filter(nhan_vien=nhan_vien).order_by('-ngay_ra_quyet_dinh')
+    thang_list_ky_luat = KyLuat.objects.filter(nhan_vien=nhan_vien).dates('ngay_bat_dau', 'month', order='DESC')
+    nam_list_ky_luat = KyLuat.objects.filter(nhan_vien=nhan_vien).dates('ngay_bat_dau', 'year', order='DESC')
+
+    # Lọc kỷ luật của chính người dùng theo tháng/năm
+    thang = request.GET.get('thang')
+    nam = request.GET.get('nam')
+    if thang:
+        ky_luat_cua_toi = ky_luat_cua_toi.filter(ngay_bat_dau__month=int(thang))
+    if nam:
+        ky_luat_cua_toi = ky_luat_cua_toi.filter(ngay_bat_dau__year=int(nam))
+
+    # Lấy danh sách kỷ luật của nhân viên (nếu có quyền)
+    ky_luat_list = KyLuat.objects.none()  # Mặc định không có dữ liệu
+    nhan_vien_list = NhanVien.objects.none()
+    if has_permission:
+        if nhan_vien.chuc_vu == 'Tổ trưởng':
+            ky_luat_list = KyLuat.objects.filter(nhan_vien__to_phong_ban=nhan_vien.to_phong_ban).order_by('-ngay_ra_quyet_dinh')
+            nhan_vien_list = NhanVien.objects.filter(to_phong_ban=nhan_vien.to_phong_ban).exclude(id=nhan_vien.id)
+        elif nhan_vien.chuc_vu == 'Hiệu phó chuyên môn':
+            ky_luat_list = KyLuat.objects.filter(nhan_vien__vi_tri_cong_viec__in=['Giáo viên', 'Kế toán', 'Nhân sự', 'Tuyển sinh']).order_by('-ngay_ra_quyet_dinh')
+            nhan_vien_list = NhanVien.objects.filter(vi_tri_cong_viec__in=['Giáo viên', 'Kế toán', 'Nhân sự', 'Tuyển sinh']).exclude(id=nhan_vien.id)
+        elif nhan_vien.chuc_vu == 'Hiệu phó hoạt động':
+            ky_luat_list = KyLuat.objects.filter(nhan_vien__vi_tri_cong_viec__in=['Bếp', 'Y - tế']).order_by('-ngay_ra_quyet_dinh')
+            nhan_vien_list = NhanVien.objects.filter(vi_tri_cong_viec__in=['Bếp', 'Y - tế']).exclude(id=nhan_vien.id)
+        else:  # Hiệu Trưởng
+            ky_luat_list = KyLuat.objects.all().order_by('-ngay_ra_quyet_dinh')
+            nhan_vien_list = NhanVien.objects.all().exclude(id=nhan_vien.id)
+
+        # Lọc kỷ luật của nhân viên theo nhân viên/tháng/năm
+        nhan_vien_id = request.GET.get('nhan_vien')
+        if nhan_vien_id:
+            ky_luat_list = ky_luat_list.filter(nhan_vien_id=nhan_vien_id)
+        if thang:
+            ky_luat_list = ky_luat_list.filter(ngay_bat_dau__month=int(thang))
+        if nam:
+            ky_luat_list = ky_luat_list.filter(ngay_bat_dau__year=int(nam))
+
+    # Lấy danh sách khen thưởng của chính người dùng
+    khen_thuong_list = KhenThuong.objects.filter(nhan_vien=nhan_vien).order_by('-ngay_tao')
+    thang_list_khen_thuong = KhenThuong.objects.filter(nhan_vien=nhan_vien).dates('ngay_tao', 'month', order='DESC')
+    nam_list_khen_thuong = KhenThuong.objects.filter(nhan_vien=nhan_vien).dates('ngay_tao', 'year', order='DESC')
+
+    # Lọc khen thưởng của chính người dùng theo tháng/năm
+    if thang:
+        khen_thuong_list = khen_thuong_list.filter(ngay_tao__month=int(thang))
+    if nam:
+        khen_thuong_list = khen_thuong_list.filter(ngay_tao__year=int(nam))
+
+    # Lấy danh sách khen thưởng của nhân viên (nếu có quyền)
+    rewards = KhenThuong.objects.none()  # Mặc định không có dữ liệu
+    if has_permission:
+        if nhan_vien.chuc_vu == 'Tổ trưởng':
+            rewards = KhenThuong.objects.filter(nhan_vien__to_phong_ban=nhan_vien.to_phong_ban).order_by('-ngay_tao')
+        elif nhan_vien.chuc_vu == 'Hiệu phó chuyên môn':
+            rewards = KhenThuong.objects.filter(nhan_vien__vi_tri_cong_viec__in=['Giáo viên', 'Kế toán', 'Nhân sự', 'Tuyển sinh']).order_by('-ngay_tao')
+        elif nhan_vien.chuc_vu == 'Hiệu phó hoạt động':
+            rewards = KhenThuong.objects.filter(nhan_vien__vi_tri_cong_viec__in=['Bếp', 'Y - tế']).order_by('-ngay_tao')
+        else:  # Hiệu Trưởng
+            rewards = KhenThuong.objects.all().order_by('-ngay_tao')
+
+        # Lọc khen thưởng của nhân viên theo nhân viên/tháng/năm
+        if nhan_vien_id:
+            rewards = rewards.filter(nhan_vien_id=nhan_vien_id)
+        if thang:
+            rewards = rewards.filter(ngay_tao__month=int(thang))
+        if nam:
+            rewards = rewards.filter(ngay_tao__year=int(nam))
+
+    # Tạo danh sách tháng và năm mặc định
+    from datetime import datetime
+    default_thang_list = list(range(1, 13))  # [1, 2, 3, ..., 12]
+    current_year = datetime.now().year
+    default_nam_list = list(range(2020, current_year + 2))  # [2020, 2021, ..., 2025, 2026]
+
+    # Gộp danh sách tháng và năm từ dữ liệu với danh sách mặc định
+    thang_list_from_data = sorted(set([date.month for date in thang_list_ky_luat] + [date.month for date in thang_list_khen_thuong]), reverse=True) if thang_list_ky_luat or thang_list_khen_thuong else []
+    nam_list_from_data = sorted(set([date.year for date in nam_list_ky_luat] + [date.year for date in nam_list_khen_thuong]), reverse=True) if nam_list_ky_luat or nam_list_khen_thuong else []
+
+    thang_list = default_thang_list if not thang_list_from_data else sorted(set(default_thang_list + thang_list_from_data), reverse=True)
+    nam_list = default_nam_list if not nam_list_from_data else sorted(set(default_nam_list + nam_list_from_data), reverse=True)
+
+    context = {
+        'ky_luat_cua_toi': ky_luat_cua_toi,
+        'ky_luat_list': ky_luat_list,
+        'khen_thuong_list': khen_thuong_list,
+        'rewards': rewards,
+        'nhan_vien_list': nhan_vien_list,
+        'thang_list': thang_list,
+        'nam_list': nam_list,
+        'nhan_vien': nhan_vien,
+        'has_permission': has_permission,
+    }
+    return render(request, 'KyLuat/ky_luat_khen_thuong.html', context)
 
 @login_required
 def add_ky_luat(request):
@@ -28,10 +137,24 @@ def add_ky_luat(request):
                 ky_luat = form.save(commit=False)
                 if not ky_luat.ngay_ra_quyet_dinh:
                     ky_luat.ngay_ra_quyet_dinh = date.today()
-                ky_luat.trang_thai = 'DANG_CHO_DUYET'
+
+                # Nếu người tạo là Hiệu Trưởng, tự động duyệt đơn
+                if nhan_vien.chuc_vu == 'Hiệu Trưởng':
+                    ky_luat.trang_thai = 'DA_DUYET'
+                    ky_luat.nguoi_duyet_don = nhan_vien
+                else:
+                    ky_luat.trang_thai = 'DANG_CHO_DUYET'
+
+                # Kiểm tra quyền hạn dựa trên vị trí công việc
+                if nhan_vien.chuc_vu == 'Hiệu phó chuyên môn' and ky_luat.nhan_vien.vi_tri_cong_viec not in ['Giáo viên', 'Kế toán', 'Nhân sự', 'Tuyển sinh']:
+                    raise PermissionDenied("Bạn chỉ có quyền tạo kỷ luật cho nhân viên có vị trí Giáo viên, Kế toán, Nhân sự, hoặc Tuyển sinh.")
+                if nhan_vien.chuc_vu == 'Hiệu phó hoạt động' and ky_luat.nhan_vien.vi_tri_cong_viec not in ['Bếp', 'Y - tế']:
+                    raise PermissionDenied("Bạn chỉ có quyền tạo kỷ luật cho nhân viên có vị trí Bếp hoặc Y - tế.")
+
                 ky_luat.save()
-                logger.info(f"Kỷ luật mới được tạo: ID={ky_luat.id}, Nhân viên={ky_luat.nhan_vien.ten_nv}")
-                return redirect('ky_luat_list')
+                logger.info(
+                    f"Kỷ luật mới được tạo: ID={ky_luat.id}, Nhân viên={ky_luat.nhan_vien.ten_nv}, Trạng thái={ky_luat.trang_thai}")
+                return redirect('ky_luat_khen_thuong')
             except Exception as e:
                 logger.error(f"Lỗi khi lưu kỷ luật: {str(e)}", exc_info=True)
                 form.add_error(None, f"Lỗi hệ thống khi lưu kỷ luật: {str(e)}. Vui lòng thử lại.")
@@ -49,6 +172,11 @@ def edit_ky_luat(request, ky_luat_id):
         nhan_vien = NhanVien.objects.get(user=request.user)
         if nhan_vien != ky_luat.nguoi_tao_don and nhan_vien.chuc_vu not in ['Hiệu Trưởng', 'Hiệu phó chuyên môn', 'Hiệu phó hoạt động']:
             raise PermissionDenied("Bạn không có quyền chỉnh sửa đơn này.")
+        # Kiểm tra quyền hạn dựa trên vị trí công việc
+        if nhan_vien.chuc_vu == 'Hiệu phó chuyên môn' and ky_luat.nhan_vien.vi_tri_cong_viec not in ['Giáo viên', 'Kế toán', 'Nhân sự', 'Tuyển sinh']:
+            raise PermissionDenied("Bạn chỉ có quyền chỉnh sửa kỷ luật cho nhân viên có vị trí Giáo viên, Kế toán, Nhân sự, hoặc Tuyển sinh.")
+        if nhan_vien.chuc_vu == 'Hiệu phó hoạt động' and ky_luat.nhan_vien.vi_tri_cong_viec not in ['Bếp', 'Y - tế']:
+            raise PermissionDenied("Bạn chỉ có quyền chỉnh sửa kỷ luật cho nhân viên có vị trí Bếp hoặc Y - tế.")
     except NhanVien.DoesNotExist:
         raise PermissionDenied("Bạn không phải nhân viên hợp lệ.")
 
@@ -65,7 +193,7 @@ def edit_ky_luat(request, ky_luat_id):
                     ky_luat.minh_chung_url = None
                 ky_luat.save()
                 logger.info(f"Kỷ luật được chỉnh sửa: ID={ky_luat.id}, Nhân viên={ky_luat.nhan_vien.ten_nv}")
-                return redirect('ky_luat_list')
+                return redirect('ky_luat_khen_thuong')
             except Exception as e:
                 logger.error(f"Lỗi khi chỉnh sửa kỷ luật: {str(e)}", exc_info=True)
                 form.add_error(None, f"Lỗi hệ thống khi chỉnh sửa kỷ luật: {str(e)}. Vui lòng thử lại.")
@@ -78,18 +206,38 @@ def duyet_ky_luat(request, ky_luat_id):
     ky_luat = get_object_or_404(KyLuat, id=ky_luat_id)
     try:
         nhan_vien = NhanVien.objects.get(user=request.user)
-        if nhan_vien.chuc_vu != 'Hiệu Trưởng':
-            raise PermissionDenied("Chỉ T có quyền duyệt đơn này.")
+        if nhan_vien.chuc_vu not in ['Hiệu Trưởng', 'Hiệu phó chuyên môn', 'Hiệu phó hoạt động']:
+            logger.warning(f"User {request.user.username} không có quyền duyệt đơn kỷ luật")
+            raise PermissionDenied("Bạn không có quyền duyệt đơn này.")
+        if ky_luat.nguoi_duyet_don != nhan_vien:
+            logger.warning(f"User {request.user.username} không phải người được chỉ định duyệt đơn ID={ky_luat.id}")
+            raise PermissionDenied("Bạn không phải người được chỉ định để duyệt đơn này.")
     except NhanVien.DoesNotExist:
+        logger.error(f"Không tìm thấy nhân viên cho user {request.user.username}")
         raise PermissionDenied("Bạn không phải nhân viên hợp lệ.")
 
     if request.method == 'POST':
-        ky_luat.trang_thai = 'DA_DUYET'
-        ky_luat.nguoi_duyet_don = nhan_vien
-        if not ky_luat.ngay_ra_quyet_dinh:
-            ky_luat.ngay_ra_quyet_dinh = date.today()
-        ky_luat.save()
-        return redirect('ky_luat_cho_duyet')
+        try:
+            action = request.POST.get('action')
+            if action == 'approve':
+                ky_luat.trang_thai = 'DA_DUYET'
+                ky_luat.nguoi_duyet_don = nhan_vien
+                if not ky_luat.ngay_ra_quyet_dinh:
+                    ky_luat.ngay_ra_quyet_dinh = date.today()
+                ky_luat.save()
+                logger.info(f"Đơn kỷ luật ID={ky_luat.id} đã được duyệt bởi {nhan_vien.ten_nv}")
+            elif action == 'reject':
+                ky_luat.trang_thai = 'DA_TU_CHOI'
+                ky_luat.nguoi_duyet_don = nhan_vien
+                ky_luat.save()
+                logger.info(f"Đơn kỷ luật ID={ky_luat.id} đã bị từ chối bởi {nhan_vien.ten_nv}")
+            return redirect('ky_luat_cho_duyet')
+        except Exception as e:
+            logger.error(f"Lỗi khi xử lý đơn kỷ luật ID={ky_luat.id}: {str(e)}", exc_info=True)
+            return render(request, 'KyLuat/Duyet_kyluat.html', {
+                'ky_luat': ky_luat,
+                'error': f"Lỗi hệ thống khi xử lý đơn: {str(e)}. Vui lòng thử lại."
+            })
     return render(request, 'KyLuat/Duyet_kyluat.html', {'ky_luat': ky_luat})
 
 @login_required
@@ -97,11 +245,17 @@ def ky_luat_cho_duyet(request):
     try:
         nhan_vien = NhanVien.objects.get(user=request.user)
         if nhan_vien.chuc_vu not in ['Hiệu Trưởng', 'Hiệu phó chuyên môn', 'Hiệu phó hoạt động']:
+            logger.warning(f"User {request.user.username} không có quyền xem danh sách đơn chờ duyệt")
             raise PermissionDenied("Bạn không có quyền xem danh sách đơn chờ duyệt.")
     except NhanVien.DoesNotExist:
+        logger.error(f"Không tìm thấy nhân viên cho user {request.user.username}")
         raise PermissionDenied("Bạn không phải nhân viên hợp lệ.")
 
-    ky_luat_list = KyLuat.objects.filter(trang_thai='DANG_CHO_DUYET', nguoi_duyet_don=nhan_vien)
+    if nhan_vien.chuc_vu == 'Hiệu Trưởng':
+        ky_luat_list = KyLuat.objects.filter(trang_thai='DANG_CHO_DUYET').order_by('-ngay_ra_quyet_dinh')
+    else:
+        ky_luat_list = KyLuat.objects.filter(trang_thai='DANG_CHO_DUYET', nguoi_duyet_don=nhan_vien).order_by('-ngay_ra_quyet_dinh')
+
     return render(request, 'KyLuat/Kyluat_cho_duyet.html', {
         'ky_luat_list': ky_luat_list,
     })
@@ -111,17 +265,21 @@ def ky_luat_list(request):
     try:
         nhan_vien = NhanVien.objects.get(user=request.user)
         if nhan_vien.chuc_vu not in ['Hiệu Trưởng', 'Hiệu phó chuyên môn', 'Hiệu phó hoạt động', 'Tổ trưởng']:
-            return redirect('ky_luat_cua_toi')  # Chuyển hướng đến Kỷ luật của tôi
+            return redirect('ky_luat_khen_thuong')
     except NhanVien.DoesNotExist:
         raise PermissionDenied("Bạn không phải nhân viên hợp lệ.")
 
     if nhan_vien.chuc_vu == 'Tổ trưởng':
-        # Tổ trưởng chỉ thấy kỷ luật của nhân viên trong tổ
-        ky_luat_list = KyLuat.objects.filter(nhan_vien__to_phong_ban=nhan_vien.to_phong_ban)
+        ky_luat_list = KyLuat.objects.filter(nhan_vien__to_phong_ban=nhan_vien.to_phong_ban).order_by('-ngay_ra_quyet_dinh')
         nhan_vien_list = NhanVien.objects.filter(to_phong_ban=nhan_vien.to_phong_ban)
-    else:
-        # Hiệu trưởng/Hiệu phó thấy tất cả kỷ luật
-        ky_luat_list = KyLuat.objects.all()
+    elif nhan_vien.chuc_vu == 'Hiệu phó chuyên môn':
+        ky_luat_list = KyLuat.objects.filter(nhan_vien__vi_tri_cong_viec__in=['Giáo viên', 'Kế toán', 'Nhân sự', 'Tuyển sinh']).order_by('-ngay_ra_quyet_dinh')
+        nhan_vien_list = NhanVien.objects.filter(vi_tri_cong_viec__in=['Giáo viên', 'Kế toán', 'Nhân sự', 'Tuyển sinh'])
+    elif nhan_vien.chuc_vu == 'Hiệu phó hoạt động':
+        ky_luat_list = KyLuat.objects.filter(nhan_vien__vi_tri_cong_viec__in=['Bếp', 'Y - tế']).order_by('-ngay_ra_quyet_dinh')
+        nhan_vien_list = NhanVien.objects.filter(vi_tri_cong_viec__in=['Bếp', 'Y - tế'])
+    else:  # Hiệu Trưởng
+        ky_luat_list = KyLuat.objects.all().order_by('-ngay_ra_quyet_dinh')
         nhan_vien_list = NhanVien.objects.all()
 
     thang_list = KyLuat.objects.dates('ngay_bat_dau', 'month', order='DESC')
@@ -144,7 +302,7 @@ def ky_luat_list(request):
         'thang_list': [date.month for date in thang_list],
         'nam_list': [date.year for date in nam_list],
         'user_nhan_vien': nhan_vien,
-        'allowed_roles': ['Hiệu Trưởng', 'Hiệu phó chuyên môn', 'Hiệu phó hoạt động', 'Tổ trưởng'],  # Thêm danh sách chức vụ
+        'allowed_roles': ['Hiệu Trưởng', 'Hiệu phó chuyên môn', 'Hiệu phó hoạt động', 'Tổ trưởng'],
     })
 
 @login_required
@@ -154,10 +312,15 @@ def xoa_ky_luat(request, ky_luat_id, **kwargs):
         nhan_vien = NhanVien.objects.get(user=request.user)
         if nhan_vien != ky_luat.nguoi_tao_don and nhan_vien.chuc_vu not in ['Hiệu Trưởng', 'Hiệu phó chuyên môn', 'Hiệu phó hoạt động']:
             raise PermissionDenied("Bạn không có quyền xóa đơn này.")
+        # Kiểm tra quyền hạn dựa trên vị trí công việc
+        if nhan_vien.chuc_vu == 'Hiệu phó chuyên môn' and ky_luat.nhan_vien.vi_tri_cong_viec not in ['Giáo viên', 'Kế toán', 'Nhân sự', 'Tuyển sinh']:
+            raise PermissionDenied("Bạn chỉ có quyền xóa kỷ luật cho nhân viên có vị trí Giáo viên, Kế toán, Nhân sự, hoặc Tuyển sinh.")
+        if nhan_vien.chuc_vu == 'Hiệu phó hoạt động' and ky_luat.nhan_vien.vi_tri_cong_viec not in ['Bếp', 'Y - tế']:
+            raise PermissionDenied("Bạn chỉ có quyền xóa kỷ luật cho nhân viên có vị trí Bếp hoặc Y - tế.")
     except NhanVien.DoesNotExist:
         raise PermissionDenied("Bạn không phải nhân viên hợp lệ.")
     ky_luat.delete()
-    return redirect('ky_luat_list')
+    return redirect('ky_luat_khen_thuong')
 
 @login_required
 def ky_luat_cua_toi(request):
@@ -166,7 +329,7 @@ def ky_luat_cua_toi(request):
     except NhanVien.DoesNotExist:
         raise PermissionDenied("Bạn không phải nhân viên hợp lệ.")
 
-    ky_luat_list = KyLuat.objects.filter(nhan_vien=nhan_vien)
+    ky_luat_list = KyLuat.objects.filter(nhan_vien=nhan_vien).order_by('-ngay_ra_quyet_dinh')
     thang_list = KyLuat.objects.filter(nhan_vien=nhan_vien).dates('ngay_bat_dau', 'month', order='DESC')
     nam_list = KyLuat.objects.filter(nhan_vien=nhan_vien).dates('ngay_bat_dau', 'year', order='DESC')
     thang = request.GET.get('thang')
@@ -184,46 +347,5 @@ def ky_luat_cua_toi(request):
         'thang_list': [date.month for date in thang_list],
         'nam_list': [date.year for date in nam_list],
         'user_nhan_vien': nhan_vien,
-        'allowed_roles': ['Hiệu Trưởng', 'Hiệu phó chuyên môn', 'Hiệu phó hoạt động', 'Tổ trưởng'],  # Thêm danh sách chức vụ
-    })
-
-@login_required
-def ky_luat_nhan_vien(request):
-    try:
-        nhan_vien = NhanVien.objects.get(user=request.user)
-        if nhan_vien.chuc_vu not in ['Hiệu Trưởng', 'Hiệu phó chuyên môn', 'Hiệu phó hoạt động', 'Tổ trưởng']:
-            return redirect('ky_luat_cua_toi')  # Chuyển hướng đến Kỷ luật của tôi
-    except NhanVien.DoesNotExist:
-        raise PermissionDenied("Bạn không phải nhân viên hợp lệ.")
-
-    if nhan_vien.chuc_vu == 'Tổ trưởng':
-        ky_luat_list = KyLuat.objects.filter(nhan_vien__to_phong_ban=nhan_vien.to_phong_ban)
-        nhan_vien_list = NhanVien.objects.filter(to_phong_ban=nhan_vien.to_phong_ban).exclude(id=nhan_vien.id)
-    else:
-        ky_luat_list = KyLuat.objects.all()
-        nhan_vien_list = NhanVien.objects.all().exclude(id=nhan_vien.id)
-
-    thang_list = KyLuat.objects.dates('ngay_bat_dau', 'month', order='DESC')
-    nam_list = KyLuat.objects.dates('ngay_bat_dau', 'year', order='DESC')
-
-    nhan_vien_id = request.GET.get('nhan_vien')
-    thang = request.GET.get('thang')
-    nam = request.GET.get('nam')
-
-    if nhan_vien_id:
-        ky_luat_list = ky_luat_list.filter(nhan_vien_id=nhan_vien_id)
-    if thang:
-        ky_luat_list = ky_luat_list.filter(ngay_bat_dau__month=int(thang))
-    if nam:
-        ky_luat_list = ky_luat_list.filter(ngay_bat_dau__year=int(nam))
-
-    tieu_de = "Kỷ luật của nhân viên"
-    return render(request, 'KyLuat/Kyluat_nhan_vien.html', {
-        'ky_luat_list': ky_luat_list,
-        'nhan_vien_list': nhan_vien_list,
-        'thang_list': [date.month for date in thang_list],
-        'nam_list': [date.year for date in nam_list],
-        'tieu_de': tieu_de,
-        'user_nhan_vien': nhan_vien,
-        'allowed_roles': ['Hiệu Trưởng', 'Hiệu phó chuyên môn', 'Hiệu phó hoạt động', 'Tổ trưởng'],  # Thêm danh sách chức vụ
+        'allowed_roles': ['Hiệu Trưởng', 'Hiệu phó chuyên môn', 'Hiệu phó hoạt động', 'Tổ trưởng'],
     })

@@ -196,6 +196,7 @@ class KyLuat(models.Model):
   TRANG_THAI_CHOICES = (
       ('DANG_CHO_DUYET', 'Đang chờ duyệt'),
       ('DA_DUYET', 'Đã duyệt'),
+      ('DA_TU_CHOI', 'Đã từ chối'),
   )
   nhan_vien = models.ForeignKey('NhanVien', on_delete=models.CASCADE, related_name='ky_luat_nhan_vien')
   ngay_bat_dau = models.DateField(null=True)
@@ -234,6 +235,7 @@ class KhenThuong(models.Model):
   TRANG_THAI_CHOICES = (
       ('DANG_CHO_DUYET', 'Đang chờ duyệt'),
       ('DA_DUYET', 'Đã duyệt'),
+        ('DA_TU_CHOI', 'Đã từ chối'),
   )
   ngay_tao = models.DateTimeField(auto_now_add=True)
   nhan_vien = models.ForeignKey('NhanVien', on_delete=models.CASCADE, related_name='khen_thuong_nhan_vien')
@@ -245,16 +247,11 @@ class KhenThuong(models.Model):
   minh_chung_file = models.FileField(upload_to='minh_chung_khen_thuong/', null=True, blank=True)
   minh_chung_url = models.URLField(max_length=200, null=True, blank=True)
 
+  def __str__(self):
+      return f"Khen thưởng cho {self.nhan_vien.ten_nv} - {self.gia_tri} VNĐ"
 
-  def get_all_info(self):
-      minh_chung = f", Minh chứng: {self.minh_chung_file.url if self.minh_chung_file else self.minh_chung_url if self.minh_chung_url else 'Không có'}"
-      nguoi_tao_info = f"{self.nguoi_tao_don.ten_nv} ({self.nguoi_tao_don.chuc_vu})" if self.nguoi_tao_don else 'N/A'
-      nguoi_xac_nhan_info = f"{self.nguoi_xac_nhan.ten_nv} ({self.nguoi_xac_nhan.chuc_vu})" if self.nguoi_xac_nhan else 'N/A'
-      return (f"Tên NV: {self.nhan_vien.ten_nv}, Ngày tạo: {self.ngay_tao}, "
-              f"Giá trị: {self.gia_tri}, Lý do: {self.ly_do}, "
-              f"Người tạo: {nguoi_tao_info}, "
-              f"Người xác nhận: {nguoi_xac_nhan_info}, "
-              f"Trạng thái: {self.get_trang_thai_display()}{minh_chung}")
+  def get_trang_thai_display(self):
+      return dict(self.TRANG_THAI_CHOICES).get(self.trang_thai, self.trang_thai)
 
 
 

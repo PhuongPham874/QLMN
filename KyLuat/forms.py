@@ -6,48 +6,60 @@ class KyLuatForm(forms.ModelForm):
         self.request = kwargs.pop('request', None)
         super().__init__(*args, **kwargs)
 
+        # Xác định người dùng hiện tại
+        nhan_vien = None
+        if self.request and hasattr(self.request, 'user'):
+            try:
+                nhan_vien = NhanVien.objects.get(user=self.request.user)
+            except NhanVien.DoesNotExist:
+                self.add_error(None, "Không tìm thấy thông tin nhân viên của bạn.")
+
+        # Nếu người tạo là Hiệu Trưởng, ẩn và tự động gán nguoi_duyet_don
+        if nhan_vien and nhan_vien.chuc_vu == 'Hiệu Trưởng':
+            self.fields['nguoi_duyet_don'].required = False
+            self.fields['nguoi_duyet_don'].widget = forms.HiddenInput()
+            self.fields['nguoi_duyet_don'].initial = nhan_vien
+            self.fields['trang_thai'].initial = 'DA_DUYET'
+        else:
+            # Giới hạn nguoi_duyet_don cho Hiệu trưởng và Hiệu phó
+            self.fields['nguoi_duyet_don'].queryset = NhanVien.objects.filter(
+                chuc_vu__in=['Hiệu Trưởng', 'Hiệu phó chuyên môn', 'Hiệu phó hoạt động']
+            )
+            self.fields['trang_thai'].initial = 'DANG_CHO_DUYET'
+
         # Giới hạn nguoi_tao_don: Chỉ Hiệu trưởng, Hiệu phó, hoặc Tổ trưởng
         self.fields['nguoi_tao_don'].queryset = NhanVien.objects.filter(
             chuc_vu__in=['Hiệu Trưởng', 'Hiệu phó chuyên môn', 'Hiệu phó hoạt động', 'Tổ trưởng']
         )
 
-        # Giới hạn nguoi_duyet_don: Chỉ Hiệu trưởng, Hiệu phó
-        self.fields['nguoi_duyet_don'].queryset = NhanVien.objects.filter(
-            chuc_vu__in=['Hiệu Trưởng', 'Hiệu phó chuyên môn', 'Hiệu phó hoạt động']
-        )
+        # Giới hạn danh sách nhân viên theo chức vụ và vị trí công việc
+        if nhan_vien:
+            if nhan_vien.chuc_vu == 'Tổ trưởng':
+                self.fields['nhan_vien'].queryset = NhanVien.objects.filter(
+                    to_phong_ban=nhan_vien.to_phong_ban
+                )
+            elif nhan_vien.chuc_vu == 'Hiệu phó chuyên môn':
+                self.fields['nhan_vien'].queryset = NhanVien.objects.filter(
+                    vi_tri_cong_viec__in=['Giáo viên', 'Kế toán', 'Nhân sự', 'Tuyển sinh']
+                )
+            elif nhan_vien.chuc_vu == 'Hiệu phó hoạt động':
+                self.fields['nhan_vien'].queryset = NhanVien.objects.filter(
+                    vi_tri_cong_viec__in=['Bếp', 'Y - tế']
+                )
+            elif nhan_vien.chuc_vu == 'Hiệu Trưởng':
+                self.fields['nhan_vien'].queryset = NhanVien.objects.all()
+            else:
+                self.add_error(None, "Bạn không có quyền tạo đơn kỷ luật.")
 
-        # Lọc danh sách nhân viên theo to_phong_ban nếu người dùng là Tổ trưởng
-        if self.request and hasattr(self.request, 'user'):
-            try:
-                nhan_vien = NhanVien.objects.get(user=self.request.user)
-                if nhan_vien.chuc_vu == 'Tổ trưởng':
-                    # Chỉ hiển thị nhân viên trong cùng to_phong_ban
-                    self.fields['nhan_vien'].queryset = NhanVien.objects.filter(
-                        to_phong_ban=nhan_vien.to_phong_ban
-                    )
-                elif nhan_vien.chuc_vu in ['Hiệu Trưởng', 'Hiệu phó chuyên môn', 'Hiệu phó hoạt động']:
-                    # Hiệu trưởng/Hiệu phó thấy tất cả nhân viên
-                    self.fields['nhan_vien'].queryset = NhanVien.objects.all()
-                else:
-                    # Giáo viên hoặc nhân viên khác không được tạo đơn
-                    self.add_error(None, "Bạn không có quyền tạo đơn kỷ luật.")
-            except NhanVien.DoesNotExist:
-                self.add_error(None, "Không tìm thấy thông tin nhân viên của bạn.")
-
-        # Ẩn và gán giá trị mặc định cho trang_thai
+        # Ẩn trường trang_thai
         self.fields['trang_thai'].widget = forms.HiddenInput()
-        self.fields['trang_thai'].initial = 'DANG_CHO_DUYET'
 
         # Gán nguoi_tao_don mặc định
-        if self.request and hasattr(self.request, 'user'):
-            try:
-                nhan_vien = NhanVien.objects.get(user=self.request.user)
-                if nhan_vien.chuc_vu not in ['Hiệu Trưởng', 'Hiệu phó chuyên môn', 'Hiệu phó hoạt động', 'Tổ trưởng']:
-                    self.add_error(None, "Bạn không có quyền tạo đơn kỷ luật.")
-                else:
-                    self.fields['nguoi_tao_don'].initial = nhan_vien
-            except NhanVien.DoesNotExist:
-                self.add_error(None, "Không tìm thấy thông tin nhân viên của bạn.")
+        if nhan_vien:
+            if nhan_vien.chuc_vu not in ['Hiệu Trưởng', 'Hiệu phó chuyên môn', 'Hiệu phó hoạt động', 'Tổ trưởng']:
+                self.add_error(None, "Bạn không có quyền tạo đơn kỷ luật.")
+            else:
+                self.fields['nguoi_tao_don'].initial = nhan_vien
 
     class Meta:
         model = KyLuat
@@ -63,7 +75,7 @@ class KyLuatForm(forms.ModelForm):
             'ly_do': forms.Textarea(attrs={'class': 'form-control', 'rows': 3}),
             'nguoi_tao_don': forms.Select(attrs={'class': 'form-control'}),
             'nguoi_duyet_don': forms.Select(attrs={'class': 'form-control'}),
-            'trang_thai': forms.HiddenInput(attrs={'value': 'DANG_CHO_DUYET'}),
+            'trang_thai': forms.HiddenInput(),
             'minh_chung_file': forms.FileInput(attrs={'class': 'form-control'}),
             'minh_chung_url': forms.URLInput(attrs={'class': 'form-control'}),
         }
@@ -105,16 +117,29 @@ class KyLuatForm(forms.ModelForm):
         nguoi_duyet_don = cleaned_data.get('nguoi_duyet_don')
         ly_do = cleaned_data.get('ly_do')
         ngay_ket_thuc = cleaned_data.get('ngay_ket_thuc')
+        trang_thai = cleaned_data.get('trang_thai')
         ngay_bat_dau = cleaned_data.get('ngay_bat_dau')
 
-        cleaned_data['trang_thai'] = cleaned_data.get('trang_thai') or 'DANG_CHO_DUYET'
+        # Kiểm tra nếu người tạo là Hiệu Trưởng
+        nhan_vien = None
+        if self.request and hasattr(self.request, 'user'):
+            try:
+                nhan_vien = NhanVien.objects.get(user=self.request.user)
+            except NhanVien.DoesNotExist:
+                pass
+
+        if nhan_vien and nhan_vien.chuc_vu == 'Hiệu Trưởng':
+            cleaned_data['trang_thai'] = 'DA_DUYET'
+            cleaned_data['nguoi_duyet_don'] = nhan_vien
+        else:
+            cleaned_data['trang_thai'] = trang_thai or 'DANG_CHO_DUYET'
+            if not nguoi_duyet_don and self.fields['nguoi_duyet_don'].queryset.exists():
+                self.add_error('nguoi_duyet_don', "Người duyệt đơn là bắt buộc.")
 
         if not ngay_ra_quyet_dinh:
             self.add_error('ngay_ra_quyet_dinh', "Ngày ra quyết định là bắt buộc.")
         if not nguoi_tao_don:
             self.add_error('nguoi_tao_don', "Người tạo đơn là bắt buộc.")
-        if not nguoi_duyet_don and self.fields['nguoi_duyet_don'].queryset.exists():
-            self.add_error('nguoi_duyet_don', "Người duyệt đơn là bắt buộc.")
         if not ly_do:
             self.add_error('ly_do', "Lý do kỷ luật là bắt buộc.")
         if muc_do == 'PHAT_TIEN':
