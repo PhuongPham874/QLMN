@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'HOME',
+    'HoSo',
 ]
 
 MIDDLEWARE = [
@@ -67,9 +68,8 @@ TEMPLATES = [
         },
     },
 ]
-
-MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_URL = 'media/'
+MEDIA_ROOT = os.path.join(BASE_DIR)
 
 WSGI_APPLICATION = 'QLMN.wsgi.application'
 
@@ -125,7 +125,7 @@ STATIC_URL = '/static/'
 
 # Khai báo đường dẫn thư mục static
 STATICFILES_DIRS = [
-    r"D:\PYTHON\QLMN\static",  # Sử dụng raw string (r"") để tránh lỗi escape ký tự '\'
+    r"C:\Users\nguyet\OneDrive\Máy tính\LTW\QLMN\QLMN\static",  # Sử dụng raw string (r"") để tránh lỗi escape ký tự '\'
 ]
 
 # Default primary key field type

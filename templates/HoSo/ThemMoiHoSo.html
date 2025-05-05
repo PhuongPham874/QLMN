@@ -44,122 +44,132 @@
 {% block page_background %}
 <main class="content" style="background-color: #ffffff; padding: 10px;">
 
-    <div  class="button" style="display: flex; justify-content: space-between; align-items: center">
+    <div class="button" style="display: flex; justify-content: space-between; align-items: center;">
         <button class="btn btn-secondary" onclick="window.history.back()" style="font-size: 16px; padding: 10px 30px;">Quay lại</button>
-
     </div>
     <div class="ndung">
-        <h1 class="header-title" style="color: #000000; font-size: 30px; font-weight: bold; text-align: center; width: 100%;">THÊM MỚI HỒ SƠ NHÂN VIÊN</h1>
+
         <form method="POST" enctype="multipart/form-data">
             {% csrf_token %}
+            <h1 class="header-title" style="color: #000000; font-size: 30px; font-weight: bold; text-align: center; width: 100%;">THÊM MỚI HỒ SƠ NHÂN VIÊN</h1>
+            <div class="container mt-4" style="background-color: #f0f8ff; padding: 40px; border-radius: 10px;">
+                <h4 class="header-title" style="display: flex; justify-content: space-between; font-size: 30px; font-weight: bold; margin-bottom: 20px; margin-top: -39px;margin-right:-40px;margin-left:-40px;">
+                    <a href="{% url 'ThemMoiHoSo' %}" style="border: 2px solid #000000; text-decoration: none; color: white; width: 50%; text-align: center; padding: 10px; background-color: #008CBA; border-top-left-radius: 5px; border-bottom-left-radius: 5px;">
+                        Thông Tin Cá Nhân
+                    </a>
+                    <div style="text-decoration: none; color: white; width: 50%; text-align: center; padding: 10px; background-color: #65ABE3; border-top-right-radius: 5px; border-bottom-right-radius: 5px;">
+                        Hợp Đồng Lao Động
+                    </div>
+                </h4>
 
-            <div class="container mt-4" style="background-color: #f0f8ff; padding: 40px; border-radius: 10px; max-width: 100%; margin-right: 0;">
-                <h3 class="line-title" style="position: relative; text-align: center; font-size: 22px; font-weight: bold; color: #008CBA; margin: 20px 0;">
-                    <span style="position: absolute; left: 0; top: 50%; width: 35%; height: 1px; background-color: #008CBA;"></span>
-                    Thông Tin Cá Nhân
-                    <span style="position: absolute; right: 0; top: 50%; width: 35%; height: 1px; background-color: #008CBA;"></span>
-                </h3>
 
                 <div class="row">
                     <div class="col-md-6 left-column" style="padding: 10px;">
-                       <div class="form-group" style="display: flex; align-items: center; margin-bottom: 15px;">
+                        <div class="form-group" style="display: flex; align-items: center; margin-bottom: 15px;">
                             <label for="anh_ca_nhan" style="width: 180px; font-weight: bold; font-size: 16px; color: #333; margin-right: 10px; text-align: left;">Ảnh cá nhân</label>
-                            <div style="flex-grow: 1;">
-                                <input type="file" class="form-control" id="anh_ca_nhan" name="anh_ca_nhan" style="font-size: 16px; padding: 9px; border-radius: 5px; display: inline-block; width: 105%;">
+                            <input type="file" class="form-control" id="anh_ca_nhan" name="anh_ca_nhan" style="font-size: 16px; padding: 9px; border-radius: 5px; display: inline-block; width: 105%;">
                             </div>
-                            <span style="margin-left: 10px; font-size: 16px; color: #333;"></span>
-                        </div>
+
+
+
+
 
                         <div class="form-group" style="display: flex; align-items: center; margin-bottom: 15px;">
-                            <label for="so_cccd" style="font-weight: bold; font-size: 16px; color: #333; margin-right: 10px; text-align: left; width: 180px;">Số CCCD:</label>
-                            <input type="text" class="form-control" id="so_cccd" name="so_cccd" style="font-size: 16px; padding: 8px; border-radius: 5px;">
-                        </div>
-
-                        <div class="form-group" style="display: flex; align-items: center; margin-bottom: 15px;">
-                            <label for="trinh_do_hoc_van" style="font-weight: bold; font-size: 16px; color: #333; margin-right: 10px; text-align: left; width: 180px;">Trình độ học vấn:</label>
-                            <input type="text" class="form-control" id="trinh_do_hoc_van" name="trinh_do_hoc_van" style="font-size: 16px; padding: 8px; border-radius: 5px;">
-                        </div>
-
-                        <div class="form-group" style="display: flex; align-items: center; margin-bottom: 15px;">
-                            <label for="vi_tri_cong_viec" style="font-weight: bold; font-size: 16px; color: #333; margin-right: 10px; text-align: left; width: 180px;">Vị trí công việc:</label>
-                            <input type="text" class="form-control" id="vi_tri_cong_viec" name="vi_tri_cong_viec" style="font-size: 16px; padding: 8px; border-radius: 5px;">
-                        </div>
-
-                        <div class="form-group" style="display: flex; align-items: center; margin-bottom: 15px;">
-                            <label for="kinh_nghiem" style="font-weight: bold; font-size: 16px; color: #333; margin-right: 10px; text-align: left; width: 180px;">Kinh nghiệm làm việc:</label>
-                            <input type="text" class="form-control" id="kinh_nghiem" name="kinh_nghiem" style="font-size: 16px; padding: 8px; border-radius: 5px;">
-                        </div>
-                    </div>
-
-                    <div class="col-md-6 right-column" style="padding: 10px;">
-                        <div class="form-group" style="display: flex; align-items: center; margin-bottom: 15px;">
-                            <label for="ten_nv" style="font-weight: bold; font-size: 16px; color: #333; margin-right: 10px; text-align: left; width: 180px;">Tên nhân viên:</label>
+                            <label for="ten_nv" style="width: 180px; font-weight: bold; font-size: 16px; color: #333; margin-right: 10px; text-align: left;">Họ và tên:</label>
                             <input type="text" class="form-control" id="ten_nv" name="ten_nv" style="font-size: 16px; padding: 8px; border-radius: 5px;">
                         </div>
 
                         <div class="form-group" style="display: flex; align-items: center; margin-bottom: 15px;">
-                            <label for="ngay_sinh" style="font-weight: bold; font-size: 16px; color: #333; margin-right: 10px; text-align: left; width: 180px;">Ngày sinh:</label>
+                            <label for="gioi_tinh" style="width: 180px; font-weight: bold; font-size: 16px; color: #333; margin-right: 10px; text-align: left;">Giới tính:</label>
+                            <input type="radio" name="gioi_tinh" value="2" checked style="margin-right: 20px;"> Nam
+                            <input type="radio" name="gioi_tinh" value="1" style="margin-right: 20px;margin-left: 20px;"> Nữ
+                        </div>
+
+
+                        <div class="form-group" style="display: flex; align-items: center; margin-bottom: 15px;">
+                            <label for="ngay_sinh" style="width: 180px; font-weight: bold; font-size: 16px; color: #333; margin-right: 10px; text-align: left;">Ngày sinh:</label>
                             <input type="date" class="form-control" id="ngay_sinh" name="ngay_sinh" style="font-size: 16px; padding: 8px; border-radius: 5px;">
                         </div>
 
                         <div class="form-group" style="display: flex; align-items: center; margin-bottom: 15px;">
-                            <label for="so_dien_thoai" style="font-weight: bold; font-size: 16px; color: #333; margin-right: 10px; text-align: left; width: 180px;">Số điện thoại:</label>
+                            <label for="so_dien_thoai" style="width: 180px; font-weight: bold; font-size: 16px; color: #333; margin-right: 10px; text-align: left;">Số điện thoại:</label>
                             <input type="text" class="form-control" id="so_dien_thoai" name="so_dien_thoai" style="font-size: 16px; padding: 8px; border-radius: 5px;">
                         </div>
 
                         <div class="form-group" style="display: flex; align-items: center; margin-bottom: 15px;">
-                            <label for="email" style="font-weight: bold; font-size: 16px; color: #333; margin-right: 10px; text-align: left; width: 180px;">Email:</label>
+                            <label for="email" style="width: 180px; font-weight: bold; font-size: 16px; color: #333; margin-right: 10px; text-align: left;">Email:</label>
                             <input type="email" class="form-control" id="email" name="email" style="font-size: 16px; padding: 8px; border-radius: 5px;">
                         </div>
 
                         <div class="form-group" style="display: flex; align-items: center; margin-bottom: 15px;">
-                            <label for="dia_chi" style="font-weight: bold; font-size: 16px; color: #333; margin-right: 10px; text-align: left; width: 180px;">Địa chỉ:</label>
-                            <input type="text" class="form-control" id="dia_chi" name="dia_chi" style="font-size: 16px; padding: 8px; border-radius: 5px;">
+                            <label for="so_cccd" style="width: 180px; font-weight: bold; font-size: 16px; color: #333; margin-right: 10px; text-align: left;">Số CCCD:</label>
+                            <input type="so_cccd" class="form-control" id="so_cccd" name="so_cccd" style="font-size: 16px; padding: 8px; border-radius: 5px;">
                         </div>
+                    </div>
+
+                    <div class="col-md-6 right-column" style="padding: 10px;">
+                        <div class="form-group" style="display: flex; align-items: center; margin-bottom: 10px;">
+                            <label for="vi_tri_cong_viec" style="width: 450px; font-weight: bold; font-size: 16px; color: #333; margin-right: 10px; text-align: left;">Vị trí làm việc:</label>
+                            <input type="text" class="form-control" id="vi_tri_cong_viec" name="vi_tri_cong_viec" style="font-size: 16px; padding: 8px; border-radius: 5px;">
+                            <div class="form-group" style="display: flex; align-items: center; margin-bottom: 10px;">
+                                <label for="chuc_vu" style="width: 180px; font-weight: bold; font-size: 16px; color: #333; margin-left: 10px; text-align: left;">Chức vụ:</label>
+                                <input type="text" class="form-control" id="chuc_vu" name="nam_tn" style="font-size: 16px; padding: 8px; border-radius: 5px;">
+                            </div>
+                        </div>
+
+                        <div class="form-group" style="display: flex; align-items: center; margin-bottom: 10px;">
+                            <label for="to_phong_ban" style="width: 180px; font-weight: bold; font-size: 16px; color: #333; margin-right: 10px; text-align: left;">Tổ (Phòng ban):</label>
+                            <select class="form-control" id="to_phong_ban" name="to_phong_ban" style="font-size: 16px; padding: 8px; border-radius: 5px;">
+                                <option value="Lớp mầm">Lớp mầm</option>
+                                <option value="Lớp chồi">Lớp chồi</option>
+                                <option value="Lớp lá">Lớp lá</option>
+                                <option value="Văn phòng">Văn phòng</option>
+                                <option value="Y tế - Hậu cần">Y tế - Hậu cần</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group" style="display: flex; align-items: center; margin-bottom: 10px;">
+                            <label for="trinh_do_hoc_van" style="width: 450px; font-weight: bold; font-size: 16px; color: #333; margin-right: 10px; text-align: left;">Trình độ học vấn:</label>
+                            <select class="form-control" id="trinh_do_hoc_van" name="trinh_do_hoc_van" style="font-size: 16px; padding: 8px; border-radius: 5px; width: 431px">
+                                <option value="Dưới trung cấp">Dưới trung cấp</option>
+                                <option value="Trung cấp">Trung cấp</option>
+                                <option value="Cao đẳng">Cao đẳng</option>
+                                <option value="Đại học">Đại học</option>
+                                <option value="Thạc sĩ">Thạc sĩ</option>
+                            </select>
+                            <div class="form-group" style="display: flex; align-items: center; margin-bottom: 10px;">
+                                <label for="nam_tn" style="width: 180px; font-weight: bold; font-size: 16px; color: #333; margin-left: 10px; text-align: left;">Năm TN:</label>
+                                <input type="text" class="form-control" id="nam_tn" name="nam_tn" style="font-size: 16px; padding: 8px; border-radius: 5px;">
+                            </div>
+                        </div>
+
+                        <div class="form-group" style="display: flex; align-items: center; margin-bottom: 10px;">
+                            <label for="chuyen_nganh" style="width: 180px; font-weight: bold; font-size: 16px; color: #333; margin-right: 10px; text-align: left;">Chuyên ngành:</label>
+                            <input type="text" class="form-control" id="chuyen_nganh" name="chuyen_nganh" style="font-size: 16px; padding: 8px; border-radius: 5px;">
+                        </div>
+
+                        <div class="form-group" style="display: flex; align-items: center; margin-bottom: 10px;">
+                            <label for="noi_dao_tao" style="width: 180px; font-weight: bold; font-size: 16px; color: #333; margin-right: 10px; text-align: left;">Nơi đào tạo:</label>
+                            <input type="text" class="form-control" id="noi_dao_tao" name="noi_dao_tao" style="font-size: 16px; padding: 8px; border-radius: 5px;">
+                        </div>
+
+                        <div class="form-group" style="display: flex; align-items: center; margin-bottom: 10px;">
+                            <label for="ngay_cap" style="width: 180px; font-weight: bold; font-size: 16px; color: #333; margin-right: 10px; text-align: left;">Ngày cấp:</label>
+                            <input type="date" class="form-control" id="ngay_cap" name="ngay_cap" style="font-size: 16px; padding: 8px; border-radius: 5px;">
+                        </div>
+
                     </div>
                 </div>
 
-                <h3 class="line-title" style="position: relative; text-align: center; font-size: 22px; font-weight: bold; color: #008CBA; margin: 20px 0;">
-                    <span style="position: absolute; left: 0; top: 50%; width: 35%; height: 1px; background-color: #008CBA;"></span>
-                    Hợp Đồng Lao Động
-                    <span style="position: absolute; right: 0; top: 50%; width: 35%; height: 1px; background-color: #008CBA;"></span>
-                </h3>
+                <!-- Nơi cấp và Địa chỉ tạm trú kéo dài -->
+                <div class="form-group" style="display: flex; align-items: center; margin-bottom: 15px;">
+                    <label for="noi_cap" style="width: 140px; font-weight: bold; font-size: 16px; color: #333; margin-right: 10px; text-align: left;">Nơi cấp:</label>
+                    <input type="text" class="form-control" id="noi_cap" name="noi_cap" style="font-size: 16px; padding: 8px; border-radius: 5px; width: 100%;">
+                </div>
 
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="form-group" style="display: flex; align-items: center; margin-bottom: 15px;">
-                            <label for="loai_hop_dong" style="width: 180px; font-weight: bold; font-size: 16px; color: #333; margin-right: 10px; text-align: left;">Loại hợp đồng:</label>
-                            <select class="form-control" id="loai_hop_dong" name="loai_hop_dong" style="font-size: 16px; padding: 8px; border-radius: 5px;">
-                                <option value="Hợp đồng có thời hạn">Hợp đồng có thời hạn</option>
-                                <option value="Hợp đồng không thời hạn">Hợp đồng không thời hạn</option>
-                            </select>
-                        </div>
-
-                        <div class="form-group" style="display: flex; align-items: center; margin-bottom: 15px;">
-                            <label for="thoi_han_hop_dong" style="width: 180px; font-weight: bold; font-size: 16px; color: #333; margin-right: 10px; text-align: left;">Thời hạn hợp đồng:</label>
-                            <input type="text" class="form-control" id="thoi_han_hop_dong" name="thoi_han_hop_dong" style="font-size: 16px; padding: 8px; border-radius: 5px;">
-                        </div>
-
-                        <div class="form-group" style="display: flex; align-items: center; margin-bottom: 15px;">
-                            <label for="ngay_vao_lam" style="width: 180px; font-weight: bold; font-size: 16px; color: #333; margin-right: 10px; text-align: left;">Ngày vào làm:</label>
-                            <input type="date" class="form-control" id="ngay_vao_lam" name="ngay_vao_lam" style="font-size: 16px; padding: 8px; border-radius: 5px;">
-                        </div>
-                    </div>
-
-                    <div class="col-md-6">
-                        <div class="form-group" style="display: flex; align-items: center; margin-bottom: 15px;">
-                            <label for="muc_luong" style="width: 180px; font-weight: bold; font-size: 16px; color: #333; margin-right: 10px; text-align: left;">Mức lương cơ bản:</label>
-                            <input type="text" class="form-control" id="muc_luong" name="muc_luong" style="font-size: 16px; padding: 8px; border-radius: 5px;">
-                        </div>
-
-                        <div class="form-group" style="display: flex; align-items: center; margin-bottom: 15px;">
-                            <label for="trang_thai_hop_dong" style="width: 180px; font-weight: bold; font-size: 16px; color: #333; margin-right: 10px; text-align: left;">Trạng thái hợp đồng:</label>
-                            <select class="form-control" id="trang_thai_hop_dong" name="trang_thai_hop_dong" style="font-size: 16px; padding: 8px; border-radius: 5px;">
-                                <option value="Đang còn hiệu lực">Đang còn hiệu lực</option>
-                                <option value="Đã hết hạn">Đã hết hạn</option>
-                            </select>
-                        </div>
-                    </div>
+                <div class="form-group" style="display: flex; align-items: center; margin-bottom: 15px;">
+                    <label for="dia_chi_tam_tru" style="width: 140px; font-weight: bold; font-size: 16px; color: #333; margin-right: 10px; text-align: left;">Địa chỉ tạm trú:</label>
+                    <input type="text" class="form-control" id="dia_chi_tam_tru" name="dia_chi_tam_tru" style="font-size: 16px; padding: 8px; border-radius: 5px; width: 100%;">
                 </div>
 
                 <div style="display: flex; justify-content: flex-end;">
@@ -169,4 +179,6 @@
         </form>
     </div>
 </main>
+
+
 {% endblock %}

@@ -93,7 +93,6 @@ class Command(BaseCommand):
                 'ngay_cap': self.convert_date(data_dict['ngay_cap']),
                 'noi_cap': data_dict['noi_cap'],
                 'dia_chi_tam_tru': data_dict['dia_chi_tam_tru'],
-                'email': data_dict['email'],
             })
 
         # Process HopDongLaoDong
@@ -106,9 +105,7 @@ class Command(BaseCommand):
                                                  luong=float(data_dict['luong'].replace(',', '').strip()),
                                                  ngay_ky=self.convert_date(data_dict['ngay_ky']),
                                                  tu_ngay=self.convert_date(data_dict['tu_ngay']),
-                                                 den_ngay=self.convert_date(data_dict['den_ngay']),
-                                                 so_hop_dong=data_dict['so_hop_dong'],
-                                                 thoi_han_hop_dong=data_dict['thoi_han_hop_dong'],)
+                                                 den_ngay=self.convert_date(data_dict['den_ngay']))
 
         # Process BHXH
         for data_dict in models.get('BHXH', []):
