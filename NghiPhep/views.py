@@ -1,7 +1,7 @@
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, get_object_or_404, redirect
 from django.utils import timezone
-from HOME.models import NghiPhep, NhanVien, HopDongLaoDong, PhuCapNhanVien
+from HOME.models import NghiPhep, NhanVien, HopDongLaoDong, PhuCapNhanVien, PhuCap
 from .forms import NghiPhepForm, SearchForm, Ghichu, loai_nghi_phep, SearchNVForm
 from django.contrib import messages
 from django.contrib.auth.models import User
@@ -69,6 +69,9 @@ def ThongTinNP( request,nhanvien, danh_sach, nam):
         **ThongTinNPYear(request, nam)
     }
 
+
+
+
 @login_required
 def NghiPhep_list_nv(request):
     nam = request.GET.get('year')
@@ -79,6 +82,7 @@ def NghiPhep_list_nv(request):
     form = SearchForm(request.GET)
 
     ThongTinNP(request,nhanvien, nghiphep_list_nv, year)
+
     context = {
         'NP_list': nghiphep_list_nv,
         'nhan_vien': nhanvien,
