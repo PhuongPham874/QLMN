@@ -7,6 +7,30 @@
         justify-content: space-between;
         margin-bottom: 10px;
     }
+    #duyet {
+        background-color: #007bff; /* Màu nền mặc định (xanh dương) */
+        color: white; /* Màu chữ trắng */
+        border: none; /* Bỏ viền mặc định */
+        transition: background-color 0.3s, color 0.3s; /* Hiệu ứng chuyển đổi mượt mà */
+    }
+
+    #duyet:hover {
+        background-color: #28a745; /* Nền xanh lá khi hover */
+        color: white; /* Chữ trắng khi hover */
+    }
+
+    /* Nút Từ chối */
+    #tuchoi {
+        background-color: #007bff; /* Màu nền mặc định (xanh dương) */
+        color: white; /* Màu chữ trắng */
+        border: none; /* Bỏ viền mặc định */
+        transition: background-color 0.3s, color 0.3s; /* Hiệu ứng chuyển đổi mượt mà */
+    }
+
+    #tuchoi:hover {
+        background-color: #dc3545; /* Nền đỏ khi hover */
+        color: white; /* Chữ trắng khi hover */
+    }
 
 {% endblock %}
 
@@ -82,7 +106,7 @@
                                 {% csrf_token %}
                                 <div class="inputghichu">
                                     <span class="text-info">Ghi chú: </span>
-                                    {{ formghichu.as_p }}
+                                    <textarea name="ghichu" id="id_ghichu" rows="4" style="width: 60%; text-align: left; margin-right: 25% ">{{ formghichu.ghichu.value }}</textarea>
                                 </div>
                                 {% if messages %}
                                     {% for message in messages %}
@@ -120,6 +144,7 @@
                                 <div class="leave-type">{{ item.loai_nghi }}</div>
                               </div>
                             </div>
+                              {% if item.nguoi_duyet %}
                             <div class="notification-header" style="margin-left: 50px; margin-top: 15px">
                               <img src="{{ item.nguoi_duyet.anh_ca_nhan }}" alt="Avatar" class="avatar">
                               <div class="profile nguoiduyet">
@@ -130,7 +155,7 @@
                                   <div class="leave-type">{{ item.nguoi_duyet.chuc_vu }} {{ item.nguoi_duyet.to_phong_ban }} </div>
                               </div>
                             </div>
-
+                            {% endif %}
                             <div class="status-change">
                               <span class="dot">•</span>
                               Chờ duyệt

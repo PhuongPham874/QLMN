@@ -37,12 +37,7 @@ def ThongTinNP( request,nhanvien, danh_sach, nam):
     so_ngay = 0
     for don in danh_sach:
         if don.trang_thai_don =="Đã duyệt":
-            if don.ngay_ket_thuc < today:
-                so_ngay = (don.ngay_ket_thuc - don.ngay_bat_dau).days
-            elif don.ngay_bat_dau <= today <= don.ngay_ket_thuc:
-                so_ngay = (today - don.ngay_bat_dau).days
-            else:
-                so_ngay = 0
+            so_ngay = (don.ngay_ket_thuc - don.ngay_bat_dau).days
             so_ngay_da_nghi += so_ngay
 
 
@@ -342,6 +337,7 @@ def redirect_nghiphep_view(request):
 
 
 
+
 @login_required
 def EditNghiPhep (request, nghiphep_pk=None):
     year = request.GET.get('year')
@@ -374,12 +370,13 @@ def EditNghiPhep (request, nghiphep_pk=None):
                     if nghiphep is None:
                         updated_nghiphep.nhan_vien = nhanvien
                         updated_nghiphep.ngay_tao_don = timezone.now()
-                        return redirect("DanhSachNghiPhep")
+                        updated_nghiphep.save()
+                        return redirect("DanhSachNP_NV")
                     else :
                         updated_nghiphep.ngay_chinh_sua = timezone.now()
                         updated_nghiphep = form.save()
                         messages.success(request, "Đơn nghỉ phép {} được chỉnh sửa.".format(updated_nghiphep))
-                        return redirect("DanhSachNghiPhep")
+                        return redirect("DanhSachNP_NV")
     else:
         form = NghiPhepForm(instance=nghiphep)
     return render(request, "NghiPhep/formNghiPhep.html", {"model_type": "Nghỉ Phép", "form": form, "instance": nghiphep, "nhan_vien": nhanvien, **ThongTinNP(request, nhanvien, nghiphep_list_nv, year)})
@@ -413,13 +410,14 @@ def XulyNP(request, nghiphep_pk):
 
                     return redirect("DanhSachNP")
         elif action == "duyet":
-            ghi_chu = form.cleaned_data["ghi_chu"]
-            nghiphep.trang_thai_don = "Đã duyệt"
-            nghiphep.ngay_duyet = timezone.now();
-            nghiphep.ghi_chu = ghi_chu
-            nghiphep.nguoi_duyet = nhanvien
-            nghiphep.save()
-            return redirect("DanhSachNP")
+            if form.is_valid():
+                ghi_chu = form.cleaned_data["ghi_chu"]
+                nghiphep.trang_thai_don = "Đã duyệt"
+                nghiphep.ngay_duyet = timezone.now();
+                nghiphep.ghi_chu = ghi_chu
+                nghiphep.nguoi_duyet = nhanvien
+                nghiphep.save()
+                return redirect("DanhSachNP")
     else:
         form = Ghichu()
     return redirect("DanhSachNP")

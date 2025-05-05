@@ -182,7 +182,7 @@ class NghiPhep(models.Model):
    ghi_chu = models.TextField(blank=True, null=True)
    ngay_tao_don = models.DateTimeField(null=True)
    ngay_chinh_sua = models.DateTimeField(null=True)
-   nguoi_duyet = models.ForeignKey(NhanVien, on_delete=models.CASCADE, related_name='nguoi_duyet_don')
+   nguoi_duyet = models.ForeignKey(NhanVien, null=True, on_delete=models.CASCADE, related_name='nguoi_duyet_don')
    ngay_duyet = models.DateField(blank=True, null=True)
 
 
