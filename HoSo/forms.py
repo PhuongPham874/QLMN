@@ -13,13 +13,9 @@ class NhanVienForm(forms.ModelForm):
 class HopDongLaoDongForm(forms.ModelForm):
     class Meta:
         model = HopDongLaoDong
-        fields = ['nhan_vien', 'vi_tri_lam_viec', 'to_phong_ban', 'so_hop_dong', 'thoi_han_hop_dong', 'loai_hop_dong', 'luong', 'ngay_ky', 'tu_ngay', 'den_ngay', 'trang_thai_hop_dong']
+        exclude = ['nhan_vien', 'vi_tri_lam_viec', 'to_phong_ban']
+        # hoặc dùng fields nếu bạn muốn liệt kê rõ ràng
 
     def __init__(self, *args, **kwargs):
-        nhan_vien = kwargs.pop('nhan_vien', None)
+        self.nhan_vien_instance = kwargs.pop('nhan_vien', None)
         super().__init__(*args, **kwargs)
-
-        if nhan_vien:
-            self.fields['nhan_vien'].initial = nhan_vien
-            self.fields['vi_tri_lam_viec'].initial = nhan_vien.vi_tri_cong_viec
-            self.fields['to_phong_ban'].initial = nhan_vien.to_phong_ban

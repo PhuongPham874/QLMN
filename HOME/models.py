@@ -98,7 +98,7 @@ class HopDongLaoDong(models.Model):
    tu_ngay = models.DateField()
    den_ngay = models.DateField()
    TRANG_THAI_HOP_DONG_CHOICES = [
-       ('Còn hiệu lực', 'Còn hiệu lực'),
+       ('Đang hiệu lực', 'Đang hiệu lực'),
        ('Sắp hết hạn', 'Sắp hết hạn'),
        ('Hết hiệu lực', 'Hết hiệu lực')
    ]
