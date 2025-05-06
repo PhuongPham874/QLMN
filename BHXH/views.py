@@ -57,6 +57,7 @@ def chinhsuaBHXH(request, ma_nv):
         form = updateBHXH(instance=bhxh)
     return render(request, "ChinhsuaBHXH.html", {"form": form,"bhxh": bhxh})
 def thongtinchitiet(request,ma_nv):
+    nhanvien = get_object_or_404(NhanVien, user=request.user)
     nhan_vien_obj = get_object_or_404(NhanVien, id=ma_nv)
     bhxhchitiet = BHXH.objects.get(nhan_vien = nhan_vien_obj)
     dongbhchitiet = DONGBHXH.objects.filter(nhan_vien = nhan_vien_obj)
@@ -64,7 +65,7 @@ def thongtinchitiet(request,ma_nv):
     Total=0
     for dong in dongbhchitiet:
         Total += dong.tong_tien
-    context = {'bh':bhxhchitiet,'dongbh':dongbhchitiet,'Total':Total,'solanthamgia':so_lan_tham_gia, 'nhan_vien': nhan_vien_obj}
+    context = {'bh':bhxhchitiet,'dongbh':dongbhchitiet,'Total':Total,'solanthamgia':so_lan_tham_gia, 'nhan_vien': nhanvien}
     return render(request,'BHXH/Hienthichitiet.html',context)
 def dong_bhxh(request):
     if request.method == "POST":
