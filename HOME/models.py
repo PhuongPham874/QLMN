@@ -212,23 +212,13 @@ class KyLuat(models.Model):
   minh_chung_url = models.URLField(max_length=200, null=True, blank=True)
 
 
+  def __str__(self):
+      return f"Kỉ luật đối với {self.nhan_vien.ten_nv} - {self.muc_do} - {self.ly_do}"
+  def get_muc_do_display(self):
+        return dict(self.MUC_DO_CHOICES).get(self.muc_do, self.muc_do)
 
-
-  def get_all_info(self):
-      so_tien = f", Số tiền phạt: {self.so_tien_phat}" if self.muc_do == 'PHAT_TIEN' and self.so_tien_phat else ""
-      ngay_ket_thuc = f", Ngày kết thúc: {self.ngay_ket_thuc}" if self.ngay_ket_thuc else ""
-      minh_chung = f", Minh chứng: {self.minh_chung_file.url if self.minh_chung_file else self.minh_chung_url if self.minh_chung_url else 'Không có'}"
-      nguoi_tao_info = f"{self.nguoi_tao_don.ten_nv} ({self.nguoi_tao_don.chuc_vu})" if self.nguoi_tao_don else 'N/A'
-      nguoi_duyet_info = f"{self.nguoi_duyet_don.ten_nv} ({self.nguoi_duyet_don.chuc_vu})" if self.nguoi_duyet_don else 'N/A'
-      return (f"Tên NV: {self.nhan_vien.ten_nv}, Ngày ra quyết định: {self.ngay_ra_quyet_dinh}, "
-              f"Ngày bắt đầu: {self.ngay_bat_dau}{ngay_ket_thuc}, "
-              f"Mức độ: {self.get_muc_do_display()}, Lý do: {self.ly_do}, "
-              f"Người tạo: {nguoi_tao_info}, "
-              f"Người duyệt: {nguoi_duyet_info}, "
-              f"Trạng thái: {self.get_trang_thai_display()}, "
-              f"Ngày tạo: {self.so_tien}{minh_chung}")
-
-
+  def get_trang_thai_display(self):
+      return dict(self.TRANG_THAI_CHOICES).get(self.trang_thai, self.trang_thai)
 
 
 class KhenThuong(models.Model):
@@ -252,9 +242,6 @@ class KhenThuong(models.Model):
 
   def get_trang_thai_display(self):
       return dict(self.TRANG_THAI_CHOICES).get(self.trang_thai, self.trang_thai)
-
-
-
 
 
 

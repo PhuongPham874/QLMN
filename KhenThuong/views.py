@@ -44,7 +44,7 @@ def add_khen_thuong(request):
         initial_data = {'nguoi_tao_don': nhan_vien}
         form = KhenThuongForm(initial=initial_data, user=request.user)
 
-    return render(request, 'KhenThuong/Khenthuong.html', {'form': form, 'form_errors': form.errors})
+    return render(request, 'KhenThuong/Khenthuong.html', {'form': form, 'form_errors': form.errors,'nhan_vien': nhan_vien})
 
 @login_required
 def edit_khen_thuong(request, reward_id):
@@ -82,7 +82,7 @@ def edit_khen_thuong(request, reward_id):
     else:
         form = KhenThuongForm(instance=khen_thuong, user=request.user)
 
-    return render(request, 'KhenThuong/Khenthuong.html', {'form': form, 'is_edit': True, 'form_errors': form.errors})
+    return render(request, 'KhenThuong/Khenthuong.html', {'form': form, 'is_edit': True, 'form_errors': form.errors,'nhan_vien': nhan_vien})
 
 @login_required
 def duyet_khen_thuong(request, reward_id):
@@ -120,7 +120,7 @@ def duyet_khen_thuong(request, reward_id):
                 'error': f"Lỗi hệ thống khi xử lý đơn: {str(e)}. Vui lòng thử lại."
             })
 
-    return render(request, 'KhenThuong/Duyet_khenthuong.html', {'khen_thuong': khen_thuong})
+    return render(request, 'KhenThuong/Duyet_khenthuong.html', {'khen_thuong': khen_thuong,'nhan_vien': nhan_vien})
 
 @login_required
 def khen_thuong_cho_duyet(request):
@@ -155,7 +155,7 @@ def khen_thuong_cho_duyet(request):
         'rewards': rewards,
         'thang_list': [date.month for date in thang_list],
         'nam_list': [date.year for date in nam_list],
-        'user_nhan_vien': nhan_vien,
+        'nhan_vien': nhan_vien,
         'allowed_roles': ['Hiệu Trưởng', 'Hiệu phó chuyên môn', 'Hiệu phó hoạt động', 'Tổ trưởng'],
         'can_approve': can_approve,
     }
@@ -212,7 +212,7 @@ def khen_thuong_list(request):
         'thang_list': [date.month for date in thang_list],
         'nam_list': [date.year for date in nam_list],
         'nhan_vien_list': nhan_vien_list,
-        'user_nhan_vien': nhan_vien,
+        'nhan_vien': nhan_vien,
         'allowed_roles': ['Hiệu Trưởng', 'Hiệu phó chuyên môn', 'Hiệu phó hoạt động', 'Tổ trưởng'],
         'can_approve': can_approve,
     }
@@ -264,7 +264,7 @@ def khen_thuong_cua_toi(request):
         'tieu_de': tieu_de,
         'thang_list': [date.month for date in thang_list],
         'nam_list': [date.year for date in nam_list],
-        'user_nhan_vien': nhan_vien,
+        'nhan_vien': nhan_vien,
         'allowed_roles': ['Hiệu Trưởng', 'Hiệu phó chuyên môn', 'Hiệu phó hoạt động', 'Tổ trưởng'],
         'can_approve': can_approve,
     })

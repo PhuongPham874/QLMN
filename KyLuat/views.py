@@ -163,7 +163,7 @@ def add_ky_luat(request):
     else:
         form = KyLuatForm(request=request)
 
-    return render(request, 'KyLuat/Kyluat.html', {'form': form, 'form_errors': form.errors})
+    return render(request, 'KyLuat/Kyluat.html', {'form': form, 'form_errors': form.errors,'nhan_vien': nhan_vien})
 
 @login_required
 def edit_ky_luat(request, ky_luat_id):
@@ -199,7 +199,7 @@ def edit_ky_luat(request, ky_luat_id):
                 form.add_error(None, f"Lỗi hệ thống khi chỉnh sửa kỷ luật: {str(e)}. Vui lòng thử lại.")
     else:
         form = KyLuatForm(instance=ky_luat, request=request)
-    return render(request, 'KyLuat/Kyluat.html', {'form': form, 'is_edit': True, 'form_errors': form.errors})
+    return render(request, 'KyLuat/Kyluat.html', {'form': form, 'is_edit': True, 'form_errors': form.errors,'nhan_vien': nhan_vien})
 
 @login_required
 def duyet_ky_luat(request, ky_luat_id):
@@ -238,7 +238,7 @@ def duyet_ky_luat(request, ky_luat_id):
                 'ky_luat': ky_luat,
                 'error': f"Lỗi hệ thống khi xử lý đơn: {str(e)}. Vui lòng thử lại."
             })
-    return render(request, 'KyLuat/Duyet_kyluat.html', {'ky_luat': ky_luat})
+    return render(request, 'KyLuat/Duyet_kyluat.html', {'ky_luat': ky_luat,'nhan_vien': nhan_vien})
 
 @login_required
 def ky_luat_cho_duyet(request):
@@ -257,8 +257,7 @@ def ky_luat_cho_duyet(request):
         ky_luat_list = KyLuat.objects.filter(trang_thai='DANG_CHO_DUYET', nguoi_duyet_don=nhan_vien).order_by('-ngay_ra_quyet_dinh')
 
     return render(request, 'KyLuat/Kyluat_cho_duyet.html', {
-        'ky_luat_list': ky_luat_list,
-    })
+        'ky_luat_list': ky_luat_list,'nhan_vien': nhan_vien,})
 
 @login_required
 def ky_luat_list(request):
