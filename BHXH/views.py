@@ -10,12 +10,14 @@ def tinh_tong_tien_bhxh(nhan_vien, nhan_vien_dong, truong_dong):
         # Tính tổng tiền BHXH: (nhân viên đóng + trường đóng) * mức lương
     tong_tien = ((nhan_vien_dong / 100) * muc_luong) + ((truong_dong / 100) * muc_luong)
     return tong_tien
-
 def bhxh(request):
     nhanvien = get_object_or_404(NhanVien, user=request.user)
     bhxh_list = BHXH.objects.all()  # Lấy tất cả các đối tượng BHXH
-    return render(request, 'BHXH/BHXH.html', {'bhxh_list': bhxh_list, 'nhan_vien':nhanvien })
-
+    name_filter = request.GET.get('name', '')
+    if name_filter:
+        bhxh_list = bhxh_list.filter(nhan_vien__ten_nv__icontains=name_filter)
+    form = DongBHXHForm()
+    return render(request, 'BHXH/BHXH.html', {'bhxh_list': bhxh_list, 'nhan_vien':nhanvien,'name_filter': name_filter, })
 def themmoiBHXH(request):
     # Lấy danh sách nhân viên chưa có BHXH
     nhan_vien_choices = NhanVien.objects.filter(
@@ -44,6 +46,7 @@ def themmoiBHXH(request):
         form = BHXHform()
         form.fields['ten_nv'].queryset = nhan_vien_choices
     return render(request, 'BHXH/ThemBHXH.html', {'form': form})
+
 def chinhsuaBHXH(request, ma_nv):
     bhxh = get_object_or_404(BHXH, nhan_vien_id=ma_nv)
     if request.method == 'POST':
@@ -58,8 +61,8 @@ def chinhsuaBHXH(request, ma_nv):
     else:
         form = updateBHXH(instance=bhxh)
     return render(request, "ChinhsuaBHXH.html", {"form": form,"bhxh": bhxh})
+
 def thongtinchitiet(request,ma_nv):
-    nhanvien = get_object_or_404(NhanVien, user=request.user)
     nhan_vien_obj = get_object_or_404(NhanVien, id=ma_nv)
     bhxhchitiet = BHXH.objects.get(nhan_vien = nhan_vien_obj)
     dongbhchitiet = DONGBHXH.objects.filter(nhan_vien = nhan_vien_obj)
@@ -67,8 +70,9 @@ def thongtinchitiet(request,ma_nv):
     Total=0
     for dong in dongbhchitiet:
         Total += dong.tong_tien
-    context = {'bh':bhxhchitiet,'dongbh':dongbhchitiet,'Total':Total,'solanthamgia':so_lan_tham_gia, 'nhan_vien': nhanvien}
+    context = {'bh':bhxhchitiet,'dongbh':dongbhchitiet,'Total':Total,'solanthamgia':so_lan_tham_gia, 'nhan_vien': nhan_vien_obj}
     return render(request,'BHXH/Hienthichitiet.html',context)
+
 def dong_bhxh(request):
     if request.method == "POST":
         form = DongBHXHForm(request.POST)
@@ -95,15 +99,22 @@ def dong_bhxh(request):
             messages.error(request, 'Vui lòng nhập đầy đủ ngày bắt đầu và ngày kết thúc.')
     else:
         form = DongBHXHForm()
-    return render(request, 'BHXH/Noptien.html', {'form': form})
-
+    return redirect('bhxh_list')
 
 @login_required
 def redirect_bhxh_view(request):
     nhanvien = get_object_or_404(NhanVien, user=request.user)
-    if nhanvien.chuc_vu in ['Hiệu Trưởng', 'Hiệu phó chuyên môn', 'Hiệu phó hoạt động', 'Tổ trưởng', 'Kế toán']:
+    if nhanvien.vi_tri_cong_viec in ['Hiệu Trưởng', 'Hiệu phó chuyên môn', 'Hiệu phó hoạt động', 'Kế toán']:
         return redirect('bhxh_list')
     else:
         return redirect('info_bhxh',ma_nv=nhanvien.id)
+
+@login_required
+def bhxh_cua_toi(request):
+    nhanvien = get_object_or_404(NhanVien, user=request.user)
+    bhxh_list = None
+    if nhanvien.vi_tri_cong_viec in ['Hiệu Trưởng', 'Hiệu phó chuyên môn', 'Hiệu phó hoạt động', 'Kế toán']:
+        bhxh_list = BHXH.objects.filter(nhan_vien=nhanvien)
+    return render(request, 'BHXH/BHXH.html', {'bhxh_list': bhxh_list, 'nhanvien': nhanvien})
 
 

@@ -7,5 +7,7 @@ urlpatterns = [
     path('infobhxh/<int:ma_nv>',thongtinchitiet,name='info_bhxh'),
     path('noptien/',dong_bhxh,name='nop_tien'),
     path('home/BHXH',redirect_bhxh_view,name='redirectBHXH'),
+    path('bhxhcuatoi/', bhxh_cua_toi, name='bhxh_me'),
+#
 
 ]
