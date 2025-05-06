@@ -101,7 +101,7 @@ def dong_bhxh(request):
 @login_required
 def redirect_bhxh_view(request):
     nhanvien = get_object_or_404(NhanVien, user=request.user)
-    if nhanvien.chuc_vu in ['Hiệu Trưởng', 'Hiệu phó chuyên môn', 'Hiệu phó hoạt động', 'Tổ trưởng']:
+    if nhanvien.chuc_vu in ['Hiệu Trưởng', 'Hiệu phó chuyên môn', 'Hiệu phó hoạt động', 'Tổ trưởng', 'Kế toán']:
         return redirect('bhxh_list')
     else:
         return redirect('info_bhxh',ma_nv=nhanvien.id)
