@@ -1,10 +1,10 @@
-{% extends 'home.html' %}
+{% extends 'HOME.html' %}
+
 {% block extra_css %}
 <style>
     .container {
         background-color: white;
         padding: 20px;
-        width: 1100px
     }
     .bhxh-title {
         font-size: 28px;
@@ -21,25 +21,32 @@
         border-radius: 10px;
         box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
         margin: 0 auto;
-        height: 480px;
+        height: auto;
     }
     .info-row {
         display: flex;
-        justify-content: flex-start;
+        justify-content: center;
         align-items: center;
         margin-bottom: 20px;
     }
-    label {
-        font-weight: bold;
-        width: 150px;
+    .label-wrapper {
+        width: 240px;
+        text-align: right;
         margin-right: 10px;
+    }
+    .label-wrapper label {
+        font-weight: bold;
         color: #066BBB;
         font-family: 'Roboto Slab';
-        text-align: left;
+        white-space: nowrap;
     }
-    select, input[type="text"], input[type="date"] {
-        width: 250px;
+    .input-wrapper {
+        width: 300px;
+    }
+    .input-wrapper .form-control {
+        width: 100%;
         padding: 8px;
+        height: 38px;
         border: 1px solid #ccc;
         border-radius: 5px;
         font-size: 14px;
@@ -47,25 +54,14 @@
         background-color: #FFFFFF;
         color: #000000;
     }
-    select:focus, input[type="text"]:focus, input[type="date"]:focus {
+    .input-wrapper .form-control:focus {
         outline: none;
         border: 2px solid #007BFF;
-    }
-    .field-group {
-        display: flex;
-        align-items: center;
-        margin-right: 20px;
-    }
-    .field-group label {
-        width: 150px;
-        margin-right: 10px;
-    }
-    .field-group select, .field-group input[type="text"] {
-        width: 250px;
     }
     .action-buttons {
         display: flex;
         justify-content: flex-end;
+        margin-top: 20px;
     }
     .button {
         background-color: #007BFF;
@@ -94,48 +90,79 @@
         text-decoration: none;
         font-weight: bold;
     }
+    .alert {
+        padding: 12px;
+        border-radius: 6px;
+        margin-bottom: 15px;
+        font-weight:bold;
+        text-align: center;
+    }
+    .alert-success {
+        background-color: #28a745;
+        color: white;
+    }
+    .alert-error {
+        background-color: #dc3545;
+        color: white;
+    }
 </style>
 {% endblock %}
+
 {% block page_background %}
-<div class="container">
+<div class="container"style="width: 75%;">
     <div class="action-buttons1">
         <a href="{% url 'bhxh_list' %}" class="button1">Quay lại</a>
     </div>
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-{{ message.tags }}">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endif %}
     <div class="list-group">
         <form method="POST">
             {% csrf_token %}
-            <h2 class="bhxh-title">THÔNG TIN BHXH</h2>
+            <h2 class="bhxh-title">THÊM MỚI BHXH</h2>
             <div class="info-row">
-                <div class="field-group">
-                    <label for="tenNhanVien">Tên nhân viên</label>
-                    <input type="text" id="tenNhanVien" name="tenNhanVien" value="{{ ten_nhan_vien }}" readonly>
+                <div class="label-wrapper">
+                    {{ form.ten_nv.label_tag }}
                 </div>
-                <div class="field-group">
-                    <label for="maBHXH">Mã BHXH</label>
-                    <input type="text" id="maBHXH" name="maBHXH" value="{{ bhxh.ma_bhxh }}" required>
+                <div class="input-wrapper">
+                    {{ form.ten_nv }}
                 </div>
             </div>
             <div class="info-row">
-                <div class="field-group">
-                    <label for="maNV">Mã nhân viên</label>
-                    <input type="text" id="maNV" name="maNV" value="{{ ma_nv }}" readonly>
+                <div class="label-wrapper">
+                    {{ form.ma_BHXH.label_tag }}
                 </div>
-                <div class="field-group">
-                    <label for="nhanVienDong">Nhân viên đóng</label>
-                    <input type="text" id="nhanVienDong" name="nhanVienDong" value="{{ bhxh.nhan_vien_dong|floatformat:1 }}%" readonly>
+                <div class="input-wrapper">
+                    {{ form.ma_BHXH }}
                 </div>
             </div>
             <div class="info-row">
-                <label for="truongDong">Trường đóng</label>
-                <input type="text" id="truongDong" name="truongDong" value="{{ bhxh.truong_dong|floatformat:1 }}%" readonly>
+                <div class="label-wrapper">
+                    {{ form.nhan_vien_dong.label_tag }}
+                </div>
+                <div class="input-wrapper">
+                    {{ form.nhan_vien_dong }}
+                </div>
             </div>
             <div class="info-row">
-                <label for="tongTienBHXH">Tổng tiền BHXH</label>
-                <input type="text" id="tongTienBHXH" name="tongTienBHXH" value="{{ bhxh.tong_tien_bhxh|floatformat:0 }}" readonly>
+                <div class="label-wrapper">
+                    {{ form.truong_dong.label_tag }}
+                </div>
+                <div class="input-wrapper">
+                    {{ form.truong_dong }}
+                </div>
             </div>
             <div class="info-row">
-                <label for="ngayBatDauDong">Ngày bắt đầu đóng</label>
-                <input type="date" id="ngayBatDauDong" name="ngayBatDauDong" value="{{ bhxh.thoi_gian_bat_dau_dong|date:'Y-m-d' }}" required>
+                <div class="label-wrapper">
+                    {{ form.thoi_gian_bat_dau.label_tag }}
+                </div>
+                <div class="input-wrapper">
+                    {{ form.thoi_gian_bat_dau }}
+                </div>
             </div>
             <div class="action-buttons">
                 <button class="button" type="submit">Lưu</button>

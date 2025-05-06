@@ -1,9 +1,6 @@
-{% extends 'home.html' %}
+{% extends 'HOME.html' %}
 {% block extra_css %}
 <style>
-    .container{
-        width: 1100px
-    }
     .bhxh-title {
         font-size: 28px;
         font-weight: bold;
@@ -19,6 +16,7 @@
         box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
         margin-bottom: 20px;
         border-radius: 10px;
+        position: relative;
     }
     .info-row {
         display: flex;
@@ -76,33 +74,67 @@
         padding-left: 10px;  /* Khoảng cách bên trái của danh sách BHXH */
     }
     .action-buttons {
-        display: flex;
-        justify-content: space-between;
-        margin-bottom: 20px;
-    }
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+    .action-buttons1 {
+            display: flex;
+            justify-content: flex-end;
+        }
     .button {
-        background-color: #066BBB;
-        color: white;
-        padding: 10px 20px;
-        border: none;
-        border-radius: 5px;
-        text-align: center;
-        text-decoration: none;
-        font-weight: bold;
-    }
+            background-color: #066BBB;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            text-align: center;
+            text-decoration: none;
+            font-weight: bold;
+        }
+    .button2 {
+            background-color: #007ADA;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            text-align: center;
+            text-decoration: none;
+            font-weight: bold;
+            margin-right: 10px;
+        }
     .button1 {
-        background-color: #D9D9D9;
-        color: black;
-        padding: 10px 15px;
-        border: none;
-        border-radius: 5px;
-        text-align: center;
-        text-decoration: none;
-        font-weight: bold;
-    }
+            background-color: #D9D9D9;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            text-align: center;
+            text-decoration: none;
+            font-weight: bold;
+        }
     .button:hover {
         background-color: #0056b3;
     }
+    .button1:hover {
+        background-color: #b8b8b8;}
+    .button2:hover {
+        background-color: #0056b3;}
+    .view-button {
+        background-color: #28a745;
+        color: white;
+        padding: 5px 15px;
+        border-radius: 5px;
+        text-decoration: none;
+        font-weight: bold;
+        position: absolute;
+        bottom: 10px;
+        right: 10px;
+        width: auto;
+        }
+        .view-button:hover {
+            background-color: #218838;
+        }
 </style>
 {% endblock %}
 {% block extra_js %}
@@ -122,10 +154,22 @@
 </script>
 {% endblock %}
 {% block page_background %}
-<div class="container" style="background-color: white; padding: 20px;">
+<div class="container" style="background-color: white; padding: 20px;width: 80%;">
+    {% if messages %}
+        <div class="alert-container">
+            {% for message in messages %}
+                <div class="alert alert-success" role="alert">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
     <div class="action-buttons">
-        <a href="#" class="button1">Quay lại</a>
-        <a href="{% url 'add_bhxh' %}" class="button">+ Thêm mới</a>
+            <a href="#" class="button1">Quay lại</a>
+            <div class="action-buttons1">
+                <a href="{% url 'nop_tien' %}" class="button2">+ Nộp BHXH</a>
+                <a href="{% url 'add_bhxh' %}" class="button">+ Thêm mới</a>
+            </div>
     </div>
     <div class="content">
         <h2 class="bhxh-title">BẢO HIỂM XÃ HỘI</h2>
@@ -136,22 +180,21 @@
                 <div class="list-group">
                     <div class="info-row">
                         <p><span class="text-primary">Tên nhân viên:</span>
-                            <a href="{% url 'edit_bhxh' ma_nv=bhxh.nhan_vien.id %}" class="value" style="text-decoration: none">{{ bhxh.nhan_vien.ten_nv }}</a></p>
+                            <a href="{% url 'edit_bhxh' ma_nv=bhxh.nhan_vien.id %}" class="value" style="text-decoration: none">{{ bhxh.nhan_vien.ten_nv }}</a>
+                         </p>
                     </div>
                     <div class="info-row">
                         <p><span class="text-primary">Mã nhân viên:</span> <span class="value">{{ bhxh.nhan_vien.id }}</span></p>
-                        <p><span class="text-primary">Mã BHXH:</span> <span class="value">{{ bhxh.ma_bhxh }}</span></p>
+                        <p><span class="text-primary">Mã BHXH:</span> <span class="value">{{ bhxh.ma_BHXH }}</span></p>
                     </div>
                     <div class="info-row">
-                        <p><span class="text-primary">Nhân viên đóng:</span> <span class="value">{{ bhxh.nhan_vien_dong }}%</span></p>
-                        <p><span class="text-primary">Trường đóng:</span> <span class="value">{{ bhxh.truong_dong }}%</span></p>
+                        <p><span class="text-primary">Mức đóng của nhân viên:</span> <span class="value">{{ bhxh.nhan_vien_dong }}%</span></p>
+                        <p><span class="text-primary">Mức đóng của trường:</span> <span class="value">{{ bhxh.truong_dong }}%</span></p>
                     </div>
                     <div class="info-row">
-                        <p><span class="text-primary">Tổng tiền BHXH:</span> <span class="value">{{ bhxh.tong_tien_bhxh|floatformat:0 }} </span></p>
+                        <p><span class="text-primary">Ngày bắt đầu đóng:</span> <span class="value">{{ bhxh.thoi_gian_bat_dau }}</span></p>
                     </div>
-                    <div class="info-row">
-                        <p><span class="text-primary">Ngày bắt đầu đóng:</span> <span class="value">{{ bhxh.thoi_gian_bat_dau_dong }}</span></p>
-                    </div>
+                    <a href="{% url 'info_bhxh' ma_nv=bhxh.nhan_vien.id %}" class="view-button">Xem</a>
                 </div>
                 {% empty %}
                     <p>Chưa có dữ liệu bảo hiểm xã hội.</p>
@@ -171,8 +214,3 @@
     </div>
 </div>
 {% endblock %}
-
-
-
-
-
