@@ -4,11 +4,8 @@
   body {
         margin: 0;
         padding: 0;
-        font-family: 'Roboto Slab', serif;
-        background-color: #f2f2f2;
     }
     .container {
-        background-color: white;
         padding: 20px;
     }
     .bhxh-title {
@@ -79,7 +76,6 @@
         margin-bottom: 10px;
     }
     .custom-list li {
-        color: #066BBB;
         font-weight: bold;
         margin-bottom: 5px;
     }
@@ -95,15 +91,15 @@
 
 <div class="list-group">
     <div class="info-row">
-        <p><span class="text-primary">Mã nhân viên:</span> <span class="value">{{ bh.nhan_vien.id }}</span></p>
-        <p><span class="text-primary">Mức đóng của Nhân viên:</span> <span class="value">{{ bh.nhan_vien_dong }}%</span></p>
+        <p><span class="text">Mã nhân viên:</span> <span class="value">{{ bh.nhan_vien.id }}</span></p>
+        <p><span class="text">Mức đóng của Nhân viên:</span> <span class="value">{{ bh.nhan_vien_dong }}%</span></p>
     </div>
     <div class="info-row">
-        <p><span class="text-primary">Mã BHXH:</span> <span class="value">{{ bh.ma_BHXH }}</span></p>
-        <p><span class="text-primary">Mức đóng của trường:</span> <span class="value">{{ bh.truong_dong }}%</span></p>
+        <p><span class="text">Mã BHXH:</span> <span class="value">{{ bh.ma_BHXH }}</span></p>
+        <p><span class="text">Mức đóng của trường:</span> <span class="value">{{ bh.truong_dong }}%</span></p>
     </div>
     <div class="info-row">
-        <p><span class="text-primary">Ngày bắt đầu đóng:</span> <span class="value">{{ bh.thoi_gian_bat_dau|date:"d/m/Y" }}</span></p>
+        <p><span class="text">Ngày bắt đầu đóng:</span> <span class="value">{{ bh.thoi_gian_bat_dau|date:"d/m/Y" }}</span></p>
     </div>
 </div>
 

@@ -1,3 +1,4 @@
+from django.contrib.auth.decorators import login_required
 from django.core.management.commands.runserver import naiveip_re
 from django.shortcuts import render,redirect,get_object_or_404
 from django.contrib import messages
@@ -10,8 +11,9 @@ def tinh_tong_tien_bhxh(nhan_vien, nhan_vien_dong, truong_dong):
     tong_tien = ((nhan_vien_dong / 100) * muc_luong) + ((truong_dong / 100) * muc_luong)
     return tong_tien
 def bhxh(request):
+    nhanvien = get_object_or_404(NhanVien, user=request.user)
     bhxh_list = BHXH.objects.all()  # Lấy tất cả các đối tượng BHXH
-    return render(request, 'BHXH/BHXH.html', {'bhxh_list': bhxh_list})
+    return render(request, 'BHXH/BHXH.html', {'bhxh_list': bhxh_list, 'nhan_vien':nhanvien })
 def themmoiBHXH(request):
     # Lấy danh sách nhân viên chưa có BHXH
     nhan_vien_choices = NhanVien.objects.filter(
@@ -62,7 +64,7 @@ def thongtinchitiet(request,ma_nv):
     Total=0
     for dong in dongbhchitiet:
         Total += dong.tong_tien
-    context = {'bh':bhxhchitiet,'dongbh':dongbhchitiet,'Total':Total,'solanthamgia':so_lan_tham_gia}
+    context = {'bh':bhxhchitiet,'dongbh':dongbhchitiet,'Total':Total,'solanthamgia':so_lan_tham_gia, 'nhan_vien': nhan_vien_obj}
     return render(request,'BHXH/Hienthichitiet.html',context)
 def dong_bhxh(request):
     if request.method == "POST":
@@ -93,6 +95,12 @@ def dong_bhxh(request):
     return render(request, 'BHXH/Noptien.html', {'form': form})
 
 
-
+@login_required
+def redirect_bhxh_view(request):
+    nhanvien = get_object_or_404(NhanVien, user=request.user)
+    if nhanvien.chuc_vu in ['Hiệu Trưởng', 'Hiệu phó chuyên môn', 'Hiệu phó hoạt động', 'Tổ trưởng']:
+        return redirect('bhxh_list')
+    else:
+        return redirect('info_bhxh',ma_nv=nhanvien.id)
 
 

@@ -332,14 +332,22 @@ def loc_don_nghi_phep_theo_trang_thai_hieutruong(request):
 
 
 @login_required
-def redirect_nghiphep_view(request):
+def redirect_nghiphep_view_group(request):
     user = request.user
     if user.groups.filter(name='admin').exists():
         return redirect('DanhSachNP')  # tên URL của hàm NghiPhep_list_admin
     elif user.groups.filter(name='nhanvien').exists():
         return redirect('DanhSachNP_NV')  # tên URL của hàm NghiPhep_list_nv
 
-
+@login_required
+def redirect_nghiphep_view(request):
+    nhanvien = get_object_or_404(NhanVien, user=request.user)
+    if nhanvien.chuc_vu in [ 'Hiệu phó chuyên môn', 'Hiệu phó hoạt động', 'Tổ trưởng']:
+        return redirect('DanhSachNP')
+    elif nhanvien.chuc_vu == 'Hiệu Trưởng':
+        return redirect('DanhSachNP_HT')
+    else:
+        return redirect('DanhSachNP_NV')
 
 
 @login_required

@@ -27,7 +27,6 @@
     p {
         font-weight: bold;
         color: #066BBB;
-        font-family: 'Roboto Slab';
         margin: 10px 0;
         flex: 1;
         min-width: 50%;
@@ -38,6 +37,7 @@
     }
     /* Phần lọc bên phải */
     .filter-container {
+
         width: 250px;
         border: 1px solid #ddd;
         padding: 10px;
@@ -75,12 +75,12 @@
     }
     .action-buttons {
             display: flex;
-            justify-content: space-between;
+            justify-content: flex-end;
             margin-bottom: 20px;
         }
     .action-buttons1 {
             display: flex;
-            justify-content: flex-end;
+            justify-content: flex-start;
         }
     .button {
             background-color: #066BBB;
@@ -154,7 +154,7 @@
 </script>
 {% endblock %}
 {% block page_background %}
-<div class="container" style="background-color: white; padding: 20px;width: 80%;">
+<div class="container" style=" padding: 20px;width: 80%; margin-top: 30px">
     {% if messages %}
         <div class="alert-container">
             {% for message in messages %}
@@ -164,13 +164,16 @@
             {% endfor %}
         </div>
     {% endif %}
-    <div class="action-buttons">
-            <a href="#" class="button1">Quay lại</a>
+    {% if nhan_vien.vi_tri_cong_viec == 'Kế toán' %}
+     <div class="action-buttons" style="margin-right: 0;">
             <div class="action-buttons1">
                 <a href="{% url 'nop_tien' %}" class="button2">+ Nộp BHXH</a>
                 <a href="{% url 'add_bhxh' %}" class="button">+ Thêm mới</a>
             </div>
     </div>
+    {% else %}
+
+    {% endif %}
     <div class="content">
         <h2 class="bhxh-title">BẢO HIỂM XÃ HỘI</h2>
         <div class="d-flex">
@@ -179,20 +182,20 @@
                 {% for bhxh in bhxh_list %}
                 <div class="list-group">
                     <div class="info-row">
-                        <p><span class="text-primary">Tên nhân viên:</span>
+                        <p><span class="text">Tên nhân viên:</span>
                             <a href="{% url 'edit_bhxh' ma_nv=bhxh.nhan_vien.id %}" class="value" style="text-decoration: none">{{ bhxh.nhan_vien.ten_nv }}</a>
                          </p>
                     </div>
                     <div class="info-row">
-                        <p><span class="text-primary">Mã nhân viên:</span> <span class="value">{{ bhxh.nhan_vien.id }}</span></p>
-                        <p><span class="text-primary">Mã BHXH:</span> <span class="value">{{ bhxh.ma_BHXH }}</span></p>
+                        <p><span class="text">Mã nhân viên:</span> <span class="value">{{ bhxh.nhan_vien.id }}</span></p>
+                        <p><span class="text">Mã BHXH:</span> <span class="value">{{ bhxh.ma_BHXH }}</span></p>
                     </div>
                     <div class="info-row">
-                        <p><span class="text-primary">Mức đóng của nhân viên:</span> <span class="value">{{ bhxh.nhan_vien_dong }}%</span></p>
-                        <p><span class="text-primary">Mức đóng của trường:</span> <span class="value">{{ bhxh.truong_dong }}%</span></p>
+                        <p><span class="text">Mức đóng của nhân viên:</span> <span class="value">{{ bhxh.nhan_vien_dong }}%</span></p>
+                        <p><span class="text">Mức đóng của trường:</span> <span class="value">{{ bhxh.truong_dong }}%</span></p>
                     </div>
                     <div class="info-row">
-                        <p><span class="text-primary">Ngày bắt đầu đóng:</span> <span class="value">{{ bhxh.thoi_gian_bat_dau }}</span></p>
+                        <p><span class="text">Ngày bắt đầu đóng:</span> <span class="value">{{ bhxh.thoi_gian_bat_dau }}</span></p>
                     </div>
                     <a href="{% url 'info_bhxh' ma_nv=bhxh.nhan_vien.id %}" class="view-button">Xem</a>
                 </div>
