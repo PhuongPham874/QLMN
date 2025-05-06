@@ -10,10 +10,12 @@ def tinh_tong_tien_bhxh(nhan_vien, nhan_vien_dong, truong_dong):
         # Tính tổng tiền BHXH: (nhân viên đóng + trường đóng) * mức lương
     tong_tien = ((nhan_vien_dong / 100) * muc_luong) + ((truong_dong / 100) * muc_luong)
     return tong_tien
+
 def bhxh(request):
     nhanvien = get_object_or_404(NhanVien, user=request.user)
     bhxh_list = BHXH.objects.all()  # Lấy tất cả các đối tượng BHXH
     return render(request, 'BHXH/BHXH.html', {'bhxh_list': bhxh_list, 'nhan_vien':nhanvien })
+
 def themmoiBHXH(request):
     # Lấy danh sách nhân viên chưa có BHXH
     nhan_vien_choices = NhanVien.objects.filter(
