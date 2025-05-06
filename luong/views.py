@@ -94,7 +94,7 @@ from HOME.models import ChamCong
 
 @login_required
 def danh_sach_luong(request):
-    # Nếu là superuser thì hiển thị template riêng
+
     if request.user.is_superuser:
         nhan_viens = NhanVien.objects.all().order_by('id')
         nhan_vien = get_object_or_404(NhanVien, user=request.user)
