@@ -1,4 +1,4 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from django.db.models import Sum
 from HOME.models import NhanVien, ChamCong, HopDongLaoDong, PhuCap, BHXH, KhenThuong, KyLuat, PhuCapNhanVien
 from django.contrib.auth.decorators import login_required
@@ -87,24 +87,17 @@ def bang_luong_thang(request, nhan_vien_id, thang, nam):
     }
     return bang_luong
 
-from django.contrib.auth.decorators import login_required
-from django.shortcuts import render
-from HOME.models import ChamCong
+@login_required
+def chuyen_huong_luong(request):
+    nhan_vien = get_object_or_404(NhanVien, user=request.user)
 
+    if nhan_vien.vi_tri_cong_viec == 'Kế toán':
+        return redirect('danh_sach_nhan_vien')
+    else:
+        return redirect('xem_bang_luong_cua_toi')
 
 @login_required
-def danh_sach_luong(request):
-
-    if request.user.is_superuser:
-        nhan_viens = NhanVien.objects.all().order_by('id')
-        nhan_vien = get_object_or_404(NhanVien, user=request.user)
-        return render(request, 'Luong/Danh_sach_nhan_vien.html', {
-            'user': request.user,
-            'nhan_viens': nhan_viens,
-            'nhan_vien':nhan_vien
-        })
-
-    # Lấy thông tin nhân viên liên kết với tài khoản người dùng
+def xem_bang_luong_cua_toi(request):
     try:
         nhan_vien = request.user.nhanvien
     except NhanVien.DoesNotExist:
@@ -132,4 +125,90 @@ def danh_sach_luong(request):
         'bang_luong_list': bang_luong_list,
         'nhan_vien': nhan_vien
     })
+@login_required
+def danh_sach_nhan_vien_va_luong(request):
+    nhan_vien = get_object_or_404(NhanVien, user=request.user)
+    if nhan_vien.vi_tri_cong_viec not in ['Kế toán']:
+        return render(request, 'error.html', {'message': 'Bạn không có quyền truy cập vào phần này.'})
 
+    nhan_viens = NhanVien.objects.all().order_by('id')
+
+    return render(request, 'Luong/Danh_sach_nhan_vien.html', {
+        'user': request.user,
+        'nhan_viens': nhan_viens,
+        'nhan_vien': nhan_vien
+    })
+
+@login_required
+def xem_bang_luong_cua_nhan_vien(request, nhan_vien_id):
+    nhan_vien = get_object_or_404(NhanVien, id=nhan_vien_id)
+
+    # Lấy tất cả các tháng và năm đã có bảng chấm công của nhân viên
+    cham_cong = ChamCong.objects.filter(nhan_vien=nhan_vien)
+    months_and_years = cham_cong.values_list('thang', 'nam').distinct()
+
+    # Khởi tạo danh sách bảng lương
+    bang_luong_list = []
+    processed_months = set()
+
+    for month, year in months_and_years:
+        month_year_key = f"{month}-{year}"
+        if month_year_key not in processed_months:
+            bang_luong = bang_luong_thang(request, nhan_vien.id, month, year)
+            bang_luong_list.append(bang_luong)
+            processed_months.add(month_year_key)
+
+    # Sắp xếp bảng lương từ tháng gần nhất
+    bang_luong_list.sort(key=lambda x: x['title'], reverse=True)
+
+    return render(request, 'Luong/danh_sach_luong.html', {
+        'bang_luong_list': bang_luong_list,
+        'nhan_vien': nhan_vien
+    })
+
+# from django.contrib.auth.decorators import login_required
+# from django.shortcuts import render
+# from HOME.models import ChamCong
+#
+#
+# @login_required
+# def danh_sach_luong(request):
+#     nhan_vien = get_object_or_404(NhanVien, user=request.user)
+#     if nhan_vien.vi_tri_cong_viec in ['Kế toán']:
+#         nhan_viens = NhanVien.objects.all().order_by('id')
+#         nhan_vien = get_object_or_404(NhanVien, user=request.user)
+#         return render(request, 'Luong/Danh_sach_nhan_vien.html', {
+#             'user': request.user,
+#             'nhan_viens': nhan_viens,
+#             'nhan_vien':nhan_vien
+#         })
+#
+#     # Lấy thông tin nhân viên liên kết với tài khoản người dùng
+#     try:
+#         nhan_vien = request.user.nhanvien
+#     except NhanVien.DoesNotExist:
+#         return render(request, 'error.html', {'message': 'Không tìm thấy nhân viên liên kết với tài khoản này.'})
+#
+#     # Lấy tất cả các tháng và năm đã có bảng chấm công
+#     cham_cong = ChamCong.objects.filter(nhan_vien=nhan_vien)
+#     months_and_years = cham_cong.values_list('thang', 'nam').distinct()
+#
+#     # Khởi tạo danh sách bảng lương
+#     bang_luong_list = []
+#     processed_months = set()
+#
+#     for month, year in months_and_years:
+#         month_year_key = f"{month}-{year}"
+#         if month_year_key not in processed_months:
+#             bang_luong = bang_luong_thang(request, nhan_vien.id, month, year)
+#             bang_luong_list.append(bang_luong)
+#             processed_months.add(month_year_key)
+#
+#     # Sắp xếp bảng lương từ tháng gần nhất
+#     bang_luong_list.sort(key=lambda x: x['title'], reverse=True)
+#
+#     return render(request, 'Luong/danh_sach_luong.html', {
+#         'bang_luong_list': bang_luong_list,
+#         'nhan_vien': nhan_vien
+#     })
+#
