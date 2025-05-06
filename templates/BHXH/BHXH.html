@@ -7,7 +7,7 @@
         font-style: italic;
         margin-bottom: 15px;
         color: #000000;
-        margin-left:280px;
+        margin-left: 280px;
     }
     .list-group {
         width: 800px;
@@ -36,9 +36,8 @@
         font-weight: normal;
         color: black;
     }
-    /* Phần lọc bên phải */
     .filter-container {
-        width: 250px;
+        width: 200px;
         border: 1px solid #ddd;
         padding: 10px;
         border-radius: 5px;
@@ -46,17 +45,18 @@
         background-color: #f8f9fa;
         position: sticky;
         top: 10px;
-        margin-right: 10px;  /* Giảm khoảng cách giữa lọc và danh sách */
-        height:150px;
+        margin-left: 10px;
+        height: 120px;
     }
     .filter-title {
         color: #007bff;
         font-weight: bold;
         font-size: 14px;
         margin-bottom: 10px;
+        text-align:center;
     }
     .filter-select {
-        width: 100%;
+        width: 170px;
         padding: 8px;
         font-weight: normal;
         border-radius: 5px;
@@ -64,62 +64,47 @@
         background-color: white;
         margin-top: 5px;
     }
-    /* Layout cho phần lọc và danh sách */
     .d-flex {
         display: flex;
         flex-wrap: nowrap;
     }
     .bhxh-container {
         flex-grow: 1;
-        padding-left: 10px;  /* Khoảng cách bên trái của danh sách BHXH */
+        padding-left: 10px;
     }
     .action-buttons {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 20px;
-        }
-    .action-buttons1 {
-            display: flex;
-            justify-content: flex-end;
-        }
-    .button {
-            background-color: #066BBB;
-            color: white;
-            padding: 10px 20px;
-            border: none;
-            border-radius: 5px;
-            text-align: center;
-            text-decoration: none;
-            font-weight: bold;
-        }
-    .button2 {
-            background-color: #007ADA;
-            color: white;
-            padding: 10px 20px;
-            border: none;
-            border-radius: 5px;
-            text-align: center;
-            text-decoration: none;
-            font-weight: bold;
-            margin-right: 10px;
-        }
-    .button1 {
-            background-color: #D9D9D9;
-            color: white;
-            padding: 10px 15px;
-            border: none;
-            border-radius: 5px;
-            text-align: center;
-            text-decoration: none;
-            font-weight: bold;
-        }
-    .button:hover {
-        background-color: #0056b3;
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 20px;
     }
-    .button1:hover {
-        background-color: #b8b8b8;}
-    .button2:hover {
-        background-color: #0056b3;}
+    .action-buttons1 {
+        display: flex;
+        justify-content: flex-end;
+    }
+    .button, .button1, .button2 {
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        text-align: center;
+        font-weight: bold;
+        text-decoration: none;
+        color: white;
+    }
+    .button {
+        background-color: #066BBB;
+    }
+    .button1 {
+        background-color: #D9D9D9;
+        color: black;
+    }
+    .button2 {
+        background-color: #007ADA;
+        margin-right: 10px;
+    }
+    .button:hover, .button1:hover, .button2:hover {
+        background-color: #0056b3;
+        color: white;
+    }
     .view-button {
         background-color: #28a745;
         color: white;
@@ -130,31 +115,106 @@
         position: absolute;
         bottom: 10px;
         right: 10px;
-        width: auto;
-        }
-        .view-button:hover {
-            background-color: #218838;
-        }
+    }
+    .view-button:hover {
+        background-color: #218838;
+    }
+
+    /* Popup styles */
+    .popup-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: rgba(0, 0, 0, 0.4);
+        z-index: 999;
+    }
+    .popup-form {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        z-index: 1000;
+        padding: 30px;
+        border-radius: 10px;
+        width: 400px;
+        background: linear-gradient(to right, #DDF0FF, #FFFFFF);
+        box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+    }
+    .info-row1 {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-bottom: 20px;
+    }
+    .label-wrapper {
+        width: 240px;
+        text-align: left;
+        margin-right: 10px;
+    }
+    .label-wrapper label {
+        font-weight: bold;
+        color: #066BBB;
+        font-family: 'Roboto Slab';
+        white-space: nowrap;
+    }
+    .input-wrapper {
+        width: 300px;
+    }
+    .input-wrapper .form-control {
+        width: 100%;
+        padding: 8px;
+        height: 38px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        font-size: 14px;
+        font-family: 'Roboto Slab';
+        background-color: #FFFFFF;
+        color: #000000;
+    }
+    .input-wrapper .form-control:focus {
+        outline: none;
+        border: 2px solid #007BFF;
+    }
+    .popup-form .action-buttons {
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        margin-left:10px;
+    }
+    .popup-form .action-buttons .button{
+    display: flex;
+    margin-right:10px;
+}
 </style>
 {% endblock %}
 {% block extra_js %}
 <script>
-    function filterByName() {
-        const selectedName = document.getElementById('nameFilter').value.toLowerCase();
-        const items = document.querySelectorAll('.list-group');
-        items.forEach(item => {
-            const name = item.querySelector('.value').textContent.toLowerCase();
-            if (selectedName === "" || name.includes(selectedName)) {
-                item.style.display = "block";
-            } else {
-                item.style.display = "none";
-            }
+    document.addEventListener("DOMContentLoaded", function () {
+        const btn = document.getElementById("showFormBtn");
+        const popup = document.getElementById("popupForm");
+        const overlay = document.getElementById("popupOverlay");
+
+        btn.addEventListener("click", function () {
+            popup.style.display = "block";
+            overlay.style.display = "block";
         });
+
+        overlay.addEventListener("click", function () {
+            popup.style.display = "none";
+            overlay.style.display = "none";
+        });
+    });
+
+    function closePopup() {
+        document.getElementById("popupForm").style.display = "none";
+        document.getElementById("popupOverlay").style.display = "none";
     }
 </script>
 {% endblock %}
 {% block page_background %}
-<div class="container" style="background-color: white; padding: 20px;width: 80%;">
+<div class="container" style="background-color: white; padding: 20px; width: 80%;">
     {% if messages %}
         <div class="alert-container">
             {% for message in messages %}
@@ -165,50 +225,108 @@
         </div>
     {% endif %}
     <div class="action-buttons">
-            <a href="#" class="button1">Quay lại</a>
-            <div class="action-buttons1">
-                <a href="{% url 'nop_tien' %}" class="button2">+ Nộp BHXH</a>
-                <a href="{% url 'add_bhxh' %}" class="button">+ Thêm mới</a>
+        <a href="#" class="button1">Quay lại</a>
+        <div class="action-buttons1">
+            {% if request.path == url_all and vi_tri_cong_viec == 'Kế toán'%}
+            <button type="button" class="button2" id="showFormBtn">+ Nộp BHXH</button>
+            <a href="{% url 'add_bhxh' %}" class="button">+ Thêm mới</a>
+            {% endif %}
+        </div>
+    </div>
+
+    {% url 'bhxh_list' as url_all %}
+    {% url 'bhxh_me' as url_me %}
+    <ul class="nav nav-tabs mb-4">
+        <li class="nav-item">
+            <a class="nav-link {% if request.path == url_me %}active{% endif %}" href="{{ url_me }}">BHXH của tôi</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link {% if request.path == url_all %}active{% endif %}" href="{{ url_all }}">BHXH của nhân viên</a>
+        </li>
+    </ul>
+
+    <!-- Popup overlay -->
+    <div id="popupOverlay" class="popup-overlay" style="display: none;"></div>
+
+    <!-- Popup form -->
+    <div id="popupForm" class="popup-form" style="display: none;">
+        <form method="POST" action="{% url 'nop_tien' %}">
+            {% csrf_token %}
+            <div class="info-row1">
+                <div class="label-wrapper">{{ form.ngay_bat_dau.label_tag }}</div>
+                <div class="input-wrapper">{{ form.ngay_bat_dau }}</div>
             </div>
+            <div class="info-row1">
+                <div class="label-wrapper">{{ form.ngay_ket_thuc.label_tag }}</div>
+                <div class="input-wrapper">{{ form.ngay_ket_thuc }}</div>
+            </div>
+            <div class="action-buttons">
+                <button class="button" type="submit">Lưu</button>
+                <button type="button" class="button1" onclick="closePopup()">Hủy</button>
+            </div>
+        </form>
     </div>
     <div class="content">
         <h2 class="bhxh-title">BẢO HIỂM XÃ HỘI</h2>
         <div class="d-flex">
-            <!-- Danh sách BHXH bên trái -->
-            <div class="bhxh-container" style="flex-grow: 1; padding-right: 20px;">
-                {% for bhxh in bhxh_list %}
-                <div class="list-group">
-                    <div class="info-row">
-                        <p><span class="text-primary">Tên nhân viên:</span>
-                            <a href="{% url 'edit_bhxh' ma_nv=bhxh.nhan_vien.id %}" class="value" style="text-decoration: none">{{ bhxh.nhan_vien.ten_nv }}</a>
-                         </p>
+            <div class="bhxh-container">
+                {% if bhxh_list %}
+                    {% for bhxh in bhxh_list %}
+                    <div class="list-group">
+                        <div class="info-row">
+                            <p><span class="text-primary">Tên nhân viên:</span>
+                                <a href="{% url 'edit_bhxh' ma_nv=bhxh.nhan_vien.id %}" class="value" style="text-decoration: none">{{ bhxh.nhan_vien.ten_nv }}</a>
+                             </p>
+                        </div>
+                        <div class="info-row">
+                            <p><span class="text-primary">Mã nhân viên:</span> <span class="value">{{ bhxh.nhan_vien.id }}</span></p>
+                            <p><span class="text-primary">Mã BHXH:</span> <span class="value">{{ bhxh.ma_BHXH }}</span></p>
+                        </div>
+                        <div class="info-row">
+                            <p><span class="text-primary">Mức đóng của nhân viên:</span> <span class="value">{{ bhxh.nhan_vien_dong }}%</span></p>
+                            <p><span class="text-primary">Mức đóng của trường:</span> <span class="value">{{ bhxh.truong_dong }}%</span></p>
+                        </div>
+                        <div class="info-row">
+                            <p><span class="text-primary">Ngày tham gia:</span> <span class="value">{{ bhxh.thoi_gian_bat_dau }}</span></p>
+                        </div>
+                        <a href="{% url 'info_bhxh' ma_nv=bhxh.nhan_vien.id %}" class="view-button">Xem</a>
                     </div>
-                    <div class="info-row">
-                        <p><span class="text-primary">Mã nhân viên:</span> <span class="value">{{ bhxh.nhan_vien.id }}</span></p>
-                        <p><span class="text-primary">Mã BHXH:</span> <span class="value">{{ bhxh.ma_BHXH }}</span></p>
+                    {% endfor %}
+                {% elif bhxh %}
+                    <div class="list-group">
+                        <div class="info-row">
+                            <p><span class="text-primary">Tên nhân viên:</span> <span class="value">{{ bhxh.nhan_vien.ten_nv }}</span></p>
+                        </div>
+                        <div class="info-row">
+                            <p><span class="text-primary">Mã nhân viên:</span> <span class="value">{{ bhxh.nhan_vien.id }}</span></p>
+                            <p><span class="text-primary">Mã BHXH:</span> <span class="value">{{ bhxh.ma_BHXH }}</span></p>
+                        </div>
+                        <div class="info-row">
+                            <p><span class="text-primary">Mức đóng của nhân viên:</span> <span class="value">{{ bhxh.nhan_vien_dong }}%</span></p>
+                            <p><span class="text-primary">Mức đóng của trường:</span> <span class="value">{{ bhxh.truong_dong }}%</span></p>
+                        </div>
+                        <div class="info-row">
+                            <p><span class="text-primary">Ngày tham gia:</span> <span class="value">{{ bhxh.thoi_gian_bat_dau }}</span></p>
+                        </div>
+                        <a href="{% url 'info_bhxh' ma_nv=bhxh.nhan_vien.id %}" class="view-button">Xem</a>
                     </div>
-                    <div class="info-row">
-                        <p><span class="text-primary">Mức đóng của nhân viên:</span> <span class="value">{{ bhxh.nhan_vien_dong }}%</span></p>
-                        <p><span class="text-primary">Mức đóng của trường:</span> <span class="value">{{ bhxh.truong_dong }}%</span></p>
-                    </div>
-                    <div class="info-row">
-                        <p><span class="text-primary">Ngày bắt đầu đóng:</span> <span class="value">{{ bhxh.thoi_gian_bat_dau }}</span></p>
-                    </div>
-                    <a href="{% url 'info_bhxh' ma_nv=bhxh.nhan_vien.id %}" class="view-button">Xem</a>
-                </div>
-                {% empty %}
-                    <p>Chưa có dữ liệu bảo hiểm xã hội.</p>
-                {% endfor %}
+                {% else %}
+                    <p>Không có dữ liệu BHXH.</p>
+                {% endif %}
             </div>
-            <!-- Phần lọc bên phải -->
+            <!-- Bộ lọc -->
             <div class="filter-container">
                 <div class="filter-title">Lọc theo tên nhân viên</div>
-                <select id="nameFilter" class="filter-select" onchange="filterByName()">
-                    <option value="">-- Tất cả --</option>
-                    {% for bhxh in bhxh_list %}
-                        <option value="{{ bhxh.nhan_vien.ten_nv }}">{{ bhxh.nhan_vien.ten_nv }}</option>
-                    {% endfor %}
-                </select>
+                <form method="get" action="{% url 'bhxh_list' %}">
+                    <select id="nameFilter" name="name" class="filter-select" onchange="this.form.submit()">
+                        <option value="">-- Tất cả --</option>
+                        {% for bhxh in bhxh_list %}
+                            <option value="{{ bhxh.nhan_vien.ten_nv }}" {% if bhxh.nhan_vien.ten_nv == name_filter %}selected{% endif %}>
+                                {{ bhxh.nhan_vien.ten_nv }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                </form>
             </div>
         </div>
     </div>

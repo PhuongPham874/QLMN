@@ -7,10 +7,6 @@
         font-family: 'Roboto Slab', serif;
         background-color: #f2f2f2;
     }
-    .container {
-        background-color: white;
-        padding: 20px;
-    }
     .bhxh-title {
         font-size: 28px;
         font-weight: bold;
@@ -21,8 +17,8 @@
     }
     .list-group {
         background: linear-gradient(to right, #DDF0FF, #FFFFFF);
-        width: 900px;
-        padding: 20px;
+        width: 700px;
+        padding: 10px;
         border-radius: 10px;
         box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
         margin: 0 auto;
@@ -82,6 +78,8 @@
         display: flex;
         justify-content: flex-start;
         margin-bottom: 20px;
+        margin-top:10px;
+        margin-left:10px;
     }
     .button1 {
         background-color: #D9D9D9;
@@ -96,7 +94,7 @@
 </style>
 {% endblock %}
 {% block page_background %}
-<div class="container" style="width: 75%;">
+<div style="background-color: white;width: 80%;">
     <div class="action-buttons1">
         <a href="{% url 'bhxh_list' %}" class="button1">Quay lại</a>
     </div>
@@ -119,15 +117,15 @@
                     {{ form.ma_BHXH }}
                 </div>
                 <div class="field-group">
-                    <label>Nhân viên đóng</label>
-                    <p>{{ bhxh.nhan_vien_dong }}</p>
+                    <label>Mức đóng của nhân viên</label>
+                    <p>{{ bhxh.nhan_vien_dong }}%</p>
                 </div>
                 <div class="field-group">
-                    <label>Trường đóng</label>
-                    <p>{{ bhxh.truong_dong }}</p>
+                    <label>Mức đóng của trường</label>
+                    <p>{{ bhxh.truong_dong }}%</p>
                 </div>
                 <div class="field-group">
-                    <label>Ngày bắt đầu đóng</label>
+                    <label>Ngày tham gia</label>
                     <p>{{ bhxh.thoi_gian_bat_dau|date:'d/m/Y' }}</p>
                 </div>
             </div>
