@@ -99,7 +99,7 @@ def chuyen_huong_luong(request):
 @login_required
 def xem_bang_luong_cua_toi(request):
     try:
-        nhan_vien = request.user.nhanvien
+        nhan_vien = get_object_or_404(NhanVien, user=request.user)
     except NhanVien.DoesNotExist:
         return render(request, 'error.html', {'message': 'Không tìm thấy nhân viên liên kết với tài khoản này.'})
 

@@ -1,16 +1,34 @@
 from django.shortcuts import render, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from HOME.models import NhanVien, ChamCong
+from django.utils import timezone
+import time
 
 @login_required
 def cham_cong_view(request):
     if request.user.is_superuser:
-        # Nếu là superuser, lấy danh sách tất cả nhân viên
+        nhan_viens = NhanVien.objects.all().order_by('id')
         nhan_vien = get_object_or_404(NhanVien, user=request.user)
-        nhan_viens = NhanVien.objects.all().order_by('id')  # Sắp xếp theo 'id' hoặc trường khác
+        now = timezone.now()
+
+        # Tạo danh sách chứa thông tin chấm công của từng nhân viên
+        nhan_viens_data = []
+        for nv in nhan_viens:
+            cham_cong = ChamCong.objects.filter(
+                nhan_vien=nv,
+                ngay=now.day,
+                thang=now.month,
+                nam=now.year
+            ).first()
+
+            nhan_viens_data.append({
+                'nhan_vien': nv,
+                'gio_vao': cham_cong.gio_vao if cham_cong else None,
+                'gio_ra': cham_cong.gio_ra if cham_cong else None,
+            })
+
         return render(request, 'ChamCong/danh_sach_nhan_vien.html', {
-            'is_super': True,
-            'nhan_viens': nhan_viens,
+            'nhan_viens_data': nhan_viens_data,
             'nhan_vien': nhan_vien
         })
 
@@ -142,7 +160,7 @@ def cham_cong_bang_khuon_mat(request):
     if recognized and nhan_vien_id:
         try:
             nhan_vien = NhanVien.objects.get(id=nhan_vien_id)
-            now = timezone.localtime(timezone.now())
+            now = timezone.now()
 
             ngay = now.day
             thang = now.month
