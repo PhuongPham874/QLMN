@@ -74,12 +74,12 @@
             </div>
             <div class="container mt-4" style="background-color: #f0f8ff; padding: 40px; border-radius: 10px;">
                <h4 class="header-title" style="display: flex; justify-content: space-between; font-size: 30px; font-weight: bold; margin-bottom: 20px; margin-top: -39px; margin-right:-40px;margin-left:-40px;">
-                    <a href="{% url 'QLXemHoSo' nhan_vien.id %}" style="background-color: #65ABE3; color: white; width: 50%; text-align: center; padding: 10px; border-top-left-radius: 10px; border-bottom-left-radius: 10px; text-decoration: none;">
+                    <a href="{% url 'edit_ho_so' nhan_vien.id %}" style="background-color: #65ABE3; color: white; width: 50%; text-align: center; padding: 10px; border-top-left-radius: 10px; border-bottom-left-radius: 10px; text-decoration: none;">
                         Thông Tin Cá Nhân
                     </a>
 
                     {% if hop_dong %}
-                    <a href="{% url 'QLXemHoSoHDLD' nhan_vien.id %}"
+                    <a href="{% url 'edit_hdld' nhan_vien.id %}"
                        style="border: 3px solid #000000; background-color: #066BBB; color: white; width: 50%; text-align: center; padding: 10px;
                               border-top-right-radius: 10px; border-bottom-right-radius: 10px; text-decoration: none;">
                         Hợp Đồng Lao Động
@@ -117,22 +117,23 @@
                     <div class="col-md-6 left-column" style="padding: 10px; margin-top: 20px;">
                         <div class="form-group" style="display: flex; align-items: center; margin-bottom: 15px;">
                             <label for="so_hop_dong" style="width: 180px; font-weight: bold; font-size: 16px; color: #333; margin-right: 10px; text-align: left;">Số hợp đồng:</label>
-                            <div style="font-size: 16px;">{{ hop_dong.so_hop_dong }}</div>
+                            <input style="font-size: 16px;" type="text" class="form-control" id="so_hop_dong" name="so_hop_dong" value="{{ hop_dong.so_hop_dong }}">
+
                         </div>
 
                         <div class="form-group" style="display: flex; align-items: center; margin-bottom: 10px;">
                             <label for="thoi_han_hop_dong" style="width: 185px; font-weight: bold; font-size: 16px; color: #333; margin-right: 5px; text-align: left;">Thời hạn HĐ:</label>
-                            <div style="font-size: 16px; text-align: left;">{{ hop_dong.thoi_han_hop_dong }}</div>
+                            <input style="font-size: 16px;" type="text" class="form-control" id="thoi_han_hop_dong"  name="thoi_han_hop_dong"  value="{{ hop_dong.thoi_han_hop_dong }}">
                         </div>
 
                         <div class="form-group" style="display: flex; align-items: center; margin-bottom: 15px;">
                             <label for="tu_ngay" style="width: 180px; font-weight: bold; font-size: 16px; color: #333; margin-right: 10px; text-align: left;">Từ ngày:</label>
-                            <div style="font-size: 16px;">{{ hop_dong.tu_ngay }}</div>
+                            <input style="font-size: 16px;" type="date" class="form-control" id="tu_ngay"  name="tu_ngay" value="{{ nhan_vien.tu_ngay|date:'Y-m-d' }}">
                         </div>
 
                         <div class="form-group" style="display: flex; align-items: center; margin-bottom: 15px;">
                             <label for="ngay_ky" style="width: 180px; font-weight: bold; font-size: 16px; color: #333; margin-right: 10px; text-align: left;">Ngày ký:</label>
-                            <div style="font-size: 16px;">{{ hop_dong.ngay_ky }}</div>
+                            <input style="font-size: 16px;" type="date" class="form-control" id="ngay_ky"  name="ngay_ky" value="{{ nhan_vien.ngay_ky|date:'Y-m-d' }}">
                         </div>
                         <div class="form-group" style="display: flex; align-items: center; margin-bottom: 15px;">
                             <label for="danh_sach_phu_cap" style="width: 180px; font-weight: bold; font-size: 16px; color: #333; margin-right: 10px; text-align: left;">Danh sách phụ cấp:</label>
@@ -143,22 +144,26 @@
                     <div class="col-md-6 right-column" style="padding: 10px; margin-top: 20px;">
                         <div class="form-group" style="display: flex; align-items: center; margin-bottom: 15px;">
                             <label for="loai_hop_dong" style="width: 180px; font-weight: bold; font-size: 16px; color: #333; margin-right: 10px; text-align: left;">Loại hợp đồng:</label>
-                            <div style="font-size: 16px;">{{ hop_dong.loai_hop_dong }}</div>
+                            <input style="font-size: 16px;" type="text" class="form-control" id="loai_hop_dong"  name="loai_hop_dong"  value="{{ hop_dong.loai_hop_dong }}">
+
                         </div>
 
                         <div class="form-group" style="display: flex; align-items: center; margin-bottom: 15px;">
                             <label for="luong" style="width: 180px; font-weight: bold; font-size: 16px; color: #333; margin-right: 10px; text-align: left;">Lương:</label>
-                            <div style="font-size: 16px;">{{ hop_dong.luong }}</div>
+
+                            <input style="font-size: 16px;" type="text" class="form-control" id="luong" name="luong" value="{{ hop_dong.luong}}">
+
                         </div>
 
                         <div class="form-group" style="display: flex; align-items: center; margin-bottom: 10px;">
                             <label for="den_ngay" style="width: 180px; font-weight: bold; font-size: 16px; color: #333; margin-right: 10px; text-align: left;">Đến ngày:</label>
-                            <div style="font-size: 16px;">{{ hop_dong.den_ngay }}</div>
+                            <input style="font-size: 16px;" type="date" class="form-control" id="den_ngay"  name="den_ngay" value="{{ nhan_vien.den_ngay|date:'Y-m-d' }}">
                         </div>
 
                         <div class="form-group" style="display: flex; align-items: center; margin-bottom: 15px;">
                             <label for="trang_thai_hop_dong" style="width: 180px; font-weight: bold; font-size: 16px; color: #333; margin-right: 10px; text-align: left;">Trạng thái HĐ:</label>
-                            <div style="font-size: 16px;">{{ hop_dong.trang_thai_hop_dong }}</div>
+                            <input style="font-size: 16px;" type="text" class="form-control" id="trang_thai_hop_dong" name="trang_thai_hop_dong" value="{{ hop_dong.trang_thai_hop_dong}}">
+
                         </div>
                     </div>
                 </div>
@@ -187,8 +192,11 @@
                     </table>
 
                 <div style="display: flex; justify-content: flex-end; gap: 10px;">
-                    <a href="{% url 'edit_hdld' nhan_vien.id %}" style="font-size: 24px; color: #066BBB; text-decoration: none; cursor: pointer;">
-                        <i class="fa-solid fa-pen-to-square"></i>
+                    <button type="submit" style="background-color: #00CC00; color: white; padding: 10px 20px; font-size: 16px;font-weight: bold; border: 0px solid #333; border-radius: 5px; cursor: pointer;">
+                        Lưu
+                    </button>
+                    <a href="{% url 'QLXemHoSoHDLD' nhan_vien.id %}" style="background-color: #BA0000; color: white; border: 0px solid #333; padding: 10px 20px; font-size: 16px; border-radius: 5px; color: #FFFFFF; text-decoration: none; cursor: pointer; font-weight: bold;">
+                        Hủy
                     </a>
                 </div>
             </div>

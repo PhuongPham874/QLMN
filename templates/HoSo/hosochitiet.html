@@ -44,19 +44,19 @@
 {% block page_background %}
 <main class="content" style="background-color: #ffffff; padding: 10px;">
 
-    <div class="button" style="display: flex; justify-content: space-between; align-items: center;">
-        <button class="btn btn-secondary" onclick="window.history.back()" style="font-size: 16px; padding: 10px 30px;">Quay lại</button>
-    </div>
     <div class="ndung">
 
         <form method="POST" enctype="multipart/form-data">
             {% csrf_token %}
-            <h1 class="header-title" style="color: #000000; font-size: 30px; font-weight: bold; text-align: center; width: 100%;">THÊM MỚI HỒ SƠ NHÂN VIÊN</h1>
-            <div class="container mt-4" style="background-color: #f0f8ff; padding: 40px; border-radius: 10px;">
+            <div class="header-container" style="display: flex; justify-content: flex-start; align-items: center; width: 100%; margin-top: 20px;">
+                <a href="{% url 'DanhSachNhanVien' %}" class="btn btn-secondary" style="font-size: 17px; font-weight: bold; padding: 7px 15px; margin-right: 20px; border: none;">Quay lại</a>
+                <h1 class="header-title" style="color: #000000; font-size: 30px; font-weight: bold; text-align: center; margin: 0; flex-grow: 1; text-align: center;">THÔNG TIN CHI TIẾT HỒ SƠ NHÂN VIÊN</h1>
+            </div>
+             <div class="container mt-4" style="background-color: #f0f8ff; padding: 40px; border-radius: 10px;">
                 <h4 class="header-title" style="display: flex; justify-content: space-between; font-size: 30px; font-weight: bold; margin-bottom: 20px; margin-top: -39px; margin-right:-40px;margin-left:-40px;">
                     <a href="{% url 'QLXemHoSo' nhan_vien.id %}"
-                       style="border: 2px solid #000000; background-color: #008CBA; color: white; width: 50%; text-align: center; padding: 10px;
-                              border-top-left-radius: 5px; border-bottom-left-radius: 5px; text-decoration: none;">
+                       style="border: 3px solid #000000; background-color: #066BBB; color: white; width: 50%; text-align: center; padding: 10px;
+                              border-top-left-radius: 10px; border-bottom-left-radius: 10px; text-decoration: none;">
                        Thông Tin Cá Nhân
                     </a>
 
@@ -172,11 +172,11 @@
                 </div>
 
                 <div style="display: flex; justify-content: flex-end; gap: 10px;">
-                    <a href="{% url 'edit_ho_so' nhan_vien.id %}"
-                       style="background-color: #D9D9D9; border: 1px solid #333; padding: 10px 20px; font-size: 16px; border-radius: 5px; color: #333; text-decoration: none; cursor: pointer;">
-                        Chỉnh sửa
+                    <a href="{% url 'edit_ho_so' nhan_vien.id %}" style="font-size: 24px; color: #066BBB; text-decoration: none; cursor: pointer;">
+                        <i class="fa-solid fa-pen-to-square"></i>
                     </a>
                 </div>
+
 
             </div>
         </form>

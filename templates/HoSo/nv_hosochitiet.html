@@ -43,18 +43,13 @@
 {% endblock %}
 {% block page_background %}
 <main class="content" style="background-color: #ffffff; padding: 10px;">
-
-    <div class="button" style="display: flex; justify-content: space-between; align-items: center;">
-        <button class="btn btn-secondary" onclick="window.history.back()" style="font-size: 16px; padding: 10px 30px;">Quay lại</button>
-    </div>
     <div class="ndung">
-
         <form method="POST" enctype="multipart/form-data">
             {% csrf_token %}
             <h1 class="header-title" style="color: #000000; font-size: 30px; font-weight: bold; text-align: center; width: 100%;">THÔNG TIN HỒ SƠ CHI TIẾT</h1>
             <div class="container mt-4" style="background-color: #f0f8ff; padding: 40px; border-radius: 10px;">
                 <h4 class="header-title" style="display: flex; justify-content: space-between; font-size: 30px; font-weight: bold; margin-bottom: 20px; margin-top: -39px;margin-right:-40px;margin-left:-40px;">
-                    <a href="{% url 'NVXemHoSo' %}" style="border: 2px solid #000000; text-decoration: none; color: white; width: 50%; text-align: center; padding: 10px; background-color: #008CBA; border-top-left-radius: 5px; border-bottom-left-radius: 5px;">
+                    <a href="{% url 'NVXemHoSo' %}" style="border: 3px solid #000000; text-decoration: none; color: white; width: 50%; text-align: center; padding: 10px; background-color: #066BBB; border-top-left-radius: 10px; border-bottom-left-radius: 10px;">
                         Thông Tin Cá Nhân
                     </a>
                     <a href="{% url 'NVXemHoSoHDLD' %}" style="text-decoration: none; color: white; width: 50%; text-align: center; padding: 10px; background-color: #65ABE3; border-top-right-radius: 5px; border-bottom-right-radius: 5px;">

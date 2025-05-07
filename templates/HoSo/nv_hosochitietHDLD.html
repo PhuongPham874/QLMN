@@ -62,12 +62,7 @@
 {% endblock %}
 {% block page_background %}
 <main class="content" style="background-color: #ffffff; padding: 10px;">
-
-    <div class="button" style="display: flex; justify-content: space-between; align-items: center;">
-        <button class="btn btn-secondary" onclick="window.history.back()" style="font-size: 16px; padding: 10px 30px;">Quay lại</button>
-    </div>
     <div class="ndung">
-
         <form method="POST" enctype="multipart/form-data">
             {% csrf_token %}
             <h1 class="header-title" style="color: #000000; font-size: 30px; font-weight: bold; text-align: center; width: 100%;">THÔNG TIN HỒ SƠ CHI TIẾT</h1>
@@ -76,19 +71,19 @@
                     <a href="{% url 'NVXemHoSo' %}"style="background-color: #65ABE3; color: white; width: 50%; text-align: center; padding: 10px; border-top-left-radius: 5px; border-bottom-left-radius: 5px; text-decoration: none;">
                         Thông Tin Cá Nhân
                     </a>
-                    <a href="{% url 'NVXemHoSoHDLD' %}" style=" border: 2px solid #000000; background-color: #008CBA; color: white; width: 50%; text-align: center; padding: 10px; border-top-right-radius: 5px; border-bottom-right-radius: 5px; text-decoration: none;">
+                    <a href="{% url 'NVXemHoSoHDLD' %}" style=" border: 3px solid #000000; background-color: #066BBB; color: white; width: 50%; text-align: center; padding: 10px; border-top-right-radius: 10px; border-bottom-right-radius: 10px; text-decoration: none;">
                         Hợp Đồng Lao Động
                     </a>
                 </h4>
 
-                <div class="row" style="border-radius: 5px; border: 3px solid #ccc; padding: 10px;">
+                <div class="row" style="border-radius: 5px; border: 3px solid #DCDCDC; padding: 10px; BACKGROUND-COLOR:#F8F8F8">
                     <div class="col-md-6 left-column" style="padding: 10px;">
                         <div class="form-group" style="display: flex; align-items: center; margin-bottom: 15px;">
                             <label for="ten_nv" style="width: 180px; font-weight: bold; font-size: 16px; color: #333; margin-right: 10px; text-align: left;">Họ và tên:</label>
                             <div style="font-size: 16px;">{{ nhan_vien.ten_nv }}</div>
                         </div>
 
-                        <div class="form-group" style="display: flex; align-items: center; margin-bottom: 15px;">
+                        <div class="form-group" style="display: flex; align-items: center; margin-bottom: 10px;">
                             <label for="ma_nv" style="width: 180px; font-weight: bold; font-size: 16px; color: #333; margin-right: 10px; text-align: left;">Mã nhân viên:</label>
                             <div style="font-size: 16px;">{{ nhan_vien.id }}</div>
                         </div>
@@ -100,7 +95,7 @@
                             <div style="font-size: 16px;">{{ nhan_vien.vi_tri_cong_viec }}</div>
                         </div>
 
-                        <div class="form-group" style="display: flex; align-items: center; margin-bottom: 15px;">
+                        <div class="form-group" style="display: flex; align-items: center; margin-bottom: 10px;">
                             <label for="to_phong_ban" style="width: 180px; font-weight: bold; font-size: 16px; color: #333; margin-right: 10px; text-align: left;">Tổ (Phòng ban):</label>
                             <div style="font-size: 16px;">{{ nhan_vien.to_phong_ban }}</div>
                         </div>
