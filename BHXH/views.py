@@ -19,6 +19,7 @@ def bhxh(request):
     form = DongBHXHForm()
     return render(request, 'BHXH/BHXH.html', {'bhxh_list': bhxh_list, 'nhan_vien':nhanvien,'name_filter': name_filter, })
 def themmoiBHXH(request):
+    nhanvien = get_object_or_404(NhanVien, user=request.user)
     # Lấy danh sách nhân viên chưa có BHXH
     nhan_vien_choices = NhanVien.objects.filter(
         id__in=[nv.id for nv in NhanVien.objects.all() if not BHXH.objects.filter(nhan_vien=nv).exists()]
@@ -45,7 +46,7 @@ def themmoiBHXH(request):
     else:
         form = BHXHform()
         form.fields['ten_nv'].queryset = nhan_vien_choices
-    return render(request, 'BHXH/ThemBHXH.html', {'form': form})
+    return render(request, 'BHXH/ThemBHXH.html', {'form': form, 'nhan_vien':nhanvien})
 
 def chinhsuaBHXH(request, ma_nv):
     bhxh = get_object_or_404(BHXH, nhan_vien_id=ma_nv)
@@ -63,6 +64,7 @@ def chinhsuaBHXH(request, ma_nv):
     return render(request, "ChinhsuaBHXH.html", {"form": form,"bhxh": bhxh})
 
 def thongtinchitiet(request,ma_nv):
+    nhanvien = get_object_or_404(NhanVien, user=request.user)
     nhan_vien_obj = get_object_or_404(NhanVien, id=ma_nv)
     bhxhchitiet = BHXH.objects.get(nhan_vien = nhan_vien_obj)
     dongbhchitiet = DONGBHXH.objects.filter(nhan_vien = nhan_vien_obj)
@@ -70,7 +72,7 @@ def thongtinchitiet(request,ma_nv):
     Total=0
     for dong in dongbhchitiet:
         Total += dong.tong_tien
-    context = {'bh':bhxhchitiet,'dongbh':dongbhchitiet,'Total':Total,'solanthamgia':so_lan_tham_gia, 'nhan_vien': nhan_vien_obj}
+    context = {'bh':bhxhchitiet,'dongbh':dongbhchitiet,'Total':Total,'solanthamgia':so_lan_tham_gia, 'nhan_vien': nhanvien}
     return render(request,'BHXH/Hienthichitiet.html',context)
 
 def dong_bhxh(request):
@@ -115,6 +117,6 @@ def bhxh_cua_toi(request):
     bhxh_list = None
     if nhanvien.vi_tri_cong_viec in ['Hiệu Trưởng', 'Hiệu phó chuyên môn', 'Hiệu phó hoạt động', 'Kế toán']:
         bhxh_list = BHXH.objects.filter(nhan_vien=nhanvien)
-    return render(request, 'BHXH/BHXH.html', {'bhxh_list': bhxh_list, 'nhanvien': nhanvien})
+    return render(request, 'BHXH/BHXH.html', {'bhxh_list': bhxh_list, 'nhan_vien': nhanvien})
 
 

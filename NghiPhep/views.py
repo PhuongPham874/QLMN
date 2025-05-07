@@ -93,8 +93,6 @@ def NghiPhep_list_nv(request):
 
 @login_required
 def NP_nv_search(request):
-
-
     form = SearchForm(request.GET)
     search =""
     if form.is_valid(): #dap ung cac dk cua SearchForm

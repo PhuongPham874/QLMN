@@ -27,7 +27,6 @@
     p {
         font-weight: bold;
         color: #066BBB;
-        font-family: 'Roboto Slab';
         margin: 10px 0;
         flex: 1;
         min-width: 50%;
@@ -219,7 +218,7 @@
 </script>
 {% endblock %}
 {% block page_background %}
-<div class="container" style="background-color: white; padding: 20px; width: 80%;">
+<div class="container" style=" padding: 20px; width: 80%;">
     {% if messages %}
         <div class="alert-container">
             {% for message in messages %}
@@ -293,20 +292,20 @@
                 {% for bhxh in bhxh_list %}
                 <div class="list-group">
                     <div class="info-row">
-                        <p><span class="text-primary">Tên nhân viên:</span>
+                        <p><span class="text">Tên nhân viên:</span>
                             <a href="{% url 'edit_bhxh' ma_nv=bhxh.nhan_vien.id %}" class="value" style="text-decoration: none">{{ bhxh.nhan_vien.ten_nv }}</a>
                         </p>
                     </div>
                     <div class="info-row">
-                        <p><span class="text-primary">Mã nhân viên:</span> <span class="value">{{ bhxh.nhan_vien.id }}</span></p>
-                        <p><span class="text-primary">Mã BHXH:</span> <span class="value">{{ bhxh.ma_BHXH }}</span></p>
+                        <p><span class="text">Mã nhân viên:</span> <span class="value">{{ bhxh.nhan_vien.id }}</span></p>
+                        <p><span class="text">Mã BHXH:</span> <span class="value">{{ bhxh.ma_BHXH }}</span></p>
                     </div>
                     <div class="info-row">
-                        <p><span class="text-primary">Mức đóng của nhân viên:</span> <span class="value">{{ bhxh.nhan_vien_dong }}%</span></p>
-                        <p><span class="text-primary">Mức đóng của trường:</span> <span class="value">{{ bhxh.truong_dong }}%</span></p>
+                        <p><span class="text">Mức đóng của nhân viên:</span> <span class="value">{{ bhxh.nhan_vien_dong }}%</span></p>
+                        <p><span class="text">Mức đóng của trường:</span> <span class="value">{{ bhxh.truong_dong }}%</span></p>
                     </div>
                     <div class="info-row">
-                        <p><span class="text-primary">Ngày tham gia:</span> <span class="value">{{ bhxh.thoi_gian_bat_dau }}</span></p>
+                        <p><span class="text">Ngày tham gia:</span> <span class="value">{{ bhxh.thoi_gian_bat_dau }}</span></p>
                     </div>
                     <a href="{% url 'info_bhxh' ma_nv=bhxh.nhan_vien.id %}" class="view-button">Xem</a>
                 </div>

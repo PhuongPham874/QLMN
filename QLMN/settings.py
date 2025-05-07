@@ -125,9 +125,8 @@ STATIC_URL = '/static/'
 
 # Khai báo đường dẫn thư mục static
 STATICFILES_DIRS = [
-    r"D:\D\QLMS1\QLMN\static",  # Sử dụng raw string (r"") để tránh lỗi escape ký tự '\'
+    os.path.join(BASE_DIR, 'static'),
 ]
-
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
