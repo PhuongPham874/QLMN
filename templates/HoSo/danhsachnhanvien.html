@@ -45,38 +45,44 @@
 
 {% block page_background %}
 <main class="content" style="background-color: #ffffff; padding: 10px;">
-    <div class="button">
-        <button class="btn btn-secondary" onclick="window.history.back()" style="font-size: 16px; padding: 10px 30px;">Quay lại</button>
-    </div>
-    <div class="ndung">
-        <h1 class="header-title" style="color: #000000; font-size: 30px; font-weight: bold; text-align: center; width: 100%;">DANH SÁCH HỒ SƠ NHÂN VIÊN</h1>
+
+        <h1 class="header-title" style="color: #000000; font-size: 30px; font-weight: bold; text-align: center; width: 100%; margin-top: 20px;">DANH SÁCH HỒ SƠ NHÂN VIÊN</h1>
         <div class="container mt-4" style="background-color: #FFFBFB; border: 2px solid #C1C3C8; padding: 20px; border-radius: 10px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
             <div style="margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center;">
-                <div style="position: relative; width: 100%; max-width: 300px;">
-                    <i class="fa fa-search" style="position: absolute; top: 13px; left: 10px; color: #333;"></i>
-                    <input type="text" class="form-control" id="searchInput" placeholder="Tìm kiếm..." style="font-size: 16px; padding: 10px 10px 10px 30px; width: 100%; border-radius: 5px;">
-                </div>
+
+
+                 <form method="GET" action="{% url 'DanhSachNhanVien' %}">
+                    <input type="text" name="q" value="{{ query }}" placeholder="Tìm kiếm..." style="padding: 5px 10px; border-radius: 10px; border: 2px solid #C1C3C8">
+
+                </form>
+
                 <a href="{% url 'ThemMoiHoSo' %}" class="btn btn-success" style="margin-left: 20px; background-color: #65ABE3; color: white;">+ Thêm mới</a>
             </div>
             <table class="table" style="border-radius: 10px; width: 100%; ">
                 <thead style="background-color: #008CBA; color: white;">
                     <tr>
                         <th style="background-color: #65ABE3; color: white;width: 7%;">MNV</th>
-                        <th style="background-color: #65ABE3; color: white;width: 25%;">Họ và tên</th>
-                        <th style="background-color: #65ABE3; color: white;width: 15%;">SĐT</th>
+                        <th style="background-color: #65ABE3; color: white;width: 20%;">Họ và tên</th>
+                        <th style="background-color: #65ABE3; color: white;width: 10%;">SĐT</th>
                         <th style="background-color: #65ABE3; color: white;width: 38%;">Địa chỉ</th>
-                        <th style="background-color: #65ABE3; color: white;width: 15%;">Vị trí</th>
+                        <th style="background-color: #65ABE3; color: white;width: 13%;">Vị trí</th>
                     </tr>
                 </thead>
 
                 <tbody>
                     {% for nhan_vien in nhan_vien_list %}
-                    <tr >
-                        <td style="background-color: #FFFBFB; text-align: center;">{{ nhan_vien.id }}</td>  <!-- Hiển thị Mã NV (là id của nhân viên) -->
-                        <td style="background-color: #FFFBFB;">{{ nhan_vien.ten_nv }}</td>
+                    <tr>
+                        <td style="background-color: #FFFBFB; text-align: center;">{{ nhan_vien.id }}</td>
+                        <!-- Hiển thị Mã NV (là id của nhân viên) -->
+                        <td style="background-color: #FFFBFB;">
+                            <!-- Sửa đoạn này để tên nhân viên là một liên kết đến trang chi tiết -->
+                            <a href="{% url 'QLXemHoSo' nhan_vien.id %}" style="text-decoration: none; color: black;">
+                                {{ nhan_vien.ten_nv }}
+                            </a>
+                        </td>
                         <td style="background-color: #FFFBFB;">{{ nhan_vien.so_dien_thoai }}</td>
-                        <td style="background-color: #FFFBFB;">{{ nhan_vien.dia_chi }}</td>
-                        <td style="background-color: #FFFBFB;">{{ nhan_vien.vi_tri_cong_viec }}</td>  <!-- Hiển thị vị trí công việc -->
+                        <td style="background-color: #FFFBFB;">{{ nhan_vien.dia_chi_tam_tru }}</td>
+                        <td style="background-color: #FFFBFB;">{{ nhan_vien.vi_tri_cong_viec }}</td>
                     </tr>
                     {% endfor %}
                 </tbody>
@@ -85,4 +91,5 @@
     </div>
 
 </main>
+
 {% endblock %}
