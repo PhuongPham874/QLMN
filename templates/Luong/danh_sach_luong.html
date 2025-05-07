@@ -11,30 +11,42 @@
     {% for bang_luong in bang_luong_list %}
       <h3 style="color: #066BBB; margin-bottom: 20px;">Bảng Lương {{ bang_luong.title }}</h3>
 
-      <table style="width: 100%; border-collapse: collapse;">
+      <table style="width: 100%; border-collapse: collapse; margin-bottom: 30px;">
         <tr style="background-color: #D8EDFE;">
           <th style="padding: 8px; font-weight: bold;">Lương cơ bản</th>
           <th style="padding: 8px; font-weight: bold;">{{ bang_luong.muc_luong|floatformat:0 }} VND</th>
         </tr>
         <tr>
-        <td style="padding: 8px;">Tiền BHXH </td>
-        <td style="padding: 8px;">{{ bang_luong.tien_bhxh|floatformat:0 }} VND</td>
-        </tr>
-        <tr>
-          <td style="padding: 8px;">Thưởng</td>
-          <td style="padding: 8px;">{{ bang_luong.thuong|floatformat:0 }} VND</td>
+          <td style="padding: 8px;">Tiền BHXH</td>
+          <td style="padding: 8px;">{{ bang_luong.tien_bhxh|default:0|floatformat:0 }} VND</td>
         </tr>
         <tr>
           <td style="padding: 8px;">Thuế</td>
           <td style="padding: 8px;">{{ bang_luong.thue|floatformat:0 }} VND</td>
         </tr>
         <tr>
-          <td style="padding: 8px;">Trừ muộn</td>
-          <td style="padding: 8px;">{{ bang_luong.muon_tru|floatformat:0 }} VND</td>
+          <td style="padding: 8px;">Kỷ luật</td>
+          <td style="padding: 8px;">{{ bang_luong.tien_ky_luat|floatformat:0 }} VND</td>
+        </tr>
+        <tr>
+          <td style="padding: 8px;">Thưởng</td>
+          <td style="padding: 8px;">{{ bang_luong.thuong|floatformat:0 }} VND</td>
         </tr>
         <tr>
           <td style="padding: 8px;">Trừ vắng</td>
           <td style="padding: 8px;">{{ bang_luong.vang_tru|floatformat:0 }} VND</td>
+        </tr>
+        <tr>
+          <td style="padding: 8px;">Trừ muộn</td>
+          <td style="padding: 8px;">{{ bang_luong.muon_tru|floatformat:0 }} VND</td>
+        </tr>
+         <tr>
+          <td style="padding: 8px;">Phụ cấp chuyên cần</td>
+          <td style="padding: 8px;">{{ bang_luong.phu_cap_chuyen_can|floatformat:0 }} VND</td>
+        </tr>
+        <tr>
+          <td style="padding: 8px;">Phụ cấp khác</td>
+          <td style="padding: 8px;">{{ bang_luong.phu_cap|default:0|floatformat:0 }} VND</td>
         </tr>
         <tr style="background-color: #D8EDFE;">
           <td style="padding: 8px; font-weight: bold;">Tổng lương</td>

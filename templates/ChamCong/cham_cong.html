@@ -1,112 +1,199 @@
 {% extends "home.html" %}
 
 {% block page_background %}
-<div style="display: flex; gap: 40px; padding: 30px 50px; height: 700px;">
+<div class="container">
 
-  <div style="display: flex; flex-direction: column">
-  <h2 style="color: #1d4ed8; margin-bottom: 20px;">CHẤM CÔNG: {{ nhan_vien.ten_nv }}</h2>
-  <!-- Cột bên trái: Lịch chấm công -->
-  <div id="calendar_container" style="flex: 1; overflow-y: auto; padding-right: 20px;">
+  <!-- Cột trái: Lịch chấm công -->
+  <div class="calendar-column">
+    <h2 class="header-title">CHẤM CÔNG: {{ nhan_vien.ten_nv }}</h2>
+    <div class="calendar-wrapper">
 
-    {% for key, records in cham_cong_theo_thang.items %}
-      {% with key|slice:5 as year %}
-      {% with key|slice:"-2:" as month %}
-
-          <h3 style="margin-bottom: 10px;">Tháng {{ month }} / {{ year }}</h3>
-
-          <div class="calendar-wrapper">
-            <div id="thang_{{ year }}_{{ month }}" style="margin-bottom: 40px;">
+      {% for year_month, days in cham_cong_theo_thang %}
+        {% with year_month|slice:":4" as year %}
+        {% with year_month|slice:"5:" as month %}
+          <div id="thang_{{ year }}_{{ month }}" class="calendar-block">
+            <h3 class="calendar-title">Tháng {{ month }} / {{ year }}</h3>
             <div class="calendar">
-              {% for day in records|dictsort:"ngay.day" %}
-                <div class="day {% if day.trang_thai == 0 %}dung_gio{% elif day.trang_thai == 1 %}nghi{% elif day.trang_thai == 2 %}muon{% endif %}">
-                  <div class="circle">{{ day.ngay.day }}</div>
+              {% for day, record in days.items %}
+                <div class="{% if record.trang_thai == 0 %}dung_gio{% elif record.trang_thai == 1 %}nghi{% elif record.trang_thai == 2 %}muon{% endif %}">
+                  <div class="circle">{{ day }}</div>
                 </div>
               {% endfor %}
             </div>
           </div>
-        </div>
-      {% endwith %}
-      {% endwith %}
-    {% empty %}
-      <p>Không có dữ liệu chấm công.</p>
-    {% endfor %}
-  </div>
+        {% endwith %}
+        {% endwith %}
+      {% empty %}
+        <p>Không có dữ liệu chấm công.</p>
+      {% endfor %}
+    </div>
   </div>
 
-  <!-- Cột bên phải: Bộ lọc -->
-  <!-- Cột bên phải: Bộ lọc -->
-  <div style="width: 250px;">
-    <h3 style="margin-bottom: 10px;">Lọc theo tháng</h3>
-    <select id="thang_select" style="width: 100%; padding: 8px; margin-bottom: 12px;">
-      {% for key in cham_cong_theo_thang.keys %}
-        {% with key|slice:5 as year %}
-        {% with key|slice:"-2:" as month %}
-          <option value="thang_{{ year }}_{{ month }}">Tháng {{ month }} / {{ year }}</option>
-        {% endwith %}
-        {% endwith %}
+  <!-- Cột phải: Bộ lọc -->
+  <div class="filter-column">
+    <h3 class="filter-title">Bộ lọc</h3>
+    <select id="month_select" class="filter-select">
+      <option value="">Chọn tháng</option>
+      {% for m in months %}
+        <option value="{{ m|stringformat:"02d" }}">{{ m|stringformat:"02d" }}</option>
       {% endfor %}
     </select>
-    <button onclick="scrollToMonth()" style="width: 100%; padding: 10px; background-color: #1d4ed8; color: white; border: none; border-radius: 5px;">Đi đến tháng</button>
+
+    <select id="year_select" class="filter-select">
+      <option value="">Chọn năm</option>
+      {% for y in years %}
+        <option value="{{ y }}">{{ y }}</option>
+      {% endfor %}
+    </select>
+
+    <button onclick="scrollToMonthYear()" class="filter-button">Đi đến tháng</button>
   </div>
 
-  </div>
-</div>
 </div>
 
 <!-- CSS -->
 <style>
-.calendar-wrapper {
-  background: linear-gradient(135deg, #C3E5FF, #ffffff);
-  border-radius: 12px;
-  padding: 20px;
-  width: 100%;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-}
+  .container {
+    display: flex;
+    gap: 40px;
+    padding: 30px 50px;
+    flex-wrap: wrap;
+  }
 
-.calendar {
-  display: grid;
-  grid-template-columns: repeat(7, 1fr);
-  gap: 15px;
-  margin-top: 15px;
-}
+  .calendar-column {
+    flex: 1;
+    max-width: 70%;
+    overflow-y: auto;
+    height: 700px;
+  }
 
-.day {
-  text-align: center;
-  font-weight: bold;
-}
+  .filter-column {
+    width: 250px;
+    flex-shrink: 0;
+  }
 
-.circle {
-  width: 80px;
-  height: 80px;
-  line-height: 80px;
-  font-size: 20px;
-  border-radius: 50%;
-  background-color: white;
-  border: 2px solid #ddd;
-  display: inline-block;
-}
+  .header-title {
+    color: #1d4ed8;
+    margin-bottom: 20px;
+  }
 
-.dung_gio .circle {
-  background-color: #A7F3D0;
-  border-color: green;
-}
-.nghi .circle {
-  background-color: #FCA5A5;
-  border-color: red;
-}
-.muon .circle {
-  background-color: #FDE68A;
-  border-color: #b45309;
-}
+  .calendar-wrapper {
+    background: linear-gradient(135deg, #E0F2FE, #ffffff);
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 40px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    max-height: 600px;
+    overflow-y: auto;
+  }
+
+  .calendar-block {
+    margin-bottom: 20px;  /* Tạo khoảng cách giữa các bảng */
+    padding: 20px;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+
+  .calendar {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 15px;
+    margin-top: 15px;
+  }
+
+  .circle {
+    width: 70px;
+    height: 70px;
+    line-height: 70px;
+    font-size: 18px;
+    font-weight: bold;
+    text-align: center;
+    border-radius: 50%;
+    background-color: white;
+    border: 2px solid #ddd;
+    transition: 0.3s;
+  }
+
+  .dung_gio .circle {
+    background-color: #A7F3D0;
+    border-color: #10b981;
+  }
+
+  .nghi .circle {
+    background-color: #FCA5A5;
+    border-color: #ef4444;
+  }
+
+  .muon .circle {
+    background-color: #FDE68A;
+    border-color: #f59e0b;
+  }
+
+  .calendar-title {
+    color: #1d4ed8;
+    font-weight: bold;
+    margin-bottom: 15px;
+  }
+
+  .filter-title {
+    margin-bottom: 10px;
+  }
+
+  .filter-select {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 12px;
+  }
+
+  .filter-button {
+    width: 100%;
+    padding: 10px;
+    background-color: #1d4ed8;
+    color: white;
+    border: none;
+    border-radius: 5px;
+  }
+
+  /* Tùy chỉnh thanh cuộn */
+  .calendar-wrapper::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  .calendar-wrapper::-webkit-scrollbar-track {
+    background: #f0f0f0;
+    border-radius: 5px;
+  }
+
+  .calendar-wrapper::-webkit-scrollbar-thumb {
+    background-color: #4A90E2;
+    border-radius: 5px;
+  }
+
+  .calendar-wrapper::-webkit-scrollbar-thumb:hover {
+    background-color: #357ABD;
+  }
 </style>
 
-<!-- Script -->
+<!-- JS -->
 <script>
-function scrollToMonth() {
-  const selectedId = document.getElementById("thang_select").value;
-  const target = document.getElementById(selectedId);
+function scrollToMonthYear() {
+  const month = document.getElementById("month_select").value;
+  const year = document.getElementById("year_select").value;
+
+  if (!month || !year) {
+    alert("Vui lòng chọn đầy đủ tháng và năm.");
+    return;
+  }
+
+  const targetId = `thang_${year}_${month}`;
+  const target = document.getElementById(targetId);
+
   if (target) {
     target.scrollIntoView({ behavior: 'smooth' });
+  } else {
+    alert("Không tìm thấy bảng chấm công cho thời gian đã chọn.");
   }
 }
 </script>
