@@ -1,0 +1,188 @@
+{% extends "home.html" %}
+
+{% block extra_css %}
+    <style>
+
+        .content{
+            width: 1150px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: flex-start;
+
+        }
+        .ndung{
+            width: 1100px;
+            padding: 20px;
+            margin-left: 20px;
+            display: flex;
+            flex-direction: column;
+        }
+    }
+
+        table{
+        width: 450px;
+        align-items: center;
+        margin-bottom: 20px;
+        justify-content: space-between;
+    }
+        .btn{
+        padding: 10px ;
+        border-radius:5px;
+        font-size: 15px;
+        text-align: center;
+        background-color:#D9D9D9 ;
+        color: black;
+        border: 1px solid;
+    }
+        .button{
+            padding: 20px;
+        }
+
+    </style>
+{% endblock %}
+{% block page_background %}
+<main class="content" style="background-color: #ffffff; padding: 10px;">
+       <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+           <div class="header-container" style="display: flex; justify-content: flex-start; align-items: center; width: 100%; margin-top: 20px;">
+                <a href="{% url 'DanhSachNhanVien' %}" class="btn btn-secondary" style="font-size: 17px; font-weight: bold; padding: 7px 15px; margin-right: 20px; border: none;">Quay lại</a>
+                <h1 class="header-title" style="color: #000000; font-size: 30px; font-weight: bold; text-align: center; margin: 0; flex-grow: 1; text-align: center;">CHỈNH SỬA HỒ SƠ NHÂN VIÊN</h1>
+            </div>
+           <div class="container mt-4" style="background-color: #f0f8ff; padding: 40px; border-radius: 10px;">
+                <h4 class="header-title" style="display: flex; justify-content: space-between; font-size: 30px; font-weight: bold; margin-bottom: 20px; margin-top: -39px; margin-right:-40px;margin-left:-40px;">
+                    <a href="{% url 'edit_ho_so' nhan_vien.id %}"
+                       style="border: 3px solid #000000; background-color:#066BBB; color: white; width: 50%; text-align: center; padding: 10px;
+                              border-top-left-radius:10px; border-bottom-left-radius: 10x; text-decoration: none;">
+                       Thông Tin Cá Nhân
+                    </a>
+
+
+                    <a href="{% url 'QLXemHoSoHDLD' nhan_vien.id %}"
+                       style="background-color: #65ABE3; color: white; width: 50%; text-align: center; padding: 10px; border-top-right-radius: 10px; border-bottom-right-radius: 10px; text-decoration: none;">
+                        Hợp Đồng Lao Động
+                    </a>
+
+                </h4>
+
+
+                <div class="row">
+                    <div class="col-md-6 left-column" style="padding: 10px;">
+                        <div class="form-group" style="display: flex; align-items: center; margin-bottom: 15px;">
+                            <label for="anh_ca_nhan" style="width: 180px; font-weight: bold; font-size: 16px; color: #333; margin-right: 10px; text-align: left;">Ảnh cá nhân</label>
+                            <img src="{{ nhan_vien.anh_ca_nhan.url }}" alt="User Avatar" class="rounded-circle" width="80" height="80">
+
+                        </div>
+
+
+                        <div class="form-group" style="display: flex; align-items: center; margin-bottom: 15px;">
+                            <label for="ten_nv" style="width: 180px; font-weight: bold; font-size: 16px; color: #333; margin-right: 10px; text-align: left;">Họ và tên:</label>
+                            <input style="font-size: 16px;" type="text" class="form-control" id="ten_nv" name="ten_nv" value="{{ nhan_vien.ten_nv }}">
+                        </div>
+
+                        <div class="form-group" style="display: flex; align-items: center; margin-bottom: 15px;">
+                            <label for="gioi_tinh" style="width: 180px; font-weight: bold; font-size: 16px; color: #333; margin-right: 10px; text-align: left;">Giới tính:</label>
+                            <input type="radio" name="gioi_tinh" value="2" style="margin-right: 20px;"> Nam
+                            <input type="radio" name="gioi_tinh" value="1" style="margin-right: 20px;margin-left: 20px;" checked> Nữ
+                        </div>
+
+                        <div class="form-group" style="display: flex; align-items: center; margin-bottom: 15px;">
+                            <label for="ngay_sinh" style="width: 180px; font-weight: bold; font-size: 16px; color: #333; margin-right: 10px; text-align: left;">Ngày sinh:</label>
+                            <input style="font-size: 16px;" type="date" class="form-control" id="ngay_sinh" name="ngay_sinh" value="{{ nhan_vien.ngay_sinh|date:'Y-m-d' }}">
+                        </div>
+
+                        <div class="form-group" style="display: flex; align-items: center; margin-bottom: 15px;">
+                            <label for="so_dien_thoai" style="width: 180px; font-weight: bold; font-size: 16px; color: #333; margin-right: 10px; text-align: left;">Số điện thoại:</label>
+                            <input style="font-size: 16px;" type="text" class="form-control" id="so_dien_thoai" name="so_dien_thoai" value="{{ nhan_vien.so_dien_thoai }}">
+
+                        </div>
+
+                        <div class="form-group" style="display: flex; align-items: center; margin-bottom: 15px;">
+                            <label for="email" style="width: 180px; font-weight: bold; font-size: 16px; color: #333; margin-right: 10px; text-align: left;">Email:</label>
+                            <input style="font-size: 16px;" type="email" class="form-control" id="email" name="email" value="{{ nhan_vien.email }}">
+                        </div>
+
+                        <div class="form-group" style="display: flex; align-items: center; margin-bottom: 15px;">
+                            <label for="so_cccd" style="width: 180px; font-weight: bold; font-size: 16px; color: #333; margin-right: 10px; text-align: left;">Số CCCD:</label>
+
+                            <input style="font-size: 16px;" type="text" class="form-control" id="so_cccd" name="so_cccd" value="{{ nhan_vien.so_cccd }}">
+                        </div>
+                    </div>
+
+                    <div class="col-md-6 right-column" style="padding: 10px; margin-top: 91px">
+                        <div class="form-group" style="display: flex; align-items: center; margin-bottom: 10px;">
+                            <label for="vi_tri_cong_viec" style="width:300px; font-weight: bold; font-size: 16px; color: #333; text-align: left;">Vị trí làm việc:</label>
+                            <input style="font-size: 14px; width:150px;;" type="text" class="form-control" id="vi_tri_cong_viec;margin-left:10px"name="vi_tri_cong_viec" value="{{ nhan_vien.vi_tri_cong_viec}}">
+                            <div class="form-group" style="display: flex; align-items: center; margin-bottom: 0px;text-align: right;">
+                                <label for="chuc_vu" style="width: 90px; font-weight: bold; font-size: 16px; color: #333; ">Chức vụ:</label>
+                                 <input style=" ;font-size: 14px; width: 100px;margin-left:20px" type="text" class="form-control" id="chuc_vu" name="chuc_vu" value="{{ nhan_vien.chuc_vu }}">
+                            </div>
+                        </div>
+
+                        <div class="form-group" style="display: flex; align-items: center; margin-top: 15px;">
+                            <label for="to_phong_ban" style="width: 180px; font-weight: bold; font-size: 16px; color: #333; margin-right: 10px; text-align: left;">Tổ (Phòng ban):</label>
+                            <input style="font-size: 16px;" type="text" class="form-control" id="to_phong_ban" name="to_phong_ban"value="{{ nhan_vien.to_phong_ban }}">
+                        </div>
+                        <div class="form-group" style="display: flex; align-items: center; margin-bottom: 10px;Margin-top: 15px;">
+                            <label for="trinh_do_hoc_van" style="width: 250px; font-weight: bold; font-size: 16px; color: #333; margin-right: 10px; text-align: left;">Học vấn:</label>
+                            <input style="font-size: 16px;width: 150px;" type="text" class="form-control" id="trinh_do_hoc_van"  name="trinh_do_hoc_van"  value="{{ nhan_vien.trinh_do_hoc_van }}">
+                            <div class="form-group" style="display: flex; align-items: center; margin-bottom: 0px;">
+                                <label for="nam_tn" style="width: 80px; font-weight: bold; font-size: 16px; color: #333; margin-left: 30px; margin-right: 0px; ">Năm TN:</label>
+                                <input style="font-size: 16px;width: 100px;" type="number" class="form-control" id="nam_tn"name="nam_tn"value="{{ nhan_vien.nam_tn}}">
+                            </div>
+                        </div>
+
+                        <div class="form-group" style="display: flex; align-items: center; margin-bottom: 15px; margin-top: 15px;">
+                            <label for="chuyen_nganh" style="width: 180px; font-weight: bold; font-size: 16px; color: #333; margin-right: 10px; text-align: left;">Chuyên ngành:</label>
+
+                            <input style="font-size: 16px;" type="text" class="form-control" id="chuyen_nganh" name="chuyen_nganh" value="{{ nhan_vien.chuyen_nganh}}">
+
+                        </div>
+
+                        <div class="form-group" style="display: flex; align-items: center; margin-bottom: 10px;">
+                            <label for="noi_dao_tao" style="width: 180px; font-weight: bold; font-size: 16px; color: #333; margin-right: 10px; text-align: left;">Nơi đào tạo:</label>
+                            <input style="font-size: 16px;" type="text" class="form-control" id="noi_dao_tao" name="noi_dao_tao"value="{{ nhan_vien.noi_dao_tao}}">
+
+
+                        </div>
+
+                        <div class="form-group" style="display: flex; align-items: center; margin-bottom: 10px; margin-top: 15px;">
+                            <label for="ngay_cap" style="width: 180px; font-weight: bold; font-size: 16px; color: #333; margin-right: 10px; text-align: left;">Ngày cấp:</label>
+                            <input style="font-size: 16px;" type="date" class="form-control" id="ngay_cap"  name="ngay_cap"  value="{{ nhan_vien.ngay_cap |date:'Y-m-d'}}">
+
+
+                        </div>
+
+                    </div>
+                </div>
+
+                <!-- Nơi cấp và Địa chỉ tạm trú kéo dài -->
+                <div class="form-group" style="display: flex; align-items: center; margin-bottom: 15px;">
+                    <label for="noi_cap" style="width: 100px; font-weight: bold; font-size: 16px; color: #333; margin-right: 47px; text-align: left;">Nơi cấp:</label>
+                    <input style="font-size: 16px;" type="text" class="form-control" id="noi_cap"name="noi_cap" value="{{ nhan_vien.noi_cap}}">
+
+
+                </div>
+
+                <div class="form-group" style="display: flex; align-items: center; margin-bottom: 15px;">
+                    <label for="dia_chi_tam_tru" style="width: 150px; font-weight: bold; font-size: 16px; color: #333; margin-right:10px; text-align: left;">Địa chỉ tạm trú:</label>
+                    <input style="font-size: 16px;" type="text" class="form-control" id="dia_chi_tam_tru"  name="dia_chi_tam_tru"  value="{{ nhan_vien.dia_chi_tam_tru}}">
+
+
+                </div>
+
+                <div style="display: flex; justify-content: flex-end; gap: 10px;">
+                    <button type="submit" style="background-color: #00CC00; color: white; padding: 10px 20px; font-size: 16px;font-weight: bold; border: 0px solid #333; border-radius: 5px; cursor: pointer;">
+                        Lưu
+                    </button>
+                    <a href="{% url 'QLXemHoSo' nhan_vien.id %}" style="background-color: #BA0000; color: white; border: 0px solid #333; padding: 10px 20px; font-size: 16px; border-radius: 5px; color: #FFFFFF; text-decoration: none; cursor: pointer; font-weight: bold;">
+                        Hủy
+                    </a>
+                </div>
+
+            </div>
+        </form>
+        </div>
+    </div>
+</main>
+{% endblock %}

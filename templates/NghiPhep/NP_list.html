@@ -4,6 +4,7 @@
 <style>
     body{
     margin: 0;
+    font-size: 15px
 
     }
     .content{
@@ -338,6 +339,23 @@
 
 {% block page_background %}
 <div class="content">
+    {% url 'DanhSachNP_NV' as url_np_nv %}
+    {% url 'DanhSachNP' as url_np %}
+    {% url 'DanhSachNP_HT' as url_np_ht %}
+    <ul class="nav nav-tabs mb-4">
+        {% if nhan_vien.chuc_vu ==   'Hiệu Trưởng' %}
+        <li class="nav-item">
+            <a class="nav-link {% if request.path == url_np_ht %}active{% endif %}" href="{{ url_np_ht }}">Nghỉ phép của BGH</a>
+        </li>
+        {% else %}
+        <li class="nav-item">
+            <a class="nav-link {% if request.path == url_np_nv %}active{% endif %}" href="{{ url_np_nv }}">Nghỉ phép của tôi</a>
+        </li>
+        {% endif %}
+        <li class="nav-item">
+            <a class="nav-link {% if request.path == url_np %}active{% endif %}" href="{{ url_np }}">Duyệt nghỉ phép</a>
+        </li>
+    </ul>
     {% block content %}
     <div class="button">
         {% block titleNP %}
@@ -348,8 +366,8 @@
             <button type="button" class="themmoi" id="themmoi"><i class="fa-solid fa-plus" ></i>  Thêm mới</button>
         {% endblock %}
 
-
     </div>
+
     <div class="np-container">
         <div class="np-card">
             <div class="np-accent"></div>
@@ -373,6 +391,7 @@
             </div>
         </div>
     </div>
+    {% block formNP %}
     <div class="ndung" style="display: flex; gap: 90px">
         <div class="ndungNp">
 
@@ -380,7 +399,11 @@
                 <form class="form-search" action="{% url 'TimKiemNP' %}">
                 <div class="text_search">
                     <i class="fa-solid fa-magnifying-glass"></i>
-                    <input class="form-control mr-sm-2" type="date" placeholder=" Tìm kiếm Ngày bắt đầu Nghỉ:" aria-label="Tìm kiếm Ngày bắt đầu Nghỉ:" name="search" >
+                    <input class="form-control mr-sm-2"
+                       type="date"
+                       aria-label="Tìm kiếm Ngày bắt đầu Nghỉ:"
+                       name="search"
+                       value="{{ request.GET.search }}">
                 </div>
                 <button class="timkiem" type="submit">Tìm kiếm</button>
 
@@ -421,6 +444,7 @@
                         {% endif %}
                       {% if item.trang_thai_don == "Đang chờ duyệt" %}
                         <br>
+                        <br>
                       <div class="edit_delete">
                           <a class="btn btn-primary btn-sm active" aria-pressed="true" href="{% url 'EditNghiPhep' nghiphep_pk=item.id %}"> Chỉnh sửa  </a>
                           <a class="btn btn-primary btn-sm delete" aria-pressed="true" href="{% url 'DeleteNghiPhep' nghiphep_pk=item.id %}"> Xóa </a>
@@ -443,6 +467,7 @@
                                 <div class="leave-type">{{ item.loai_nghi }}</div>
                               </div>
                             </div>
+                            {% if item.nguoi_duyet %}
                             <div class="notification-header" style="margin-left: 50px; margin-top: 15px">
                               <img src="{{ item.nguoi_duyet.anh_ca_nhan }}" alt="Avatar" class="avatar">
                               <div class="info nguoiduyet">
@@ -453,6 +478,7 @@
                                 <div class="leave-type">{{ item.nguoi_duyet.chuc_vu }} {{ item.nguoi_duyet.to_phong_ban }} </div>
                               </div>
                             </div>
+                            {% endif %}
 
                             <div class="status-change">
                               <span class="dot">•</span>
@@ -507,6 +533,7 @@
             </ul>
         </div>
     </div>
+    {% endblock %}
     {% endblock %}
 </div>
 {% endblock %}

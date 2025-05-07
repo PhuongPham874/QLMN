@@ -3,14 +3,20 @@ from django.core.validators import RegexValidator
 from django.core.validators import MinValueValidator
 from django.contrib.auth.models import User
 
-
-
-
 from django.db import models
 from django.contrib.auth.models import User
 from django.core.validators import RegexValidator
 from django.db.models.signals import post_save
 from django.dispatch import receiver
+
+
+class PhuCap(models.Model):
+   ten_phu_cap = models.CharField(max_length=100)
+   gia_tri = models.DecimalField(max_digits=10, decimal_places=2)
+
+
+   def __str__(self):
+       return self.ten_phu_cap
 
 TRINH_DO_HOC_VAN_CHOICES = [
     ('Dưới trung cấp', 'Dưới trung cấp'),
@@ -27,12 +33,12 @@ TO_PHONG_BAN_CHOICES = [
  ]
 
 class NhanVien(models.Model):
- user = models.OneToOneField(User, on_delete=models.CASCADE, unique=True, null=False)
+ user = models.OneToOneField(User, on_delete=models.CASCADE, unique=True, null=False, related_name='nhanvien_home')
  ten_nv = models.CharField(max_length=100)
- anh_ca_nhan = models.ImageField(upload_to='media/nhanvien/')
- gioi_tinh = models.CharField(max_length=10, choices=[('2', 'Nam'), ('1', 'Nữ')])
+ anh_ca_nhan = models.ImageField(upload_to='media/nhanvien/', null=True, blank=True)
+ gioi_tinh = models.CharField(max_length=10, choices=[('2', 'Nam'), ('1', 'Nữ')],default='1')
  ngay_sinh = models.DateField(null=True)
- vi_tri_cong_viec = models.CharField(max_length=30)
+ vi_tri_cong_viec = models.CharField(max_length=100, blank=True, null=True)
  to_phong_ban = models.CharField(max_length=50, choices=TO_PHONG_BAN_CHOICES)
  trinh_do_hoc_van = models.CharField(max_length=50, choices=TRINH_DO_HOC_VAN_CHOICES)
  chuyen_nganh = models.CharField(max_length=100, null=True)
@@ -46,12 +52,16 @@ class NhanVien(models.Model):
      max_length=10,
      unique=True,
      validators=[RegexValidator(r'^\d{10}$', message="Số điện thoại phải có đúng 10 chữ số.")])
- email = models.EmailField(unique=True, max_length=20, null=True)
+ email = models.EmailField(unique=True, max_length=50, null=True)
  so_cccd = models.CharField(
      max_length=12,
      unique=True,
      validators=[RegexValidator(r'^\d{12}$', message="Số CCCD phải có đúng 12 chữ số.")]
  )
+ phu_caps = models.ManyToManyField(PhuCap, related_name='nhanviens')
+
+ class Meta:
+     db_table = 'HOME_nhanvien'
 
  def __str__(self):
      return self.ten_nv
@@ -59,13 +69,6 @@ class NhanVien(models.Model):
 
 
 
-class PhuCap(models.Model):
-   ten_phu_cap = models.CharField(max_length=100)
-   gia_tri = models.DecimalField(max_digits=10, decimal_places=2)
-
-
-   def __str__(self):
-       return self.ten_phu_cap
 
 
 
@@ -83,8 +86,10 @@ class PhuCapNhanVien(models.Model):
 
 class HopDongLaoDong(models.Model):
    nhan_vien = models.ForeignKey(NhanVien, on_delete=models.CASCADE)
-   vi_tri_lam_viec = models.CharField(max_length=50)
-   to_phong_ban = models.CharField(max_length=50)
+   vi_tri_lam_viec = models.CharField(max_length=50, blank=False)
+   to_phong_ban = models.CharField(max_length=50, blank=False)
+   so_hop_dong = models.CharField(max_length=50)
+   thoi_han_hop_dong = models.IntegerField(verbose_name='Thời hạn hợp đồng')
    loai_hop_dong = models.CharField(max_length=100, choices=[
        ('Hợp đồng thử việc', 'Hợp đồng thử việc'),
        ('Hợp đồng có thời hạn', 'Hợp đồng có thời hạn')], default='Hợp đồng thử việc')
@@ -92,17 +97,13 @@ class HopDongLaoDong(models.Model):
    ngay_ky = models.DateField()
    tu_ngay = models.DateField()
    den_ngay = models.DateField()
-
-
    TRANG_THAI_HOP_DONG_CHOICES = [
        ('Đang hiệu lực', 'Đang hiệu lực'),
        ('Sắp hết hạn', 'Sắp hết hạn'),
-       ('Đã chấm dứt', 'Đã chấm dứt')
+       ('Hết hiệu lực', 'Hết hiệu lực')
    ]
    trang_thai_hop_dong = models.CharField(max_length=50,
                                           choices=TRANG_THAI_HOP_DONG_CHOICES)
-
-
    TO_PHONG_BAN_CHOICES = [
        ('Lớp mầm', 'Lớp mầm'),
        ('Lớp chồi', 'Lớp chồi'),
@@ -118,25 +119,17 @@ class HopDongLaoDong(models.Model):
    to_phong_ban = models.CharField(max_length=50, choices=TO_PHONG_BAN_CHOICES)
    vi_tri_lam_viec = models.CharField(max_length=50,
                                       choices=VI_TRI_LAM_VIEC_CHOICES)
-   def save(self, *args, **kwargs):
-       if not self.vi_tri_lam_viec:
-           self.vi_tri_lam_viec = self.nhan_vien.vi_tri_cong_viec
-       if not self.to_phong_ban:
-           self.to_phong_ban = self.nhan_vien.to_phong_ban
-       if not self.nhan_vien:
-           last_nhan_vien = HopDongLaoDong.objects.all().order_by(
-               'id').last()
-           last_id = last_nhan_vien.id if last_nhan_vien else 0
-           self.ma_nhan_vien = f"NV{last_id + 1:03d}"
-
-
-       super(HopDongLaoDong, self).save(*args, **kwargs)
-
-
 
 
 def __str__(self):
    return f"{self.nhan_vien.ten_nv} - {self.loai_hop_dong}"
+
+
+
+
+
+
+
 
 
 
@@ -289,18 +282,5 @@ class ChamCong(models.Model):
       return f"Nhân viên {self.nhan_vien} - {self.ngay}/{self.thang}/{self.nam} - {self.get_trang_thai_display()}"
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+def datetime():
+    return None

@@ -1,0 +1,134 @@
+{% extends 'HOME.html' %}
+{% block extra_css %}
+<style>
+  body {
+        margin: 0;
+        padding: 0;
+        background-color: #f2f2f2;
+    }
+    .bhxh-title {
+        font-size: 28px;
+        font-weight: bold;
+        font-style: italic;
+        margin-bottom: 20px;
+        color: #000000;
+        text-align: center;
+    }
+    .list-group {
+        width: 700px;
+        margin: 20px auto;
+        padding: 20px;
+        background: linear-gradient(to right, #DDF0FF, #FFFFFF);
+        box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+        border-radius: 10px;
+
+    }
+    .info-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 10px;
+    }
+    p {
+        font-weight: bold;
+        color: #066BBB;
+        margin: 10px 0;
+    }
+    .value {
+        font-weight: normal;
+        color: black;
+    }
+    .action-buttons {
+        display: flex;
+        justify-content: space-between;
+        width: 800px;
+        margin: 0 auto 20px auto;
+    }
+    .button1 {
+        background-color: #D9D9D9;
+        color: black;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        text-align: center;
+        text-decoration: none;
+        font-weight: bold;
+    }
+    .button1:hover {
+        background-color: #bcbcbc;
+    }
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 10px;
+    }
+    table th, table td {
+        border: 1px solid #999;
+        padding: 10px;
+        text-align: center;
+    }
+    table th {
+        background-color: #cce5ff;
+    }
+    .custom-list {
+        padding-left: 20px;
+        margin-bottom: 10px;
+    }
+    .custom-list li {
+        color: #066BBB;
+        font-weight: bold;
+        margin-bottom: 5px;
+    }
+</style>
+{% endblock %}
+{% block page_background %}
+<div style="padding: 20px; width: 80%;">
+    {% if nhan_vien.vi_tri_cong_viec == 'Kế toán' or nhan_vien.vi_tri_cong_viec == 'Hiệu Trưởng' or nhan_vien.vi_tri_cong_viec == 'Hiệu phó chuyên môn' or nhan_vien.vi_tri_cong_viec == 'Hiệu phó hoạt động' %}
+    <div class="action-buttons">
+    <a href="{% url 'bhxh_list' %}" class="button1">Quay lại</a>  {# sửa link 'ten_url_ve_trang_truoc' nếu có #}
+    </div>
+    {% endif %}
+    <h2 class="bhxh-title">{{ bh.nhan_vien.ten_nv }} - THÔNG TIN BHXH</h2>
+    <div class="list-group">
+        <div class="info-row">
+            <p><span class="text">Mã nhân viên:</span> <span class="value">{{ bh.nhan_vien.id }}</span></p>
+            <p><span class="text">Mức đóng của Nhân viên:</span> <span class="value">{{ bh.nhan_vien_dong }}%</span></p>
+        </div>
+        <div class="info-row">
+            <p><span class="text">Mã BHXH:</span> <span class="value">{{ bh.ma_BHXH }}</span></p>
+            <p><span class="text">Mức đóng của trường:</span> <span class="value">{{ bh.truong_dong }}%</span></p>
+        </div>
+        <div class="info-row">
+            <p><span class="text">Ngày tham gia BHXH:</span> <span class="value">{{ bh.thoi_gian_bat_dau|date:"d/m/Y" }}</span></p>
+        </div>
+    </div>
+    <div class="list-group">
+        <p style="font-size: 18px;">Quá trình tham gia bảo hiểm xã hội</p>
+        <ul class="custom-list">
+            <li>Số lần tham gia: {{ solanthamgia }}</li>
+        </ul>
+        <table>
+            <thead>
+                <tr>
+                    <th>Ngày bắt đầu</th>
+                    <th>Ngày kết thúc</th>
+                    <th>Tổng tiền(VNĐ)</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for dong in dongbh %}
+                <tr>
+                    <td>{{ dong.ngay_bat_dau|date:"d/m/Y" }}</td>
+                    <td>{{ dong.ngay_ket_thuc|date:"d/m/Y" }}</td>
+                    <td>{{ dong.tong_tien|floatformat:0}}</td>
+                </tr>
+            {% endfor %}
+                <tr style="font-weight: bold; color: #066BBB;">
+                    <td colspan="2" style="text-align: center;">Tổng</td>
+                    <td>{{ Total|floatformat:0}}</td>
+                </tr>
+            </tbody>
+    </table>
+    </div>
+</div>
+{% endblock %}
