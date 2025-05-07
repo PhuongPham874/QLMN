@@ -1,11 +1,11 @@
 {% extends "home.html" %}
 
 {% block page_background %}
-<div class="p-6">
+<div class="p-6" style="margin: 50px">
 
     <!-- Hiển thị thông báo -->
     {% if messages %}
-    <div class="mb-4">
+    <div class="mb-4" >
         {% for message in messages %}
             <div class="px-4 py-2 rounded-lg shadow
                 {% if message.tags == 'success' %} bg-green-100 text-green-800
@@ -19,13 +19,14 @@
     {% endif %}
 
     <div class="flex items-center justify-between mb-6">
-        <h1 class="text-2xl font-bold text-gray-800">📋 Danh sách nhân viên</h1>
-        <a href="{% url 'cham_cong_bang_khuon_mat' %}" class="bg-blue-600 hover:bg-blue-700 text-black font-semibold py-2 px-4 rounded-lg shadow">
+        <h1 class="text-2xl font-bold text-gray-800" style="margin: 20px; margin-left: 200px">📋 Danh sách nhân viên</h1>
+        <a href="{% url 'cham_cong_bang_khuon_mat' %}" class="bg-blue-600 hover:bg-blue-700 text-black font-semibold py-2 px-4 rounded-lg shadow"
+         style="margin-top: 20px; background-color: red; border-radius: 20px">
             👤 Chấm công bằng khuôn mặt
         </a>
     </div>
 
-    <div class="bg-white rounded-xl shadow p-4">
+    <div class="bg-white rounded-xl shadow p-4" style="margin-top: 25px">
         <table class="min-w-full table-auto border-collapse">
             <thead>
                 <tr class="bg-gray-100 text-gray-700 text-left">
