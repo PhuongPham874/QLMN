@@ -168,11 +168,11 @@ class NghiPhep(models.Model):
    ngay_bat_dau = models.DateField(null=True)
    ngay_ket_thuc = models.DateField(null=True)
    ly_do = models.TextField()
-   trang_thai_don = models.CharField(max_length=50)
+   trang_thai_don = models.CharField(max_length=50, default='Đang chờ duyệt')
    ghi_chu = models.TextField(blank=True, null=True)
    ngay_tao_don = models.DateTimeField(null=True)
    ngay_chinh_sua = models.DateTimeField(null=True)
-   nguoi_duyet = models.ForeignKey(NhanVien, on_delete=models.CASCADE, related_name='nguoi_duyet_don')
+   nguoi_duyet = models.ForeignKey(NhanVien, null = True, on_delete=models.CASCADE, related_name='nguoi_duyet_don')
    ngay_duyet = models.DateField(blank=True, null=True)
 
 

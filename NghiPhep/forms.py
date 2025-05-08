@@ -1,4 +1,7 @@
+
+
 from django import forms
+from django.utils import timezone
 from rest_framework.exceptions import ValidationError
 
 from HOME.models import NghiPhep, NhanVien
@@ -33,9 +36,12 @@ class NghiPhepForm(forms.ModelForm):
         cleaned_data = super().clean()
         start = cleaned_data.get('ngay_bat_dau')
         end = cleaned_data.get('ngay_ket_thuc')
+        now = timezone.now().date()
 
         if start and end and end < start:
             self.add_error('ngay_ket_thuc', "Ngày kết thúc không được nhỏ hơn ngày bắt đầu.")
+        if start < now:
+            self.add_error('ngay_bat_dau', "Ngày bắt đầu không được nhỏ hơn ngày hiện tại.")
 
 
 class SearchForm(forms.Form):

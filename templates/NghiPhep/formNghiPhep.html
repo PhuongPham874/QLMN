@@ -8,25 +8,16 @@
 {% endblock %}
 {% block CSS %}
 <style>
-    body {
-            display: flex;!important
-            align-items: center;
-            justify-content: center;
-            background: linear-gradient(to right, #e0f7fa, #e1f5fe);
-            font-family: 'Arial', sans-serif;
+        .form-box {
 
-
-        }
-        .wrapper {
-            background: linear-gradient(to right, #DDF0FF, #FFFFFF);
-            padding: 30px;
-            width: 85%;
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0,0,0,0.1);
 
         }
         .container {
-            width: 400px;
+        padding: 30px;
+            width: 85%;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            background: linear-gradient(to right, #DDF0FF, #FFFFFF);
             width: 90%
         }
         h1 {
@@ -44,6 +35,10 @@
             width: 140px;
             font-weight: bold;
             color: #2c3e50;
+        }
+        .text-danger{
+            font-style: italic;
+            font-size: 12px;
         }
         .info span {
             font-weight: bold;
@@ -77,6 +72,59 @@
         textarea {
             resize: none;
         }
+        .form-row {
+            display: flex;
+            margin-bottom: 15px;
+
+        }
+
+        .form-row label {
+            width: 130px;
+            margin-right: 10px;
+            text-align: left;
+            font-weight: bold;
+            color: #2c3e50;
+
+        }
+
+        .form-row input,
+        .form-row select
+        {
+            width: 20%
+        }
+        .form-row textarea {
+            width: 50%
+        }
+
+        .form-row-two {
+            display: flex;
+            gap: 50px;
+        }
+
+        .form-row-two .item {
+            display: flex;
+            justify-content: center;
+            width: 100%;
+            gap: 30px;
+        }
+
+        .form-row-two label {
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 15px;
+            width: 180px
+        }
+        .ngay{
+            width: 100%;
+            margin-bottom: 25px;
+        }
+
+        .form-row-two input {
+            padding: 5px;
+            border-radius: 8px;
+            height: auto;
+            border: 1px solid #999;
+        }
         .submit-button {
             width: 15%;
             background-color: #4285F4;
@@ -108,17 +156,17 @@
 
 {% endblock %}
 {% block formNP %}
-<div class="content">
-    <div class="ndung">
-        <div class="wrapper">
+<div class="content" style="width: 100%; height: auto">
+    <div class="ndung" >
         <div class="form-box">
-            <div class="container">
+            <div class="container" >
                 <h1>ĐƠN NGHỈ PHÉP</h1>
                 {% if form.non_field_errors %}
                   <div class="alert alert-danger">
                     {% for error in form.non_field_errors %}
                       <div>{{ error }}</div>
                     {% endfor %}
+
                   </div>
                 {% endif %}
                 <p class="profile">Mã Nhân viên: <span style="font-size: 15px; font-style: italic">{{ nhan_vien.id }}</span> </p>
@@ -127,25 +175,44 @@
 
                 <form method="post">
                     {% csrf_token %}
-                    <label>Loại nghỉ phép:</label>
-                    {{ form.loai_nghi }}
+                    <div class="form-row">
+                        <label>Loại nghỉ phép:</label>
+                        {{ form.loai_nghi }}
+                    </div>
 
-                    <label>Ngày bắt đầu:</label>
-                    {{ form.ngay_bat_dau }}
+                    <div class="form-row-two">
+                        <div class="ngay">
+                            <div class="item">
+                            <label>Ngày bắt đầu:</label>
+                            {{ form.ngay_bat_dau }}
+                            </div>
+                            {% for error in form.ngay_bat_dau.errors %}
+                            <div class="text-danger">*{{ error }}</div>
+                            {% endfor %}
+                        </div>
+                        <div class="ngay">
+                            <div class="item">
+                                <label>Ngày kết thúc:</label>
+                            {{ form.ngay_ket_thuc }}
+                        </div>
+                        {% for error in form.ngay_ket_thuc.errors %}
+                            <div class="text-danger">*{{ error }}</div>
+                        {% endfor %}
+                        </div>
 
-                    <label>Ngày kết thúc:</label>
-                    {{ form.ngay_ket_thuc }}
-                    {% for error in form.ngay_ket_thuc.errors %}
-                        <div class="text-danger">{{ error }}</div>
-                      {% endfor %}
-                    <label>Lý do:</label>
-                    {{ form.ly_do }}
 
+
+                    </div>
+
+                    <div class="form-row">
+                        <label>Lý do:</label>
+                        {{ form.ly_do }}
+                    </div>
                     <button type="submit" class="submit-button">Lưu</button>
+
                 </form>
             </div>
         </div>
     </div>
-</div>
 </div>
 {% endblock %}
