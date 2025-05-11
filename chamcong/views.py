@@ -55,18 +55,18 @@ def cham_cong_view(request):
     })
 
 
-import cv2
+#import cv2
 import time
 import os
-from deepface import DeepFace
+#from deepface import DeepFace
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.shortcuts import redirect, render
 from HOME.models import ChamCong, NhanVien
 from datetime import datetime
 from django.utils import timezone
-import win32gui
-import win32con
+# import win32gui
+# import win32con
 
 # Đường dẫn đến thư mục dataset
 dataset_path = r"C:\Users\HP\Desktop\LTW\Dataset"
