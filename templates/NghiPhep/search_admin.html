@@ -41,9 +41,14 @@
 
 {% block btnAdd %}
     <form class="form-search" action="{% url 'TimKiemNV' %}" style="width: 55%; display: flex; gap:10px">
-        <div class="form-group mb-0" style="margin-right: 15px"  >
-            {{ form.nhan_vien }}
-        </div>
+        <select name="nhan_vien" id="nhan_vien" style="width: 200px; padding: 8px 12px; border-radius: 8px; font-size: 16px;">
+            <option value="">-- Tất cả --</option>
+            {% for nv in nhan_vien_quan_ly %}
+              <option value="{{ nv.id }}">
+                {{ nv.ten_nv }}
+              </option>
+            {% endfor %}
+          </select>
         <button class="timkiem" type="submit" style="width: 30%">Tìm kiếm</button>
     </form>
 {% endblock %}

@@ -10,5 +10,5 @@ urlpatterns = [
     path('ky-luat/duyet/<int:ky_luat_id>/', duyet_ky_luat, name='duyet_ky_luat'),
     path('ky-luat/cho-duyet/', ky_luat_cho_duyet, name='ky_luat_cho_duyet'),
     # path('ky-luat-nhan-vien/', ky_luat_nhan_vien, name='ky_luat_nhan_vien'),
-path('ky-luat-khen-thuong/', ky_luat_khen_thuong, name='ky_luat_khen_thuong'),
+    path('ky-luat-khen-thuong/', ky_luat_khen_thuong, name='ky_luat_khen_thuong'),
 ]

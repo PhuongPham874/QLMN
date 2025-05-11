@@ -3,14 +3,20 @@ from django.core.validators import RegexValidator
 from django.core.validators import MinValueValidator
 from django.contrib.auth.models import User
 
-
-
-
 from django.db import models
 from django.contrib.auth.models import User
 from django.core.validators import RegexValidator
 from django.db.models.signals import post_save
 from django.dispatch import receiver
+
+
+class PhuCap(models.Model):
+   ten_phu_cap = models.CharField(max_length=100)
+   gia_tri = models.DecimalField(max_digits=10, decimal_places=2)
+
+
+   def __str__(self):
+       return self.ten_phu_cap
 
 TRINH_DO_HOC_VAN_CHOICES = [
     ('Dưới trung cấp', 'Dưới trung cấp'),
@@ -27,12 +33,12 @@ TO_PHONG_BAN_CHOICES = [
  ]
 
 class NhanVien(models.Model):
- user = models.OneToOneField(User, on_delete=models.CASCADE, unique=True, null=False)
+ user = models.OneToOneField(User, on_delete=models.CASCADE, unique=True, null=False, related_name='nhanvien_home')
  ten_nv = models.CharField(max_length=100)
- anh_ca_nhan = models.ImageField(upload_to='media/nhanvien/')
- gioi_tinh = models.CharField(max_length=10, choices=[('2', 'Nam'), ('1', 'Nữ')])
+ anh_ca_nhan = models.ImageField(upload_to='media/nhanvien/', null=True, blank=True)
+ gioi_tinh = models.CharField(max_length=10, choices=[('2', 'Nam'), ('1', 'Nữ')],default='1')
  ngay_sinh = models.DateField(null=True)
- vi_tri_cong_viec = models.CharField(max_length=30)
+ vi_tri_cong_viec = models.CharField(max_length=100, blank=True, null=True)
  to_phong_ban = models.CharField(max_length=50, choices=TO_PHONG_BAN_CHOICES)
  trinh_do_hoc_van = models.CharField(max_length=50, choices=TRINH_DO_HOC_VAN_CHOICES)
  chuyen_nganh = models.CharField(max_length=100, null=True)
@@ -46,12 +52,16 @@ class NhanVien(models.Model):
      max_length=10,
      unique=True,
      validators=[RegexValidator(r'^\d{10}$', message="Số điện thoại phải có đúng 10 chữ số.")])
- email = models.EmailField(unique=True, max_length=20, null=True)
+ email = models.EmailField(unique=True, max_length=50, null=True)
  so_cccd = models.CharField(
      max_length=12,
      unique=True,
      validators=[RegexValidator(r'^\d{12}$', message="Số CCCD phải có đúng 12 chữ số.")]
  )
+ phu_caps = models.ManyToManyField(PhuCap, related_name='nhanviens')
+
+ class Meta:
+     db_table = 'HOME_nhanvien'
 
  def __str__(self):
      return self.ten_nv
@@ -59,13 +69,6 @@ class NhanVien(models.Model):
 
 
 
-class PhuCap(models.Model):
-   ten_phu_cap = models.CharField(max_length=100)
-   gia_tri = models.DecimalField(max_digits=10, decimal_places=2)
-
-
-   def __str__(self):
-       return self.ten_phu_cap
 
 
 
@@ -83,8 +86,10 @@ class PhuCapNhanVien(models.Model):
 
 class HopDongLaoDong(models.Model):
    nhan_vien = models.ForeignKey(NhanVien, on_delete=models.CASCADE)
-   vi_tri_lam_viec = models.CharField(max_length=50)
-   to_phong_ban = models.CharField(max_length=50)
+   vi_tri_lam_viec = models.CharField(max_length=50, blank=False)
+   to_phong_ban = models.CharField(max_length=50, blank=False)
+   so_hop_dong = models.CharField(max_length=50)
+   thoi_han_hop_dong = models.IntegerField(verbose_name='Thời hạn hợp đồng')
    loai_hop_dong = models.CharField(max_length=100, choices=[
        ('Hợp đồng thử việc', 'Hợp đồng thử việc'),
        ('Hợp đồng có thời hạn', 'Hợp đồng có thời hạn')], default='Hợp đồng thử việc')
@@ -92,17 +97,13 @@ class HopDongLaoDong(models.Model):
    ngay_ky = models.DateField()
    tu_ngay = models.DateField()
    den_ngay = models.DateField()
-
-
    TRANG_THAI_HOP_DONG_CHOICES = [
        ('Đang hiệu lực', 'Đang hiệu lực'),
        ('Sắp hết hạn', 'Sắp hết hạn'),
-       ('Đã chấm dứt', 'Đã chấm dứt')
+       ('Hết hiệu lực', 'Hết hiệu lực')
    ]
    trang_thai_hop_dong = models.CharField(max_length=50,
                                           choices=TRANG_THAI_HOP_DONG_CHOICES)
-
-
    TO_PHONG_BAN_CHOICES = [
        ('Lớp mầm', 'Lớp mầm'),
        ('Lớp chồi', 'Lớp chồi'),
@@ -118,25 +119,17 @@ class HopDongLaoDong(models.Model):
    to_phong_ban = models.CharField(max_length=50, choices=TO_PHONG_BAN_CHOICES)
    vi_tri_lam_viec = models.CharField(max_length=50,
                                       choices=VI_TRI_LAM_VIEC_CHOICES)
-   def save(self, *args, **kwargs):
-       if not self.vi_tri_lam_viec:
-           self.vi_tri_lam_viec = self.nhan_vien.vi_tri_cong_viec
-       if not self.to_phong_ban:
-           self.to_phong_ban = self.nhan_vien.to_phong_ban
-       if not self.nhan_vien:
-           last_nhan_vien = HopDongLaoDong.objects.all().order_by(
-               'id').last()
-           last_id = last_nhan_vien.id if last_nhan_vien else 0
-           self.ma_nhan_vien = f"NV{last_id + 1:03d}"
-
-
-       super(HopDongLaoDong, self).save(*args, **kwargs)
-
-
 
 
 def __str__(self):
    return f"{self.nhan_vien.ten_nv} - {self.loai_hop_dong}"
+
+
+
+
+
+
+
 
 
 
@@ -175,7 +168,7 @@ class NghiPhep(models.Model):
    ngay_bat_dau = models.DateField(null=True)
    ngay_ket_thuc = models.DateField(null=True)
    ly_do = models.TextField()
-   trang_thai_don = models.CharField(max_length=50, default='Đang chờ duyệt')
+   trang_thai_don = models.CharField(max_length=50)
    ghi_chu = models.TextField(blank=True, null=True)
    ngay_tao_don = models.DateTimeField(null=True)
    ngay_chinh_sua = models.DateTimeField(null=True)
@@ -196,7 +189,6 @@ class KyLuat(models.Model):
   TRANG_THAI_CHOICES = (
       ('DANG_CHO_DUYET', 'Đang chờ duyệt'),
       ('DA_DUYET', 'Đã duyệt'),
-      ('DA_TU_CHOI', 'Đã từ chối'),
   )
   nhan_vien = models.ForeignKey('NhanVien', on_delete=models.CASCADE, related_name='ky_luat_nhan_vien')
   ngay_bat_dau = models.DateField(null=True)
@@ -212,20 +204,29 @@ class KyLuat(models.Model):
   minh_chung_url = models.URLField(max_length=200, null=True, blank=True)
 
 
-  def __str__(self):
-      return f"Kỉ luật đối với {self.nhan_vien.ten_nv} - {self.muc_do} - {self.ly_do}"
-  def get_muc_do_display(self):
-        return dict(self.MUC_DO_CHOICES).get(self.muc_do, self.muc_do)
 
-  def get_trang_thai_display(self):
-      return dict(self.TRANG_THAI_CHOICES).get(self.trang_thai, self.trang_thai)
+
+  def get_all_info(self):
+      so_tien = f", Số tiền phạt: {self.so_tien_phat}" if self.muc_do == 'PHAT_TIEN' and self.so_tien_phat else ""
+      ngay_ket_thuc = f", Ngày kết thúc: {self.ngay_ket_thuc}" if self.ngay_ket_thuc else ""
+      minh_chung = f", Minh chứng: {self.minh_chung_file.url if self.minh_chung_file else self.minh_chung_url if self.minh_chung_url else 'Không có'}"
+      nguoi_tao_info = f"{self.nguoi_tao_don.ten_nv} ({self.nguoi_tao_don.chuc_vu})" if self.nguoi_tao_don else 'N/A'
+      nguoi_duyet_info = f"{self.nguoi_duyet_don.ten_nv} ({self.nguoi_duyet_don.chuc_vu})" if self.nguoi_duyet_don else 'N/A'
+      return (f"Tên NV: {self.nhan_vien.ten_nv}, Ngày ra quyết định: {self.ngay_ra_quyet_dinh}, "
+              f"Ngày bắt đầu: {self.ngay_bat_dau}{ngay_ket_thuc}, "
+              f"Mức độ: {self.get_muc_do_display()}, Lý do: {self.ly_do}, "
+              f"Người tạo: {nguoi_tao_info}, "
+              f"Người duyệt: {nguoi_duyet_info}, "
+              f"Trạng thái: {self.get_trang_thai_display()}, "
+              f"Ngày tạo: {self.so_tien}{minh_chung}")
+
+
 
 
 class KhenThuong(models.Model):
   TRANG_THAI_CHOICES = (
       ('DANG_CHO_DUYET', 'Đang chờ duyệt'),
       ('DA_DUYET', 'Đã duyệt'),
-        ('DA_TU_CHOI', 'Đã từ chối'),
   )
   ngay_tao = models.DateTimeField(auto_now_add=True)
   nhan_vien = models.ForeignKey('NhanVien', on_delete=models.CASCADE, related_name='khen_thuong_nhan_vien')
@@ -237,11 +238,19 @@ class KhenThuong(models.Model):
   minh_chung_file = models.FileField(upload_to='minh_chung_khen_thuong/', null=True, blank=True)
   minh_chung_url = models.URLField(max_length=200, null=True, blank=True)
 
-  def __str__(self):
-      return f"Khen thưởng cho {self.nhan_vien.ten_nv} - {self.gia_tri} VNĐ"
 
-  def get_trang_thai_display(self):
-      return dict(self.TRANG_THAI_CHOICES).get(self.trang_thai, self.trang_thai)
+  def get_all_info(self):
+      minh_chung = f", Minh chứng: {self.minh_chung_file.url if self.minh_chung_file else self.minh_chung_url if self.minh_chung_url else 'Không có'}"
+      nguoi_tao_info = f"{self.nguoi_tao_don.ten_nv} ({self.nguoi_tao_don.chuc_vu})" if self.nguoi_tao_don else 'N/A'
+      nguoi_xac_nhan_info = f"{self.nguoi_xac_nhan.ten_nv} ({self.nguoi_xac_nhan.chuc_vu})" if self.nguoi_xac_nhan else 'N/A'
+      return (f"Tên NV: {self.nhan_vien.ten_nv}, Ngày tạo: {self.ngay_tao}, "
+              f"Giá trị: {self.gia_tri}, Lý do: {self.ly_do}, "
+              f"Người tạo: {nguoi_tao_info}, "
+              f"Người xác nhận: {nguoi_xac_nhan_info}, "
+              f"Trạng thái: {self.get_trang_thai_display()}{minh_chung}")
+
+
+
 
 
 
@@ -273,18 +282,5 @@ class ChamCong(models.Model):
       return f"Nhân viên {self.nhan_vien} - {self.ngay}/{self.thang}/{self.nam} - {self.get_trang_thai_display()}"
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+def datetime():
+    return None

@@ -444,6 +444,7 @@
                         {% endif %}
                       {% if item.trang_thai_don == "Đang chờ duyệt" %}
                         <br>
+                        <br>
                       <div class="edit_delete">
                           <a class="btn btn-primary btn-sm active" aria-pressed="true" href="{% url 'EditNghiPhep' nghiphep_pk=item.id %}"> Chỉnh sửa  </a>
                           <a class="btn btn-primary btn-sm delete" aria-pressed="true" href="{% url 'DeleteNghiPhep' nghiphep_pk=item.id %}"> Xóa </a>
@@ -466,6 +467,7 @@
                                 <div class="leave-type">{{ item.loai_nghi }}</div>
                               </div>
                             </div>
+                            {% if item.nguoi_duyet %}
                             <div class="notification-header" style="margin-left: 50px; margin-top: 15px">
                               <img src="{{ item.nguoi_duyet.anh_ca_nhan }}" alt="Avatar" class="avatar">
                               <div class="info nguoiduyet">
@@ -476,6 +478,7 @@
                                 <div class="leave-type">{{ item.nguoi_duyet.chuc_vu }} {{ item.nguoi_duyet.to_phong_ban }} </div>
                               </div>
                             </div>
+                            {% endif %}
 
                             <div class="status-change">
                               <span class="dot">•</span>

@@ -14,6 +14,7 @@
     {% block extra_css %}
 
     {% endblock %}
+    {% block extra_js %} {% endblock %}
 
 
     <title>
@@ -61,7 +62,7 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="{% url 'thong_tin_bhxh' %}" class="nav-link d-flex align-items-center">
+                    <a href="{% url 'redirectBHXH' %}" class="nav-link d-flex align-items-center">
                         <img src="{% static 'images/BHXH.png' %}" alt="BHXH" width="40" height="40" class="me-2">
                         BHXH
                     </a>
