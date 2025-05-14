@@ -21,7 +21,6 @@
         box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
         background-color: #ffffff;
         border-radius: 10px;
-
         height: auto;
     }
     .ndungloc{
@@ -44,9 +43,8 @@
         margin-bottom: 20px;
     }
     .titleNP{
-        font-size: 30px;
+        font-size: 25px;
         font-weight: bold;
-        font-style: italic;
     }
     .text_search{
         width: 300px;
@@ -68,6 +66,7 @@
     .form-search{
         width: 70%;
         display: flex;
+        gap: 10px
         align-items: center;
         margin-bottom: 20px;
         justify-content: space-between;
@@ -75,29 +74,15 @@
     .fa-magnifying-glass{
         font-size: 20px
     }
-    .my-sm-0{
-        padding:10px;
-        background-color:#ABDAFF ;
-        color: black;
-        font-size:16px;
-    }
-    .quaylai{
-        padding: 10px ;
-        border-radius:5px;
-        font-size: 15px;
-        text-align: center;
-        background-color:#D9D9D9 ;
-        color: black;
-        border: 1px solid;
-    }
+
     .themmoi{
-        width: 150px;
+        width: 120px;
         height: 35px;
         padding: 5px ;
         border-radius:10px;
         font-size: 15px;
         text-align: center;
-        background-color:#066BBB ;
+        background-color:black;
         color: white;
         border: 1px solid;
     }
@@ -110,36 +95,6 @@
         font-weight: bold;
         font-style: italic;
     }
-
-    .timkiem {
-        background-color: #ABDAFF;
-        color: #000;
-        border-radius: 6px;
-        padding: 10px 20px;
-        font-size: 16px;
-        cursor: pointer;
-        height: 30px;
-        transition: background-color 0.3s ease;
-        border: 0px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-    }
-
-    .timkiem:hover {
-        background-color: #066BBB;          /* xanh dương đậm khi hover */
-        color: white;                       /* đổi màu chữ trắng nếu cần nổi bật hơn */
-    }
-    .edit_delete{
-        width: 150px;
-        display: flex;
-        justify-content: space-between;
-    }
-    .delete{
-        background: red;
-        color: white;
-        border: 0px;
-    }
     .np-container {
     display: flex;
     gap: 30px;
@@ -148,7 +103,7 @@
     }
 
     .np-card {
-        width: 170px; /* tăng chiều rộng để dòng chữ dài không bị xuống dòng */
+        width: 160px; /* tăng chiều rộng để dòng chữ dài không bị xuống dòng */
         border-radius: 12px;
         box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
         overflow: hidden;
@@ -169,7 +124,7 @@
     }
 
     .np-title {
-        font-size: 13px;
+        font-size: 12px;
         color: #444;
         margin-bottom: 10px;
         font-weight: 500;
@@ -217,18 +172,6 @@
       object-fit: cover;   /* Cắt ảnh cho vừa khung */
       border: 1px solid #ccc; /* Viền nhẹ nếu thích */
     }
-    .notification-item {
-        padding: 10px;
-      border-bottom: 1px solid #ddd;
-      font-family: Arial, sans-serif;
-      font-size: 14px;
-    }
-
-    .notification-header {
-      display: flex;
-      align-items: center;
-    }
-
     .avatar {
       width: 40px;
       height: 40px;
@@ -237,60 +180,79 @@
       margin-right: 10px;
     }
 
-    .info {
-      display: flex;
-      flex-direction: column;
+
+
+
+    .np-cards-list {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
     }
 
-    .name {
-      font-weight: bold;
-      font-size: 14px;
+    .np-card-item {
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        padding: 15px;
+        background-color: #fff;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.05);
     }
 
-    .time {
-      color: #999;
-      font-size: 12px;
-      margin-top: 1px;
+    .np-card-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
     }
 
-    .leave-type {
-      font-size: 13px;
-      margin-top: 5px;
+    .np-card-body {
+        margin-top: 20px;
+        font-size: 14px
     }
 
-    .status-change {
-      margin-left: 50px;
-      margin-top: 10px;
-      font-size: 13px;
-      color: #555;
+    .np-card-footer {
+        margin-top: 15px;
+        font-size: 12px
     }
 
-    .dot {
-      color: #999;
-      margin-right: 3px;
+    .card-actions a {
+        margin-left: 5px;
     }
 
-    .status-text .approved {
-      color: #2e8bff;
-      font-weight: 500;
+    .badge {
+        padding: 8px 8px;
+        border-radius: 15px;
+        font-size: 12px;
+        color: white;
     }
 
-    .status-text .rejected {
-      color: red;
-      font-weight: 500;
+    .badge-success {
+        background-color: #28a745;
     }
 
-    .status-text .waiting {
-      color: gray;
-      font-weight: 500;
+    .badge-warning {
+        background-color: #ffc107;
+        color: black;
     }
 
-    .status-note {
-      font-style: italic;
-      color: #888;
-      margin-left: 4px;
+    .badge-danger {
+        background-color: #dc3545;
     }
 
+    .avatar {
+        width: 35px;
+        height: 35px;
+        border-radius: 50%;
+        margin-right: 10px;
+        object-fit: cover;
+    }
+
+    .history-block {
+        display: flex;
+        align-items: center;
+    }
+    .btn-link{
+    color: black;
+    font-size: 14px
+    }
     {% block CSS %}
     {% endblock %}
 </style>
@@ -365,9 +327,8 @@
         {% block btnAdd %}
             <button type="button" class="themmoi" id="themmoi"><i class="fa-solid fa-plus" ></i>  Thêm mới</button>
         {% endblock %}
-
     </div>
-
+    {% block ttNP %}
     <div class="np-container">
         <div class="np-card">
             <div class="np-accent"></div>
@@ -391,25 +352,23 @@
             </div>
         </div>
     </div>
+    {% endblock %}
     {% block formNP %}
-    <div class="ndung" style="display: flex; gap: 90px">
+    <div class="ndung" style="display: flex; gap: 70px">
         <div class="ndungNp">
-
             <div class="header">
                 <form class="form-search" action="{% url 'TimKiemNP' %}">
-                <div class="text_search">
-                    <i class="fa-solid fa-magnifying-glass"></i>
-                    <input class="form-control mr-sm-2"
-                       type="date"
-                       aria-label="Tìm kiếm Ngày bắt đầu Nghỉ:"
-                       name="search"
-                       value="{{ request.GET.search }}">
-                </div>
-                <button class="timkiem" type="submit">Tìm kiếm</button>
-
+                    <div class="text_search">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                        <input class="form-control mr-sm-2"
+                           type="date"
+                           aria-label="Tìm kiếm Ngày bắt đầu Nghỉ:"
+                           name="search" onchange="this.form.submit()"
+                           value="{{ request.GET.search }}">
+                    </div>
                 </form>
-                <form method="get" action="{% url 'DanhSachNP_NV' %}" style="width:15%; height: 15px">
-                        <select name="year" class="form-control" onchange="this.form.submit()">
+                <form method="get" action="{% url 'DanhSachNP_NV' %}" style="width:15%; width: 13%">
+                        <select name="year" class="form-control" onchange="this.form.submit()" style="height: 30px; font-size: 16px; padding: 0px 20px">
                             {% for y in years %}
                                 <option value="{{ y }}" {% if y == year %}selected{% endif %}>{{ y }}</option>
                             {% endfor %}
@@ -417,99 +376,77 @@
                 </form>
             </div>
 
-
-            {% if NP_list %}
-                <ul class="list-group">
-                  {% for item in NP_list %}
-                    <span class="trangthai">{{ item.trang_thai_don }}</span>
-                    <li class="list-group-item">
-                      <span class="text-info">Loại nghỉ phép: </span>
-                      <span>{{item.loai_nghi }} </span>
-                      <br>
-                      <span class="text-info">Ngày bắt đầu: </span>
-                      <span>{{ item.ngay_bat_dau }}</span>
-                      <br>
-                      <span class="text-info">Ngày đi làm lại: </span>
-                      <span>{{ item.ngay_ket_thuc }}</span>
-                      <br>
-                      <span class="text-info">Lý do: </span>
-                      <span >{{ item.ly_do }}</span>
-                      <br>
-                        {% if item.ghi_chu == "" %}
-                        <span class="text-info">Ghi chú: </span>
-                        <span>Không</span>
-                        {% else %}
-                        <span class="text-info">Ghi chú: </span>
-                        <span>{{ item.ghi_chu }}</span>
-                        {% endif %}
-                      {% if item.trang_thai_don == "Đang chờ duyệt" %}
-                        <br>
-                        <br>
-                      <div class="edit_delete">
-                          <a class="btn btn-primary btn-sm active" aria-pressed="true" href="{% url 'EditNghiPhep' nghiphep_pk=item.id %}"> Chỉnh sửa  </a>
-                          <a class="btn btn-primary btn-sm delete" aria-pressed="true" href="{% url 'DeleteNghiPhep' nghiphep_pk=item.id %}"> Xóa </a>
-                      </div>
-                      {% endif %}
-                        <br>
-                        <button onclick="toggleHistory({{ item.id }})" style="background: none; border: none; color: #066BBB; padding: 0; font: inherit; cursor: pointer;text-decoration: underline;font-style: italic;">
-                          Xem lịch sử
-                        </button>
-
-                        <div id="historyContent-{{ item.id }}" style="display: none;">
-                          <div class="notification-item">
-                            <div class="notification-header">
-                              <img src="{{ item.nhan_vien.anh_ca_nhan }}" alt="Avatar" class="avatar">
-                              <div class="info">
-                                <div style="font-size: 12px">
-                                  <span class="name">{{ item.nhan_vien.ten_nv }}</span>
-                                  - Đã tạo đơn vào ngày: {{ item.ngay_tao_don }}
+                {% if NP_list %}
+                    <div class="np-cards-list">
+                        {% for item in NP_list %}
+                        <div class="np-card-item">
+                            <div class="np-card-header">
+                                <strong style="font-size: 18px">{{ item.loai_nghi }}</strong>
+                                <hr>
+                                <div>
+                                    {% if item.trang_thai_don == "Đã duyệt" %}
+                                        <span class="badge badge-success">Đã duyệt</span>
+                                    {% elif item.trang_thai_don == "Đang chờ duyệt" %}
+                                        <span class="badge badge-warning">Đang chờ duyệt</span>
+                                    {% elif item.trang_thai_don == "Bị từ chối" %}
+                                        <span class="badge badge-danger">Từ chối</span>
+                                    {% endif %}
                                 </div>
-                                <div class="leave-type">{{ item.loai_nghi }}</div>
-                              </div>
-                            </div>
-                            {% if item.nguoi_duyet %}
-                            <div class="notification-header" style="margin-left: 50px; margin-top: 15px">
-                              <img src="{{ item.nguoi_duyet.anh_ca_nhan }}" alt="Avatar" class="avatar">
-                              <div class="info nguoiduyet">
-                                <div style="font-size: 12px">
-                                  <span class="name">{{ item.nguoi_duyet.ten_nv }}</span>
-                                  - Đã xử lý đơn vào ngày: {{ item.ngay_duyet }}
+                                {% if item.trang_thai_don == "Đang chờ duyệt" %}
+                                <div class="card-actions">
+                                    <a class="btn btn-sm btn-primary" href="{% url 'EditNghiPhep' nghiphep_pk=item.id %}">Chỉnh sửa</a>
+                                    <a class="btn btn-sm btn-danger" href="{% url 'DeleteNghiPhep' nghiphep_pk=item.id %}">Xóa</a>
                                 </div>
-                                <div class="leave-type">{{ item.nguoi_duyet.chuc_vu }} {{ item.nguoi_duyet.to_phong_ban }} </div>
-                              </div>
-                            </div>
-                            {% endif %}
-
-                            <div class="status-change">
-                              <span class="dot">•</span>
-                              Chờ duyệt
-                              <i class="fa-solid fa-arrow-right"></i>
-                              <span class="status-text">
-                                {% if item.trang_thai_don == "Đã duyệt" %}
-                                  <span class="approved">Được duyệt</span>
-                                {% elif item.trang_thai_don == "Bị từ chối" %}
-                                  <span class="rejected">Từ chối</span>
-                                {% else %}
-                                  <span class="waiting">Đang chờ</span>
                                 {% endif %}
-                              </span>
                             </div>
-                          </div>
-                        </div>
-                    </li>
-                  {% endfor %}
-                </ul>
-            {% else %}
-                <p>Không có đơn nghỉ phép nào</p>
-            {% endif %}
-        </div>
 
-        <div class="ndungloc" style="width:30%; max-height: 500px;">
+                            <div class="np-card-body">
+                                <div style="display: flex; gap: 120px">
+                                    <p><strong >Ngày bắt đầu:</strong> {{ item.ngay_bat_dau }}</p>
+                                    <p><strong>Ngày đi làm lại:</strong> {{ item.ngay_ket_thuc }}</p>
+                                </div>
+                                    <p><strong>Lý do:</strong> {{ item.ly_do }}</p>
+                                    <p><strong>Ghi chú:</strong> {{ item.ghi_chu|default:"Không" }}</p>
+                            </div>
+
+                            <div class="np-card-footer">
+                                <div style=" ">
+                                    <i class="fa-solid fa-clock-rotate-left" style="sĩe: 14px"></i>
+                                    <button onclick="toggleHistory({{ item.id }})" class="btn btn-link"> Xem lịch sử</button>
+                                </div>
+
+                                <div id="historyContent-{{ item.id }}" style="display: none; margin-top: 10px;">
+                                    <div class="history-block">
+                                        <img src="{{ item.nhan_vien.anh_ca_nhan }}" class="avatar" alt="Avatar">
+                                        <div>
+                                            <strong>{{ item.nhan_vien.ten_nv }}</strong> đã tạo đơn vào {{ item.ngay_tao_don }}<br>
+                                            <span class="history_loainghi">Loại nghỉ: {{ item.loai_nghi }}</span>
+                                        </div>
+                                    </div>
+                                    {% if item.nguoi_duyet %}
+                                    <div class="history-block" style="margin-left: 40px; margin-top: 10px;">
+                                        <img src="{{ item.nguoi_duyet.anh_ca_nhan }}" class="avatar" alt="Avatar">
+                                        <div>
+                                            <strong>{{ item.nguoi_duyet.ten_nv }}</strong> đã xử lý vào {{ item.ngay_duyet }}<br>
+                                            <span class="history_nguoiduyet">{{ item.nguoi_duyet.chuc_vu }} {{ item.nguoi_duyet.to_phong_ban }}</span>
+                                        </div>
+                                    </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    <p>Không có đơn nghỉ phép nào</p>
+                {% endif %}
+                </div>
+        <div class="ndungloc" style="width:30%; max-height: 500px; ">
            <div class="TitleLoc" style="display: flex; gap: 10px; align-items: left;">
                 <i class="fa-sharp fa-solid fa-filter" style="font-size: 20px;"></i>
                 <p style="margin: 0; font-size: 15px; font-weight: 600;">Lọc</p>
             </div>
-            <ul id="dongloc" style="width: 80%; margin-top: 20px; ">
+            <ul id="dongloc" style="width: 80%; margin-top: 20px; font-size: 14px; ">
                 <li class="li hover:bg-blue-100" >
                     <a href="{% url 'DanhSachNP_NV'  %}?year={{ year }}" class="font-bold hover:text-blue-600">
                         Tất cả ({{ so_don }})

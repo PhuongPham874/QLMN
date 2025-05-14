@@ -14,7 +14,6 @@ class PhuCap(models.Model):
    ten_phu_cap = models.CharField(max_length=100)
    gia_tri = models.DecimalField(max_digits=10, decimal_places=2)
 
-
    def __str__(self):
        return self.ten_phu_cap
 
@@ -35,7 +34,7 @@ TO_PHONG_BAN_CHOICES = [
 class NhanVien(models.Model):
  user = models.OneToOneField(User, on_delete=models.CASCADE, unique=True, null=False, related_name='nhanvien_home')
  ten_nv = models.CharField(max_length=100)
- anh_ca_nhan = models.ImageField(upload_to='media/nhanvien/', null=True, blank=True)
+ anh_ca_nhan = models.ImageField(upload_to='nhanvien/', null=True, blank=True)
  gioi_tinh = models.CharField(max_length=10, choices=[('2', 'Nam'), ('1', 'Nữ')],default='1')
  ngay_sinh = models.DateField(null=True)
  vi_tri_cong_viec = models.CharField(max_length=100, blank=True, null=True)
@@ -50,15 +49,13 @@ class NhanVien(models.Model):
  chuc_vu = models.CharField(max_length=150, null=True)
  so_dien_thoai = models.CharField(
      max_length=10,
-     unique=True,
-     validators=[RegexValidator(r'^\d{10}$', message="Số điện thoại phải có đúng 10 chữ số.")])
+     unique=True)
  email = models.EmailField(unique=True, max_length=50, null=True)
  so_cccd = models.CharField(
      max_length=12,
-     unique=True,
-     validators=[RegexValidator(r'^\d{12}$', message="Số CCCD phải có đúng 12 chữ số.")]
+     unique=True
  )
- phu_caps = models.ManyToManyField(PhuCap, related_name='nhanviens')
+ phu_caps = models.ManyToManyField(PhuCap, through='PhuCapNhanVien',blank=True)
 
  class Meta:
      db_table = 'HOME_nhanvien'
@@ -86,8 +83,6 @@ class PhuCapNhanVien(models.Model):
 
 class HopDongLaoDong(models.Model):
    nhan_vien = models.ForeignKey(NhanVien, on_delete=models.CASCADE)
-   vi_tri_lam_viec = models.CharField(max_length=50, blank=False)
-   to_phong_ban = models.CharField(max_length=50, blank=False)
    so_hop_dong = models.CharField(max_length=50)
    thoi_han_hop_dong = models.IntegerField(verbose_name='Thời hạn hợp đồng')
    loai_hop_dong = models.CharField(max_length=100, choices=[
@@ -104,21 +99,6 @@ class HopDongLaoDong(models.Model):
    ]
    trang_thai_hop_dong = models.CharField(max_length=50,
                                           choices=TRANG_THAI_HOP_DONG_CHOICES)
-   TO_PHONG_BAN_CHOICES = [
-       ('Lớp mầm', 'Lớp mầm'),
-       ('Lớp chồi', 'Lớp chồi'),
-       ('Lớp lá', 'Lớp lá'),
-       ('Văn phòng', 'Văn phòng'),
-       ('Y tế - Hậu cần', 'Y tế - Hậu cần'),
-   ]
-   VI_TRI_LAM_VIEC_CHOICES = [
-       ('Giáo viên', 'Giáo viên'),
-       ('Nhân viên văn phòng', 'Nhân viên văn phòng'),
-       ('Quản lý', 'Quản lý'),
-   ]
-   to_phong_ban = models.CharField(max_length=50, choices=TO_PHONG_BAN_CHOICES)
-   vi_tri_lam_viec = models.CharField(max_length=50,
-                                      choices=VI_TRI_LAM_VIEC_CHOICES)
 
 
 def __str__(self):
@@ -168,11 +148,11 @@ class NghiPhep(models.Model):
    ngay_bat_dau = models.DateField(null=True)
    ngay_ket_thuc = models.DateField(null=True)
    ly_do = models.TextField()
-   trang_thai_don = models.CharField(max_length=50)
+   trang_thai_don = models.CharField(max_length=50, default='Đang chờ duyệt')
    ghi_chu = models.TextField(blank=True, null=True)
    ngay_tao_don = models.DateTimeField(null=True)
    ngay_chinh_sua = models.DateTimeField(null=True)
-   nguoi_duyet = models.ForeignKey(NhanVien, on_delete=models.CASCADE, related_name='nguoi_duyet_don')
+   nguoi_duyet = models.ForeignKey(NhanVien, null = True, on_delete=models.CASCADE, related_name='nguoi_duyet_don')
    ngay_duyet = models.DateField(blank=True, null=True)
 
 

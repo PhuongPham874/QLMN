@@ -29,7 +29,7 @@ def hosochitiet(request, id):
     nhan_vien = get_object_or_404(NhanVien, id=id)
 
     hop_dong = HopDongLaoDong.objects.filter(nhan_vien=nhan_vien).first()  # Kiểm tra xem có hợp đồng lao động không
-    context = {'nhan_vien': nhan_vien, 'hop_dong': hop_dong}
+    context = {'nhanvien': nhan_vien, 'hop_dong': hop_dong}
 
     return render(request, 'HoSo/hosochitiet.html', context)
 '''
@@ -56,23 +56,31 @@ def danh_sach_nhan_vien(request):
     })
 
 
-def them_moi_ho_so(request):
+def Add_Edit_ho_so(request, nhan_vien_id = None):
+    print(f"nhan_vien_id: {nhan_vien_id}")
+    if nhan_vien_id is not None:
+        hoso = get_object_or_404(NhanVien, pk=nhan_vien_id)
+    else:
+        hoso = None
     if request.method == "POST":
-        form = NhanVienForm(request.POST, request.FILES)
+        form = NhanVienForm(request.POST, request.FILES, instance=hoso)
         # Kiểm tra xem form có hợp lệ không
         if form.is_valid():
-            # Lấy dữ liệu từ form
             # Lưu nhân viên mới
             nhan_vien = form.save(commit=False)
-            # Tạo User mới (nếu cần) từ email (hoặc thông tin khác)
-            user = User.objects.create_user(
-                username=nhan_vien.email.split('@')[0],  # Tạo username từ email (bạn có thể tùy chỉnh)
-                email=nhan_vien.email,
-                password="defaultpassword"  # Có thể sử dụng password mặc định hoặc yêu cầu người dùng nhập
-            )
-            # Gán User cho nhân viên
-            nhan_vien.user = user
-            nhan_vien.save()
+            if hoso is None:
+                # Lấy dữ liệu từ form
+                # Tạo User mới (nếu cần) từ email (hoặc thông tin khác)
+                user = User.objects.create_user(
+                    username=nhan_vien.email.split('@')[0],  # Tạo username từ email (bạn có thể tùy chỉnh)
+                    email=nhan_vien.email,
+                    password="defaultpassword"  # Có thể sử dụng password mặc định hoặc yêu cầu người dùng nhập
+                )
+                # Gán User cho nhân viên
+                nhan_vien.user = user
+                nhan_vien.save()
+            else:
+                nhan_vien.save()
             # Sau khi lưu thành công, chuyển hướng về danh sách nhân viên
             return redirect('themmoi_hdld', nhan_vien_id=nhan_vien.id)
         else:
@@ -80,7 +88,7 @@ def them_moi_ho_so(request):
             print(form.errors)
     else:
         # Nếu phương thức GET, tạo form trống
-        form = NhanVienForm()
+        form = NhanVienForm(instance=hoso)
 
     # Trả về template để hiển thị form
     return render(request, 'HoSo/ThemMoiHoSo.html', {'form': form})
