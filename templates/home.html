@@ -1,107 +1,91 @@
 <!DOCTYPE html>
+{% load static %}
 <html lang="vi">
-
 <head>
-    {% load static %}
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <title>Trường Mầm Non Măng Non</title>
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.x.x/css/all.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"/>
-    {% load static %}
-    <!-- NP_list !-->
-    {% block extra_css %}
-
-    {% endblock %}
-    {% block extra_js %} {% endblock %}
-
-
-    <title>
-        {% block title %}
-        Trang chủ
-        {% endblock %}
-    </title>
-    <style>
-        body{
-        background: #FAFAFA;
-        }
-    </style>
-
-
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 </head>
-
 <body>
-    <header class="navbar navbar-expand-lg navbar-dark" style="background-color: #066BBB;">
-        <div class="container-fluid">
-            <a class="navbar-brand text-dark fw-bold" href="{% url 'home' %}">
-                <img src="{% static 'images/logo.jpg' %}" class="logo_website" alt="Logo" width="40" height="40">
-                <img src="{% static 'images/tentruong.png' %}" alt="TenTruong" width="200" height="50">
-            </a>
-            <div class="d-flex">
-                <a href="#" class="text-white me-3">Đổi mật khẩu</a>
-                <a href="{% url 'login' %}" class="text-white">Đăng xuất</a>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <div class="logo-container">
+                <img src="{% static 'images/logo.jpg' %}" alt="Logo" class="logo-img">
+                <div class="logo-text">
+                    <div class="school-type">TRƯỜNG MẦM NON</div>
+                    <div class="school-name"><b>MĂNG NON</b></div>
+                </div>
             </div>
+            <div class="header-actions">
+                <a href="#" class="header-link">
+                    <i class="fas fa-key"></i> Đổi mật khẩu
+                </a>
+                <a href="{% url 'logout' %}" class="header-link">
+                    <i class="fas fa-sign-out-alt"></i> Đăng xuất
+                </a>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <div class="content">
+            <!-- Sidebar -->
+            <aside class="sidebar">
+                <div class="user-profile">
+                    <div class="avatar">
+                        <img src="{{ nhan_vien.anh_ca_nhan }}" alt="User Avatar">
+                    </div>
+                    <div class="user-info">
+                        {% if request.user.is_authenticated %}
+                            <div class="user-name">{{ nhan_vien.ten_nv }}</div>
+                            <div class="user-email">{{ nhan_vien.email }}</div>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <nav class="sidebar-nav">
+                    <a href="{% url 'NVXemHoSo' %}" class="nav-item"><i class="fas fa-file-alt"></i> Hồ sơ</a>
+                    <a href="#" class="nav-item"><i class="fas fa-shield-alt"></i> BHXH</a>
+                    <a href="#" class="nav-item"><i class="fas fa-award"></i> Kỷ luật & Khen thưởng</a>
+                    <a href="#" class="nav-item"><i class="fas fa-calendar-alt"></i> Nghỉ phép</a>
+                    <a href="{% url 'cham_cong' %}" class="nav-item"><i class="fas fa-clock"></i> Chấm công</a>
+                    <a href="{% url 'chuyen_huong_luong' %}" class="nav-item"><i class="fas fa-money-bill-wave"></i> Lương</a>
+                </nav>
+            </aside>
+
+            <!-- Main Area -->
+            {% block page_background %}
+            <main class="main-area">
+                <div class="illustration">
+                    <img src="{% static 'images/6840312.jpg' %}" class="slideshow-image active" alt="Ảnh 1">
+                    <img src="{% static 'images/bg2.jpg' %}" class="slideshow-image" alt="Ảnh 2">
+                    <img src="{% static 'images/bg3.jpg' %}" class="slideshow-image" alt="Ảnh 3">
+                    <img src="{% static 'images/bg4.jpg' %}" class="slideshow-image" alt="Ảnh 4">
+                </div>
+            </main>
+            {% endblock %}
         </div>
-    </header>
 
-    <div class="d-flex">
-        <nav class="bg-light p-3" style="width: 250px; height: 100vh; background-color: #066BBB;">
-            <div class="text-center">
-                <img src="{{nhan_vien.anh_ca_nhan}}" alt="User Avatar" class="rounded-circle" width="80" height="80">
-               {% if request.user.is_authenticated %}
-                    <p class="fw-bold mb-0" style="font-size: 15pt">{{ nhan_vien.ten_nv }}</p>
-               {% endif %}
-            </div>
-            <ul class="nav flex-column custom-nav">
-                <br>
-                <li class="nav-item">
-                    <a href="{% url 'NVXemHoSo' %}" class="nav-link d-flex align-items-center">
-                        <img src="{% static 'images/hoso.png' %}" alt="Hồ sơ" width="40" height="40" class="me-2">
-                        Hồ sơ
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="{% url 'redirectBHXH' %}" class="nav-link d-flex align-items-center">
-                        <img src="{% static 'images/BHXH.png' %}" alt="BHXH" width="40" height="40" class="me-2">
-                        BHXH
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="{% url 'ky_luat_khen_thuong' %}" class="nav-link d-flex align-items-center">
-                        <img src="{% static 'images/kyluat.png' %}" alt="Kỷ luật & Khen thưởng" width="40" height="40" class="me-2">
-                        Kỷ luật & Khen thưởng
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="{% url 'DanhSachNP_redirect' %}" class="nav-link d-flex align-items-center">
-                        <img src="{% static 'images/nghiphep.png' %}" alt="Nghỉ phép" width="40" height="40" class="me-2">
-                        Nghỉ phép
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="{% url 'cham_cong' %}" class="nav-link d-flex align-items-center">
-                        <img src="{% static 'images/chamcong.png' %}" alt="Chấm công" width="40" height="40" class="me-2">
-                        Chấm công
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="{% url 'chuyen_huong_luong' %}" class="nav-link d-flex align-items-center">
-                        <img src="{% static 'images/luong.png' %}" alt="Lương" width="40" height="40" class="me-2">
-                        Lương
-                    </a>
-                </li>
-            </ul>
-        </nav>
-
-        {% block page_background %}
-        <main class="p-4" style="flex-grow: 1; background: url('{% static 'images/6840312.jpg' %}') no-repeat center center; background-size: cover;">
-        </main>
-        {% endblock %}
+        <!-- Footer -->
+        <footer class="footer">
+            <p>Copyright 2025 © Mầm Non Măng Non Team 4</p>
+        </footer>
     </div>
 
-    <footer class="text-center p-2 bg-light" style="background-color: #E8F9FF;">
-        <p class="mb-0">Copyright 2025 © Mầm Non Măng Non Team 4</p>
-    </footer>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const images = document.querySelectorAll('.slideshow-image');
+            let current = 0;
+
+            setInterval(() => {
+                images[current].classList.remove('active');
+                current = (current + 1) % images.length;
+                images[current].classList.add('active');
+            }, 5000);
+        });
+    </script>
 </body>
 </html>

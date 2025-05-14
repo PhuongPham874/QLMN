@@ -1,189 +1,128 @@
 {% extends "home.html" %}
 
 {% block page_background %}
-<div class="container">
+<div class="attendance-page">
+  {% load static %}
+  <div class="container">
+    <!-- Left Column: Attendance Calendar -->
+    <div class="calendar-column">
+      <div class="header-section">
+        <h2 class="header-title">Bảng chấm công</h2>
+        <div class="employee-badge">
+          <span class="employee-name">{{ nhan_vien.ten_nv }}</span>
+        </div>
+      </div>
 
-  <!-- Cột trái: Lịch chấm công -->
-  <div class="calendar-column">
-    <h2 class="header-title">CHẤM CÔNG: {{ nhan_vien.ten_nv }}</h2>
-    <div class="calendar-wrapper">
+      <div class="status-legend">
+        <div class="legend-item">
+          <span class="legend-dot on-time"></span>
+          <span>Đúng giờ</span>
+        </div>
+        <div class="legend-item">
+          <span class="legend-dot absent"></span>
+          <span>Vắng </span>
+        </div>
+        <div class="legend-item">
+          <span class="legend-dot late"></span>
+          <span>Muộn</span>
+        </div>
+      </div>
 
-      {% for year_month, days in cham_cong_theo_thang %}
-        {% with year_month|slice:":4" as year %}
-        {% with year_month|slice:"5:" as month %}
-          <div id="thang_{{ year }}_{{ month }}" class="calendar-block">
-            <h3 class="calendar-title">Tháng {{ month }} / {{ year }}</h3>
-            <div class="calendar">
-              {% for day, record in days.items %}
-                <div class="{% if record.trang_thai == 0 %}dung_gio{% elif record.trang_thai == 1 %}nghi{% elif record.trang_thai == 2 %}muon{% endif %}">
-                  <div class="circle">{{ day }}</div>
-                </div>
-              {% endfor %}
+      <div class="calendar-wrapper">
+        {% for year_month, days in cham_cong_theo_thang %}
+          {% with year_month|slice:":4" as year %}
+          {% with year_month|slice:"5:" as month %}
+            <div id="thang_{{ year }}_{{ month }}" class="calendar-block">
+              <h3 class="calendar-title">
+                <span class="month">{{ month }}</span>
+                <span class="year">{{ year }}</span>
+              </h3>
+              <div class="calendar">
+                {% for day, record in days.items %}
+                  <div class="day-container {% if record.trang_thai == 0 %}dung_gio{% elif record.trang_thai == 1 %}nghi{% elif record.trang_thai == 2 %}muon{% endif %}">
+                    <div class="circle">{{ day }}</div>
+                    <div class="status-label">
+                      {% if record.trang_thai == 0 %}Đúng giờ{% elif record.trang_thai == 1 %}Vắng{% elif record.trang_thai == 2 %}Muộn{% endif %}
+                    </div>
+                  </div>
+                {% endfor %}
+              </div>
             </div>
+          {% endwith %}
+          {% endwith %}
+        {% empty %}
+          <div class="empty-state">
+            <div class="empty-icon">📅</div>
+            <p>No attendance data available.</p>
           </div>
-        {% endwith %}
-        {% endwith %}
-      {% empty %}
-        <p>Không có dữ liệu chấm công.</p>
-      {% endfor %}
+        {% endfor %}
+      </div>
+    </div>
+
+    <!-- Right Column: Filters -->
+    <div class="filter-column">
+      <div class="filter-card">
+        <h3 class="filter-title">Filter Records</h3>
+
+        <div class="filter-group">
+          <label for="month_select">Month</label>
+          <select id="month_select" class="filter-select">
+            <option value="">Select month</option>
+            {% for m in months %}
+              <option value="{{ m|stringformat:"02d" }}">{{ m|stringformat:"02d" }}</option>
+            {% endfor %}
+          </select>
+        </div>
+
+        <div class="filter-group">
+          <label for="year_select">Year</label>
+          <select id="year_select" class="filter-select">
+            <option value="">Select year</option>
+            {% for y in years %}
+              <option value="{{ y }}">{{ y }}</option>
+            {% endfor %}
+          </select>
+        </div>
+
+        <button onclick="scrollToMonthYear()" class="filter-button">
+          <span class="button-icon"></span>
+          <span>Go to Month</span>
+        </button>
+      </div>
+
+      <div class="summary-card">
+        <h3 class="summary-title">Summary</h3>
+        <div class="summary-stats">
+          <div class="stat-item">
+            <div class="stat-value on-time">0</div>
+            <div class="stat-label">On Time</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-value late">0</div>
+            <div class="stat-label">Late</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-value absent">0</div>
+            <div class="stat-label">Absent</div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
-
-  <!-- Cột phải: Bộ lọc -->
-  <div class="filter-column">
-    <h3 class="filter-title">Bộ lọc</h3>
-    <select id="month_select" class="filter-select">
-      <option value="">Chọn tháng</option>
-      {% for m in months %}
-        <option value="{{ m|stringformat:"02d" }}">{{ m|stringformat:"02d" }}</option>
-      {% endfor %}
-    </select>
-
-    <select id="year_select" class="filter-select">
-      <option value="">Chọn năm</option>
-      {% for y in years %}
-        <option value="{{ y }}">{{ y }}</option>
-      {% endfor %}
-    </select>
-
-    <button onclick="scrollToMonthYear()" class="filter-button">Đi đến tháng</button>
-  </div>
-
 </div>
 
-<!-- CSS -->
-<style>
-  .container {
-    display: flex;
-    gap: 40px;
-    padding: 30px 50px;
-    flex-wrap: wrap;
-  }
-
-  .calendar-column {
-    flex: 1;
-    max-width: 70%;
-    overflow-y: auto;
-    height: 700px;
-  }
-
-  .filter-column {
-    width: 250px;
-    flex-shrink: 0;
-  }
-
-  .header-title {
-    color: #1d4ed8;
-    margin-bottom: 20px;
-  }
-
-  .calendar-wrapper {
-    background: linear-gradient(135deg, #E0F2FE, #ffffff);
-    border-radius: 12px;
-    padding: 20px;
-    margin-bottom: 40px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-    max-height: 600px;
-    overflow-y: auto;
-  }
-
-  .calendar-block {
-    margin-bottom: 20px;  /* Tạo khoảng cách giữa các bảng */
-    padding: 20px;
-    background-color: #fff;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  }
-
-  .calendar {
-    display: grid;
-    grid-template-columns: repeat(7, 1fr);
-    gap: 15px;
-    margin-top: 15px;
-  }
-
-  .circle {
-    width: 70px;
-    height: 70px;
-    line-height: 70px;
-    font-size: 18px;
-    font-weight: bold;
-    text-align: center;
-    border-radius: 50%;
-    background-color: white;
-    border: 2px solid #ddd;
-    transition: 0.3s;
-  }
-
-  .dung_gio .circle {
-    background-color: #A7F3D0;
-    border-color: #10b981;
-  }
-
-  .nghi .circle {
-    background-color: #FCA5A5;
-    border-color: #ef4444;
-  }
-
-  .muon .circle {
-    background-color: #FDE68A;
-    border-color: #f59e0b;
-  }
-
-  .calendar-title {
-    color: #1d4ed8;
-    font-weight: bold;
-    margin-bottom: 15px;
-  }
-
-  .filter-title {
-    margin-bottom: 10px;
-  }
-
-  .filter-select {
-    width: 100%;
-    padding: 8px;
-    margin-bottom: 12px;
-  }
-
-  .filter-button {
-    width: 100%;
-    padding: 10px;
-    background-color: #1d4ed8;
-    color: white;
-    border: none;
-    border-radius: 5px;
-  }
-
-  /* Tùy chỉnh thanh cuộn */
-  .calendar-wrapper::-webkit-scrollbar {
-    width: 8px;
-  }
-
-  .calendar-wrapper::-webkit-scrollbar-track {
-    background: #f0f0f0;
-    border-radius: 5px;
-  }
-
-  .calendar-wrapper::-webkit-scrollbar-thumb {
-    background-color: #4A90E2;
-    border-radius: 5px;
-  }
-
-  .calendar-wrapper::-webkit-scrollbar-thumb:hover {
-    background-color: #357ABD;
-  }
-</style>
+<!-- Import CSS -->
+<link rel="stylesheet" href="{% static 'css/cham_cong.css' %}">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
 <!-- JS -->
 <script>
-function scrollToMonthYear() {
+  function scrollToMonthYear() {
   const month = document.getElementById("month_select").value;
   const year = document.getElementById("year_select").value;
 
   if (!month || !year) {
-    alert("Vui lòng chọn đầy đủ tháng và năm.");
+    alert("Please select both month and year.");
     return;
   }
 
@@ -192,10 +131,44 @@ function scrollToMonthYear() {
 
   if (target) {
     target.scrollIntoView({ behavior: 'smooth' });
+    target.classList.add('highlight');
+    setTimeout(() => {
+      target.classList.remove('highlight');
+    }, 2000);
+
+    // Cập nhật lại thống kê theo tháng đã chọn
+    const onTimeElements = target.querySelectorAll('.dung_gio');
+    const lateElements = target.querySelectorAll('.muon');
+    const absentElements = target.querySelectorAll('.nghi');
+
+    document.querySelector('.summary-stats .on-time').textContent = onTimeElements.length;
+    document.querySelector('.summary-stats .late').textContent = lateElements.length;
+    document.querySelector('.summary-stats .absent').textContent = absentElements.length;
   } else {
-    alert("Không tìm thấy bảng chấm công cho thời gian đã chọn.");
+    alert("No attendance record found for the selected time period.");
+
+    // Reset thống kê về 0
+    document.querySelector('.summary-stats .on-time').textContent = 0;
+    document.querySelector('.summary-stats .late').textContent = 0;
+    document.querySelector('.summary-stats .absent').textContent = 0;
   }
 }
-</script>
+document.addEventListener('DOMContentLoaded', function () {
+  const calendarBlocks = document.querySelectorAll('.calendar-block');
 
+  if (calendarBlocks.length === 0) return;
+
+  // Lấy tháng gần nhất (giả sử là block đầu tiên nếu đã được sắp theo thời gian giảm dần)
+  const latestBlock = calendarBlocks[0];
+
+  // Đếm số lượng theo class trong tháng gần nhất
+  const onTimeElements = latestBlock.querySelectorAll('.dung_gio');
+  const lateElements = latestBlock.querySelectorAll('.muon');
+  const absentElements = latestBlock.querySelectorAll('.nghi');
+
+  document.querySelector('.summary-stats .on-time').textContent = onTimeElements.length;
+  document.querySelector('.summary-stats .late').textContent = lateElements.length;
+  document.querySelector('.summary-stats .absent').textContent = absentElements.length;
+});
+</script>
 {% endblock %}

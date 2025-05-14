@@ -1,72 +1,332 @@
 {% extends "home.html" %}
 
 {% block page_background %}
-<div class="p-6" style="margin: 50px">
+{% load static %}
+<div class="employee-dashboard">
+  <!-- Notification Area -->
+  {% if messages %}
+  <div class="notification-container">
+    {% for message in messages %}
+      <div class="notification {% if message.tags == 'success' %}success{% elif message.tags == 'error' %}error{% elif message.tags == 'warning' %}warning{% else %}info{% endif %}">
+        <div class="notification-icon">
+          {% if message.tags == 'success' %}✓{% elif message.tags == 'error' %}✕{% elif message.tags == 'warning' %}!{% else %}ℹ{% endif %}
+        </div>
+        <div class="notification-message">{{ message }}</div>
+        <button class="notification-close" onclick="this.parentElement.remove()">×</button>
+      </div>
+    {% endfor %}
+  </div>
+  {% endif %}
 
-    <!-- Hiển thị thông báo -->
-    {% if messages %}
-    <div class="mb-4" >
-        {% for message in messages %}
-            <div class="px-4 py-2 rounded-lg shadow
-                {% if message.tags == 'success' %} bg-green-100 text-green-800
-                {% elif message.tags == 'error' %} bg-red-100 text-red-800
-                {% elif message.tags == 'warning' %} bg-yellow-100 text-yellow-800
-                {% else %} bg-gray-100 text-gray-800 {% endif %}">
-                {{ message }}
-            </div>
-        {% endfor %}
+  <!-- Dashboard Header -->
+  <div class="dashboard-header">
+    <div class="header-left">
+      <h1 class="page-title">Danh sách chấm công</h1>
+      <p class="page-subtitle">Hiện thị danh sách chấm công nhân viên đối với quản lý</p>
     </div>
-    {% endif %}
+    <div class="header-right">
+      <div class="search-container">
+        <button class="search-button">
+            <circle cx="11" cy="11" r="8"></circle>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+          </svg>
+        </button>
+      </div>
+      <a href="{% url 'cham_cong_bang_khuon_mat' %}" class="face-recognition-button">
+          <i class="fa-solid fa-camera"></i>
+        Chấm công khuôn mặt
+      </a>
+    </div>
+  </div>
 
-    <div class="flex items-center justify-between mb-6">
-        <h1 class="text-2xl font-bold text-gray-800" style="margin: 20px; margin-left: 200px">📋 Danh sách nhân viên</h1>
-        <a href="{% url 'cham_cong_bang_khuon_mat' %}" class="bg-blue-600 hover:bg-blue-700 text-black font-semibold py-2 px-4 rounded-lg shadow"
-         style="margin-top: 20px; background-color: red; border-radius: 20px">
-            👤 Chấm công bằng khuôn mặt
-        </a>
+  <!-- Stats Cards -->
+  <div class="stats-container">
+    <div class="stat-card">
+      <div class="stat-icon present">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+          <polyline points="22 4 12 14.01 9 11.01"></polyline>
+        </svg>
+      </div>
+      <div class="stat-details">
+        <div class="stat-value" id="presentCount">0</div>
+        <div class="stat-label">Chấm công hôm nay</div>
+      </div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon absent">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="10"></circle>
+          <line x1="15" y1="9" x2="9" y2="15"></line>
+          <line x1="9" y1="9" x2="15" y2="15"></line>
+        </svg>
+      </div>
+      <div class="stat-details">
+        <div class="stat-value" id="absentCount">0</div>
+        <div class="stat-label">Vắng</div>
+      </div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon late">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="10"></circle>
+          <polyline points="12 6 12 12 16 14"></polyline>
+        </svg>
+      </div>
+      <div class="stat-details">
+        <div class="stat-value" id="lateCount">0</div>
+        <div class="stat-label">Muộn</div>
+      </div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon total">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+          <circle cx="9" cy="7" r="4"></circle>
+          <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+          <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+        </svg>
+      </div>
+      <div class="stat-details">
+        <div class="stat-value" id="totalCount">{{ nhan_viens_data|length }}</div>
+        <div class="stat-label">Tổng nhân viên</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Employee Table -->
+  <div class="table-container">
+    <div class="table-header">
+      <h2 class="table-title">Danh sách nhân viên</h2>
+      <div class="table-actions">
+        <div class="dropdown">
+        </div>
+        <div class="dropdown">
+
+        </div>
+      </div>
     </div>
 
-    <div class="bg-white rounded-xl shadow p-4" style="margin-top: 25px">
-        <table class="min-w-full table-auto border-collapse">
-            <thead>
-                <tr class="bg-gray-100 text-gray-700 text-left">
-                    <th class="py-2 px-4">Mã nhân viên</th>
-                    <th class="py-2 px-4">Họ và tên</th>
-                    <th class="py-2 px-4">Email</th>
-                    <th class="py-2 px-4">Phòng ban</th>
-                    <th class="py-2 px-4">Giờ vào</th>
-                    <th class="py-2 px-4">Giờ ra</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for item in nhan_viens_data %}
-                <tr class="border-t hover:bg-gray-50">
-                    <td class="py-2 px-4 font-mono">{{ item.nhan_vien.id }}</td>
-                    <td class="py-2 px-4">{{ item.nhan_vien.ten_nv }}</td>
-                    <td class="py-2 px-4">{{ item.nhan_vien.user.email }}</td>
-                    <td class="py-2 px-4">{{ item.nhan_vien.to_phong_ban }}</td>
-                    <td class="py-2 px-4">
-                        {% if item.gio_vao %}
-                            {{ item.gio_vao|time:"H:i:s" }}
-                        {% else %}
-                            <span class="text-gray-400">Chưa có</span>
-                        {% endif %}
-                    </td>
-                    <td class="py-2 px-4">
-                        {% if item.gio_ra %}
-                            {{ item.gio_ra|time:"H:i:s" }}
-                        {% else %}
-                            <span class="text-gray-400">Chưa có</span>
-                        {% endif %}
-                    </td>
-                </tr>
-                {% empty %}
-                <tr>
-                    <td colspan="6" class="py-4 px-4 text-center text-gray-400">Không có nhân viên nào.</td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
+    <div class="employee-table">
+      <table>
+        <thead>
+          <tr>
+            <th class="sortable" data-sort="id">
+              ID
+              <svg class="sort-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M7 10l5 5 5-5"></path>
+              </svg>
+            </th>
+            <th class="sortable" data-sort="name">
+              Full Name
+              <svg class="sort-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M7 10l5 5 5-5"></path>
+              </svg>
+            </th>
+            <th class="sortable" data-sort="email">
+              Email
+              <svg class="sort-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M7 10l5 5 5-5"></path>
+              </svg>
+            </th>
+            <th class="sortable" data-sort="department">
+              Department
+              <svg class="sort-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M7 10l5 5 5-5"></path>
+              </svg>
+            </th>
+            <th class="sortable" data-sort="checkin">
+              Check-in
+              <svg class="sort-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M7 10l5 5 5-5"></path>
+              </svg>
+            </th>
+            <th class="sortable" data-sort="checkout">
+              Check-out
+              <svg class="sort-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M7 10l5 5 5-5"></path>
+              </svg>
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for item in nhan_viens_data %}
+          <tr class="employee-row">
+            <td class="employee-id">{{ item.nhan_vien.id }}</td>
+            <td class="employee-name">
+              <div class="avatar">{{ item.nhan_vien.ten_nv|slice:":1" }}</div>
+              <span>{{ item.nhan_vien.ten_nv }}</span>
+            </td>
+            <td class="employee-email">{{ item.nhan_vien.user.email }}</td>
+            <td class="employee-department">{{ item.nhan_vien.to_phong_ban }}</td>
+            <td class="employee-checkin">
+              {% if item.gio_vao %}
+                <span class="time-badge in">{{ item.gio_vao|time:"H:i:s" }}</span>
+              {% else %}
+                <span class="time-badge empty">Not checked in</span>
+              {% endif %}
+            </td>
+            <td class="employee-checkout">
+              {% if item.gio_ra %}
+                <span class="time-badge out">{{ item.gio_ra|time:"H:i:s" }}</span>
+              {% else %}
+                <span class="time-badge empty">Not checked out</span>
+              {% endif %}
+            </td>
+            <td class="employee-status">
+              {% if item.gio_vao and item.gio_ra %}
+                <span class="status-badge complete">Hoàn thành</span>
+              {% elif item.gio_vao %}
+                <span class="status-badge active">Đã chấm giờ vào</span>
+              {% else %}
+                <span class="status-badge absent">Vắng</span>
+              {% endif %}
+            </td>
+          </tr>
+          {% empty %}
+          <tr class="empty-row">
+            <td colspan="8">
+              <div class="empty-state">
+                <svg class="empty-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <circle cx="12" cy="12" r="10"></circle>
+                  <line x1="12" y1="8" x2="12" y2="12"></line>
+                  <line x1="12" y1="16" x2="12.01" y2="16"></line>
+                </svg>
+              </div>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
     </div>
+
+    <!-- Pagination -->
+    <div class="pagination">
+      <button class="pagination-button" disabled>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="15 18 9 12 15 6"></polyline>
+        </svg>
+        Previous
+      </button>
+      <div class="pagination-pages">
+        <button class="pagination-page active">1</button>
+        <button class="pagination-page">2</button>
+        <button class="pagination-page">3</button>
+        <span class="pagination-ellipsis">...</span>
+        <button class="pagination-page">10</button>
+      </div>
+      <button class="pagination-button">
+        Next
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="9 18 15 12 9 6"></polyline>
+        </svg>
+      </button>
+    </div>
+  </div>
 </div>
+<link rel="stylesheet" href="{% static 'css/danh_sach_nhan_vien_cham_cong.css' %}">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<!-- JavaScript for interactivity -->
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    // Calculate statistics
+    let presentCount = 0;
+    let absentCount = 0;
+    let lateCount = 0;
+
+    document.querySelectorAll('.employee-status .status-badge').forEach(badge => {
+      if (badge.classList.contains('active') || badge.classList.contains('complete')) {
+        presentCount++;
+      } else if (badge.classList.contains('absent')) {
+        absentCount++;
+      }
+    });
+
+    // Update stats
+    document.getElementById('presentCount').textContent = presentCount;
+    document.getElementById('absentCount').textContent = absentCount;
+    document.getElementById('lateCount').textContent = lateCount;
+
+    // Search functionality
+    const searchInput = document.getElementById('employeeSearch');
+    searchInput.addEventListener('input', function() {
+      const searchTerm = this.value.toLowerCase();
+      document.querySelectorAll('.employee-row').forEach(row => {
+        const name = row.querySelector('.employee-name').textContent.toLowerCase();
+        const email = row.querySelector('.employee-email').textContent.toLowerCase();
+        const department = row.querySelector('.employee-department').textContent.toLowerCase();
+
+        if (name.includes(searchTerm) || email.includes(searchTerm) || department.includes(searchTerm)) {
+          row.style.display = '';
+        } else {
+          row.style.display = 'none';
+        }
+      });
+    });
+
+    // Sorting functionality
+    document.querySelectorAll('th.sortable').forEach(header => {
+      header.addEventListener('click', function() {
+        const sortBy = this.getAttribute('data-sort');
+        const tbody = document.querySelector('tbody');
+        const rows = Array.from(tbody.querySelectorAll('tr.employee-row'));
+
+        // Toggle sort direction
+        const isAscending = !this.classList.contains('sort-asc');
+        document.querySelectorAll('th.sortable').forEach(h => {
+          h.classList.remove('sort-asc', 'sort-desc');
+        });
+        this.classList.add(isAscending ? 'sort-asc' : 'sort-desc');
+
+        // Sort rows
+        rows.sort((a, b) => {
+          let aValue, bValue;
+
+          switch(sortBy) {
+            case 'id':
+              aValue = a.querySelector('.employee-id').textContent;
+              bValue = b.querySelector('.employee-id').textContent;
+              break;
+            case 'name':
+              aValue = a.querySelector('.employee-name span').textContent;
+              bValue = b.querySelector('.employee-name span').textContent;
+              break;
+            case 'email':
+              aValue = a.querySelector('.employee-email').textContent;
+              bValue = b.querySelector('.employee-email').textContent;
+              break;
+            case 'department':
+              aValue = a.querySelector('.employee-department').textContent;
+              bValue = b.querySelector('.employee-department').textContent;
+              break;
+            case 'checkin':
+              aValue = a.querySelector('.employee-checkin .time-badge').textContent;
+              bValue = b.querySelector('.employee-checkin .time-badge').textContent;
+              break;
+            case 'checkout':
+              aValue = a.querySelector('.employee-checkout .time-badge').textContent;
+              bValue = b.querySelector('.employee-checkout .time-badge').textContent;
+              break;
+          }
+
+          if (isAscending) {
+            return aValue.localeCompare(bValue);
+          } else {
+            return bValue.localeCompare(aValue);
+          }
+        });
+
+        // Reorder rows
+        rows.forEach(row => tbody.appendChild(row));
+      });
+    });
+
+    // Close notification
+    document.querySelectorAll('.notification-close').forEach(button => {
+      button.addEventListener('click', function() {
+        this.parentElement.remove();
+      });
+    });
+  });
+</script>
 {% endblock %}
