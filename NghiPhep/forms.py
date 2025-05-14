@@ -34,14 +34,16 @@ class NghiPhepForm(forms.ModelForm):
 
     def clean(self):
         cleaned_data = super().clean()
-        start = cleaned_data.get('ngay_bat_dau')
-        end = cleaned_data.get('ngay_ket_thuc')
-        now = timezone.now().date()
+        so_cccd = cleaned_data.get('so_cccd')
+        so_dien_thoai = cleaned_data.get('so_dien_thoai')
 
-        if start and end and end < start:
-            self.add_error('ngay_ket_thuc', "Ngày kết thúc không được nhỏ hơn ngày bắt đầu.")
-        if start < now:
-            self.add_error('ngay_bat_dau', "Ngày bắt đầu không được nhỏ hơn ngày hiện tại.")
+        # Kiểm tra CCCD: đúng 12 chữ số
+        if so_cccd and (not so_cccd.isdigit() or len(so_cccd) != 12):
+            self.add_error('so_cccd', "Số CCCD phải đúng 12 chữ số.")
+
+        # Kiểm tra SĐT: đúng 10 chữ số
+        if so_dien_thoai and (not so_dien_thoai.isdigit() or len(so_dien_thoai) != 10):
+            self.add_error('so_dien_thoai', "Số điện thoại phải đúng 10 chữ số.")
 
 
 class SearchForm(forms.Form):
