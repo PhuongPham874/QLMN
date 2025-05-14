@@ -1,5 +1,5 @@
 {% extends 'home.html' %}
-
+{% block page_background %}
 {% block extra_css %}
 <style>
     body{
@@ -299,7 +299,7 @@
     Danh sách Nghỉ phép - {{nhan_vien}}
 {% endblock %}
 
-{% block page_background %}
+
 <div class="content">
     {% url 'DanhSachNP_NV' as url_np_nv %}
     {% url 'DanhSachNP' as url_np %}

@@ -1,62 +1,134 @@
 {% extends 'home.html' %}
 
 {% block page_background %}
-<div style="padding: 30px 50px;">
-
-  <!-- Tiêu đề với tên nhân viên -->
-  <h2 style="color: #066BBB; margin-bottom: 20px;">Lương của: {{ nhan_vien.ten_nv }}</h2>
-
-  <div class="bang-luong" style="max-height: 600px; overflow-y: auto; padding-right: 20px; width: 700px;">
-    <!-- Hiển thị các bảng lương -->
-    {% for bang_luong in bang_luong_list %}
-      <h3 style="color: #066BBB; margin-bottom: 20px;">Bảng Lương {{ bang_luong.title }}</h3>
-
-      <table style="width: 100%; border-collapse: collapse; margin-bottom: 30px;">
-        <tr style="background-color: #D8EDFE;">
-          <th style="padding: 8px; font-weight: bold;">Lương cơ bản</th>
-          <th style="padding: 8px; font-weight: bold;">{{ bang_luong.muc_luong|floatformat:0 }} VND</th>
-        </tr>
-        <tr>
-          <td style="padding: 8px;">Tiền BHXH</td>
-          <td style="padding: 8px;">{{ bang_luong.tien_bhxh|default:0|floatformat:0 }} VND</td>
-        </tr>
-        <tr>
-          <td style="padding: 8px;">Thuế</td>
-          <td style="padding: 8px;">{{ bang_luong.thue|floatformat:0 }} VND</td>
-        </tr>
-        <tr>
-          <td style="padding: 8px;">Kỷ luật</td>
-          <td style="padding: 8px;">{{ bang_luong.tien_ky_luat|floatformat:0 }} VND</td>
-        </tr>
-        <tr>
-          <td style="padding: 8px;">Thưởng</td>
-          <td style="padding: 8px;">{{ bang_luong.thuong|floatformat:0 }} VND</td>
-        </tr>
-        <tr>
-          <td style="padding: 8px;">Trừ vắng</td>
-          <td style="padding: 8px;">{{ bang_luong.vang_tru|floatformat:0 }} VND</td>
-        </tr>
-        <tr>
-          <td style="padding: 8px;">Trừ muộn</td>
-          <td style="padding: 8px;">{{ bang_luong.muon_tru|floatformat:0 }} VND</td>
-        </tr>
-         <tr>
-          <td style="padding: 8px;">Phụ cấp chuyên cần</td>
-          <td style="padding: 8px;">{{ bang_luong.phu_cap_chuyen_can|floatformat:0 }} VND</td>
-        </tr>
-        <tr>
-          <td style="padding: 8px;">Phụ cấp khác</td>
-          <td style="padding: 8px;">{{ bang_luong.tong_phu_cap|default:0|floatformat:0 }} VND</td>
-        </tr>
-        <tr style="background-color: #D8EDFE;">
-          <td style="padding: 8px; font-weight: bold;">Tổng lương</td>
-          <td style="padding: 8px; font-weight: bold;">{{ bang_luong.tong_luong|floatformat:0 }} VND</td>
-        </tr>
-      </table>
-    {% empty %}
-      <p>Không có bảng lương nào.</p>
-    {% endfor %}
+{% load static %}
+<div class="salary-dashboard">
+  <!-- Header Section -->
+  <div class="dashboard-header">
+    <div class="employee-info">
+      <h1 class="page-title">Salary Information</h1>
+      <h2 class="employee-name">{{ nhan_vien.ten_nv }}</h2>
+    </div>
+    <div class="header-actions">
+      <button class="action-button print-button" onclick="window.print()">
+        <span class="button-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="6 9 6 2 18 2 18 9"></polyline>
+            <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path>
+            <rect x="6" y="14" width="12" height="8"></rect>
+          </svg>
+        </span>
+        Print
+      </button>
+      <button class="action-button export-button">
+        <span class="button-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+            <polyline points="7 10 12 15 17 10"></polyline>
+            <line x1="12" y1="15" x2="12" y2="3"></line>
+          </svg>
+        </span>
+        Export
+      </button>
+    </div>
   </div>
 
+  <!-- Salary Tables Container -->
+  <div class="salary-tables-container">
+    {% for bang_luong in bang_luong_list %}
+      <div class="salary-card">
+        <div class="card-header">
+          <h3 class="card-title">Salary Statement {{ bang_luong.title }}</h3>
+          <div class="total-salary">
+            <span class="total-label">Total Salary:</span>
+            <span class="total-amount">{{ bang_luong.tong_luong|floatformat:0 }} VND</span>
+          </div>
+        </div>
+
+        <div class="salary-details">
+          <div class="salary-section">
+            <h4 class="section-title">Base Information</h4>
+            <div class="salary-item base-salary">
+              <span class="item-label">Base Salary</span>
+              <span class="item-value">{{ bang_luong.muc_luong|floatformat:0 }} VND</span>
+            </div>
+          </div>
+
+          <div class="salary-section">
+            <h4 class="section-title">Deductions</h4>
+            <div class="salary-item deduction">
+              <span class="item-label">Social Insurance</span>
+              <span class="item-value">{{ bang_luong.tien_bhxh|default:0|floatformat:0 }} VND</span>
+            </div>
+            <div class="salary-item deduction">
+              <span class="item-label">Tax</span>
+              <span class="item-value">{{ bang_luong.thue|floatformat:0 }} VND</span>
+            </div>
+            <div class="salary-item deduction">
+              <span class="item-label">Disciplinary Deductions</span>
+              <span class="item-value">{{ bang_luong.tien_ky_luat|floatformat:0 }} VND</span>
+            </div>
+            <div class="salary-item deduction">
+              <span class="item-label">Absence Deductions</span>
+              <span class="item-value">{{ bang_luong.vang_tru|floatformat:0 }} VND</span>
+            </div>
+            <div class="salary-item deduction">
+              <span class="item-label">Late Deductions</span>
+              <span class="item-value">{{ bang_luong.muon_tru|floatformat:0 }} VND</span>
+            </div>
+          </div>
+
+          <div class="salary-section">
+            <h4 class="section-title">Additions</h4>
+            <div class="salary-item addition">
+              <span class="item-label">Bonus</span>
+              <span class="item-value">{{ bang_luong.thuong|floatformat:0 }} VND</span>
+            </div>
+            <div class="salary-item addition">
+              <span class="item-label">Attendance Allowance</span>
+              <span class="item-value">{{ bang_luong.phu_cap_chuyen_can|floatformat:0 }} VND</span>
+            </div>
+            <div class="salary-item addition">
+              <span class="item-label">Other Allowances</span>
+              <span class="item-value">{{ bang_luong.tong_phu_cap|default:0|floatformat:0 }} VND</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="salary-summary">
+          <div class="summary-item">
+            <span class="summary-label">Total Deductions:</span>
+            <span class="summary-value deduction">
+              {{ bang_luong.tien_bhxh|default:0|add:bang_luong.thue|add:bang_luong.tien_ky_luat|add:bang_luong.vang_tru|add:bang_luong.muon_tru|floatformat:0 }} VND
+            </span>
+          </div>
+          <div class="summary-item">
+            <span class="summary-label">Total Additions:</span>
+            <span class="summary-value addition">
+              {{ bang_luong.thuong|add:bang_luong.phu_cap_chuyen_can|add:bang_luong.tong_phu_cap|default:0|floatformat:0 }} VND
+            </span>
+          </div>
+          <div class="summary-item total">
+            <span class="summary-label">Net Salary:</span>
+            <span class="summary-value">{{ bang_luong.tong_luong|floatformat:0 }} VND</span>
+          </div>
+        </div>
+      </div>
+    {% empty %}
+      <div class="empty-state">
+        <div class="empty-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"></circle>
+            <line x1="12" y1="8" x2="12" y2="12"></line>
+            <line x1="12" y1="16" x2="12.01" y2="16"></line>
+          </svg>
+        </div>
+        <p class="empty-message">No salary information available.</p>
+      </div>
+    {% endfor %}
+  </div>
 </div>
+
+<!-- Link to external CSS file -->
+<link rel="stylesheet" href="{% static 'css/danh_sach_luong.css' %}">
 {% endblock %}

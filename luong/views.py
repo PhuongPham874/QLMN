@@ -172,7 +172,7 @@ def xem_bang_luong_cua_nhan_vien(request, nhan_vien_id):
 #
 #
 # @login_required
-# def danh_sach_luong(request):
+# def danh_sach_luong.css(request):
 #     nhan_vien = get_object_or_404(NhanVien, user=request.user)
 #     if nhan_vien.vi_tri_cong_viec in ['Kế toán']:
 #         nhan_viens = NhanVien.objects.all().order_by('id')
@@ -207,7 +207,7 @@ def xem_bang_luong_cua_nhan_vien(request, nhan_vien_id):
 #     # Sắp xếp bảng lương từ tháng gần nhất
 #     bang_luong_list.sort(key=lambda x: x['title'], reverse=True)
 #
-#     return render(request, 'Luong/danh_sach_luong.html', {
+#     return render(request, 'Luong/danh_sach_luong.css.html', {
 #         'bang_luong_list': bang_luong_list,
 #         'nhan_vien': nhan_vien
 #     })
