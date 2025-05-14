@@ -1,0 +1,251 @@
+body{
+    margin: 0;
+    font-size: 15px
+
+    }
+    .content{
+        margin-left: 20px;
+        display: flex;
+        flex-direction: column;
+        width: 80%;
+        padding: 20px;
+
+    }
+    .ndungNp{
+        width: 100%;
+        padding: 20px;
+        box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+        background-color: #ffffff;
+        border-radius: 10px;
+        height: auto;
+    }
+    .ndungloc{
+        padding: 20px;
+        box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+        background-color: #ffffff;
+        border-radius: 10px;
+        height: 500px;  /* Cố định chiều cao */
+        overflow-y: auto;
+    }
+    .trangthai {
+        font-size: 20px;
+        font-weight: bold;
+        font-style: italic;
+    }
+    .button{
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 20px;
+    }
+    .titleNP{
+        font-size: 25px;
+        font-weight: bold;
+    }
+    .text_search{
+        width: 300px;
+        height: 30px;
+        display: flex;
+        border: 1px solid;
+        border-radius: 8px 8px 8px 8px;
+        padding: 5px;
+        font-size: 15px;
+        align-items: center;
+    }
+    input.form-control.mr-sm-2[type="date"] {
+        border: none;
+        outline: none;
+        box-shadow: none;
+        background-color: transparent; /* tùy chọn nếu bạn muốn nền trong suốt */
+        font-size: 13px;
+    }
+    .form-search{
+        width: 70%;
+        display: flex;
+        gap: 10px
+        align-items: center;
+        margin-bottom: 20px;
+        justify-content: space-between;
+    }
+    .fa-magnifying-glass{
+        font-size: 20px
+    }
+
+    .themmoi{
+        width: 120px;
+        height: 35px;
+        padding: 5px ;
+        border-radius:10px;
+        font-size: 15px;
+        text-align: center;
+        background-color:black;
+        color: white;
+        border: 1px solid;
+    }
+    .list-group-item{
+        width: 600px;
+        background: linear-gradient(to right, #DDF0FF, #FFFFFF);
+    }
+    .text-info{
+        color: #066BBB !important;
+        font-weight: bold;
+        font-style: italic;
+    }
+    .np-container {
+    display: flex;
+    gap: 30px;
+    flex-wrap: wrap; /* để tránh tràn nếu màn hình nhỏ */
+    margin-bottom: 24px;
+    }
+
+    .np-card {
+        width: 160px; /* tăng chiều rộng để dòng chữ dài không bị xuống dòng */
+        border-radius: 12px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+        background: white;
+        font-family: Arial, sans-serif;
+    }
+
+    .np-accent {
+        height: 6px;
+        background-color: #066BBB; /* màu xanh dương */
+        border-top-left-radius: 12px;
+        border-top-right-radius: 12px;
+    }
+
+    .np-content {
+        padding: 6px;
+        text-align: left;
+    }
+
+    .np-title {
+        font-size: 12px;
+        color: #444;
+        margin-bottom: 10px;
+        font-weight: 500;
+        white-space: nowrap;
+    }
+
+    .np-number {
+        font-size: 18px;
+        font-weight: bold;
+        color: #111;
+    }
+    .font-bold{
+        color: black;
+        text-decoration: none;
+
+    }
+    li{
+        list-style-type: none;
+    }
+
+    #dongloc li:hover {
+        background-color: #066BBB;
+        color: white;
+        padding-left: 10px;
+        padding-right: 10px;
+        border-radius:5px;
+    }
+
+    #dongloc li a {
+        font-size: 16px;
+        transition: all 0.3s ease;
+    }
+
+    #dongloc li:hover a {
+        color: white;
+    }
+    .header{
+        display: flex;
+        justify-content: space-between;
+    }
+    .avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;  /* Hình tròn */
+      object-fit: cover;   /* Cắt ảnh cho vừa khung */
+      border: 1px solid #ccc; /* Viền nhẹ nếu thích */
+    }
+    .avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      object-fit: cover;
+      margin-right: 10px;
+    }
+
+
+
+
+    .np-cards-list {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    }
+
+    .np-card-item {
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        padding: 15px;
+        background-color: #fff;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    }
+
+    .np-card-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .np-card-body {
+        margin-top: 20px;
+        font-size: 14px
+    }
+
+    .np-card-footer {
+        margin-top: 15px;
+        font-size: 12px
+    }
+
+    .card-actions a {
+        margin-left: 5px;
+    }
+
+    .badge {
+        padding: 8px 8px;
+        border-radius: 15px;
+        font-size: 12px;
+        color: white;
+    }
+
+    .badge-success {
+        background-color: #28a745;
+    }
+
+    .badge-warning {
+        background-color: #ffc107;
+        color: black;
+    }
+
+    .badge-danger {
+        background-color: #dc3545;
+    }
+
+    .avatar {
+        width: 35px;
+        height: 35px;
+        border-radius: 50%;
+        margin-right: 10px;
+        object-fit: cover;
+    }
+
+    .history-block {
+        display: flex;
+        align-items: center;
+    }
+    .btn-link{
+    color: black;
+    font-size: 14px
+    }
