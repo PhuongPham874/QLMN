@@ -109,11 +109,11 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Asia/Ho_Chi_Minh'
 
 USE_I18N = True
 
-USE_TZ = True
+USE_TZ = False
 
 
 # Static files (CSS, JavaScript, Images)
@@ -121,7 +121,7 @@ USE_TZ = True
 import os
 
 # Đường dẫn URL để truy cập file tĩnh
-STATIC_URL = '/static/'
+STATIC_URL = 'static/'
 
 # Khai báo đường dẫn thư mục static
 STATICFILES_DIRS = [
@@ -132,5 +132,4 @@ STATICFILES_DIRS = [
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-
-
+LOGIN_URL = '/login/'
