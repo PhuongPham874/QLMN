@@ -1,63 +1,5 @@
 {% extends 'NghiPhep/NP_list.html' %}
 
-{% block CSS %}
-    .inputghichu{
-        width: 580px;
-        display: flex;
-        justify-content: space-between;
-        margin-bottom: 10px;
-    }
-    #duyet {
-        background-color: #007bff; /* Màu nền mặc định (xanh dương) */
-        color: white; /* Màu chữ trắng */
-        border: none; /* Bỏ viền mặc định */
-        transition: background-color 0.3s, color 0.3s; /* Hiệu ứng chuyển đổi mượt mà */
-    }
-
-    #duyet:hover {
-        background-color: #28a745; /* Nền xanh lá khi hover */
-        color: white; /* Chữ trắng khi hover */
-    }
-
-    /* Nút Từ chối */
-    #tuchoi {
-        background-color: #007bff; /* Màu nền mặc định (xanh dương) */
-        color: white; /* Màu chữ trắng */
-        border: none; /* Bỏ viền mặc định */
-        transition: background-color 0.3s, color 0.3s; /* Hiệu ứng chuyển đổi mượt mà */
-    }
-
-    #tuchoi:hover {
-        background-color: #dc3545; /* Nền đỏ khi hover */
-        color: white; /* Chữ trắng khi hover */
-    }
-    .card-title{
-        font-size: 17px
-    }
-    .leave-item{
-        border: 1px solid #ddd;
-        border-radius: 8px;
-        padding: 15px;
-        background-color: #fff;
-        box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-        margin-bottom: 20px
-    }
-.empty-state{
-    color: #CFCFCF;
-    display: flex;
-    font-size: 16px;
-    flex-direction: column;
-    justify-content: center;
-    align-content: center;
-    align-items: center;
-}
-.card-header {
-    display: flex;
-    align-items: center;     /* Căn giữa dọc */
-}
-
-{% endblock %}
-
 {% block title %}
     Danh sách các đơn nghỉ phép - {{year}}
 {% endblock %}
@@ -66,6 +8,7 @@
 
 
 {% block content %}
+<div class="np-wrapper">
     <div class="button">
         {% block titleNP %}
         <div class="titleNP" style="width: 70% " onclick="window.location.href='{% url 'DanhSachNP' %}'">DANH SÁCH ĐƠN NGHỈ PHÉP - {{year}}</div>
@@ -73,8 +16,8 @@
         {% block btnAdd %}
             <form method="get"
                   action="{% url 'DanhSachNP' %}"
-                  style="width:10%; height: 15px">
-                    <select name="year" class="form-control" onchange="this.form.submit()">
+                  style="width:20%; height: 15px">
+                    <select name="year" class="form-control" onchange="this.form.submit()" style="height: 30px; font-size: 14px; padding: 0px 20px;border-radius: 5px;width: 50%;">
                         {% for y in years %}
                             <option value="{{ y }}" {% if y == year %}selected{% endif %}>{{ y }}</option>
                         {% endfor %}
@@ -83,9 +26,9 @@
         {% endblock %}
     </div>
 
-     <div class="header" style="width: 70%">
+     <div class="Search" style="width: 70%">
          {% block header %}
-             <form  action="{% url 'TimKiemNV' %}" style="margin-bottom: 30px">
+             <form  action="{% url 'TimKiemNV' %}" style="margin-bottom: 30px; display:flex; gap: 15px">
                 <label  style="font-weight: 500; margin-bottom: 0;">Chọn nhân viên:</label>
                 <select name="nhan_vien" id="nhan_vien" style="width: 200px; padding: 4px 8px; border-radius: 8px; font-size: 16px;" onchange="this.form.submit()">
                     <option value="">-- Tất cả --</option>
@@ -95,15 +38,15 @@
                       </option>
                     {% endfor %}
                   </select>
+             </form>
         {% endblock %}
-
      </div>
     {% block profile %}
     {% endblock %}
     <div class="ndung" style='display: flex; gap: 60px; width: 100%'>
-            <div class="ndungNP" style="width:90%">
+            <div class="ndungNP" style="width: 70%">
                 {% for status, danh_sach in nghiphep.items %}
-                    <div class="card" style="margin-bottom: 30px">
+                    <div class="card" style="margin-bottom: 30px;width:100%; background-color: #ffffff; padding: 15px; border-radius: 10px; box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);">
                         <div class="card-header">
                             <h2 class="card-title">
                                 {% if status == 'Đang chờ duyệt' %}
@@ -116,13 +59,18 @@
                                 {{status}}
                             </h2>
                         </div>
-                        <div class="card-body" style="margin-bottom: 30px">
+                        <div class="card-body" style="margin-bottom: 30px; ">
                             {% if danh_sach %}
                                 <div class="leave-list">
                                     {% for item in danh_sach %}
-                                        <div class="leave-item" >
-                                            <div class="leave-header">
-                                                <div class="employee-name" style="display: flex; justify-content: space-between;">
+                                        <div class="leave-item" style="border: 1px solid #ddd;
+                                                                border-radius: 8px;
+                                                                padding: 15px;
+                                                                background-color: #fff;
+                                                                box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+                                                                margin-bottom: 20px; margin-top: 10px" >
+                                            <div class="leave-header" >
+                                                <div class="employee-name" style="display: flex; justify-content: space-between;align-item:center">
                                                     <span class="tennhanvien" style="font-size: 16px; font-weight: bold">{{ item.nhan_vien.ten_nv }}</span>
                                                     <span class="badge {% if status == 'Đang chờ duyệt' %}badge-warning{% elif status == 'Đã duyệt' %}badge-success{% else %}badge-danger{% endif %}">
                                                     {{status}}
@@ -130,7 +78,7 @@
                                                 </div>
 
                                             </div>
-                                            <div class="leave-body">
+                                            <div class="leave-body" style="">
                                                 <div class="leave-details" style="margin-top: 20px; font-size: 14px" >
                                                     <div class="detail-group">
                                                         <p><strong >Loại nghỉ phép:</strong> {{item.loai_nghi }}</p>
@@ -148,17 +96,17 @@
                                                             <form method="post" action="{% url 'XulyNP' item.id %}" style="width: 100%;">
                                                                 {% csrf_token %}
                                                                 <div class="inputghichu">
-                                                                    <span class="detail-label">Ghi chú:</span>
-                                                                    <textarea name="ghichu" id="id_ghichu" rows="4">{{ formghichu.ghichu.value }}</textarea>
+                                                                    <p><strong>Ghi chú:</strong></p>
+                                                                    <textarea style="width: 60%; margin-top: 5px; border: 1px solid #999;border-radius: 5px" name="ghichu" id="id_ghichu" rows="4">{{ formghichu.ghichu.value }}</textarea>
                                                                 </div>
                                                                 {% if messages %}
                                                                     {% for message in messages %}
                                                                         <div class="alert alert-danger">{{ message }}</div>
                                                                     {% endfor %}
                                                                 {% endif %}
-                                                                <div class="duyet_tuchoi">
-                                                                    <button type="submit" name="action" value="duyet" id="duyet">Duyệt</button>
-                                                                    <button type="submit" name="action" value="tuchoi" id="tuchoi">Từ chối</button>
+                                                                <div class="duyet_tuchoi" style="display: flex; gap: 10px; margin-top: 5px">
+                                                                    <button type="submit" name="action" value="duyet" class="btn-duyet">Duyệt</button>
+                                                                    <button type="submit" name="action" value="tuchoi" class="btn-tuchoi">Từ chối</button>
                                                                 </div>
                                                             </form>
                                                         </div>
@@ -171,8 +119,8 @@
                                             </div>
                                             <div class="np-card-footer">
                                                 <div style=" ">
-                                                    <i class="fas fa-calendar-alt" style="font-size:14px"></i>
-                                                    <button type="button" onclick="toggleHistory({{ item.id }})" class="btn btn-link"> Xem lịch sử</button>
+                                                    <i class="fa-solid fa-clock-rotate-left" style="size: 14px"></i>
+                                                    <a onclick="toggleHistory({{ item.id }})" class="historylink" style="text-decoration: underline"> Xem lịch sử</a>
                                                 </div>
 
                                                 <div id="historyContent-{{ item.id }}" style="display: none; margin-top: 10px;">
@@ -209,29 +157,29 @@
             </div>
 
             {% block locdanhsach %}
-            <div class="ndungloc" style="width:30%; max-height: 500px;">
+            <div class="ndungloc" style="width:25%; max-height: 500px;">
 
                <div class="TitleLoc" style="display: flex; gap: 10px; align-items: left;">
                     <i class="fa-sharp fa-solid fa-filter" style="font-size: 20px;"></i>
                     <p style="margin: 0; font-size: 15px; font-weight: 600;">Lọc</p>
                 </div>
                 <ul id="dongloc" style="width: 80%; margin-top: 20px; ">
-                    <li class="li hover:bg-blue-100" >
+                    <li class="loc" >
                         <a href="{% url 'DanhSachNP'  %}?year={{ year }}" class="font-bold hover:text-blue-600">
                             Tất cả ({{ so_don }})
                         </a>
                     </li>
-                    <li>
+                    <li class="loc">
                         <a href="{% url 'loc_don_nghi_phep_admin' %}?trang_thai=Đang chờ duyệt&year={{ year }}" class=" font-bold hover:text-blue-600">
                             Chờ duyệt ({{ so_don_dang_duyet.count }})
                         </a>
                     </li>
-                    <li>
+                    <li class="loc">
                         <a href="{% url 'loc_don_nghi_phep_admin' %}?trang_thai=Đã duyệt&year={{ year }}" class=" font-bold hover:text-blue-600">
                             Đã duyệt ({{ so_don_da_duyet.count }})
                         </a>
                     </li>
-                    <li>
+                    <li class="loc">
                         <a href="{% url 'loc_don_nghi_phep_admin' %}?trang_thai=Bị từ chối&year={{ year }}" class=" font-bold hover:text-blue-600">
                             Từ chối ({{ so_don_dang_bi_tu_choi.count }})
                         </a>
@@ -241,6 +189,8 @@
             </div>
             {% endblock %}
     </div>
+</div>
+
 {% endblock %}
 
 
