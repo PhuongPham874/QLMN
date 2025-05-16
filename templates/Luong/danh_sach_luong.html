@@ -2,133 +2,197 @@
 
 {% block page_background %}
 {% load static %}
-<div class="salary-dashboard">
+<div class="salary-page">
   <!-- Header Section -->
-  <div class="dashboard-header">
-    <div class="employee-info">
-      <h1 class="page-title">Salary Information</h1>
-      <h2 class="employee-name">{{ nhan_vien.ten_nv }}</h2>
-    </div>
+  <div class="header-container">
+    <h2 class="header-title">Lương của: {{ nhan_vien.ten_nv }}</h2>
+
     <div class="header-actions">
-      <button class="action-button print-button" onclick="window.print()">
-        <span class="button-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <polyline points="6 9 6 2 18 2 18 9"></polyline>
-            <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path>
-            <rect x="6" y="14" width="12" height="8"></rect>
-          </svg>
-        </span>
-        Print
-      </button>
-      <button class="action-button export-button">
-        <span class="button-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
-            <polyline points="7 10 12 15 17 10"></polyline>
-            <line x1="12" y1="15" x2="12" y2="3"></line>
-          </svg>
-        </span>
-        Export
-      </button>
     </div>
   </div>
 
-  <!-- Salary Tables Container -->
-  <div class="salary-tables-container">
-    {% for bang_luong in bang_luong_list %}
-      <div class="salary-card">
-        <div class="card-header">
-          <h3 class="card-title">Salary Statement {{ bang_luong.title }}</h3>
-          <div class="total-salary">
-            <span class="total-label">Total Salary:</span>
-            <span class="total-amount">{{ bang_luong.tong_luong|floatformat:0 }} VND</span>
-          </div>
-        </div>
+  <!-- Main Container with Columns -->
+  <div class="container">
+    <!-- Left Column: Salary Tables -->
+    <div class="salary-column">
+      <div class="salary-wrapper">
+        {% for bang_luong in bang_luong_list %}
+          <div id="bang_luong_{{ forloop.counter }}" class="salary-block">
+            <h3 class="salary-title">Bảng Lương {{ bang_luong.title }}</h3>
 
-        <div class="salary-details">
-          <div class="salary-section">
-            <h4 class="section-title">Base Information</h4>
-            <div class="salary-item base-salary">
-              <span class="item-label">Base Salary</span>
-              <span class="item-value">{{ bang_luong.muc_luong|floatformat:0 }} VND</span>
-            </div>
-          </div>
+            <table class="salary-table">
+              <thead>
+                <tr>
+                  <th>Hạng mục</th>
+                  <th>Giá trị (VND)</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr class="base-row">
+                  <td>Lương cơ bản</td>
+                  <td class="amount">{{ bang_luong.muc_luong|floatformat:0 }}</td>
+                </tr>
+                <tr class="deduction-row">
+                  <td>Tiền BHXH</td>
+                  <td class="amount">{{ bang_luong.tien_bhxh|default:0|floatformat:0 }}</td>
+                </tr>
+                <tr class="deduction-row">
+                  <td>Thuế</td>
+                  <td class="amount">{{ bang_luong.thue|floatformat:0 }}</td>
+                </tr>
+                <tr class="deduction-row">
+                  <td>Kỷ luật</td>
+                  <td class="amount">{{ bang_luong.tien_ky_luat|floatformat:0 }}</td>
+                </tr>
+                <tr class="addition-row">
+                  <td>Thưởng</td>
+                  <td class="amount">{{ bang_luong.thuong|floatformat:0 }}</td>
+                </tr>
+                <tr class="deduction-row">
+                  <td>Trừ vắng</td>
+                  <td class="amount">{{ bang_luong.vang_tru|floatformat:0 }}</td>
+                </tr>
+                <tr class="deduction-row">
+                  <td>Trừ muộn</td>
+                  <td class="amount">{{ bang_luong.muon_tru|floatformat:0 }}</td>
+                </tr>
+                <tr class="addition-row">
+                  <td>Phụ cấp chuyên cần</td>
+                  <td class="amount">{{ bang_luong.phu_cap_chuyen_can|floatformat:0 }}</td>
+                </tr>
+                <tr class="addition-row">
+                  <td>Phụ cấp khác</td>
+                  <td class="amount">{{ bang_luong.tong_phu_cap|default:0|floatformat:0 }}</td>
+                </tr>
+                <tr class="total-row">
+                  <td>Tổng lương</td>
+                  <td class="amount total">{{ bang_luong.tong_luong|floatformat:0 }}</td>
+                </tr>
+              </tbody>
+            </table>
 
-          <div class="salary-section">
-            <h4 class="section-title">Deductions</h4>
-            <div class="salary-item deduction">
-              <span class="item-label">Social Insurance</span>
-              <span class="item-value">{{ bang_luong.tien_bhxh|default:0|floatformat:0 }} VND</span>
-            </div>
-            <div class="salary-item deduction">
-              <span class="item-label">Tax</span>
-              <span class="item-value">{{ bang_luong.thue|floatformat:0 }} VND</span>
-            </div>
-            <div class="salary-item deduction">
-              <span class="item-label">Disciplinary Deductions</span>
-              <span class="item-value">{{ bang_luong.tien_ky_luat|floatformat:0 }} VND</span>
-            </div>
-            <div class="salary-item deduction">
-              <span class="item-label">Absence Deductions</span>
-              <span class="item-value">{{ bang_luong.vang_tru|floatformat:0 }} VND</span>
-            </div>
-            <div class="salary-item deduction">
-              <span class="item-label">Late Deductions</span>
-              <span class="item-value">{{ bang_luong.muon_tru|floatformat:0 }} VND</span>
+            <div class="salary-summary">
+              <div class="summary-item">
+                <span class="summary-label">Tổng khấu trừ:</span>
+                <span class="summary-value deduction">
+                  {{ bang_luong.tien_bhxh|default:0|add:bang_luong.thue|add:bang_luong.tien_ky_luat|add:bang_luong.vang_tru|add:bang_luong.muon_tru|floatformat:0 }} VND
+                </span>
+              </div>
+              <div class="summary-item">
+                <span class="summary-label">Tổng cộng thêm:</span>
+                <span class="summary-value addition">
+                  {{ bang_luong.thuong|add:bang_luong.phu_cap_chuyen_can|add:bang_luong.tong_phu_cap|default:0|floatformat:0 }} VND
+                </span>
+              </div>
             </div>
           </div>
-
-          <div class="salary-section">
-            <h4 class="section-title">Additions</h4>
-            <div class="salary-item addition">
-              <span class="item-label">Bonus</span>
-              <span class="item-value">{{ bang_luong.thuong|floatformat:0 }} VND</span>
-            </div>
-            <div class="salary-item addition">
-              <span class="item-label">Attendance Allowance</span>
-              <span class="item-value">{{ bang_luong.phu_cap_chuyen_can|floatformat:0 }} VND</span>
-            </div>
-            <div class="salary-item addition">
-              <span class="item-label">Other Allowances</span>
-              <span class="item-value">{{ bang_luong.tong_phu_cap|default:0|floatformat:0 }} VND</span>
-            </div>
+        {% empty %}
+          <div class="empty-state">
+            <div class="empty-icon">📊</div>
+            <p>Không có bảng lương nào.</p>
           </div>
-        </div>
-
-        <div class="salary-summary">
-          <div class="summary-item">
-            <span class="summary-label">Total Deductions:</span>
-            <span class="summary-value deduction">
-              {{ bang_luong.tien_bhxh|default:0|add:bang_luong.thue|add:bang_luong.tien_ky_luat|add:bang_luong.vang_tru|add:bang_luong.muon_tru|floatformat:0 }} VND
-            </span>
-          </div>
-          <div class="summary-item">
-            <span class="summary-label">Total Additions:</span>
-            <span class="summary-value addition">
-              {{ bang_luong.thuong|add:bang_luong.phu_cap_chuyen_can|add:bang_luong.tong_phu_cap|default:0|floatformat:0 }} VND
-            </span>
-          </div>
-          <div class="summary-item total">
-            <span class="summary-label">Net Salary:</span>
-            <span class="summary-value">{{ bang_luong.tong_luong|floatformat:0 }} VND</span>
-          </div>
-        </div>
+        {% endfor %}
       </div>
-    {% empty %}
-      <div class="empty-state">
-        <div class="empty-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <circle cx="12" cy="12" r="10"></circle>
-            <line x1="12" y1="8" x2="12" y2="12"></line>
-            <line x1="12" y1="16" x2="12.01" y2="16"></line>
+    </div>
+
+    <!-- Right Column: Filters -->
+    <div class="filter-column">
+      <div class="filter-card">
+        <h3 class="filter-title">Bộ lọc</h3>
+
+        <div class="filter-group">
+          <label for="month_select">Tháng</label>
+          <select id="month_select" class="filter-select">
+            <option value="">Chọn tháng</option>
+            {% for i in "123456789101112"|make_list %}
+              <option value="{{ i }}">Tháng {{ i }}</option>
+            {% endfor %}
+          </select>
+        </div>
+
+        <div class="filter-group">
+          <label for="year_select">Năm</label>
+          <select id="year_select" class="filter-select">
+            <option value="">Chọn năm</option>
+            {% for y in years %}
+              <option value="{{ y }}">{{ y }}</option>
+            {% endfor %}
+          </select>
+        </div>
+
+        <button onclick="scrollToSalary()" class="filter-button">
+          <svg class="button-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="11" cy="11" r="8"></circle>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
           </svg>
-        </div>
-        <p class="empty-message">No salary information available.</p>
+          Xem bảng lương
+        </button>
       </div>
-    {% endfor %}
+
+      <div class="summary-card">
+        <h3 class="summary-title">Tổng quan</h3>
+        <div class="summary-stats">
+          <div class="stat-item">
+            <div class="stat-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect>
+                <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path>
+              </svg>
+            </div>
+            <div class="stat-details">
+              <div class="stat-value">{{ bang_luong_list|length }}</div>
+              <div class="stat-label">Bảng lương</div>
+            </div>
+          </div>
+
+          {% if bang_luong_list %}
+          <div class="stat-item">
+            <div class="stat-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="12" y1="1" x2="12" y2="23"></line>
+                <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+              </svg>
+            </div>
+            <div class="stat-details">
+              <div class="stat-value">{{ bang_luong_list.0.tong_luong|floatformat:0 }}</div>
+              <div class="stat-label">Lương gần nhất</div>
+            </div>
+          </div>
+          {% endif %}
+        </div>
+      </div>
+    </div>
   </div>
 </div>
 
 <!-- Link to external CSS file -->
 <link rel="stylesheet" href="{% static 'css/danh_sach_luong.css' %}">
+
+<!-- JavaScript for interactivity -->
+<script>
+function scrollToSalary() {
+  const month = document.getElementById("month_select").value;
+  const year = document.getElementById("year_select").value;
+
+  if (!month || !year) {
+    alert("Vui lòng chọn đầy đủ tháng và năm.");
+    return;
+  }
+
+  // Find the salary table that matches the month and year
+  // This is a simplified example - you would need to adjust based on your actual data structure
+  const targetId = `bang_luong_${month}`;
+  const target = document.getElementById(targetId);
+
+  if (target) {
+    target.scrollIntoView({ behavior: 'smooth' });
+    target.classList.add('highlight');
+    setTimeout(() => {
+      target.classList.remove('highlight');
+    }, 2000);
+  } else {
+    alert("Không tìm thấy bảng lương cho thời gian đã chọn.");
+  }
+}
+</script>
 {% endblock %}
