@@ -32,16 +32,10 @@
     </div>
 {% endblock %}
 
-{% block javascript %}
-        document.getElementById("quaylai").addEventListener("click", function(){
-            window.location.href = '{% url 'DanhSachNP' %}';
-        });
-{% endblock %}
-
 
 {% block btnAdd %}
     <form class="form-search" action="{% url 'TimKiemNV' %}" style="width: 55%; display: flex; gap:10px">
-        <select name="nhan_vien" id="nhan_vien" style="width: 200px; padding: 4px 8px; border-radius: 8px; font-size: 16px;" onchange="this.form.submit()" >
+        <select name="nhan_vien" id="nhan_vien" value="{{ request.GET.nhan_vien.ten_nv }}" style="width: 200px; padding: 4px 8px; border-radius: 8px; font-size: 16px;" onchange="this.form.submit()" >
             <option value="">-- Tất cả --</option>
             {% for nv in nhan_vien_quan_ly %}
               <option value="{{ nv.id }}">

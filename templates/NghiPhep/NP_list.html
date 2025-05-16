@@ -1,12 +1,12 @@
 {% extends 'home.html' %}
 {% block page_background %}
-<style>
-
-    {% block CSS %}
-    {% endblock %}
-</style>
 {% load static %}
 <link rel="stylesheet" href="{% static 'css/NP_list.css' %}">
+
+{% block CSS %}
+
+{% endblock %}
+
 
 <script>
     document.addEventListener("DOMContentLoaded", function () {
@@ -47,23 +47,30 @@
 
 
 
-<div class="nghiphep">
-<div class="content">
+<div class="np-wrapper">
+    <div class="content">
     {% url 'DanhSachNP_NV' as url_np_nv %}
     {% url 'DanhSachNP' as url_np %}
     {% url 'DanhSachNP_HT' as url_np_ht %}
-    <ul class="nav nav-tabs mb-4">
-        {% if nhan_vien.chuc_vu ==   'Hiệu Trưởng' %}
-        <li class="nav-item">
-            <a class="nav-link {% if request.path == url_np_ht %}active{% endif %}" href="{{ url_np_ht }}">Nghỉ phép của BGH</a>
+
+    <ul class="custom-nav-tabs">
+        {% if nhan_vien.chuc_vu == 'Hiệu Trưởng' %}
+        <li>
+            <a class="{% if request.path == url_np_ht %}active{% endif %}" href="{{ url_np_ht }}">
+                Nghỉ phép của BGH
+            </a>
         </li>
         {% else %}
-        <li class="nav-item">
-            <a class="nav-link {% if request.path == url_np_nv %}active{% endif %}" href="{{ url_np_nv }}">Nghỉ phép của tôi</a>
+        <li>
+            <a class="{% if request.path == url_np_nv %}active{% endif %}" href="{{ url_np_nv }}">
+                Nghỉ phép của tôi
+            </a>
         </li>
         {% endif %}
-        <li class="nav-item">
-            <a class="nav-link {% if request.path == url_np %}active{% endif %}" href="{{ url_np }}">Duyệt nghỉ phép</a>
+        <li>
+            <a class="{% if request.path == url_np %}active{% endif %}" href="{{ url_np }}">
+                Duyệt nghỉ phép
+            </a>
         </li>
     </ul>
     {% block content %}
@@ -104,19 +111,19 @@
     {% block formNP %}
     <div class="ndung" style="display: flex; gap: 70px">
         <div class="ndungNp">
-            <div class="header">
-                <form class="form-search" action="{% url 'TimKiemNP' %}">
+            <div class="Search">
+                <form class="timkiemngay" action="{% url 'TimKiemNP' %}">
                     <div class="text_search">
                         <i class="fa-solid fa-magnifying-glass"></i>
-                        <input class="form-control mr-sm-2"
+                        <input class="search_date"
                            type="date"
                            aria-label="Tìm kiếm Ngày bắt đầu Nghỉ:"
                            name="search" onchange="this.form.submit()"
                            value="{{ request.GET.search }}">
                     </div>
                 </form>
-                <form method="get" action="{% url 'DanhSachNP_NV' %}" style="width:15%; width: 13%">
-                        <select name="year" class="form-control" onchange="this.form.submit()" style="height: 30px; font-size: 16px; padding: 0px 20px">
+                <form method="get" action="{% url 'DanhSachNP_NV' %}" style="width:15%; width: 18%; ">
+                        <select name="year"onchange="this.form.submit()" style="height: 30px; font-size: 14px; padding: 0px 20px;border-radius: 5px;width: 100%;">
                             {% for y in years %}
                                 <option value="{{ y }}" {% if y == year %}selected{% endif %}>{{ y }}</option>
                             {% endfor %}
@@ -140,27 +147,28 @@
                                         <span class="badge badge-danger">Từ chối</span>
                                     {% endif %}
                                 </div>
-                                {% if item.trang_thai_don == "Đang chờ duyệt" %}
-                                <div class="card-actions">
-                                    <a class="btn btn-sm btn-primary" href="{% url 'EditNghiPhep' nghiphep_pk=item.id %}">Chỉnh sửa</a>
-                                    <a class="btn btn-sm btn-danger" href="{% url 'DeleteNghiPhep' nghiphep_pk=item.id %}">Xóa</a>
-                                </div>
-                                {% endif %}
                             </div>
 
                             <div class="np-card-body">
                                 <div style="display: flex; gap: 120px">
                                     <p><strong >Ngày bắt đầu:</strong> {{ item.ngay_bat_dau }}</p>
                                     <p><strong>Ngày đi làm lại:</strong> {{ item.ngay_ket_thuc }}</p>
-                                </div>
-                                    <p><strong>Lý do:</strong> {{ item.ly_do }}</p>
+                                </div> <br>
+                                    <p><strong>Lý do:</strong> {{ item.ly_do }}</p> <br>
                                     <p><strong>Ghi chú:</strong> {{ item.ghi_chu|default:"Không" }}</p>
                             </div>
 
+                            {% if item.trang_thai_don == "Đang chờ duyệt" %}
+                            <div class="card-actions" style="margin-top: 20px; font-size: 13px">
+                                <a class="btn btn-edit" href="{% url 'EditNghiPhep' nghiphep_pk=item.id %}">Chỉnh sửa</a>
+                                <a class="btn btn-delete" href="{% url 'DeleteNghiPhep' nghiphep_pk=item.id %}">Xóa</a>
+                            </div>
+                            {% endif %}
+
                             <div class="np-card-footer">
                                 <div style=" ">
-                                    <i class="fa-solid fa-clock-rotate-left" style="sĩe: 14px"></i>
-                                    <button onclick="toggleHistory({{ item.id }})" class="btn btn-link"> Xem lịch sử</button>
+                                    <i class="fa-solid fa-clock-rotate-left" style="size: 14px"></i>
+                                    <a onclick="toggleHistory({{ item.id }})" class="historylink" style="text-decoration: underline"> Xem lịch sử</a>
                                 </div>
 
                                 <div id="historyContent-{{ item.id }}" style="display: none; margin-top: 10px;">
@@ -182,6 +190,8 @@
                                     {% endif %}
                                 </div>
                             </div>
+
+
                         </div>
                         {% endfor %}
                     </div>
@@ -189,28 +199,28 @@
                     <p>Không có đơn nghỉ phép nào</p>
                 {% endif %}
                 </div>
-        <div class="ndungloc" style="width:30%; max-height: 500px; ">
+        <div class="ndungloc" style="width:25%; max-height: 500px; ">
            <div class="TitleLoc" style="display: flex; gap: 10px; align-items: left;">
                 <i class="fa-sharp fa-solid fa-filter" style="font-size: 20px;"></i>
                 <p style="margin: 0; font-size: 15px; font-weight: 600;">Lọc</p>
             </div>
             <ul id="dongloc" style="width: 80%; margin-top: 20px; font-size: 14px; ">
-                <li class="li hover:bg-blue-100" >
+                <li class="loc" >
                     <a href="{% url 'DanhSachNP_NV'  %}?year={{ year }}" class="font-bold hover:text-blue-600">
                         Tất cả ({{ so_don }})
                     </a>
                 </li>
-                <li>
+                <li class="loc" >
                     <a href="{% url 'loc_don_nghi_phep' %}?trang_thai=Đang chờ duyệt&year={{ year }}" class=" font-bold hover:text-blue-600">
                         Chờ duyệt ({{ so_don_dang_duyet.count }})
                     </a>
                 </li>
-                <li>
+                <li class="loc" >
                     <a href="{% url 'loc_don_nghi_phep' %}?trang_thai=Đã duyệt&year={{ year }}" class=" font-bold hover:text-blue-600">
                         Đã duyệt ({{ so_don_da_duyet.count }})
                     </a>
                 </li>
-                <li>
+                <li class="loc" >
                     <a href="{% url 'loc_don_nghi_phep' %}?trang_thai=Bị từ chối&year={{ year }}" class=" font-bold hover:text-blue-600">
                         Từ chối ({{ so_don_dang_bi_tu_choi.count }})
                     </a>

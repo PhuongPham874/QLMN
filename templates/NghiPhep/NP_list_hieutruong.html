@@ -20,22 +20,22 @@
         <p style="margin: 0; font-size: 15px; font-weight: 600;">Lọc</p>
     </div>
     <ul id="dongloc" style="width: 80%; margin-top: 20px; ">
-        <li class="li hover:bg-blue-100" >
+        <li class="loc" >
             <a href="{% url 'DanhSachNP_HT'  %}?year={{ year }}" class="font-bold hover:text-blue-600">
                 Tất cả ({{ so_don }})
             </a>
-        </li>
-        <li>
+        </li >
+        <li class="loc">
             <a href="{% url 'loc_don_nghi_phep_hieutruong' %}?trang_thai=Đang chờ duyệt&year={{ year }}" class=" font-bold hover:text-blue-600">
                 Chờ duyệt ({{ so_don_dang_duyet.count }})
             </a>
         </li>
-        <li>
+        <li class="loc">
             <a href="{% url 'loc_don_nghi_phep_hieutruong' %}?trang_thai=Đã duyệt&year={{ year }}" class=" font-bold hover:text-blue-600">
                 Đã duyệt ({{ so_don_da_duyet.count }})
             </a>
-        </li>
-        <li>
+        </li >
+        <li class="loc">
             <a href="{% url 'loc_don_nghi_phep_hieutruong' %}?trang_thai=Bị từ chối&year={{ year }}" class=" font-bold hover:text-blue-600">
                 Từ chối ({{ so_don_dang_bi_tu_choi.count }})
             </a>
@@ -47,9 +47,9 @@
 
 
 {% block header %}
-     <form class="form-search" action="{% url 'TimKiemNV_HT' %}">
+     <form class="Search" action="{% url 'TimKiemNV_HT' %}" style="margin-bottom: 20px">
         <label  style="font-weight: 500; margin-bottom: 0;">Chọn nhân viên:</label>
-        <select name="nhan_vien" id="nhan_vien" style="width: 200px; padding: 8px 12px; border-radius: 8px; font-size: 16px;">
+        <select name="nhan_vien" id="nhan_vien" style="width: 200px; padding: 4px 8px; border-radius: 8px; font-size: 16px;" onchange="this.form.submit()">
             <option value="">-- Tất cả --</option>
             {% for nv in nhan_vien_quan_ly %}
               <option value="{{ nv.id }}">
@@ -57,6 +57,5 @@
               </option>
             {% endfor %}
           </select>
-        <button class="timkiem" type="submit">Tìm kiếm</button>
     </form>
 {% endblock %}
