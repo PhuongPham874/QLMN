@@ -1,95 +1,136 @@
 {% extends "home.html" %}
+{% load static %}
 
-{% block extra_css %}
-    <style>
 
-        .content{
-            width: 1100px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: flex-start;
 
-        }
-        .ndung{
-            width: 1100px;
-            padding: 20px;
-            margin-left: 20px;
-            display: flex;
-            flex-direction: column;
-        }
-    }
-
-        table{
-        width: 450px;
-        align-items: center;
-        margin-bottom: 20px;
-        justify-content: space-between;
-    }
-        .btn{
-        padding: 10px ;
-        border-radius:5px;
-        font-size: 15px;
-        text-align: center;
-        background-color:#D9D9D9 ;
-        color: black;
-        border: 1px solid;
-    }
-        .button{
-            padding: 20px;
-        }
-
-    </style>
-
-{% endblock %}
 
 {% block page_background %}
-<main class="content" style="background-color: #ffffff; padding: 10px;">
+<div class="employee-list-page">
+  <!-- Page Header -->
+  <div class="page-header">
+    <h1 class="page-title">DANH SÁCH HỒ SƠ NHÂN VIÊN</h1>
+  </div>
 
-        <h1 class="header-title" style="color: #000000; font-size: 30px; font-weight: bold; text-align: center; width: 100%; margin-top: 20px;">DANH SÁCH HỒ SƠ NHÂN VIÊN</h1>
-        <div class="container mt-4" style="background-color: #FFFBFB; border: 2px solid #C1C3C8; padding: 20px; border-radius: 10px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
-            <div style="margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center;">
+  <!-- Main Content Card -->
+  <div class="content-card">
+    <!-- Search and Actions Bar -->
+    <div class="toolbar">
+      <div class="search-container">
+        <form method="GET" action="{% url 'DanhSachNhanVien' %}">
+          <div class="search-input-wrapper">
+            <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="11" cy="11" r="8"></circle>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            </svg>
+            <input type="text" name="q" value="{{ query }}" placeholder="Tìm kiếm nhân viên..." class="search-input">
+          </div>
+        </form>
+      </div>
 
-
-                 <form method="GET" action="{% url 'DanhSachNhanVien' %}">
-                    <input type="text" name="q" value="{{ query }}" placeholder="Tìm kiếm..." style="padding: 5px 10px; border-radius: 10px; border: 2px solid #C1C3C8">
-
-                </form>
-
-                <a href="{% url 'ThemMoiHoSo' %}" class="btn btn-success" style="margin-left: 20px; background-color: #65ABE3; color: white;">+ Thêm mới</a>
-            </div>
-            <table class="table" style="border-radius: 10px; width: 100%; ">
-                <thead style="background-color: #008CBA; color: white;">
-                    <tr>
-                        <th style="background-color: #65ABE3; color: white;width: 7%;">MNV</th>
-                        <th style="background-color: #65ABE3; color: white;width: 20%;">Họ và tên</th>
-                        <th style="background-color: #65ABE3; color: white;width: 10%;">SĐT</th>
-                        <th style="background-color: #65ABE3; color: white;width: 38%;">Địa chỉ</th>
-                        <th style="background-color: #65ABE3; color: white;width: 13%;">Vị trí</th>
-                    </tr>
-                </thead>
-
-                <tbody>
-                    {% for nhan_vien in nhan_vien_list %}
-                    <tr>
-                        <td style="background-color: #FFFBFB; text-align: center;">{{ nhan_vien.id }}</td>
-                        <!-- Hiển thị Mã NV (là id của nhân viên) -->
-                        <td style="background-color: #FFFBFB;">
-                            <!-- Sửa đoạn này để tên nhân viên là một liên kết đến trang chi tiết -->
-                            <a href="{% url 'QLXemHoSo' nhan_vien.id %}" style="text-decoration: none; color: black;">
-                                {{ nhan_vien.ten_nv }}
-                            </a>
-                        </td>
-                        <td style="background-color: #FFFBFB;">{{ nhan_vien.so_dien_thoai }}</td>
-                        <td style="background-color: #FFFBFB;">{{ nhan_vien.dia_chi_tam_tru }}</td>
-                        <td style="background-color: #FFFBFB;">{{ nhan_vien.vi_tri_cong_viec }}</td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-        </div>
+      <a href="{% url 'ThemMoiHoSo' %}" class="add-button">
+        <svg class="button-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="12" y1="5" x2="12" y2="19"></line>
+          <line x1="5" y1="12" x2="19" y2="12"></line>
+        </svg>
+        Thêm mới
+      </a>
     </div>
 
-</main>
+    <!-- Employee Table -->
+    <div class="table-container">
+      <table class="employee-table">
+        <thead>
+          <tr>
+            <th class="id-column">MNV</th>
+            <th class="name-column">Họ và tên</th>
+            <th class="phone-column">SĐT</th>
+            <th class="address-column">Địa chỉ</th>
+            <th class="position-column">Vị trí</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for nhan_vien in nhan_vien_list %}
+          <tr class="employee-row">
+            <td class="id-cell">{{ nhan_vien.id }}</td>
+            <td class="name-cell">
+              <a href="{% url 'QLXemHoSo' nhan_vien.id %}" class="employee-link">
+                <div class="employee-name">
+                  <div class="avatar">{{ nhan_vien.ten_nv|slice:":1" }}</div>
+                  <span>{{ nhan_vien.ten_nv }}</span>
+                </div>
+              </a>
+            </td>
+            <td class="phone-cell">{{ nhan_vien.so_dien_thoai }}</td>
+            <td class="address-cell">{{ nhan_vien.dia_chi_tam_tru }}</td>
+            <td class="position-cell">
+              <span class="position-badge">{{ nhan_vien.vi_tri_cong_viec }}</span>
+            </td>
+          </tr>
+          {% empty %}
+          <tr class="empty-row">
+            <td colspan="5">
+              <div class="empty-state">
+                <svg class="empty-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <circle cx="12" cy="12" r="10"></circle>
+                  <line x1="12" y1="8" x2="12" y2="12"></line>
+                  <line x1="12" y1="16" x2="12.01" y2="16"></line>
+                </svg>
+                <p>Không tìm thấy nhân viên nào</p>
+              </div>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
 
+    <!-- Pagination (if needed) -->
+    {% if nhan_vien_list.has_other_pages %}
+    <div class="pagination">
+      {% if nhan_vien_list.has_previous %}
+      <a href="?page={{ nhan_vien_list.previous_page_number }}" class="pagination-button">
+        <svg class="pagination-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="15 18 9 12 15 6"></polyline>
+        </svg>
+        Trước
+      </a>
+      {% else %}
+      <span class="pagination-button disabled">
+        <svg class="pagination-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="15 18 9 12 15 6"></polyline>
+        </svg>
+        Trước
+      </span>
+      {% endif %}
+
+      <div class="pagination-pages">
+        {% for i in nhan_vien_list.paginator.page_range %}
+          {% if nhan_vien_list.number == i %}
+            <span class="pagination-page active">{{ i }}</span>
+          {% else %}
+            <a href="?page={{ i }}" class="pagination-page">{{ i }}</a>
+          {% endif %}
+        {% endfor %}
+      </div>
+
+      {% if nhan_vien_list.has_next %}
+      <a href="?page={{ nhan_vien_list.next_page_number }}" class="pagination-button">
+        Tiếp
+        <svg class="pagination-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="9 18 15 12 9 6"></polyline>
+        </svg>
+      </a>
+      {% else %}
+      <span class="pagination-button disabled">
+        Tiếp
+        <svg class="pagination-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="9 18 15 12 9 6"></polyline>
+        </svg>
+      </span>
+      {% endif %}
+    </div>
+    {% endif %}
+  </div>
+</div>
+<link rel="stylesheet" href="{% static 'css/dsnhanvienHoSo.css' %}">
 {% endblock %}

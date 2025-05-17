@@ -1,0 +1,319 @@
+/* Modern Labor Contract Styles */
+:root {
+  --primary: #066BBB;
+  --primary-light: #65ABE3;
+  --primary-dark: #0353a4;
+  --success: #10b981;
+  --warning: #f59e0b;
+  --danger: #ef4444;
+  --gray-50: #f9fafb;
+  --gray-100: #f3f4f6;
+  --gray-200: #e5e7eb;
+  --gray-300: #d1d5db;
+  --gray-400: #9ca3af;
+  --gray-500: #6b7280;
+  --gray-600: #4b5563;
+  --gray-700: #374151;
+  --gray-800: #1f2937;
+  --gray-900: #111827;
+  --radius: 12px;
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  --transition: all 0.2s ease;
+}
+
+/* Base Styles */
+.contract-page {
+   font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  color: var(--gray-800);
+  background-color:     ;
+  padding: 2rem;
+  width: 1200px;
+  margin: 0 auto;
+}
+
+/* Page Header */
+.page-header {
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+.page-title {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: var(--gray-900);
+  margin: 0;
+  letter-spacing: -0.025em;
+}
+
+/* Tab Navigation */
+.tab-navigation {
+  display: flex;
+  margin-bottom: 2rem;
+  border-radius: var(--radius);
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+}
+
+.tab-link {
+  flex: 1;
+  padding: 1rem;
+  text-align: center;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 0.875rem;
+  transition: var(--transition);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.tab-link.active {
+  background-color: var(--primary);
+  color: white;
+  box-shadow: var(--shadow);
+}
+
+.tab-link.inactive {
+  background-color: var(--primary-light);
+  color: white;
+}
+
+.tab-link:hover {
+  filter: brightness(1.05);
+}
+
+.tab-icon {
+  width: 18px;
+  height: 18px;
+}
+
+/* Contract Card */
+.contract-card {
+  background-color: white;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-md);
+  overflow: hidden;
+}
+
+/* Section Styles */
+.employee-info-section,
+.contract-details-section,
+.allowances-section,
+.actions-section {
+  padding: 1.5rem;
+  border-bottom: 1px solid var(--gray-200);
+}
+
+.actions-section {
+  border-bottom: none;
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+}
+
+.section-title {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: var(--primary);
+  margin: 0 0 1.25rem 0;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.section-icon {
+  width: 20px;
+  height: 20px;
+}
+
+/* Info Grid */
+.info-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1.25rem;
+}
+
+/* Info Field */
+.info-field {
+  margin-bottom: 0.5rem;
+}
+
+.field-label {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--gray-500);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin: 0 0 0.25rem 0;
+}
+
+.field-value {
+  font-size: 0.9375rem;
+  color: var(--gray-800);
+}
+
+.field-value.salary {
+  color: var(--success);
+  font-weight: 600;
+}
+
+.field-value.status {
+  display: inline-block;
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  background-color: rgba(16, 185, 129, 0.1);
+  color: var(--success);
+}
+
+/* Table Styles */
+.table-container {
+  overflow-x: auto;
+  border-radius: 8px;
+  box-shadow: var(--shadow-sm);
+}
+
+.allowances-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.allowances-table th {
+  background-color: var(--gray-100);
+  padding: 0.75rem 1rem;
+  text-align: left;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--gray-600);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  border-bottom: 1px solid var(--gray-200);
+}
+
+.allowances-table td {
+  padding: 0.75rem 1rem;
+  font-size: 0.875rem;
+  border-bottom: 1px solid var(--gray-200);
+}
+
+.allowances-table tr:last-child td {
+  border-bottom: none;
+}
+
+.allowances-table tr:hover {
+  background-color: var(--gray-50);
+}
+
+.allowances-table .amount {
+  font-family: 'Roboto Mono', monospace;
+  text-align: right;
+  color: var(--success);
+  font-weight: 500;
+}
+
+/* Empty State */
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  color: var(--gray-500);
+}
+
+.empty-icon {
+  width: 24px;
+  height: 24px;
+  margin-bottom: 0.5rem;
+}
+
+/* Action Buttons */
+.action-button {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.625rem 1.25rem;
+  border-radius: 8px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: var(--transition);
+  border: none;
+}
+
+.button-icon {
+  width: 16px;
+  height: 16px;
+}
+
+.print-button {
+  background-color: var(--primary);
+  color: white;
+}
+
+.print-button:hover {
+  background-color: var(--primary-dark);
+}
+
+.download-button {
+  background-color: white;
+  color: var(--primary);
+  border: 1px solid var(--primary-light);
+}
+
+.download-button:hover {
+  background-color: var(--gray-50);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .contract-page {
+    padding: 1rem;
+  }
+
+  .info-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .actions-section {
+    flex-direction: column;
+  }
+
+  .action-button {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+/* Print Styles */
+@media print {
+  .contract-page {
+    padding: 0;
+    background-color: white;
+  }
+
+  .tab-navigation, .actions-section {
+    display: none;
+  }
+
+  .contract-card {
+    box-shadow: none;
+  }
+
+  .section-title {
+    color: var(--gray-900);
+  }
+
+  .field-value.salary, .field-value.status, .allowances-table .amount {
+    color: var(--gray-800);
+  }
+
+  .field-value.status {
+    background-color: var(--gray-100);
+  }
+}
