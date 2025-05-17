@@ -61,7 +61,7 @@ def chinhsuaBHXH(request, ma_nv):
             print(form.errors)
     else:
         form = updateBHXH(instance=bhxh)
-    return render(request, "ChinhsuaBHXH.html", {"form": form,"bhxh": bhxh})
+    return render(request, "BHXH/ChinhsuaBHXH.html", {"form": form,"bhxh": bhxh})
 
 def thongtinchitiet(request,ma_nv):
     nhanvien = get_object_or_404(NhanVien, user=request.user)
