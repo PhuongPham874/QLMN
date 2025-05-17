@@ -1,191 +1,135 @@
 {% extends "home.html" %}
+{% load static %}
 
-{% block extra_css %}
-    <style>
-        .content {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: flex-start;
-        }
 
-        .ndung {
-            padding: 20px;
-            margin-left: 20px;
-            display: flex;
-            flex-direction: column;
-        }
 
-        table {
-            width: 50%; /* Giảm chiều dài bảng */
-            margin-left: 180px ; /* Căn giữa bảng trên trang */
-            border-collapse: collapse; /* Gộp các đường viền của bảng */
-            background-color: #f2f9fd; /* Nền màu sáng nhẹ */
-            }
-
-            th, td {
-                padding: 8px; /* Giảm khoảng cách bên trong các ô */
-                text-align: center; /* Căn giữa nội dung của tất cả các ô trong bảng */
-                border: 1px solid #ddd; /* Khung viền nhẹ cho bảng */
-                font-size: 14px; /* Giảm kích thước chữ */
-            }
-
-            th {
-                background-color: #cce7ff; /* Màu nền nhẹ cho tiêu đề */
-                font-weight: bold;
-            }
-
-            tr:nth-child(even) {
-                background-color: #e6f7ff; /* Đổi màu nền cho hàng chẵn để dễ đọc */
-            }
-
-            tr:hover {
-                background-color: #f1f8ff; /* Hiệu ứng khi hover */
-            }
-
-        .btn {
-            padding: 10px;
-            border-radius: 5px;
-            font-size: 15px;
-            text-align: center;
-            background-color: #D9D9D9;
-            color: black;
-            border: 1px solid;
-        }
-
-        .button {
-            padding: 20px;
-        }
-    </style>
-{% endblock %}
 
 {% block page_background %}
-
-<main class="content" style="padding: 10px;width: 80%">
-
-    <div class="ndung" style="width: 100%">
+<main class="content">
+    <div class="ndung">
         <form method="POST" enctype="multipart/form-data">
             {% csrf_token %}
-            <div class="header-container" style="display: flex; justify-content: flex-start; align-items: center; width: 100%; margin-top: 20px;">
-                <a href="{% url 'DanhSachNhanVien' %}" class="btn btn-secondary" style="font-size: 17px; font-weight: bold; padding: 7px 15px; margin-right: 20px; border: none;">Quay lại</a>
-                <h1 class="header-title" style="color: #000000; font-size: 30px; font-weight: bold; text-align: center; margin: 0; flex-grow: 1; text-align: center;">THÔNG TIN CHI TIẾT HỒ SƠ NHÂN VIÊN</h1>
+            <div class="header-container">
+                <a href="{% url 'DanhSachNhanVien' %}" class="btn btn-secondary">Quay lại</a>
+                <h1 class="header-title">THÔNG TIN CHI TIẾT HỒ SƠ NHÂN VIÊN</h1>
             </div>
-            <div class="container mt-4" style="background-color: #f0f8ff; padding: 40px; border-radius: 10px;">
-               <h4 class="header-title" style="display: flex; justify-content: space-between; font-size: 30px; font-weight: bold; margin-bottom: 20px; margin-top: -39px; margin-right:-40px;margin-left:-40px;">
-                    <a href="{% url 'QLXemHoSo' nhan_vien.id %}" style="background-color: #65ABE3; color: white; width: 50%; text-align: center; padding: 10px; border-top-left-radius: 10px; border-bottom-left-radius: 10px; text-decoration: none;">
+
+            <div class="detail-container">
+               <h4 class="tab-header">
+                    <a href="{% url 'QLXemHoSo' nhan_vien.id %}" class="tab-link tab-link-left">
                         Thông Tin Cá Nhân
                     </a>
 
                     {% if hop_dong %}
-                    <a href="{% url 'QLXemHoSoHDLD' nhan_vien.id %}"
-                       style="border: 3px solid #000000; background-color: #066BBB; color: white; width: 50%; text-align: center; padding: 10px;
-                              border-top-right-radius: 10px; border-bottom-right-radius: 10px; text-decoration: none;">
+                    <a href="{% url 'QLXemHoSoHDLD' nhan_vien.id %}" class="tab-link tab-link-right">
                         Hợp Đồng Lao Động
                     </a>
                     {% endif %}
                 </h4>
 
-                <div class="row"style="border-radius: 5px; border: 3px solid #DCDCDC; padding: 10px; BACKGROUND-COLOR:#F8F8F8">
-                    <div class="col-md-6 left-column" style="padding: 10px;">
-                        <div class="form-group" style="display: flex; align-items: center; margin-bottom: 15px;">
-                            <label for="ten_nv" style="width: 180px; font-weight: bold; font-size: 16px; color: #333; margin-right: 10px; text-align: left;">Họ và tên:</label>
-                            <div style="font-size: 16px;">{{ nhan_vien.ten_nv }}</div>
+                <div class="info-section">
+                    <div class="row">
+                        <div class="col-md-6 left-column">
+                            <div class="form-group">
+                                <label class="form-label">Họ và tên:</label>
+                                <div class="form-value">{{ nhan_vien.ten_nv }}</div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">Mã nhân viên:</label>
+                                <div class="form-value">{{ nhan_vien.id }}</div>
+                            </div>
                         </div>
 
-                        <div class="form-group" style="display: flex; align-items: center; margin-bottom: 15px;">
-                            <label for="ma_nv" style="width: 180px; font-weight: bold; font-size: 16px; color: #333; margin-right: 10px; text-align: left;">Mã nhân viên:</label>
-                            <div style="font-size: 16px;">{{ nhan_vien.id }}</div>
-                        </div>
-                    </div>
+                        <div class="col-md-6 right-column">
+                            <div class="form-group">
+                                <label class="form-label">Vị trí làm việc:</label>
+                                <div class="form-value">{{ nhan_vien.vi_tri_cong_viec }}</div>
+                            </div>
 
-                    <div class="col-md-6 left-column" style="padding: 10px;">
-                        <div class="form-group" style="display: flex; align-items: center; margin-bottom: 15px;">
-                            <label for="vi_tri_cong_viec" style="width: 180px; font-weight: bold; font-size: 16px; color: #333; margin-right: 10px; text-align: left;">Vị trí làm việc:</label>
-                            <div style="font-size: 16px;">{{ nhan_vien.vi_tri_cong_viec }}</div>
-                        </div>
-
-                        <div class="form-group" style="display: flex; align-items: center; margin-bottom: 15px;">
-                            <label for="to_phong_ban" style="width: 180px; font-weight: bold; font-size: 16px; color: #333; margin-right: 10px; text-align: left;">Tổ (Phòng ban):</label>
-                            <div style="font-size: 16px;">{{ nhan_vien.to_phong_ban }}</div>
+                            <div class="form-group">
+                                <label class="form-label">Tổ (Phòng ban):</label>
+                                <div class="form-value">{{ nhan_vien.to_phong_ban }}</div>
+                            </div>
                         </div>
                     </div>
                 </div>
 
                 <div class="row">
-                    <div class="col-md-6 left-column" style="padding: 10px; margin-top: 20px;">
-                        <div class="form-group" style="display: flex; align-items: center; margin-bottom: 15px;">
-                            <label for="so_hop_dong" style="width: 180px; font-weight: bold; font-size: 16px; color: #333; margin-right: 10px; text-align: left;">Số hợp đồng:</label>
-                            <div style="font-size: 16px;">{{ hop_dong.so_hop_dong }}</div>
+                    <div class="col-md-6 left-column">
+                        <div class="form-group">
+                            <label class="form-label">Số hợp đồng:</label>
+                            <div class="form-value">{{ hop_dong.so_hop_dong }}</div>
                         </div>
 
-                        <div class="form-group" style="display: flex; align-items: center; margin-bottom: 10px;">
-                            <label for="thoi_han_hop_dong" style="width: 185px; font-weight: bold; font-size: 16px; color: #333; margin-right: 5px; text-align: left;">Thời hạn HĐ:</label>
-                            <div style="font-size: 16px; text-align: left;">{{ hop_dong.thoi_han_hop_dong }}</div>
+                        <div class="form-group">
+                            <label class="form-label">Thời hạn HĐ:</label>
+                            <div class="form-value">{{ hop_dong.thoi_han_hop_dong }}</div>
                         </div>
 
-                        <div class="form-group" style="display: flex; align-items: center; margin-bottom: 15px;">
-                            <label for="tu_ngay" style="width: 180px; font-weight: bold; font-size: 16px; color: #333; margin-right: 10px; text-align: left;">Từ ngày:</label>
-                            <div style="font-size: 16px;">{{ hop_dong.tu_ngay }}</div>
+                        <div class="form-group">
+                            <label class="form-label">Từ ngày:</label>
+                            <div class="form-value">{{ hop_dong.tu_ngay }}</div>
                         </div>
 
-                        <div class="form-group" style="display: flex; align-items: center; margin-bottom: 15px;">
-                            <label for="ngay_ky" style="width: 180px; font-weight: bold; font-size: 16px; color: #333; margin-right: 10px; text-align: left;">Ngày ký:</label>
-                            <div style="font-size: 16px;">{{ hop_dong.ngay_ky }}</div>
+                        <div class="form-group">
+                            <label class="form-label">Ngày ký:</label>
+                            <div class="form-value">{{ hop_dong.ngay_ky }}</div>
                         </div>
-                        <div class="form-group" style="display: flex; align-items: center; margin-bottom: 15px;">
-                            <label for="danh_sach_phu_cap" style="width: 180px; font-weight: bold; font-size: 16px; color: #333; margin-right: 10px; text-align: left;">Danh sách phụ cấp:</label>
 
+                        <div class="form-group">
+                            <label class="form-label">Danh sách phụ cấp:</label>
                         </div>
                     </div>
 
-                    <div class="col-md-6 right-column" style="padding: 10px; margin-top: 20px;">
-                        <div class="form-group" style="display: flex; align-items: center; margin-bottom: 15px;">
-                            <label for="loai_hop_dong" style="width: 180px; font-weight: bold; font-size: 16px; color: #333; margin-right: 10px; text-align: left;">Loại hợp đồng:</label>
-                            <div style="font-size: 16px;">{{ hop_dong.loai_hop_dong }}</div>
+                    <div class="col-md-6 right-column">
+                        <div class="form-group">
+                            <label class="form-label">Loại hợp đồng:</label>
+                            <div class="form-value">{{ hop_dong.loai_hop_dong }}</div>
                         </div>
 
-                        <div class="form-group" style="display: flex; align-items: center; margin-bottom: 15px;">
-                            <label for="luong" style="width: 180px; font-weight: bold; font-size: 16px; color: #333; margin-right: 10px; text-align: left;">Lương:</label>
-                            <div style="font-size: 16px;">{{ hop_dong.luong }}</div>
+                        <div class="form-group">
+                            <label class="form-label">Lương:</label>
+                            <div class="form-value">{{ hop_dong.luong }}</div>
                         </div>
 
-                        <div class="form-group" style="display: flex; align-items: center; margin-bottom: 10px;">
-                            <label for="den_ngay" style="width: 180px; font-weight: bold; font-size: 16px; color: #333; margin-right: 10px; text-align: left;">Đến ngày:</label>
-                            <div style="font-size: 16px;">{{ hop_dong.den_ngay }}</div>
+                        <div class="form-group">
+                            <label class="form-label">Đến ngày:</label>
+                            <div class="form-value">{{ hop_dong.den_ngay }}</div>
                         </div>
 
-                        <div class="form-group" style="display: flex; align-items: center; margin-bottom: 15px;">
-                            <label for="trang_thai_hop_dong" style="width: 180px; font-weight: bold; font-size: 16px; color: #333; margin-right: 10px; text-align: left;">Trạng thái HĐ:</label>
-                            <div style="font-size: 16px;">{{ hop_dong.trang_thai_hop_dong }}</div>
+                        <div class="form-group">
+                            <label class="form-label">Trạng thái HĐ:</label>
+                            <div class="form-value">{{ hop_dong.trang_thai_hop_dong }}</div>
                         </div>
                     </div>
                 </div>
 
-                <table border="1" cellpadding="5" cellspacing="0" STYLE="">
-                        <thead>
-                            <tr>
-                                <th>Số thứ tự</th>
-                                <th>Tên phụ cấp</th>
-                                <th>Giá trị</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {% for phu_cap_nv in phu_cap_nhan_vien_list %}
-                            <tr>
-                                <td>{{ forloop.counter }}</td>
-                                <td>{{ phu_cap_nv.phu_cap.ten_phu_cap }}</td>
-                                <td>{{ phu_cap_nv.phu_cap.gia_tri|floatformat:2 }}</td>
-                            </tr>
-                            {% empty %}
-                            <tr>
-                                <td colspan="3" style="text-align:center;">Không có phụ cấp</td>
-                            </tr>
-                            {% endfor %}
-                        </tbody>
-                    </table>
+                <table class="allowance-table">
+                    <thead>
+                        <tr>
+                            <th>Số thứ tự</th>
+                            <th>Tên phụ cấp</th>
+                            <th>Giá trị</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for phu_cap_nv in phu_cap_nhan_vien_list %}
+                        <tr>
+                            <td>{{ forloop.counter }}</td>
+                            <td>{{ phu_cap_nv.phu_cap.ten_phu_cap }}</td>
+                            <td>{{ phu_cap_nv.phu_cap.gia_tri|floatformat:2 }}</td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="3" style="text-align:center;">Không có phụ cấp</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
 
-                <div style="display: flex; justify-content: flex-end; gap: 10px;">
-                    <a href="{% url 'edit_hdld' nhan_vien.id %}" style="font-size: 24px; color: #066BBB; text-decoration: none; cursor: pointer;">
+                <div class="actions-container">
+                    <a href="{% url 'edit_hdld' nhan_vien.id %}" class="edit-icon">
                         <i class="fa-solid fa-pen-to-square"></i>
                     </a>
                 </div>
@@ -193,5 +137,5 @@
         </form>
     </div>
 </main>
-
+<link rel="stylesheet" href="{% static 'css/hosochitietHDLD.css' %}">
 {% endblock %}

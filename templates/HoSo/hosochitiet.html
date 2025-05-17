@@ -1,187 +1,142 @@
 {% extends "home.html" %}
+{% load static %}
 
-{% block extra_css %}
-    <style>
 
-        .content{
-            width: 1150px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: flex-start;
 
-        }
-        .ndung{
-            width: 1100px;
-            padding: 20px;
-            margin-left: 20px;
-            display: flex;
-            flex-direction: column;
-        }
-    }
 
-        table{
-        width: 450px;
-        align-items: center;
-        margin-bottom: 20px;
-        justify-content: space-between;
-    }
-        .btn{
-        padding: 10px ;
-        border-radius:5px;
-        font-size: 15px;
-        text-align: center;
-        background-color:#D9D9D9 ;
-        color: black;
-        border: 1px solid;
-    }
-        .button{
-            padding: 20px;
-        }
-
-    </style>
-{% endblock %}
 {% block page_background %}
-<main class="content" style="background-color: #ffffff; padding: 10px; width: 80%">
-
-    <div class="ndung" style="width: 100%">
-
+<main class="employee-profile">
+    <div class="profile-container">
         <form method="POST" enctype="multipart/form-data">
             {% csrf_token %}
-            <div class="header-container" style="display: flex; justify-content: flex-start; align-items: center; width: 100%; margin-top: 20px;">
-                <a href="{% url 'DanhSachNhanVien' %}" class="btn btn-secondary" style="font-size: 17px; font-weight: bold; padding: 7px 15px; margin-right: 20px; border: none;">Quay lại</a>
-                <h1 class="header-title" style="color: #000000; font-size: 30px; font-weight: bold; text-align: center; margin: 0; flex-grow: 1; text-align: center;">THÔNG TIN CHI TIẾT HỒ SƠ NHÂN VIÊN</h1>
+            <div class="header-container">
+                <a href="{% url 'DanhSachNhanVien' %}" class="back-button">
+                    <i class="fas fa-arrow-left"></i> Quay lại
+                </a>
+                <h1 class="header-title">THÔNG TIN CHI TIẾT HỒ SƠ NHÂN VIÊN</h1>
             </div>
-             <div class="container mt-4" style="background-color: #f0f8ff; padding: 40px; border-radius: 10px;">
-                <h4 class="header-title" style="display: flex; justify-content: space-between; font-size: 30px; font-weight: bold; margin-bottom: 20px; margin-top: -39px; margin-right:-40px;margin-left:-40px;">
-                    <a href="{% url 'QLXemHoSo' nhanvien.id %}"
-                       style="border: 3px solid #000000; background-color: #066BBB; color: white; width: 50%; text-align: center; padding: 10px;
-                              border-top-left-radius: 10px; border-bottom-left-radius: 10px; text-decoration: none;">
-                       Thông Tin Cá Nhân
+
+            <div class="profile-card">
+                <div class="profile-tabs">
+                    <a href="{% url 'QLXemHoSo' nhanvien.id %}" class="tab-link active">
+                        Thông Tin Cá Nhân
                     </a>
-
                     {% if hop_dong %}
-                    <a href="{% url 'QLXemHoSoHDLD' nhanvien.id %}"
-                        style="background-color: #65ABE3; color: white; width: 50%; text-align: center; padding: 10px; border-top-right-radius: 5px; border-bottom-right-radius: 5px; text-decoration: none;">
-
+                    <a href="{% url 'QLXemHoSoHDLD' nhanvien.id %}" class="tab-link">
                         Hợp Đồng Lao Động
                     </a>
                     {% endif %}
-                </h4>
+                </div>
 
+                <div class="profile-content">
+                    <div class="profile-grid">
+                        <div class="profile-column">
+                            <div class="profile-field avatar-field">
+                                <label>Ảnh cá nhân</label>
+                                <div class="avatar-container">
+                                    <img src="{{ nhanvien.anh_ca_nhan }}" alt="User Avatar" class="avatar">
+                                </div>
+                            </div>
 
-                <div class="row">
-                    <div class="col-md-6 left-column" style="padding: 10px;">
-                        <div class="form-group" style="display: flex; align-items: center; margin-bottom: 15px;">
-                            <label for="anh_ca_nhan" style="width: 180px; font-weight: bold; font-size: 16px; color: #333; margin-right: 10px; text-align: left;">Ảnh cá nhân</label>
-                            <img src="{{ nhanvien.anh_ca_nhan }}" alt="User Avatar" class="rounded-circle" width="80" height="80">
+                            <div class="profile-field">
+                                <label>Họ và tên:</label>
+                                <div class="field-value">{{ nhanvien.ten_nv }}</div>
+                            </div>
 
-                        </div>
+                            <div class="profile-field">
+                                <label>Giới tính:</label>
+                                <div class="field-value">{{ nhanvien.get_gioi_tinh_display }}</div>
+                            </div>
 
+                            <div class="profile-field">
+                                <label>Ngày sinh:</label>
+                                <div class="field-value">{{ nhanvien.ngay_sinh }}</div>
+                            </div>
 
-                        <div class="form-group" style="display: flex; align-items: center; margin-bottom: 15px;">
-                            <label for="ten_nv" style="width: 180px; font-weight: bold; font-size: 16px; color: #333; margin-right: 10px; text-align: left;">Họ và tên:</label>
-                            <div style="font-size: 16px;">{{ nhanvien.ten_nv }}</div>
-                        </div>
+                            <div class="profile-field">
+                                <label>Số điện thoại:</label>
+                                <div class="field-value">{{ nhanvien.so_dien_thoai }}</div>
+                            </div>
 
-                        <div class="form-group" style="display: flex; align-items: center; margin-bottom: 15px;">
-                            <label for="gioi_tinh" style="width: 180px; font-weight: bold; font-size: 16px; color: #333; margin-right: 10px; text-align: left;">Giới tính:</label>
-                            <div style="font-size: 16px;">{{ nhanvien.get_gioi_tinh_display  }}</div>
-                        </div>
+                            <div class="profile-field">
+                                <label>Email:</label>
+                                <div class="field-value">{{ nhanvien.email }}</div>
+                            </div>
 
-
-                        <div class="form-group" style="display: flex; align-items: center; margin-bottom: 15px;">
-                            <label for="ngay_sinh" style="width: 180px; font-weight: bold; font-size: 16px; color: #333; margin-right: 10px; text-align: left;">Ngày sinh:</label>
-                            <div style="font-size: 16px;">{{ nhanvien.ngay_sinh }}</div>
-                        </div>
-
-                        <div class="form-group" style="display: flex; align-items: center; margin-bottom: 15px;">
-                            <label for="so_dien_thoai" style="width: 180px; font-weight: bold; font-size: 16px; color: #333; margin-right: 10px; text-align: left;">Số điện thoại:</label>
-                            <div style="font-size: 16px;">{{ nhanvien.so_dien_thoai }}</div>
-                        </div>
-
-                        <div class="form-group" style="display: flex; align-items: center; margin-bottom: 15px;">
-                            <label for="email" style="width: 180px; font-weight: bold; font-size: 16px; color: #333; margin-right: 10px; text-align: left;">Email:</label>
-                            <div style="font-size: 16px;">{{ nhanvien.email }}</div>
-                        </div>
-
-                        <div class="form-group" style="display: flex; align-items: center; margin-bottom: 15px;">
-                            <label for="so_cccd" style="width: 180px; font-weight: bold; font-size: 16px; color: #333; margin-right: 10px; text-align: left;">Số CCCD:</label>
-                            <div style="font-size: 16px;">{{ nhanvien.so_cccd }}</div>
-                        </div>
-                    </div>
-
-                    <div class="col-md-6 right-column" style="padding: 10px; margin-top: 91px">
-                        <div class="form-group" style="display: flex; align-items: center; margin-bottom: 10px;">
-                            <label for="vi_tri_cong_viec" style="width: 150px; font-weight: bold; font-size: 16px; color: #333; margin-right: 35px; text-align: left;">Vị trí làm việc:</label>
-                            <div style="font-size: 16px; margin-right: 5px;margin-left: 5px;">{{ nhan_vien.vi_tri_cong_viec }}</div>
-                            <div class="form-group" style="display: flex; align-items: center; margin-bottom: 0px;">
-                                <label for="chuc_vu" style="width: 80px; font-weight: bold; font-size: 16px; color: #333; margin-left: 35px; margin-right: 5px; ">Chức vụ:</label>
-                                <div style="font-size: 16px;margin-left: 0px;">{{ nhanvien.chuc_vu }}</div>
-
+                            <div class="profile-field">
+                                <label>Số CCCD:</label>
+                                <div class="field-value">{{ nhanvien.so_cccd }}</div>
                             </div>
                         </div>
 
-                        <div class="form-group" style="display: flex; align-items: center; margin-top: 15px;">
-                            <label for="to_phong_ban" style="width: 180px; font-weight: bold; font-size: 16px; color: #333; margin-right: 10px; text-align: left;">Tổ (Phòng ban):</label>
-                            <div style="font-size: 16px;">{{ nhanvien.to_phong_ban }}</div>
+                        <div class="profile-column">
+                            <div class="profile-field job-position-field">
+                                <div class="job-position-container">
+                                    <div class="job-position">
+                                        <label>Vị trí làm việc:</label>
+                                        <div class="field-value">{{ nhan_vien.vi_tri_cong_viec }}</div>
+                                    </div>
+                                    <div class="job-title">
+                                        <label>Chức vụ:</label>
+                                        <div class="field-value">{{ nhanvien.chuc_vu }}</div>
+                                    </div>
+                                </div>
+                            </div>
 
-                        </div>
+                            <div class="profile-field">
+                                <label>Tổ (Phòng ban):</label>
+                                <div class="field-value">{{ nhanvien.to_phong_ban }}</div>
+                            </div>
 
-                        <div class="form-group" style="display: flex; align-items: center; margin-bottom: 10px;Margin-top: 15px;">
-                            <label for="trinh_do_hoc_van" style="width: 150px; font-weight: bold; font-size: 16px; color: #333; margin-right: 35px; text-align: left;">Trình độ học vấn:</label>
-                            <div style="font-size: 16px; margin-right: 5px;margin-left: 5px;">{{ nhan_vien.trinh_do_hoc_van }}</div>
-                            <div class="form-group" style="display: flex; align-items: center; margin-bottom: 0px;">
-                                <label for="nam_tn" style="width: 80px; font-weight: bold; font-size: 16px; color: #333; margin-left: 55px; margin-right: 5px; ">Năm TN:</label>
-                                <div style="font-size: 16px;margin-left: 0px;">{{ nhanvien.nam_tn }}</div>
+                            <div class="profile-field education-field">
+                                <div class="education-container">
+                                    <div class="education-level">
+                                        <label>Trình độ học vấn:</label>
+                                        <div class="field-value">{{ nhan_vien.trinh_do_hoc_van }}</div>
+                                    </div>
+                                    <div class="graduation-year">
+                                        <label>Năm TN:</label>
+                                        <div class="field-value">{{ nhanvien.nam_tn }}</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="profile-field">
+                                <label>Chuyên ngành:</label>
+                                <div class="field-value">{{ nhanvien.chuyen_nganh }}</div>
+                            </div>
+
+                            <div class="profile-field">
+                                <label>Nơi đào tạo:</label>
+                                <div class="field-value">{{ nhanvien.noi_dao_tao }}</div>
+                            </div>
+
+                            <div class="profile-field">
+                                <label>Ngày cấp:</label>
+                                <div class="field-value">{{ nhanvien.ngay_cap }}</div>
                             </div>
                         </div>
+                    </div>
 
-                        <div class="form-group" style="display: flex; align-items: center; margin-bottom: 15px; margin-top: 15px;">
-                            <label for="chuyen_nganh" style="width: 180px; font-weight: bold; font-size: 16px; color: #333; margin-right: 10px; text-align: left;">Chuyên ngành:</label>
-                            <div style="font-size: 16px;">{{ nhanvien.chuyen_nganh }}</div>
+                    <div class="profile-field full-width">
+                        <label>Nơi cấp:</label>
+                        <div class="field-value">{{ nhanvien.noi_cap }}</div>
+                    </div>
 
-                        </div>
+                    <div class="profile-field full-width">
+                        <label>Địa chỉ tạm trú:</label>
+                        <div class="field-value">{{ nhanvien.dia_chi_tam_tru }}</div>
+                    </div>
 
-                        <div class="form-group" style="display: flex; align-items: center; margin-bottom: 10px;">
-                            <label for="noi_dao_tao" style="width: 180px; font-weight: bold; font-size: 16px; color: #333; margin-right: 10px; text-align: left;">Nơi đào tạo:</label>
-                            <div style="font-size: 16px;">{{ nhanvien.noi_dao_tao }}</div>
-
-                        </div>
-
-                        <div class="form-group" style="display: flex; align-items: center; margin-bottom: 10px; margin-top: 15px;">
-                            <label for="ngay_cap" style="width: 180px; font-weight: bold; font-size: 16px; color: #333; margin-right: 10px; text-align: left;">Ngày cấp:</label>
-                            <div style="font-size: 16px;">{{ nhanvien.ngay_cap }}</div>
-
-                        </div>
-
+                    <div class="profile-actions">
+                        <a href="{% url 'ChinhSuaHoSo' nhanvien.id %}" class="edit-button" title="Chỉnh sửa">
+                            <i class="fa-solid fa-pen-to-square"></i>
+                        </a>
                     </div>
                 </div>
-
-                <!-- Nơi cấp và Địa chỉ tạm trú kéo dài -->
-                <div class="form-group" style="display: flex; align-items: center; margin-bottom: 15px;">
-                    <label for="noi_cap" style="width: 140px; font-weight: bold; font-size: 16px; color: #333; margin-right: 47px; text-align: left;">Nơi cấp:</label>
-                    <div style="font-size: 16px;">{{ nhanvien.noi_cap }}</div>
-
-                </div>
-
-                <div class="form-group" style="display: flex; align-items: center; margin-bottom: 15px;">
-                    <label for="dia_chi_tam_tru" style="width: 140px; font-weight: bold; font-size: 16px; color: #333; margin-right: 47px; text-align: left;">Địa chỉ tạm trú:</label>
-                    <div style="font-size: 16px;">{{ nhanvien.dia_chi_tam_tru}}</div>
-
-                </div>
-
-                <div style="display: flex; justify-content: flex-end; gap: 10px;">
-                    <a href="{% url 'ChinhSuaHoSo' nhanvien.id %}" style="font-size: 24px; color: #066BBB; text-decoration: none; cursor: pointer;">
-                        <i class="fa-solid fa-pen-to-square"></i>
-                    </a>
-                </div>
-
-
             </div>
         </form>
     </div>
 </main>
-
+<link rel="stylesheet" href="{% static 'css/hosochitiet.css' %}">
 {% endblock %}
-
