@@ -121,7 +121,7 @@ USE_TZ = False
 import os
 
 # Đường dẫn URL để truy cập file tĩnh
-STATIC_URL = '/static/'
+STATIC_URL = 'static/'
 
 # Khai báo đường dẫn thư mục static
 STATICFILES_DIRS = [
@@ -133,6 +133,3 @@ STATICFILES_DIRS = [
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 LOGIN_URL = '/login/'
-
-
-
