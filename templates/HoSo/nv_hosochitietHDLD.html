@@ -1,187 +1,460 @@
 {% extends "home.html" %}
 
 {% block extra_css %}
-    <style>
+<style>
+    /* Modern black and white color scheme */
+    :root {
+        --primary: #000000;
+        --secondary: #333333;
+        --light-gray: #f5f5f5;
+        --medium-gray: #e0e0e0;
+        --dark-gray: #666666;
+        --white: #ffffff;
+        --blue: #0066CC;
+        --light-blue: #65ABE3;
+        --green: #00CC00;
+        --border-color: #DCDCDC;
+        --card-bg: #F8F8F8;
+    }
+
+    .content {
+        width: 80%;
+        margin: 0 auto;
+        display: flex;
+        flex-direction: column;
+    }
+
+    /* Main title */
+    .main-title {
+        color: #000000;
+        text-align: center;
+        font-size: 28px;
+        font-weight: bold;
+        margin: 20px 0;
+    }
+
+    /* Tab styling */
+    .tab-container {
+        display: flex;
+        margin-bottom: 20px;
+        border-bottom: 1px solid var(--medium-gray);
+    }
+
+    .tab-item {
+        padding: 12px 20px;
+        font-size: 18px;
+        font-weight: 500;
+        text-decoration: none;
+        text-align: center;
+        cursor: pointer;
+        color: var(--dark-gray);
+        position: relative;
+        margin-right: 20px;
+        width: 50%;
+    }
+
+    .tab-active {
+        color: var(--blue);
+        font-weight: bold;
+    }
+
+    .tab-active::after {
+        content: '';
+        position: absolute;
+        bottom: -1px;
+        left: 0;
+        width: 100%;
+        height: 3px;
+        background-color: var(--blue);
+    }
+
+    /* Employee info card */
+    .employee-info-card {
+        background-color: var(--card-bg);
+        border: 3px solid var(--border-color);
+        border-radius: 5px;
+        padding: 10px;
+        margin-bottom: 20px;
+    }
+
+    .employee-info-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 15px;
+    }
+
+    .employee-info-item {
+        display: flex;
+        align-items: center;
+        margin-bottom: 15px;
+        padding: 0 10px;
+    }
+
+    .employee-info-label {
+        font-weight: bold;
+        font-size: 16px;
+        color: #333;
+        width: 180px;
+        margin-right: 10px;
+        text-align: left;
+    }
+
+    .employee-info-value {
+        font-size: 16px;
+    }
+
+    /* Form section styling */
+    .form-section {
+        margin-bottom: 20px;
+        border: 1px solid var(--border-color);
+        border-radius: 5px;
+        overflow: hidden;
+    }
+
+    .section-header {
+        background-color: var(--light-gray);
+        padding: 15px;
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        cursor: pointer;
+        color: var(--primary);
+        transition: all 0.2s ease;
+    }
+
+    .section-header:hover {
+        background-color: var(--medium-gray);
+    }
+
+    .section-header i {
+        margin-right: 10px;
+    }
+
+    .section-content {
+        padding: 20px;
+        background-color: var(--white);
+    }
+
+    /* Form field styling - reduced spacing */
+    .form-field {
+        margin-bottom: 10px;
+        display: flex;
+        align-items: center;
+    }
+
+    .form-label {
+        width: 150px;
+        font-weight: 500;
+        font-size: 16px;
+        color: var(--secondary);
+        margin-right: 10px;
+        text-align: left;
+        white-space: nowrap;
+    }
+
+    .form-value {
+        font-size: 16px;
+    }
+
+    /* Card styling */
+    .card {
+        width: 100%;
+        border-radius: 8px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        overflow: hidden;
+        margin-bottom: 20px;
+        background-color: var(--white);
+    }
+
+    .card-body {
+        padding: 25px;
+        background-color: var(--white);
+    }
+
+    /* Form grid for two columns */
+    .form-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 20px;
+    }
+
+    /* Completely redesigned allowance section */
+    .allowance-list {
+        width: 100%;
+        margin-top: 10px;
+    }
+
+    .allowance-item {
+        display: flex;
+        align-items: center;
+        padding: 15px;
+        border-bottom: 1px solid var(--border-color);
+        background-color: var(--card-bg);
+        margin-bottom: 10px;
+        border-radius: 5px;
+    }
+
+    .allowance-item:last-child {
+        margin-bottom: 0;
+    }
+
+    .allowance-number {
+        width: 40px;
+        height: 40px;
+        background-color: var(--blue);
+        color: white;
+        border-radius: 50%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-weight: bold;
+        margin-right: 15px;
+        flex-shrink: 0;
+    }
+
+    .allowance-details {
+        flex-grow: 1;
+    }
+
+    .allowance-name {
+        font-weight: 500;
+        font-size: 16px;
+        color: var(--secondary);
+        margin-bottom: 5px;
+    }
+
+    .allowance-value {
+        font-family: 'Courier New', monospace;
+        font-weight: 500;
+        color: var(--blue);
+        font-size: 18px;
+    }
+
+    .allowance-empty {
+        text-align: center;
+        padding: 30px;
+        color: var(--dark-gray);
+        font-style: italic;
+        background-color: var(--card-bg);
+        border-radius: 5px;
+    }
+
+    /* Header with back button */
+    .header-container {
+        text-align:center;
+    }
+
+    .btn-back {
+        background-color: var(--dark-gray);
+        color: var(--white);
+        border: none;
+        padding: 10px 16px;
+        border-radius: 4px;
+        font-weight: 500;
+        text-decoration: none;
+        transition: background-color 0.2s ease;
+    }
+
+    .btn-back:hover {
+        background-color: var(--secondary);
+    }
+
+    /* Chevron for section toggle */
+    .section-chevron {
+        margin-left: auto;
+        transition: transform 0.3s ease;
+    }
+
+    .section-header.active .section-chevron {
+        transform: rotate(180deg);
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
         .content {
-            display: flex;
+            width: 95%;
+        }
+
+        .form-grid,
+        .employee-info-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .header-container {
             flex-direction: column;
-            justify-content: center;
+            gap: 20px;
             align-items: flex-start;
         }
 
-        .ndung {
-            padding: 20px;
-            margin-left: 20px;
-            display: flex;
-            flex-direction: column;
+        .main-title {
+            text-align: left;
         }
-
-        table {
-            width: 50%; /* Giảm chiều dài bảng */
-            margin-left: 180px ; /* Căn giữa bảng trên trang */
-            border-collapse: collapse; /* Gộp các đường viền của bảng */
-            background-color: #f2f9fd; /* Nền màu sáng nhẹ */
-            }
-
-            th, td {
-                padding: 8px; /* Giảm khoảng cách bên trong các ô */
-                text-align: center; /* Căn giữa nội dung của tất cả các ô trong bảng */
-                border: 1px solid #ddd; /* Khung viền nhẹ cho bảng */
-                font-size: 14px; /* Giảm kích thước chữ */
-            }
-
-            th {
-                background-color: #cce7ff; /* Màu nền nhẹ cho tiêu đề */
-                font-weight: bold;
-            }
-
-            tr:nth-child(even) {
-                background-color: #e6f7ff; /* Đổi màu nền cho hàng chẵn để dễ đọc */
-            }
-
-            tr:hover {
-                background-color: #f1f8ff; /* Hiệu ứng khi hover */
-            }
-
-        .btn {
-            padding: 10px;
-            border-radius: 5px;
-            font-size: 15px;
-            text-align: center;
-            background-color: #D9D9D9;
-            color: black;
-            border: 1px solid;
-        }
-
-        .button {
-            padding: 20px;
-        }
-    </style>
+    }
+</style>
+<!-- Add Font Awesome for icons -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 {% endblock %}
+
 {% block page_background %}
-<main class="content" style=" padding: 10px;width: 80%">
-    <div class="ndung" style="width: 100%">
-        <form method="POST" enctype="multipart/form-data">
-            {% csrf_token %}
-            <h1 class="header-title" style="color: #000000; font-size: 30px; font-weight: bold; text-align: center; width: 100%;">THÔNG TIN HỒ SƠ CHI TIẾT</h1>
-            <div class="container mt-4" style="background-color: #f0f8ff; padding: 40px; border-radius: 10px;">
-                <h4 class="header-title" style="display: flex; justify-content: space-between; font-size: 30px; font-weight: bold; margin-bottom: 20px; margin-top: -39px; margin-right:-40px; margin-left:-40px;">
-                    <a href="{% url 'NVXemHoSo' %}"style="background-color: #65ABE3; color: white; width: 50%; text-align: center; padding: 10px; border-top-left-radius: 5px; border-bottom-left-radius: 5px; text-decoration: none;">
-                        Thông Tin Cá Nhân
-                    </a>
-                    <a href="{% url 'NVXemHoSoHDLD' %}" style=" border: 3px solid #000000; background-color: #066BBB; color: white; width: 50%; text-align: center; padding: 10px; border-top-right-radius: 10px; border-bottom-right-radius: 10px; text-decoration: none;">
-                        Hợp Đồng Lao Động
-                    </a>
-                </h4>
+<main class="content">
+    <div class="header-container">
 
-                <div class="row" style="border-radius: 5px; border: 3px solid #DCDCDC; padding: 10px; BACKGROUND-COLOR:#F8F8F8">
-                    <div class="col-md-6 left-column" style="padding: 10px;">
-                        <div class="form-group" style="display: flex; align-items: center; margin-bottom: 15px;">
-                            <label for="ten_nv" style="width: 180px; font-weight: bold; font-size: 16px; color: #333; margin-right: 10px; text-align: left;">Họ và tên:</label>
-                            <div style="font-size: 16px;">{{ nhan_vien.ten_nv }}</div>
-                        </div>
-
-                        <div class="form-group" style="display: flex; align-items: center; margin-bottom: 10px;">
-                            <label for="ma_nv" style="width: 180px; font-weight: bold; font-size: 16px; color: #333; margin-right: 10px; text-align: left;">Mã nhân viên:</label>
-                            <div style="font-size: 16px;">{{ nhan_vien.id }}</div>
-                        </div>
-                    </div>
-
-                    <div class="col-md-6 left-column" style="padding: 10px;">
-                        <div class="form-group" style="display: flex; align-items: center; margin-bottom: 15px;">
-                            <label for="vi_tri_cong_viec" style="width: 180px; font-weight: bold; font-size: 16px; color: #333; margin-right: 10px; text-align: left;">Vị trí làm việc:</label>
-                            <div style="font-size: 16px;">{{ nhan_vien.vi_tri_cong_viec }}</div>
-                        </div>
-
-                        <div class="form-group" style="display: flex; align-items: center; margin-bottom: 10px;">
-                            <label for="to_phong_ban" style="width: 180px; font-weight: bold; font-size: 16px; color: #333; margin-right: 10px; text-align: left;">Tổ (Phòng ban):</label>
-                            <div style="font-size: 16px;">{{ nhan_vien.to_phong_ban }}</div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="row">
-                    <div class="col-md-6 left-column" style="padding: 10px; margin-top: 20px;">
-                        <div class="form-group" style="display: flex; align-items: center; margin-bottom: 15px;">
-                            <label for="so_hop_dong" style="width: 180px; font-weight: bold; font-size: 16px; color: #333; margin-right: 10px; text-align: left;">Số hợp đồng:</label>
-                            <div style="font-size: 16px;">{{ hop_dong.so_hop_dong }}</div>
-                        </div>
-
-                        <div class="form-group" style="display: flex; align-items: center; margin-bottom: 10px;">
-                            <label for="thoi_han_hop_dong" style="width: 185px; font-weight: bold; font-size: 16px; color: #333; margin-right: 5px; text-align: left;">Thời hạn HĐ:</label>
-                            <div style="font-size: 16px; text-align: left;">{{ hop_dong.thoi_han_hop_dong }}</div>
-                        </div>
-
-                        <div class="form-group" style="display: flex; align-items: center; margin-bottom: 15px;">
-                            <label for="tu_ngay" style="width: 180px; font-weight: bold; font-size: 16px; color: #333; margin-right: 10px; text-align: left;">Từ ngày:</label>
-                            <div style="font-size: 16px;">{{ hop_dong.tu_ngay }}</div>
-                        </div>
-
-                        <div class="form-group" style="display: flex; align-items: center; margin-bottom: 15px;">
-                            <label for="ngay_ky" style="width: 180px; font-weight: bold; font-size: 16px; color: #333; margin-right: 10px; text-align: left;">Ngày ký:</label>
-                            <div style="font-size: 16px;">{{ hop_dong.ngay_ky }}</div>
-                        </div>
-                        <div class="form-group" style="display: flex; align-items: center; margin-bottom: 15px;">
-                            <label for="danh_sach_phu_cap" style="width: 180px; font-weight: bold; font-size: 16px; color: #333; margin-right: 10px; text-align: left;">Danh sách phụ cấp:</label>
-
-                        </div>
-                    </div>
-
-                    <div class="col-md-6 right-column" style="padding: 10px; margin-top: 20px;">
-                        <div class="form-group" style="display: flex; align-items: center; margin-bottom: 15px;">
-                            <label for="loai_hop_dong" style="width: 180px; font-weight: bold; font-size: 16px; color: #333; margin-right: 10px; text-align: left;">Loại hợp đồng:</label>
-                            <div style="font-size: 16px;">{{ hop_dong.loai_hop_dong }}</div>
-                        </div>
-
-                        <div class="form-group" style="display: flex; align-items: center; margin-bottom: 15px;">
-                            <label for="luong" style="width: 180px; font-weight: bold; font-size: 16px; color: #333; margin-right: 10px; text-align: left;">Lương:</label>
-                            <div style="font-size: 16px;">{{ hop_dong.luong }}</div>
-                        </div>
-
-                        <div class="form-group" style="display: flex; align-items: center; margin-bottom: 10px;">
-                            <label for="den_ngay" style="width: 180px; font-weight: bold; font-size: 16px; color: #333; margin-right: 10px; text-align: left;">Đến ngày:</label>
-                            <div style="font-size: 16px;">{{ hop_dong.den_ngay }}</div>
-                        </div>
-
-                        <div class="form-group" style="display: flex; align-items: center; margin-bottom: 15px;">
-                            <label for="trang_thai_hop_dong" style="width: 180px; font-weight: bold; font-size: 16px; color: #333; margin-right: 10px; text-align: left;">Trạng thái HĐ:</label>
-                            <div style="font-size: 16px;">{{ hop_dong.trang_thai_hop_dong }}</div>
-                        </div>
-                    </div>
-                </div>
-
-                <table border="1" cellpadding="5" cellspacing="0" STYLE="">
-                        <thead>
-                            <tr>
-                                <th>Số thứ tự</th>
-                                <th>Tên phụ cấp</th>
-                                <th>Giá trị</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {% for phu_cap_nv in phu_cap_nhan_vien_list %}
-                            <tr>
-                                <td>{{ forloop.counter }}</td>
-                                <td>{{ phu_cap_nv.phu_cap.ten_phu_cap }}</td>
-                                <td>{{ phu_cap_nv.phu_cap.gia_tri|floatformat:2 }}</td>
-                            </tr>
-                            {% empty %}
-                            <tr>
-                                <td colspan="3" style="text-align:center;">Không có phụ cấp</td>
-                            </tr>
-                            {% endfor %}
-                        </tbody>
-                    </table>
-
-            </div>
-
-            </div>
+        <h1 class="main-title">THÔNG TIN CHI TIẾT HỢP ĐỒNG LAO ĐỘNG</h1>
     </div>
 
+    <div class="card">
+        <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="card-body">
+                <!-- Tabs styled like the template -->
+                <div class="tab-container">
+                    <a href="{% url 'NVXemHoSo' %}" class="tab-item">
+                        Thông tin cá nhân
+                    </a>
+                    <a href="{% url 'NVXemHoSoHDLD' %}" class="tab-item tab-active">
+                        Hợp đồng lao động
+                    </a>
+                </div>
+
+                <!-- Employee Information Card -->
+                <div class="employee-info-card">
+                    <div class="employee-info-grid">
+                        <div class="employee-info-item">
+                            <div class="employee-info-label">Họ và tên:</div>
+                            <div class="employee-info-value">{{ nhan_vien.ten_nv }}</div>
+                        </div>
+                        <div class="employee-info-item">
+                            <div class="employee-info-label">Vị trí làm việc:</div>
+                            <div class="employee-info-value">{{ nhan_vien.vi_tri_cong_viec }}</div>
+                        </div>
+                        <div class="employee-info-item">
+                            <div class="employee-info-label">Mã nhân viên:</div>
+                            <div class="employee-info-value">{{ nhan_vien.id }}</div>
+                        </div>
+                        <div class="employee-info-item">
+                            <div class="employee-info-label">Tổ (Phòng ban):</div>
+                            <div class="employee-info-value">{{ nhan_vien.to_phong_ban }}</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Contract Information -->
+                <div class="form-section">
+                    <div class="section-header" onclick="toggleSection(this)">
+                        <i class="fas fa-file-contract"></i>
+                        <span style="margin-left: 10px;">THÔNG TIN HỢP ĐỒNG</span>
+                        <i class="fas fa-chevron-down section-chevron"></i>
+                    </div>
+                    <div class="section-content">
+                        <div class="form-grid">
+                            <div class="form-field">
+                                <div class="form-label">Số hợp đồng:</div>
+                                <div class="form-value">{{ hop_dong.so_hop_dong }}</div>
+                            </div>
+
+                            <div class="form-field">
+                                <div class="form-label">Loại hợp đồng:</div>
+                                <div class="form-value">{{ hop_dong.loai_hop_dong }}</div>
+                            </div>
+
+                            <div class="form-field">
+                                <div class="form-label">Thời hạn HĐ:</div>
+                                <div class="form-value">{{ hop_dong.thoi_han_hop_dong }}</div>
+                            </div>
+
+                            <div class="form-field">
+                                <div class="form-label">Lương:</div>
+                                <div class="form-value">{{ hop_dong.luong }}</div>
+                            </div>
+
+                            <div class="form-field">
+                                <div class="form-label">Từ ngày:</div>
+                                <div class="form-value">{{ hop_dong.tu_ngay }}</div>
+                            </div>
+
+                            <div class="form-field">
+                                <div class="form-label">Đến ngày:</div>
+                                <div class="form-value">{{ hop_dong.den_ngay }}</div>
+                            </div>
+
+                            <div class="form-field">
+                                <div class="form-label">Ngày ký:</div>
+                                <div class="form-value">{{ hop_dong.ngay_ky }}</div>
+                            </div>
+
+                            <div class="form-field">
+                                <div class="form-label">Trạng thái HĐ:</div>
+                                <div class="form-value">{{ hop_dong.trang_thai_hop_dong }}</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Allowance Information - Completely Redesigned -->
+                <div class="form-section">
+                    <div class="section-header" onclick="toggleSection(this)">
+                        <i class="fas fa-money-bill-wave"></i>
+                        <span style="margin-left: 10px;">PHỤ CẤP</span>
+                        <i class="fas fa-chevron-down section-chevron"></i>
+                    </div>
+                    <div class="section-content">
+                        {% if phu_cap_nhan_vien_list %}
+                        <div class="allowance-list">
+                            {% for phu_cap_nv in phu_cap_nhan_vien_list %}
+                            <div class="allowance-item">
+                                <div class="allowance-number">{{ forloop.counter }}</div>
+                                <div class="allowance-details">
+                                    <div class="allowance-name">{{ phu_cap_nv.phu_cap.ten_phu_cap }}</div>
+                                    <div class="allowance-value">{{ phu_cap_nv.phu_cap.gia_tri|floatformat:2 }}</div>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                        {% else %}
+                        <div class="allowance-empty">
+                            <i class="fas fa-info-circle"></i> Không có phụ cấp
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
             </div>
         </form>
     </div>
 </main>
 
+<script>
+    // Fixed toggle functionality for section headers
+    function toggleSection(header) {
+        header.classList.toggle('active');
+        const content = header.nextElementSibling;
 
+        if (content.style.display === 'none' || content.style.display === '') {
+            content.style.display = 'block';
+        } else {
+            content.style.display = 'none';
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+        // Show all sections by default
+        const sectionHeaders = document.querySelectorAll('.section-header');
+        const sectionContents = document.querySelectorAll('.section-content');
+
+        sectionHeaders.forEach((header, index) => {
+            header.classList.add('active');
+            if (sectionContents[index]) {
+                sectionContents[index].style.display = 'block';
+            }
+        });
+
+        // Tab functionality
+        const tabs = document.querySelectorAll('.tab-item');
+        tabs.forEach(tab => {
+            tab.addEventListener('click', function() {
+                tabs.forEach(t => t.classList.remove('tab-active'));
+                this.classList.add('tab-active');
+            });
+        });
+    });
+</script>
 {% endblock %}

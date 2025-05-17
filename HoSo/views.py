@@ -43,19 +43,6 @@ def danh_sach_nhan_vien(request):
 
 
 
-def danh_sach_nhan_vien(request):
-    query = request.GET.get('q', '')  # Lấy giá trị tìm kiếm từ thanh tìm kiếm
-    if query:
-        nhan_vien_list = NhanVien.objects.filter(ten_nv__icontains=query)  # Lọc nhân viên theo tên
-    else:
-        nhan_vien_list = NhanVien.objects.all()  # Nếu không có tìm kiếm, hiển thị tất cả nhân viên
-
-    return render(request, 'HoSo/danhsachnhanvien.html', {
-        'nhan_vien_list': nhan_vien_list,
-        'query': query
-    })
-
-
 def Add_Edit_ho_so(request, nhan_vien_id = None):
     print(f"nhan_vien_id: {nhan_vien_id}")
     if nhan_vien_id is not None:
@@ -200,3 +187,15 @@ def edit_hdld(request, nhan_vien_id):
         'nhan_vien': nhan_vien,
         'hop_dong': hop_dong
     })
+
+from django.shortcuts import redirect
+
+@login_required
+def danh_sach_nhan_vien(request):
+    nhanvien = get_object_or_404(NhanVien, user=request.user)
+    # Kiểm tra quyền truy cập
+    if nhanvien.vi_tri_cong_viec not in ['Nhân sự', 'Hiệu Trưởng', 'Hiệu phó chuyên môn', 'Hiệu phó hoạt động']:
+        # Nếu không có quyền, chuyển hướng về trang xem hồ sơ cá nhân
+        return redirect('DanhSachNhanVien')
+    else:
+        return redirect('NVXemHoSo')
