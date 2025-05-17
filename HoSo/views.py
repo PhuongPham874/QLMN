@@ -29,7 +29,7 @@ def hosochitiet(request, id):
     nhan_vien = get_object_or_404(NhanVien, id=id)
 
     hop_dong = HopDongLaoDong.objects.filter(nhan_vien=nhan_vien).first()  # Kiểm tra xem có hợp đồng lao động không
-    context = {'nhanvien': nhan_vien, 'hop_dong': hop_dong}
+    context = {'nhan_vien': nhan_vien, 'hop_dong': hop_dong}
 
     return render(request, 'HoSo/hosochitiet.html', context)
 '''

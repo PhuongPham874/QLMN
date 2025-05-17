@@ -6,8 +6,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Trường Mầm Non Măng Non</title>
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    {% block extra_css %}
+    {% endblock %}
+    {% block extra_js %} {% endblock %}
     {% block extra_head %}{% endblock %}
-
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 </head>
@@ -50,7 +52,7 @@
 
                 <nav class="sidebar-nav">
                     <a href="{% url 'NVXemHoSo' %}" class="nav-item"><i class="fas fa-file-alt"></i> Hồ sơ</a>
-                    <a href="#" class="nav-item"><i class="fas fa-shield-alt"></i> BHXH</a>
+                    <a href="{% url 'redirectBHXH' %}" class="nav-item"><i class="fas fa-shield-alt"></i> BHXH</a>
                     <a href="{% url 'ky_luat_khen_thuong' %}" class="nav-item"><i class="fas fa-award"></i> Kỷ luật & Khen thưởng</a>
                     <a href="{% url 'DanhSachNP_redirect' %}" class="nav-item"><i class="fas fa-calendar-alt"></i> Nghỉ phép</a>
                     <a href="{% url 'cham_cong' %}" class="nav-item"><i class="fas fa-clock"></i> Chấm công</a>

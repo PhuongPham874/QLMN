@@ -1,142 +1,185 @@
+
+
 {% extends "home.html" %}
 {% load static %}
-
-
-
-
 {% block page_background %}
-<main class="employee-profile">
-    <div class="profile-container">
-        <form method="POST" enctype="multipart/form-data">
-            {% csrf_token %}
-            <div class="header-container">
-                <a href="{% url 'DanhSachNhanVien' %}" class="back-button">
-                    <i class="fas fa-arrow-left"></i> Quay lại
-                </a>
-                <h1 class="header-title">THÔNG TIN CHI TIẾT HỒ SƠ NHÂN VIÊN</h1>
-            </div>
+<div class="profile-page">
+  <!-- Page Header -->
+  <div class="page-header">
+    <h1 class="page-title">THÔNG TIN HỒ SƠ CHI TIẾT</h1>
+  </div>
 
-            <div class="profile-card">
-                <div class="profile-tabs">
-                    <a href="{% url 'QLXemHoSo' nhanvien.id %}" class="tab-link active">
-                        Thông Tin Cá Nhân
-                    </a>
-                    {% if hop_dong %}
-                    <a href="{% url 'QLXemHoSoHDLD' nhanvien.id %}" class="tab-link">
-                        Hợp Đồng Lao Động
-                    </a>
-                    {% endif %}
-                </div>
+  <!-- Tab Navigation -->
+  <div class="tab-navigation">
+    <a href="{% url 'QLXemHoSo' nhan_vien.id %}" class="tab-link active">
+      <svg class="tab-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+        <circle cx="12" cy="7" r="4"></circle>
+      </svg>
+      Thông Tin Cá Nhân
+    </a>
+    <a href="{% url 'QLXemHoSoHDLD' nhan_vien.id %}" class="tab-link inactive">
+      <svg class="tab-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+        <polyline points="14 2 14 8 20 8"></polyline>
+        <line x1="16" y1="13" x2="8" y2="13"></line>
+        <line x1="16" y1="17" x2="8" y2="17"></line>
+        <polyline points="10 9 9 9 8 9"></polyline>
+      </svg>
+      Hợp Đồng Lao Động
+    </a>
+  </div>
 
-                <div class="profile-content">
-                    <div class="profile-grid">
-                        <div class="profile-column">
-                            <div class="profile-field avatar-field">
-                                <label>Ảnh cá nhân</label>
-                                <div class="avatar-container">
-                                    <img src="{{ nhanvien.anh_ca_nhan }}" alt="User Avatar" class="avatar">
-                                </div>
-                            </div>
+  <!-- Profile Card -->
+  <div class="profile-card">
+    <!-- Profile Header -->
+    <div class="profile-header">
+      <img src="{{ nhan_vien.anh_ca_nhan }}" alt="Ảnh cá nhân" class="profile-avatar">
 
-                            <div class="profile-field">
-                                <label>Họ và tên:</label>
-                                <div class="field-value">{{ nhanvien.ten_nv }}</div>
-                            </div>
+      <div class="profile-info">
+        <h2 class="profile-name">{{ nhan_vien.ten_nv }}</h2>
+        <p class="profile-position">{{ nhan_vien.vi_tri_cong_viec }} - {{ nhan_vien.chuc_vu }}</p>
+        <p class="profile-department">{{ nhan_vien.to_phong_ban }}</p>
+      </div>
 
-                            <div class="profile-field">
-                                <label>Giới tính:</label>
-                                <div class="field-value">{{ nhanvien.get_gioi_tinh_display }}</div>
-                            </div>
-
-                            <div class="profile-field">
-                                <label>Ngày sinh:</label>
-                                <div class="field-value">{{ nhanvien.ngay_sinh }}</div>
-                            </div>
-
-                            <div class="profile-field">
-                                <label>Số điện thoại:</label>
-                                <div class="field-value">{{ nhanvien.so_dien_thoai }}</div>
-                            </div>
-
-                            <div class="profile-field">
-                                <label>Email:</label>
-                                <div class="field-value">{{ nhanvien.email }}</div>
-                            </div>
-
-                            <div class="profile-field">
-                                <label>Số CCCD:</label>
-                                <div class="field-value">{{ nhanvien.so_cccd }}</div>
-                            </div>
-                        </div>
-
-                        <div class="profile-column">
-                            <div class="profile-field job-position-field">
-                                <div class="job-position-container">
-                                    <div class="job-position">
-                                        <label>Vị trí làm việc:</label>
-                                        <div class="field-value">{{ nhan_vien.vi_tri_cong_viec }}</div>
-                                    </div>
-                                    <div class="job-title">
-                                        <label>Chức vụ:</label>
-                                        <div class="field-value">{{ nhanvien.chuc_vu }}</div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="profile-field">
-                                <label>Tổ (Phòng ban):</label>
-                                <div class="field-value">{{ nhanvien.to_phong_ban }}</div>
-                            </div>
-
-                            <div class="profile-field education-field">
-                                <div class="education-container">
-                                    <div class="education-level">
-                                        <label>Trình độ học vấn:</label>
-                                        <div class="field-value">{{ nhan_vien.trinh_do_hoc_van }}</div>
-                                    </div>
-                                    <div class="graduation-year">
-                                        <label>Năm TN:</label>
-                                        <div class="field-value">{{ nhanvien.nam_tn }}</div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="profile-field">
-                                <label>Chuyên ngành:</label>
-                                <div class="field-value">{{ nhanvien.chuyen_nganh }}</div>
-                            </div>
-
-                            <div class="profile-field">
-                                <label>Nơi đào tạo:</label>
-                                <div class="field-value">{{ nhanvien.noi_dao_tao }}</div>
-                            </div>
-
-                            <div class="profile-field">
-                                <label>Ngày cấp:</label>
-                                <div class="field-value">{{ nhanvien.ngay_cap }}</div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="profile-field full-width">
-                        <label>Nơi cấp:</label>
-                        <div class="field-value">{{ nhanvien.noi_cap }}</div>
-                    </div>
-
-                    <div class="profile-field full-width">
-                        <label>Địa chỉ tạm trú:</label>
-                        <div class="field-value">{{ nhanvien.dia_chi_tam_tru }}</div>
-                    </div>
-
-                    <div class="profile-actions">
-                        <a href="{% url 'ChinhSuaHoSo' nhanvien.id %}" class="edit-button" title="Chỉnh sửa">
-                            <i class="fa-solid fa-pen-to-square"></i>
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </form>
+      <div class="profile-actions">
+        <button class="action-button" title="In hồ sơ" onclick="window.print()">
+          <svg class="action-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="6 9 6 2 18 2 18 9"></polyline>
+            <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path>
+            <rect x="6" y="14" width="12" height="8"></rect>
+          </svg>
+        </button>
+      </div>
     </div>
-</main>
-<link rel="stylesheet" href="{% static 'css/hosochitiet.css' %}">
+
+    <!-- Profile Content -->
+    <div class="profile-content">
+      <!-- Personal Information Section -->
+      <div class="profile-section">
+        <h3 class="section-title">
+          <svg class="section-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+            <circle cx="12" cy="7" r="4"></circle>
+          </svg>
+          Thông Tin Cá Nhân
+        </h3>
+
+        <div class="profile-grid">
+          <div class="profile-field">
+            <div class="field-label">Họ và tên</div>
+            <div class="field-value">{{ nhan_vien.ten_nv }}</div>
+          </div>
+
+          <div class="profile-field">
+            <div class="field-label">Giới tính</div>
+            <div class="field-value">{{ nhan_vien.get_gioi_tinh_display }}</div>
+          </div>
+
+          <div class="profile-field">
+            <div class="field-label">Ngày sinh</div>
+            <div class="field-value">{{ nhan_vien.ngay_sinh }}</div>
+          </div>
+
+          <div class="profile-field">
+            <div class="field-label">Số điện thoại</div>
+            <div class="field-value">{{ nhan_vien.so_dien_thoai }}</div>
+          </div>
+
+          <div class="profile-field">
+            <div class="field-label">Email</div>
+            <div class="field-value">{{ nhan_vien.email }}</div>
+          </div>
+
+          <div class="profile-field">
+            <div class="field-label">Số CCCD</div>
+            <div class="field-value">{{ nhan_vien.so_cccd }}</div>
+          </div>
+
+          <div class="profile-field">
+            <div class="field-label">Ngày cấp</div>
+            <div class="field-value">{{ nhan_vien.ngay_cap }}</div>
+          </div>
+
+          <div class="profile-field">
+            <div class="field-label">Nơi cấp</div>
+            <div class="field-value">{{ nhan_vien.noi_cap }}</div>
+          </div>
+
+          <div class="profile-field" style="grid-column: 1 / -1;">
+            <div class="field-label">Địa chỉ tạm trú</div>
+            <div class="field-value">{{ nhan_vien.dia_chi_tam_tru }}</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Professional Information Section -->
+      <div class="profile-section">
+        <h3 class="section-title">
+          <svg class="section-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path>
+          </svg>
+          Thông Tin Công Việc
+        </h3>
+
+        <div class="profile-grid">
+          <div class="profile-field">
+            <div class="field-label">Vị trí làm việc</div>
+            <div class="field-value">{{ nhan_vien.vi_tri_cong_viec }}</div>
+          </div>
+
+          <div class="profile-field">
+            <div class="field-label">Chức vụ</div>
+            <div class="field-value">{{ nhan_vien.chuc_vu }}</div>
+          </div>
+
+          <div class="profile-field">
+            <div class="field-label">Tổ (Phòng ban)</div>
+            <div class="field-value">{{ nhan_vien.to_phong_ban }}</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Education Information Section -->
+      <div class="profile-section">
+        <h3 class="section-title">
+          <svg class="section-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M22 10v6M2 10l10-5 10 5-10 5z"></path>
+            <path d="M6 12v5c3 3 9 3 12 0v-5"></path>
+          </svg>
+          Thông Tin Học Vấn
+        </h3>
+
+        <div class="profile-grid">
+          <div class="profile-field">
+            <div class="field-label">Trình độ học vấn</div>
+            <div class="field-value">{{ nhan_vien.trinh_do_hoc_van }}</div>
+          </div>
+
+          <div class="profile-field">
+            <div class="field-label">Năm tốt nghiệp</div>
+            <div class="field-value">{{ nhan_vien.nam_tn }}</div>
+          </div>
+
+          <div class="profile-field">
+            <div class="field-label">Chuyên ngành</div>
+            <div class="field-value">{{ nhan_vien.chuyen_nganh }}</div>
+          </div>
+
+          <div class="profile-field">
+            <div class="field-label">Nơi đào tạo</div>
+            <div class="field-value">{{ nhan_vien.noi_dao_tao }}</div>
+          </div>
+
+        </div>
+        <div class="profile-actions">
+            <a href="{% url 'edit_hdld' nhan_vien.id %}" class="edit-button" title="Chỉnh sửa">
+                <i class="fa-solid fa-pen-to-square"></i>
+            </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<link rel="stylesheet" href="{% static 'css/NV_hosochitiet.css' %}">
 {% endblock %}

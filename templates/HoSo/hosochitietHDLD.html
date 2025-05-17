@@ -1,137 +1,141 @@
 {% extends "home.html" %}
 {% load static %}
 
-
-
-
 {% block page_background %}
-<main class="content">
-    <div class="ndung">
+<main class="employee-profile">
+    <div class="profile-container">
         <form method="POST" enctype="multipart/form-data">
             {% csrf_token %}
             <div class="header-container">
-                <a href="{% url 'DanhSachNhanVien' %}" class="btn btn-secondary">Quay lại</a>
+                <a href="{% url 'DanhSachNhanVien' %}" class="back-button">
+                    <i class="fas fa-arrow-left"></i> Quay lại
+                </a>
                 <h1 class="header-title">THÔNG TIN CHI TIẾT HỒ SƠ NHÂN VIÊN</h1>
             </div>
 
-            <div class="detail-container">
-               <h4 class="tab-header">
-                    <a href="{% url 'QLXemHoSo' nhan_vien.id %}" class="tab-link tab-link-left">
+            <div class="profile-card">
+                <div class="profile-tabs">
+                    <a href="{% url 'QLXemHoSo' nhan_vien.id %}" class="tab-link">
                         Thông Tin Cá Nhân
                     </a>
-
                     {% if hop_dong %}
-                    <a href="{% url 'QLXemHoSoHDLD' nhan_vien.id %}" class="tab-link tab-link-right">
+                    <a href="{% url 'QLXemHoSoHDLD' nhan_vien.id %}" class="tab-link active">
                         Hợp Đồng Lao Động
                     </a>
                     {% endif %}
-                </h4>
-
-                <div class="info-section">
-                    <div class="row">
-                        <div class="col-md-6 left-column">
-                            <div class="form-group">
-                                <label class="form-label">Họ và tên:</label>
-                                <div class="form-value">{{ nhan_vien.ten_nv }}</div>
-                            </div>
-
-                            <div class="form-group">
-                                <label class="form-label">Mã nhân viên:</label>
-                                <div class="form-value">{{ nhan_vien.id }}</div>
-                            </div>
-                        </div>
-
-                        <div class="col-md-6 right-column">
-                            <div class="form-group">
-                                <label class="form-label">Vị trí làm việc:</label>
-                                <div class="form-value">{{ nhan_vien.vi_tri_cong_viec }}</div>
-                            </div>
-
-                            <div class="form-group">
-                                <label class="form-label">Tổ (Phòng ban):</label>
-                                <div class="form-value">{{ nhan_vien.to_phong_ban }}</div>
-                            </div>
-                        </div>
-                    </div>
                 </div>
 
-                <div class="row">
-                    <div class="col-md-6 left-column">
-                        <div class="form-group">
-                            <label class="form-label">Số hợp đồng:</label>
-                            <div class="form-value">{{ hop_dong.so_hop_dong }}</div>
+                <div class="profile-content">
+                    <!-- Basic Employee Info Section -->
+                    <div class="info-section">
+                        <div class="profile-grid">
+                            <div class="profile-column">
+                                <div class="profile-field">
+                                    <label>Họ và tên:</label>
+                                    <div class="field-value">{{ nhan_vien.ten_nv }}</div>
+                                </div>
+
+                                <div class="profile-field">
+                                    <label>Mã nhân viên:</label>
+                                    <div class="field-value">{{ nhan_vien.id }}</div>
+                                </div>
+                            </div>
+
+                            <div class="profile-column">
+                                <div class="profile-field">
+                                    <label>Vị trí làm việc:</label>
+                                    <div class="field-value">{{ nhan_vien.vi_tri_cong_viec }}</div>
+                                </div>
+
+                                <div class="profile-field">
+                                    <label>Tổ (Phòng ban):</label>
+                                    <div class="field-value">{{ nhan_vien.to_phong_ban }}</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Contract Details Section -->
+                    <div class="profile-grid">
+                        <div class="profile-column">
+                            <div class="profile-field">
+                                <label>Số hợp đồng:</label>
+                                <div class="field-value">{{ hop_dong.so_hop_dong }}</div>
+                            </div>
+
+                            <div class="profile-field">
+                                <label>Thời hạn HĐ:</label>
+                                <div class="field-value">{{ hop_dong.thoi_han_hop_dong }}</div>
+                            </div>
+
+                            <div class="profile-field">
+                                <label>Từ ngày:</label>
+                                <div class="field-value">{{ hop_dong.tu_ngay }}</div>
+                            </div>
+
+                            <div class="profile-field">
+                                <label>Ngày ký:</label>
+                                <div class="field-value">{{ hop_dong.ngay_ky }}</div>
+                            </div>
                         </div>
 
-                        <div class="form-group">
-                            <label class="form-label">Thời hạn HĐ:</label>
-                            <div class="form-value">{{ hop_dong.thoi_han_hop_dong }}</div>
-                        </div>
+                        <div class="profile-column">
+                            <div class="profile-field">
+                                <label>Loại hợp đồng:</label>
+                                <div class="field-value">{{ hop_dong.loai_hop_dong }}</div>
+                            </div>
 
-                        <div class="form-group">
-                            <label class="form-label">Từ ngày:</label>
-                            <div class="form-value">{{ hop_dong.tu_ngay }}</div>
-                        </div>
+                            <div class="profile-field">
+                                <label>Lương:</label>
+                                <div class="field-value">{{ hop_dong.luong }}</div>
+                            </div>
 
-                        <div class="form-group">
-                            <label class="form-label">Ngày ký:</label>
-                            <div class="form-value">{{ hop_dong.ngay_ky }}</div>
-                        </div>
+                            <div class="profile-field">
+                                <label>Đến ngày:</label>
+                                <div class="field-value">{{ hop_dong.den_ngay }}</div>
+                            </div>
 
-                        <div class="form-group">
-                            <label class="form-label">Danh sách phụ cấp:</label>
+                            <div class="profile-field">
+                                <label>Trạng thái HĐ:</label>
+                                <div class="field-value">{{ hop_dong.trang_thai_hop_dong }}</div>
+                            </div>
                         </div>
                     </div>
 
-                    <div class="col-md-6 right-column">
-                        <div class="form-group">
-                            <label class="form-label">Loại hợp đồng:</label>
-                            <div class="form-value">{{ hop_dong.loai_hop_dong }}</div>
-                        </div>
-
-                        <div class="form-group">
-                            <label class="form-label">Lương:</label>
-                            <div class="form-value">{{ hop_dong.luong }}</div>
-                        </div>
-
-                        <div class="form-group">
-                            <label class="form-label">Đến ngày:</label>
-                            <div class="form-value">{{ hop_dong.den_ngay }}</div>
-                        </div>
-
-                        <div class="form-group">
-                            <label class="form-label">Trạng thái HĐ:</label>
-                            <div class="form-value">{{ hop_dong.trang_thai_hop_dong }}</div>
+                    <!-- Allowance Table Section -->
+                    <div class="allowance-section">
+                        <h3 class="section-title">Danh sách phụ cấp</h3>
+                        <div class="table-container">
+                            <table class="allowance-table">
+                                <thead>
+                                    <tr>
+                                        <th>Số thứ tự</th>
+                                        <th>Tên phụ cấp</th>
+                                        <th>Giá trị</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for phu_cap_nv in phu_cap_nhan_vien_list %}
+                                    <tr>
+                                        <td>{{ forloop.counter }}</td>
+                                        <td>{{ phu_cap_nv.phu_cap.ten_phu_cap }}</td>
+                                        <td>{{ phu_cap_nv.phu_cap.gia_tri|floatformat:2 }}</td>
+                                    </tr>
+                                    {% empty %}
+                                    <tr>
+                                        <td colspan="3" class="empty-message">Không có phụ cấp</td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
                         </div>
                     </div>
-                </div>
 
-                <table class="allowance-table">
-                    <thead>
-                        <tr>
-                            <th>Số thứ tự</th>
-                            <th>Tên phụ cấp</th>
-                            <th>Giá trị</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for phu_cap_nv in phu_cap_nhan_vien_list %}
-                        <tr>
-                            <td>{{ forloop.counter }}</td>
-                            <td>{{ phu_cap_nv.phu_cap.ten_phu_cap }}</td>
-                            <td>{{ phu_cap_nv.phu_cap.gia_tri|floatformat:2 }}</td>
-                        </tr>
-                        {% empty %}
-                        <tr>
-                            <td colspan="3" style="text-align:center;">Không có phụ cấp</td>
-                        </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
-
-                <div class="actions-container">
-                    <a href="{% url 'edit_hdld' nhan_vien.id %}" class="edit-icon">
-                        <i class="fa-solid fa-pen-to-square"></i>
-                    </a>
+                    <div class="profile-actions">
+                        <a href="{% url 'edit_hdld' nhan_vien.id %}" class="edit-button" title="Chỉnh sửa">
+                            <i class="fa-solid fa-pen-to-square"></i>
+                        </a>
+                    </div>
                 </div>
             </div>
         </form>
