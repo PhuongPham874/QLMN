@@ -1,187 +1,99 @@
-{% extends 'HOME.html' %}
+{% extends 'home.html' %}
+{% load static %}
 {% block extra_css %}
 <style>
-    .bhxh-title {
-        font-size: 28px;
-        font-weight: bold;
-        font-style: italic;
-        margin-bottom: 15px;
-        color: #000000;
-        margin-left: 280px;
+    body {
+        background-color: #f8f9fa;
     }
-    .list-group {
-        width: 800px;
-        padding: 10px;
+    .card {
+        border-radius: 8px;
+        border: none;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        transition: box-shadow 0.3s;
+    }
+    .card:hover {
+        box-shadow: 0 3px 6px rgba(0,0,0,0.15);
+    }
+    .btn-primary { background-color: #0d6efd; border: none; }
+    .btn-dark { background-color: #212529; border: none; }
+    .btn-outline-secondary { border-color: #e0e0e0; color: #6c757d; }
+    .tab-button {
+        background: none; border: none; padding: 12px 20px;
+        font-weight: 500; color: #6c757d; border-bottom: 2px solid transparent;
+    }
+    .tab-button.active {
+        color: #0d6efd; border-bottom: 2px solid #0d6efd;
+    }
+    .status-active {
+        color: #28a745; font-size: 14px; font-weight: 500;
+    }
+    .employee-info { background-color: #f0f7ff; border-radius: 8px; }
+    .info-label { color: #6c757d; font-size: 14px; margin-bottom: 4px; }
+    .info-value {
+        font-weight: 500; font-size: 16px; color: #212529;
+    }
+    .info-value.highlight { color: #0d6efd; }
+    .custom-select {
+        position: relative; display: inline-block; width: 100%;
+    }
+    .custom-select select {
+        width: 100%; padding: 10px 16px;
+        border-radius: 8px; border: 1px solid #ced4da;
+        background-color: #ffffff; appearance: none;
+    }
+    .custom-select::after {
+        content: '\25BC'; position: absolute; right: 15px; top: 50%;
+        transform: translateY(-50%); pointer-events: none;
+        font-size: 12px; color: #6c757d;
+    }
+
+    .popup-form {
+        position: fixed; top: 50%; left: 50%;
+        transform: translate(-50%, -50%); z-index: 1000;
+        padding: 30px; border-radius: 10px; width: 400px;
         background: linear-gradient(to right, #DDF0FF, #FFFFFF);
         box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
-        margin-bottom: 20px;
-        border-radius: 10px;
-        position: relative;
-    }
-    .info-row {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-bottom: 5px;
-    }
-    p {
-        font-weight: bold;
-        color: #066BBB;
-        margin: 10px 0;
-        flex: 1;
-        min-width: 50%;
-    }
-    .value {
-        font-weight: normal;
-        color: black;
-    }
-    .filter-container {
-        width: 100%;
-        border: 1px solid #ddd;
-        padding: 10px;
-        border-radius: 5px;
-        box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
-        background-color: #f8f9fa;
-        position: sticky;
-        top: 10px;
-        margin-right: 10px;
-        height: 150px;
-    }
-    .filter-title {
-        color: #007bff;
-        font-weight: bold;
-        font-size: 14px;
-        margin-bottom: 10px;
-    }
-    .filter-select {
-        width: 150px;
-        padding: 8px;
-        font-weight: normal;
-        border-radius: 5px;
-        border: 1px solid #ccc;
-        background-color: white;
-        margin-top: 5px;
-    }
-    .d-flex {
-        display: flex;
-        flex-wrap: nowrap;
-    }
-    .bh那么, .bhxh-container {
-        flex-grow: 1;
-        padding-left: 10px;
-    }
-    .action-buttons {
-        display: flex;
-        justify-content: space-between;
-        margin-bottom: 20px;
-    }
-    .action-buttons1 {
-        display: flex;
-        justify-content: flex-end;
-    }
-    .button, .button1, .button2 {
-        padding: 10px 20px;
-        border: none;
-        border-radius: 5px;
-        text-align: center;
-        font-weight: bold;
-        text-decoration: none;
-        color: white;
-    }
-    .button {
-        background-color: #066BBB;
-    }
-    .button1 {
-        background-color: #D9D9D9;
-        color: black;
-    }
-    .button2 {
-        background-color: #007ADA;
-        margin-right: 10px;
-    }
-    .button:hover, .button1:hover, .button2:hover {
-        background-color: #0056b3;
-        color: white;
-    }
-    .view-button {
-        background-color: #28a745;
-        color: white;
-        padding: 5px 15px;
-        border-radius: 5px;
-        text-decoration: none;
-        font-weight: bold;
-        position: absolute;
-        bottom: 10px;
-        right: 10px;
-    }
-    .view-button:hover {
-        background-color: #218838;
     }
     .popup-overlay {
-        position: fixed;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background-color: rgba(0, 0, 0, 0.4);
-        z-index: 999;
+        position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+        background-color: rgba(0, 0, 0, 0.4); z-index: 999; display: none;
     }
-    .popup-form {
-        position: fixed;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        z-index: 1000;
-        padding: 30px;
-        border-radius: 10px;
-        width: 400px;
-        background: linear-gradient(to right, #DDF0FF, #FFFFFF);
-        box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
-    }
+
     .info-row1 {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        margin-bottom: 20px;
+        display: flex; justify-content: center; align-items: center; margin-bottom: 20px;
     }
     .label-wrapper {
-        width: 240px;
-        text-align: left;
-        margin-right: 10px;
+        width: 240px; text-align: left; margin-right: 10px;
     }
     .label-wrapper label {
-        font-weight: bold;
-        color: #066BBB;
-        font-family: 'Roboto Slab';
-        white-space: nowrap;
+        font-weight: bold; color: #066BBB; font-family: 'Roboto Slab'; white-space: nowrap;
     }
     .input-wrapper {
         width: 300px;
     }
     .input-wrapper .form-control {
-        width: 100%;
-        padding: 8px;
-        height: 38px;
-        border: 1px solid #ccc;
-        border-radius: 5px;
-        font-size: 14px;
-        font-family: 'Roboto Slab';
-        background-color: #FFFFFF;
-        color: #000000;
+        width: 100%; padding: 8px; height: 38px;
+        border: 1px solid #ccc; border-radius: 5px;
+        font-size: 14px; font-family: 'Roboto Slab';
+        background-color: #FFFFFF; color: #000000;
     }
     .input-wrapper .form-control:focus {
-        outline: none;
-        border: 2px solid #007BFF;
+        outline: none; border: 2px solid #007BFF;
     }
     .popup-form .action-buttons {
-        display: flex;
-        justify-content: flex-end;
-        align-items: center;
+        display: flex; justify-content: flex-end; align-items: center;
         margin-left: 10px;
     }
-    .popup-form .action-buttons .button {
-        display: flex;
-        margin-right: 10px;
+    .action-buttons {
+        display: flex; justify-content: space-between; margin-top: 20px;
+    }
+    .button {
+        background-color: #066BBB; color: white; border: none;
+        padding: 8px 16px; border-radius: 6px;
+    }
+    .button1 {
+        background-color: #D9D9D9; color: black; border: none;
+        padding: 8px 16px; border-radius: 6px; margin-left: 10px;
     }
     .alert-danger {
         color: #721c24;
@@ -191,34 +103,98 @@
         border-radius: 5px;
         margin-bottom: 15px;
     }
+    .input-wrapper#tongTienDisplay {
+    font-weight: 700;
+    color: #28a745;
+    font-size: 16px;
+    white-space: nowrap;
+}
+    .total-amount-row {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start; /* Căn trái */
+    gap: 10px; /* Khoảng cách label và giá trị */
+}
 </style>
 {% endblock %}
 {% block extra_js %}
 <script>
-    document.addEventListener("DOMContentLoaded", function () {
-        const btn = document.getElementById("showFormBtn");
-        const popup = document.getElementById("popupForm");
-        const overlay = document.getElementById("popupOverlay");
+function closePopup() {
+    document.getElementById("popupForm").style.display = "none";
+    document.getElementById("popupOverlay").style.display = "none";
+}
 
-        btn.addEventListener("click", function () {
-            popup.style.display = "block";
-            overlay.style.display = "block";
-        });
-
-        overlay.addEventListener("click", function () {
-            popup.style.display = "none";
-            overlay.style.display = "none";
-        });
-    });
-
-    function closePopup() {
-        document.getElementById("popupForm").style.display = "none";
-        document.getElementById("popupOverlay").style.display = "none";
+document.addEventListener("DOMContentLoaded", function() {
+    function filterNhanVien(nv_id) {
+        const url = new URL(window.location.href);
+        if (nv_id) {
+            url.searchParams.set('nv_id', nv_id);
+        } else {
+            url.searchParams.delete('nv_id');
+        }
+        window.location.href = url;
     }
+    const popup = document.getElementById("popupForm");
+    const overlay = document.getElementById("popupOverlay");
+    const showFormBtn = document.getElementById("showFormBtn");
+    const cancelBtn = document.querySelector(".button1");  // Nút Hủy
+
+    showFormBtn?.addEventListener("click", function () {
+        popup.style.display = "block";
+        overlay.style.display = "block";
+    });
+    overlay?.addEventListener("click", closePopup);
+    cancelBtn?.addEventListener("click", closePopup);
+    const startDateInput = document.getElementById("id_ngay_bat_dau");
+    const endDateInput = document.getElementById("id_ngay_ket_thuc");
+    const tongTienDisplay = document.getElementById("tongTienDisplay");
+    function fetchTongTien(isSubmit = false) {
+        const start = startDateInput.value;
+        const end = endDateInput.value;
+        if (start && end) {
+            const formData = new FormData();
+            formData.append("ngay_bat_dau", start);
+            formData.append("ngay_ket_thuc", end);
+            const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+            formData.append("csrfmiddlewaretoken", csrfToken);
+            fetch("{% url 'tinh_tien_bhxh_ajax' %}", {
+                method: "POST",
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                tongTienDisplay.textContent = data.tong_tien
+                    ? data.tong_tien.toLocaleString() + " VND"
+                    : "0 VND";
+                if (isSubmit && data.redirect_url) {
+                    console.log("🌐 Redirecting to:", data.redirect_url);
+                    window.location.href = data.redirect_url; // 🔄 Thực hiện redirect
+                }
+            })
+            .catch(error => {
+                console.error("Lỗi khi tính tổng tiền:", error);
+                tongTienDisplay.textContent = "Lỗi tính toán";
+            });
+
+        }
+    }
+
+    if (startDateInput && endDateInput) {
+        startDateInput.addEventListener("change",() => fetchTongTien(false));
+        endDateInput.addEventListener("change", () => fetchTongTien(false));
+    }
+    const submitButton = document.getElementById("submitButton");
+    if (submitButton) {
+        submitButton.addEventListener("click", function (e) {
+            e.preventDefault();
+            fetchTongTien(true); // Gọi AJAX với flag isSubmit = true
+        });
+    }
+});
 </script>
 {% endblock %}
 {% block page_background %}
-<div class="container" style=" padding: 20px; width: 80%;">
+<div class="container py-4" style="width:80%;">
     {% if messages %}
         <div class="alert-container">
             {% for message in messages %}
@@ -228,12 +204,19 @@
             {% endfor %}
         </div>
     {% endif %}
-    {% if nhan_vien.vi_tri_cong_viec == 'Kế toán' %}
-        <div class="action-buttons1">
-            <button type="button" class="button2" id="showFormBtn">+ Nộp BHXH</button>
-            <a href="{% url 'add_bhxh' %}" class="button">+ Thêm mới</a>
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="mb-0 fw-bold">Bảo Hiểm Xã Hội</h2>
+        {% if nhan_vien.vi_tri_cong_viec == 'Kế toán' %}
+        <div class="d-flex gap-2">
+            <button id="showFormBtn" class="btn btn-primary d-flex align-items-center gap-2">
+                <i class="fas fa-plus"></i> Nộp BHXH
+            </button>
+            <a href="{% url 'add_bhxh' %}" class="btn btn-dark d-flex align-items-center gap-2">
+                <i class="fas fa-plus"></i> Thêm mới
+            </a>
         </div>
-    {% endif %}
+        {% endif %}
+    </div>
     {% url 'bhxh_list' as url_all %}
     {% url 'bhxh_me' as url_me %}
     <ul class="nav nav-tabs mb-4">
@@ -244,90 +227,103 @@
             <a class="nav-link {% if request.path == url_all %}active{% endif %}" href="{{ url_all }}">BHXH của nhân viên</a>
         </li>
     </ul>
-    <!-- Popup overlay -->
-    <div id="popupOverlay" class="popup-overlay" style="display: none;"></div>
-    <!-- Popup form -->
-    <div id="popupForm" class="popup-form" style="display: none;">
-        <form method="POST" action="{% url 'nop_tien' %}">
-            {% csrf_token %}
-            <div class="info-row1">
-                <div class="label-wrapper">
-                    <label for="{{ form.ngay_bat_dau.id_for_label }}">Ngày bắt đầu</label>
-                </div>
-                <div class="input-wrapper">
-                    <input type="date" class="form-control" id="{{ form.ngay_bat_dau.id_for_label }}" name="{{ form.ngay_bat_dau.name }}" value="{{ form.ngay_bat_dau.value|default_if_none:'' }}" required>
-                </div>
-            </div>
-            <div class="info-row1">
-                <div class="label-wrapper">
-                    <label for="{{ form.ngay_ket_thuc.id_for_label }}">Ngày kết thúc</label>
-                </div>
-                <div class="input-wrapper">
-                    <input type="date" class="form-control" id="{{ form.ngay_ket_thuc.id_for_label }}" name="{{ form.ngay_ket_thuc.name }}" value="{{ form.ngay_ket_thuc.value|default_if_none:'' }}" required>
-                </div>
-            </div>
-            {% if form.errors %}
-                <div class="alert alert-danger">
-                    {% for field in form %}
-                        {% for error in field.errors %}
-                            <p>{{ error }}</p>
-                        {% endfor %}
-                    {% endfor %}
-                    {% for error in form.non_field_errors %}
-                        <p>{{ error }}</p>
-                    {% endfor %}
-                </div>
-            {% endif %}
-            <div class="action-buttons">
-                <button class="button" type="submit">Lưu</button>
-                <button type="button" class="button1" onclick="closePopup()">Hủy</button>
-            </div>
-        </form>
-    </div>
-    <div class="content">
-        <h2 class="bhxh-title">BẢO HIỂM XÃ HỘI</h2>
-        <div class="d-flex">
-            <!-- Danh sách BHXH bên trái -->
-            <div class="bhxh-container" style="flex-grow: 1; padding-right: 20px;">
-                {% for bhxh in bhxh_list %}
-                <div class="list-group">
-                    <div class="info-row">
-                        <p><span class="text">Tên nhân viên:</span>
-                            <a href="{% url 'edit_bhxh' ma_nv=bhxh.nhan_vien.id %}" class="value" style="text-decoration: none">{{ bhxh.nhan_vien.ten_nv }}</a>
-                        </p>
-                    </div>
-                    <div class="info-row">
-                        <p><span class="text">Mã nhân viên:</span> <span class="value">{{ bhxh.nhan_vien.id }}</span></p>
-                        <p><span class="text">Mã BHXH:</span> <span class="value">{{ bhxh.ma_BHXH }}</span></p>
-                    </div>
-                    <div class="info-row">
-                        <p><span class="text">Mức đóng của nhân viên:</span> <span class="value">{{ bhxh.nhan_vien_dong }}%</span></p>
-                        <p><span class="text">Mức đóng của trường:</span> <span class="value">{{ bhxh.truong_dong }}%</span></p>
-                    </div>
-                    <div class="info-row">
-                        <p><span class="text">Ngày tham gia:</span> <span class="value">{{ bhxh.thoi_gian_bat_dau }}</span></p>
-                    </div>
-                    <a href="{% url 'info_bhxh' ma_nv=bhxh.nhan_vien.id %}" class="view-button">Xem</a>
-                </div>
-                {% empty %}
-                    <p>Chưa có dữ liệu bảo hiểm xã hội.</p>
+    <!-- Filter Form -->
+    <form method="get" class="row mb-4">
+    <div class="col-md-4 offset-md-8 d-flex">
+        <div class="custom-select me-2">
+            <select name="nv_id" class="form-select" onchange="this.form.submit()">
+                <option value="" {% if not selected_nv_id %}selected{% endif %}>-- Chọn nhân viên --</option>
+                {% for nv in ds_nhanvien %}
+                    <option value="{{ nv.id }}" {% if selected_nv_id == nv.id|stringformat:"s" %}selected{% endif %}>
+                        {{ nv.ten_nv }}
+                    </option>
                 {% endfor %}
-            </div>
-            <!-- Bộ lọc -->
-            <div class="filter-container">
-                <div class="filter-title">Lọc theo tên nhân viên</div>
-                <form method="get" action="{% url 'bhxh_list' %}">
-                    <select id="nameFilter" name="name" class="filter-select" onchange="this.form.submit()">
-                        <option value="">-- Tất cả --</option>
-                        {% for bhxh in bhxh_list %}
-                            <option value="{{ bhxh.nhan_vien.ten_nv }}" {% if bhxh.nhan_vien.ten_nv == name_filter %}selected{% endif %}>
-                                {{ bhxh.nhan_vien.ten_nv }}
-                            </option>
-                        {% endfor %}
-                    </select>
-                </form>
-            </div>
+            </select>
         </div>
     </div>
+</form>
+    <!-- Danh sách BHXH -->
+    <div class="bhxh-list">
+        {% for bh in bhxh_list %}
+        <div class="card mb-3">
+            <div class="card-body p-0">
+                <div class="row g-0">
+                    <div class="col-md-4 employee-info p-4">
+                       <h5 class="fw-bold mb-1">
+                            <a href="{% url 'edit_bhxh' ma_nv=bh.nhan_vien.id %}" class="text-decoration-none link-primary">
+                                {{ bh.nhan_vien.ten_nv }}
+                            </a>
+                       </h5>
+                        <p class="text-muted mb-2">Mã nhân viên: {{ bh.nhan_vien.id }}</p>
+                    </div>
+                    <div class="col-md-8 p-4">
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <p class="info-label">Mã BHXH</p>
+                                <p class="info-value">{{ bh.ma_BHXH }}</p>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <p class="info-label">Ngày tham gia</p>
+                                <p class="info-value">{{ bh.thoi_gian_bat_dau|date:"F j, Y" }}</p>
+                            </div>
+                            <div class="col-md-6">
+                                <p class="info-label">Mức đóng của nhân viên</p>
+                                <p class="info-value highlight">{{ bh.nhan_vien_dong }}%</p>
+                            </div>
+                            <div class="col-md-6">
+                                <p class="info-label">Mức đóng của trường</p>
+                                <p class="info-value highlight">{{ bh.truong_dong }}%</p>
+                            </div>
+                        </div>
+                        <div class="d-flex justify-content-end mt-3">
+                           <a href="{% url 'info_bhxh' ma_nv=bh.nhan_vien.id %}" class="btn btn-outline-secondary d-flex align-items-center gap-2">
+                               <i class="fas fa-eye"></i> Xem chi tiết
+                           </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <p class="text-center text-muted">Không có dữ liệu BHXH.</p>
+        {% endfor %}
+    </div>
+</div>
+
+<!-- Overlay -->
+<div id="popupOverlay" class="popup-overlay"></div>
+<!-- Popup Form -->
+<div id="popupForm" class="popup-form" style="display: none;">
+    <form method="POST" action="{% url 'tinh_tien_bhxh_ajax' %}">
+        {% csrf_token %}
+        <div class="info-row1">
+            <div class="label-wrapper">{{ form.ngay_bat_dau.label_tag }}</div>
+            <div class="input-wrapper">{{ form.ngay_bat_dau }}</div>
+        </div>
+        <div class="info-row1">
+            <div class="label-wrapper">{{ form.ngay_ket_thuc.label_tag }}</div>
+            <div class="input-wrapper">{{ form.ngay_ket_thuc }}</div>
+        </div>
+        <div class="info-row1 total-amount-row">
+            <div class="label-wrapper"><label>Tổng tiền:</label></div>
+           <div class="input-wrapper" id="tongTienDisplay">{{ tong_tien|default:'0' }} VND</div>
+        </div>
+        {% if form.errors %}
+        <div class="alert alert-danger">
+            {% for field in form %}
+                {% for error in field.errors %}
+                    <p>{{ error }}</p>
+                {% endfor %}
+            {% endfor %}
+            {% for error in form.non_field_errors %}
+                <p>{{ error }}</p>
+            {% endfor %}
+        </div>
+        {% endif %}
+        <div class="action-buttons">
+            <button class="button" id="submitButton" type="submit">Lưu</button>
+            <button type="button" class="button1">Hủy</button>
+        </div>
+    </form>
 </div>
 {% endblock %}
