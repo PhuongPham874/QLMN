@@ -1,33 +1,142 @@
 {% load static %}
+
+<style>
+    .card {
+        border-radius: 8px;
+        border: none;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        background-color: #fff;
+        margin-bottom: 16px;
+    }
+
+    .employee-avatar {
+        width: 50px;
+        height: 50px;
+        background-color: #4A90E2;
+        color: white;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: bold;
+        font-size: 20px;
+    }
+
+    .info-row {
+        display: flex;
+        margin-bottom: 8px;
+    }
+
+    .info-label {
+        color: black;
+        font-weight: 700;
+        min-width: 140px;
+    }
+
+    .status-badge {
+        display: inline-block;
+        padding: 4px 12px;
+        border-radius: 20px;
+        font-size: 14px;
+        font-weight: 500;
+        color: white;
+    }
+
+    .status-pending {
+        background-color: #ffc107; /* Màu vàng cho "Đang chờ duyệt" */
+    }
+
+    .status-approved {
+        background-color: #28a745;
+    }
+
+    .status-rejected {
+        background-color: #6c757d;
+    }
+
+    .link-btn {
+        color: #4A90E2;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        border: 1px solid #4A90E2;
+        border-radius: 20px;
+        padding: 4px 12px;
+        font-size: 14px;
+    }
+
+    .page-title {
+        color: black;
+        font-weight: 700;
+        font-size: 28px;
+        margin-bottom: 24px;
+        text-align: center;
+    }
+</style>
+
 <div class="container py-4">
+    <h2 class="page-title">{{ tieu_de }}</h2>
 
     <div class="row g-4">
+        <!-- Danh sách khen thưởng -->
         <div class="col-md-8">
-            <h2 class="fw-bold text-center mb-4">{{ tieu_de }}</h2>
+                        <h2 class="page-title">KHEN THƯỞNG CỦA TÔI</h2>
+
             {% if khen_thuong_list %}
                 <div class="row gy-3">
                     {% for khen_thuong in khen_thuong_list %}
                         <div class="col-12">
-                            <div class="card h-100" style="background: linear-gradient(to right, #ddf0ff, #ffffff); border: none; transition: transform 0.2s; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);">
-                                <div class="card-body p-3">
+                            <div class="card">
+                                <div class="card-body p-4">
+
+
                                     <div class="row">
-                                        <div class="col-12">
-                                            <p class="mb-2"><span class="fw-bold" style="color: #3A7DB8;">Ngày ra quyết định:</span> {{ khen_thuong.ngay_tao|date:"d/m/Y H:i" }}</p>
-                                            <p class="mb-2"><span class="fw-bold" style="color: #3A7DB8;">Giá trị:</span> {{ khen_thuong.gia_tri }} VNĐ</p>
-                                            <p class="mb-2"><span class="fw-bold" style="color: #3A7DB8;">Người tạo:</span> {{ khen_thuong.nguoi_tao_don.ten_nv }} ({{ khen_thuong.nguoi_tao_don.chuc_vu|default:'N/A' }})</p>
-                                            <p class="mb-2"><span class="fw-bold" style="color: #3A7DB8;">Người duyệt:</span> {{ khen_thuong.nguoi_xac_nhan.ten_nv|default:"Chưa duyệt" }} {% if khen_thuong.nguoi_xac_nhan %}({{ khen_thuong.nguoi_xac_nhan.chuc_vu|default:'N/A' }}){% endif %}</p>
-                                            <p class="mb-2"><span class="fw-bold" style="color: #3A7DB8;">Trạng thái:</span> {{ khen_thuong.get_trang_thai_display }}</p>
-                                            <p class="mb-2">
-                                                <span class="fw-bold" style="color: #3A7DB8;">Minh chứng:</span>
-                                                {% if khen_thuong.minh_chung_file %}
-                                                    <a href="{{ khen_thuong.minh_chung_file.url }}" target="_blank">Xem file</a>
-                                                {% elif khen_thuong.minh_chung_url %}
-                                                    <a href="{{ khen_thuong.minh_chung_url }}" target="_blank">Xem URL</a>
-                                                {% else %}
-                                                    Không có
-                                                {% endif %}
-                                            </p>
-                                            <p><strong style="color: #3A7DB8;">Lý do:</strong> {{ khen_thuong.ly_do }}</p>
+                                        <div class="col-md-6">
+                                            <div class="info-row">
+                                                <span class="info-label">Ngày ra quyết định:</span>
+                                                <span>{{ khen_thuong.ngay_tao|date:"d/m/Y H:i" }}</span>
+                                            </div>
+                                            <div class="info-row">
+                                                <span class="info-label">Giá trị:</span>
+                                                <span>{{ khen_thuong.gia_tri }} VNĐ</span>
+                                            </div>
+                                            <div class="info-row">
+                                                <span class="info-label">Minh chứng:</span>
+                                                <span>
+                                                    {% if khen_thuong.minh_chung_file %}
+                                                        <a href="{{ khen_thuong.minh_chung_file.url }}" target="_blank" class="link-btn">
+                                                            <i class="fas fa-download"></i> Tải tệp
+                                                        </a>
+                                                    {% elif khen_thuong.minh_chung_url %}
+                                                        <a href="{{ khen_thuong.minh_chung_url }}" target="_blank" class="link-btn">
+                                                            <i class="fas fa-link"></i> Xem liên kết
+                                                        </a>
+                                                    {% else %}
+                                                        Không có
+                                                    {% endif %}
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="info-row">
+                                                <span class="info-label">Người tạo:</span>
+                                                <span>{{ khen_thuong.nguoi_tao_don.ten_nv }} ({{ khen_thuong.nguoi_tao_don.chuc_vu|default:'N/A' }})</span>
+                                            </div>
+                                            <div class="info-row">
+                                                <span class="info-label">Người duyệt:</span>
+                                                <span>{{ khen_thuong.nguoi_xac_nhan.ten_nv|default:"Chưa duyệt" }} {% if khen_thuong.nguoi_xac_nhan %}({{ khen_thuong.nguoi_xac_nhan.chuc_vu|default:'N/A' }}){% endif %}</span>
+                                            </div>
+                                            <span class="status-badge {% if khen_thuong.trang_thai == 'DA_DUYET' %}status-approved{% elif khen_thuong.trang_thai == 'DANG_CHO_DUYET' %}status-pending{% else %}status-rejected{% endif %}">
+                                                {{ khen_thuong.get_trang_thai_display }}
+                                            </span>
+                                        </div>
+                                    </div>
+
+                                    <div class="mt-3">
+                                        <div class="info-row">
+                                            <span class="info-label">Lý do:</span>
+                                            <span>{{ khen_thuong.ly_do }}</span>
                                         </div>
                                     </div>
                                 </div>
@@ -42,6 +151,7 @@
             {% endif %}
         </div>
 
+        <!-- Bộ lọc -->
         <div class="col-md-4">
             <div class="card p-4" style="border: none; background: #fff; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);">
                 <h5 class="fw-bold mb-4" style="color: black;">LỌC KHEN THƯỞNG</h5>
@@ -64,8 +174,7 @@
                             {% endfor %}
                         </select>
                     </div>
-                    <button type="submit" class="btn btn-primary w-100"
-                            style="border-radius: 15px; padding: 10px;">
+                    <button type="submit" class="btn btn-primary w-100" style="border-radius: 15px; padding: 10px;">
                         <i class="fas fa-filter me-2"></i>Lọc
                     </button>
                 </form>

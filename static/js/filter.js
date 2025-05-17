@@ -131,3 +131,66 @@ function filterKhenThuongNhanVien(event) {
         noDataMessage.style.display = hasVisibleItems ? 'none' : '';
     }
 }
+
+// Tab switching functionality
+document.addEventListener('DOMContentLoaded', () => {
+    // Handle main tabs
+    const mainTabs = document.querySelectorAll('#mainTabs .nav-link');
+    const mainContents = document.querySelectorAll('#mainTabs ~ .tab-content');
+
+    mainTabs.forEach(tab => {
+        tab.addEventListener('click', (e) => {
+            e.preventDefault();
+            const targetId = tab.getAttribute('data-tab');
+
+            // Update active tab
+            mainTabs.forEach(t => t.classList.remove('active'));
+            tab.classList.add('active');
+
+            // Show/hide content
+            mainContents.forEach(content => {
+                content.classList.toggle('active', content.id === targetId);
+            });
+        });
+    });
+
+    // Handle sub tabs for Kỷ luật
+    const kyLuatTabs = document.querySelectorAll('#kyLuatTabs .nav-link');
+    const kyLuatContents = document.querySelectorAll('#danh-sach-ky-luat .tab-content');
+
+    kyLuatTabs.forEach(tab => {
+        tab.addEventListener('click', (e) => {
+            e.preventDefault();
+            const targetId = tab.getAttribute('data-tab');
+
+            // Update active tab
+            kyLuatTabs.forEach(t => t.classList.remove('active'));
+            tab.classList.add('active');
+
+            // Show/hide content
+            kyLuatContents.forEach(content => {
+                content.classList.toggle('active', content.id === targetId);
+            });
+        });
+    });
+
+    // Handle sub tabs for Khen thưởng
+    const rewardTabs = document.querySelectorAll('#rewardTabs .nav-link');
+    const rewardContents = document.querySelectorAll('#danh-sach-khen-thuong .tab-content');
+
+    rewardTabs.forEach(tab => {
+        tab.addEventListener('click', (e) => {
+            e.preventDefault();
+            const targetId = tab.getAttribute('data-tab');
+
+            // Update active tab
+            rewardTabs.forEach(t => t.classList.remove('active'));
+            tab.classList.add('active');
+
+            // Show/hide content
+            rewardContents.forEach(content => {
+                content.classList.toggle('active', content.id === targetId);
+            });
+        });
+    });
+});
