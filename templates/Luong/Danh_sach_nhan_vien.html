@@ -1,57 +1,241 @@
 {% extends "home.html" %}
 
 {% block page_background %}
-<div class="p-6" style="margin-left: 50px">
+{% load static %}
+<div class="employee-dashboard" style="width: 1500px">
+  <!-- Notification Area -->
+  {% if messages %}
+  <div class="notification-container">
+    {% for message in messages %}
+      <div class="notification {% if message.tags == 'success' %}success{% elif message.tags == 'error' %}error{% elif message.tags == 'warning' %}warning{% else %}info{% endif %}">
+        <div class="notification-icon">
+          {% if message.tags == 'success' %}✓{% elif message.tags == 'error' %}✕{% elif message.tags == 'warning' %}!{% else %}ℹ{% endif %}
+        </div>
+        <div class="notification-message">{{ message }}</div>
+        <button class="notification-close" onclick="this.parentElement.remove()">×</button>
+      </div>
+    {% endfor %}
+  </div>
+  {% endif %}
 
-    <!-- Hiển thị thông báo -->
-    {% if messages %}
-    <div class="mb-4">
-        {% for message in messages %}
-            <div class="px-4 py-2 rounded-lg shadow
-                {% if message.tags == 'success' %} bg-green-100 text-green-800
-                {% elif message.tags == 'error' %} bg-red-100 text-red-800
-                {% elif message.tags == 'warning' %} bg-yellow-100 text-yellow-800
-                {% else %} bg-gray-100 text-gray-800 {% endif %}">
-                {{ message }}
-            </div>
-        {% endfor %}
+  <!-- Dashboard Header -->
+  <div class="dashboard-header">
+    <div class="header-left">
+      <h1 class="page-title">Danh sách lương nhân viên</h1>
+      <p class="page-subtitle">Hiện thị danh sách lương nhân viên đối với quản lý</p>
     </div>
-    {% endif %}
+  </div>
 
-    <div class="flex items-center justify-between mb-6">
-        <h1 class="text-2xl font-bold text-gray-800">📋 Danh sách nhân viên</h1>
+
+
+  <!-- Employee Table -->
+  <div class="table-container">
+    <div class="table-header">
+      <h2 class="table-title">Danh sách nhân viên</h2>
+      <div class="table-actions">
+        <div class="dropdown">
+        </div>
+        <div class="dropdown">
+
+        </div>
+      </div>
     </div>
 
-    <div class="bg-white rounded-xl shadow-lg p-4">
-        <table class="min-w-full table-auto border-collapse rounded-xl overflow-hidden">
-            <thead>
-                <tr class="bg-green-500 text-black text-left rounded-t-xl">
-                    <th class="py-3 px-4">Mã nhân viên</th>
-                    <th class="py-3 px-4">Họ và tên</th>
-                    <th class="py-3 px-4">Phòng ban</th>
-                    <th class="py-3 px-4">Xem bảng lương</th>
-                </tr>
-            </thead>
-            <tbody class="text-gray-800">
-                {% for nv in nhan_viens %}
-                <tr class="border-t hover:bg-gray-50 transition">
-                    <td class="py-2 px-4 font-mono">{{ nv.id }}</td>
-                    <td class="py-2 px-4">{{ nv.ten_nv }}</td>
-                    <td class="py-2 px-4">{{ nv.to_phong_ban }}</td>
-                    <td class="py-2 px-4">
-                        <a href="{% url 'xem_bang_luong_cua_nhan_vien' nv.id %}"
-                           class="text-blue-600 hover:underline font-medium">
-                           Xem lương
-                        </a>
-                    </td>
-                </tr>
-                {% empty %}
-                <tr>
-                    <td colspan="4" class="py-4 px-4 text-center text-gray-400">Không có nhân viên nào.</td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
+    <div class="employee-table">
+      <table>
+        <thead>
+          <tr>
+            <th class="sortable" data-sort="id">
+              ID
+              <svg class="sort-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M7 10l5 5 5-5"></path>
+              </svg>
+            </th>
+            <th class="sortable" data-sort="name">
+              Full Name
+              <svg class="sort-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M7 10l5 5 5-5"></path>
+              </svg>
+            </th>
+            <th class="sortable" data-sort="email">
+              Email
+              <svg class="sort-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M7 10l5 5 5-5"></path>
+              </svg>
+            </th>
+            <th class="sortable" data-sort="department">
+              Department
+              <svg class="sort-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M7 10l5 5 5-5"></path>
+              </svg>
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for item in nhan_viens %}
+          <tr class="employee-row">
+            <td class="employee-id">
+              <a href="{% url 'xem_bang_luong_cua_nhan_vien' item.id %}" style="display:block; width:100%; height:100%; text-decoration:none; color:inherit;">
+                {{ item.id }}
+              </a>
+            </td>
+            <td class="employee-name">
+              <div class="avatar">
+                {{ item.ten_nv|slice:":1" }}
+              </div>
+              <span>
+                <a href="{% url 'xem_bang_luong_cua_nhan_vien' item.id %}" style="display:block; width:100%; height:100%; text-decoration:none; color:inherit;">
+                {{ item.ten_nv }}
+                </a>
+              </span>
+            </td>
+            <td class="employee-email">{{ item.user.email }}</td>
+            <td class="employee-department">{{ item.to_phong_ban }}</td>
+          </tr>
+          {% empty %}
+          <tr class="empty-row">
+            <td colspan="8">
+              <div class="empty-state">
+                <svg class="empty-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <circle cx="12" cy="12" r="10"></circle>
+                  <line x1="12" y1="8" x2="12" y2="12"></line>
+                  <line x1="12" y1="16" x2="12.01" y2="16"></line>
+                </svg>
+              </div>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
     </div>
+
+    <!-- Pagination -->
+    <div class="pagination">
+      <button class="pagination-button" disabled>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="15 18 9 12 15 6"></polyline>
+        </svg>
+        Previous
+      </button>
+      <div class="pagination-pages">
+        <button class="pagination-page active">1</button>
+        <button class="pagination-page">2</button>
+        <button class="pagination-page">3</button>
+        <span class="pagination-ellipsis">...</span>
+        <button class="pagination-page">10</button>
+      </div>
+      <button class="pagination-button">
+        Next
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="9 18 15 12 9 6"></polyline>
+        </svg>
+      </button>
+    </div>
+  </div>
 </div>
+<link rel="stylesheet" href="{% static 'css/danh_sach_nhan_vien_cham_cong.css' %}">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<!-- JavaScript for interactivity -->
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    // Calculate statistics
+    let presentCount = 0;
+    let absentCount = 0;
+    let lateCount = 0;
+
+    document.querySelectorAll('.employee-status .status-badge').forEach(badge => {
+      if (badge.classList.contains('active') || badge.classList.contains('complete')) {
+        presentCount++;
+      } else if (badge.classList.contains('absent')) {
+        absentCount++;
+      }
+    });
+
+    // Update stats
+    document.getElementById('presentCount').textContent = presentCount;
+    document.getElementById('absentCount').textContent = absentCount;
+    document.getElementById('lateCount').textContent = lateCount;
+
+    // Search functionality
+    const searchInput = document.getElementById('employeeSearch');
+    searchInput.addEventListener('input', function() {
+      const searchTerm = this.value.toLowerCase();
+      document.querySelectorAll('.employee-row').forEach(row => {
+        const name = row.querySelector('.employee-name').textContent.toLowerCase();
+        const email = row.querySelector('.employee-email').textContent.toLowerCase();
+        const department = row.querySelector('.employee-department').textContent.toLowerCase();
+
+        if (name.includes(searchTerm) || email.includes(searchTerm) || department.includes(searchTerm)) {
+          row.style.display = '';
+        } else {
+          row.style.display = 'none';
+        }
+      });
+    });
+
+    // Sorting functionality
+    document.querySelectorAll('th.sortable').forEach(header => {
+      header.addEventListener('click', function() {
+        const sortBy = this.getAttribute('data-sort');
+        const tbody = document.querySelector('tbody');
+        const rows = Array.from(tbody.querySelectorAll('tr.employee-row'));
+
+        // Toggle sort direction
+        const isAscending = !this.classList.contains('sort-asc');
+        document.querySelectorAll('th.sortable').forEach(h => {
+          h.classList.remove('sort-asc', 'sort-desc');
+        });
+        this.classList.add(isAscending ? 'sort-asc' : 'sort-desc');
+
+        // Sort rows
+        rows.sort((a, b) => {
+          let aValue, bValue;
+
+          switch(sortBy) {
+            case 'id':
+              aValue = a.querySelector('.employee-id').textContent;
+              bValue = b.querySelector('.employee-id').textContent;
+              break;
+            case 'name':
+              aValue = a.querySelector('.employee-name span').textContent;
+              bValue = b.querySelector('.employee-name span').textContent;
+              break;
+            case 'email':
+              aValue = a.querySelector('.employee-email').textContent;
+              bValue = b.querySelector('.employee-email').textContent;
+              break;
+            case 'department':
+              aValue = a.querySelector('.employee-department').textContent;
+              bValue = b.querySelector('.employee-department').textContent;
+              break;
+            case 'checkin':
+              aValue = a.querySelector('.employee-checkin .time-badge').textContent;
+              bValue = b.querySelector('.employee-checkin .time-badge').textContent;
+              break;
+            case 'checkout':
+              aValue = a.querySelector('.employee-checkout .time-badge').textContent;
+              bValue = b.querySelector('.employee-checkout .time-badge').textContent;
+              break;
+          }
+
+          if (isAscending) {
+            return aValue.localeCompare(bValue);
+          } else {
+            return bValue.localeCompare(aValue);
+          }
+        });
+
+        // Reorder rows
+        rows.forEach(row => tbody.appendChild(row));
+      });
+    });
+
+    // Close notification
+    document.querySelectorAll('.notification-close').forEach(button => {
+      button.addEventListener('click', function() {
+        this.parentElement.remove();
+      });
+    });
+  });
+</script>
 {% endblock %}

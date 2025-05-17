@@ -5,13 +5,20 @@ from django.utils import timezone
 import time
 
 @login_required
-def cham_cong_view(request):
-    if request.user.is_superuser:
+def cham_cong_view(request, nhanvien_id=None):
+    current_user = get_object_or_404(NhanVien, user=request.user)
+
+    # Nếu là nhân sự và nhấn vào một nhân viên cụ thể
+    if current_user.vi_tri_cong_viec == 'Nhân sự' and nhanvien_id:
+        nhan_vien = get_object_or_404(NhanVien, id=nhanvien_id)
+    else:
+        nhan_vien = current_user
+
+    # Nếu là nhân sự và không chọn nhân viên → hiện danh sách
+    if current_user.vi_tri_cong_viec == 'Nhân sự' and nhanvien_id is None:
         nhan_viens = NhanVien.objects.all().order_by('id')
-        nhan_vien = get_object_or_404(NhanVien, user=request.user)
         now = timezone.now()
 
-        # Tạo danh sách chứa thông tin chấm công của từng nhân viên
         nhan_viens_data = []
         for nv in nhan_viens:
             cham_cong = ChamCong.objects.filter(
@@ -29,11 +36,10 @@ def cham_cong_view(request):
 
         return render(request, 'ChamCong/danh_sach_nhan_vien.html', {
             'nhan_viens_data': nhan_viens_data,
-            'nhan_vien': nhan_vien
+            'nhan_vien': current_user
         })
 
-    # Nếu là user thường → xử lý như cũ
-    nhan_vien = get_object_or_404(NhanVien, user=request.user)
+    # Xử lý hiển thị lịch sử chấm công cho nhân viên cụ thể
     cham_cong_data = ChamCong.objects.filter(nhan_vien=nhan_vien)
 
     cham_cong_theo_thang = {}
@@ -53,26 +59,22 @@ def cham_cong_view(request):
         all_months.add(month)
         all_years.add(year)
 
-    # Sắp xếp các tháng/năm từ mới đến cũ
     sorted_cham_cong_theo_thang = sorted(
         cham_cong_theo_thang.items(),
         key=lambda x: (int(x[0].split('-')[0]), int(x[0].split('-')[1])),
         reverse=True
     )
 
-    # Sắp xếp tháng và năm để hiển thị
     months = sorted(all_months)
     years = sorted(all_years)
 
     return render(request, 'ChamCong/cham_cong.html', {
-        'is_super': False,
+        'is_super': current_user.vi_tri_cong_viec == 'Nhân sự',
         'nhan_vien': nhan_vien,
         'cham_cong_theo_thang': sorted_cham_cong_theo_thang,
         'months': months,
         'years': years
     })
-
-
 import cv2
 import time
 import os

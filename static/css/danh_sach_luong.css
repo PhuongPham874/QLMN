@@ -238,7 +238,7 @@
 .salary-page .filter-button {
   width: 100%;
   padding: 12px;
-  background-color: var(--primary);
+  background-color: #8DD8FF;
   color: white;
   border: none;
   border-radius: 6px;
@@ -251,7 +251,7 @@
   transition: var(--transition);
 }
 .salary-page .filter-button:hover {
-  background-color: var(--primary-dark);
+  background-color: #4E71FF;
 }
 
 .salary-page .summary-stats {

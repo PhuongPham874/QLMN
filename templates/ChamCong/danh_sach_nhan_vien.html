@@ -152,10 +152,20 @@
         <tbody>
           {% for item in nhan_viens_data %}
           <tr class="employee-row">
-            <td class="employee-id">{{ item.nhan_vien.id }}</td>
+            <td class="employee-id">
+              <a href="{% url 'cham_cong_theo_nhanvien' item.nhan_vien.id %}"style="display:block; width:100%; height:100%; text-decoration:none; color:inherit;">
+                {{ item.nhan_vien.id }}
+              </a>
+            </td>
             <td class="employee-name">
-              <div class="avatar">{{ item.nhan_vien.ten_nv|slice:":1" }}</div>
-              <span>{{ item.nhan_vien.ten_nv }}</span>
+              <div class="avatar">
+                {{ item.nhan_vien.ten_nv|slice:":1" }}
+              </div>
+              <span>
+                <a href="{% url 'cham_cong_theo_nhanvien' item.nhan_vien.id %}"style="display:block; width:100%; height:100%; text-decoration:none; color:inherit;">
+                {{ item.nhan_vien.ten_nv }}
+                </a>
+              </span>
             </td>
             <td class="employee-email">{{ item.nhan_vien.user.email }}</td>
             <td class="employee-department">{{ item.nhan_vien.to_phong_ban }}</td>
