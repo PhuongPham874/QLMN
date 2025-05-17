@@ -14,6 +14,10 @@ class KyLuatForm(forms.ModelForm):
             except NhanVien.DoesNotExist:
                 self.add_error(None, "Không tìm thấy thông tin nhân viên của bạn.")
 
+        # Tùy chỉnh label cho dropdown
+        def get_label(obj):
+            return f"{obj.ten_nv} ({obj.chuc_vu if obj.chuc_vu else 'N/A'})"
+
         # Nếu người tạo là Hiệu Trưởng, ẩn và tự động gán nguoi_duyet_don
         if nhan_vien and nhan_vien.chuc_vu == 'Hiệu Trưởng':
             self.fields['nguoi_duyet_don'].required = False
@@ -25,12 +29,14 @@ class KyLuatForm(forms.ModelForm):
             self.fields['nguoi_duyet_don'].queryset = NhanVien.objects.filter(
                 chuc_vu__in=['Hiệu Trưởng', 'Hiệu phó chuyên môn', 'Hiệu phó hoạt động']
             )
+            self.fields['nguoi_duyet_don'].label_from_instance = get_label
             self.fields['trang_thai'].initial = 'DANG_CHO_DUYET'
 
         # Giới hạn nguoi_tao_don: Chỉ Hiệu trưởng, Hiệu phó, hoặc Tổ trưởng
         self.fields['nguoi_tao_don'].queryset = NhanVien.objects.filter(
             chuc_vu__in=['Hiệu Trưởng', 'Hiệu phó chuyên môn', 'Hiệu phó hoạt động', 'Tổ trưởng']
         )
+        self.fields['nguoi_tao_don'].label_from_instance = get_label
 
         # Giới hạn danh sách nhân viên theo chức vụ và vị trí công việc
         if nhan_vien:

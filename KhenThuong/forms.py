@@ -15,12 +15,17 @@ class KhenThuongForm(forms.ModelForm):
             except NhanVien.DoesNotExist:
                 self.add_error(None, "Không tìm thấy thông tin nhân viên của bạn.")
 
+        # Tùy chỉnh label cho dropdown
+        def get_label(obj):
+            return f"{obj.ten_nv} ({obj.chuc_vu if obj.chuc_vu else 'N/A'})"
+
         # Giới hạn nguoi_tao_don: chỉ Tổ trưởng, Hiệu trưởng, Hiệu phó chuyên môn, Hiệu phó hoạt động
         self.fields['nguoi_tao_don'].queryset = NhanVien.objects.filter(
             chuc_vu__in=['Tổ trưởng', 'Hiệu Trưởng', 'Hiệu phó chuyên môn', 'Hiệu phó hoạt động']
         )
         self.fields['nguoi_tao_don'].widget.attrs['readonly'] = True
         self.fields['nguoi_tao_don'].widget.attrs['class'] = 'form-control'
+        self.fields['nguoi_tao_don'].label_from_instance = get_label
 
         # Nếu người tạo là Hiệu Trưởng, tự động duyệt đơn
         if nhan_vien and nhan_vien.chuc_vu == 'Hiệu Trưởng':
@@ -33,7 +38,8 @@ class KhenThuongForm(forms.ModelForm):
             self.fields['nguoi_xac_nhan'].queryset = NhanVien.objects.filter(
                 chuc_vu__in=['Hiệu Trưởng', 'Hiệu phó chuyên môn', 'Hiệu phó hoạt động']
             )
-            self.fields['nguoi_xac_nhan'].required = True  # Đảm bảo trường này là bắt buộc
+            self.fields['nguoi_xac_nhan'].required = True
+            self.fields['nguoi_xac_nhan'].label_from_instance = get_label
             self.fields['trang_thai'].initial = 'DANG_CHO_DUYET'
 
         # Giới hạn nhan_vien dựa trên chức vụ và vị trí công việc

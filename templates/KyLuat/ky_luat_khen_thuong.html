@@ -2,446 +2,203 @@
 {% load static %}
 
 {% block page_background %}
-
-<main class="p-4" style="flex-grow: 1; background-color: white; align-items: flex-start; width: 80%">
-    <div class="container">
-        <div style="background: white; border-radius: 15px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); padding: 20px;">
-            <!-- Tiêu đề -->
-            <h2 class="fw-bold text-center mb-4">KỶ LUẬT & KHEN THƯỞNG</h2>
-
-            <!-- Thanh điều hướng: Danh sách kỷ luật và Danh sách khen thưởng -->
-            <div style="width: 100%; ">
-                <ul class="nav nav-tabs mb-4" id="mainTabs" role="tablist" style="justify-content: center; border-bottom: none;">
-                    <li class="nav-item" style="margin: 0 15px;">
-                        <a class="nav-link active" id="danh-sach-ky-luat-tab" data-bs-toggle="tab" href="#danh-sach-ky-luat" role="tab" aria-controls="danh-sach-ky-luat" aria-selected="true" style="background-color: #066BBB; color: white; border-radius: 10px; padding: 15px 40px; font-size: 1.25rem; font-weight: 600; transition: background-color 0.3s;">Danh sách kỷ luật</a>
-                    </li>
-                    <li class="nav-item" style="margin: 0 15px;">
-                        <a class="nav-link" id="danh-sach-khen-thuong-tab" data-bs-toggle="tab" href="#danh-sach-khen-thuong" role="tab" aria-controls="danh-sach-khen-thuong" aria-selected="false" style="background-color: #4A90E2; color: white; border-radius: 10px; padding: 15px 40px; font-size: 1.25rem; font-weight: 600; transition: background-color 0.3s;">Danh sách khen thưởng</a>
-                    </li>
-                </ul>
-            </div>
 <style>
-    .nav-link:hover {
-        background-color: #3A7DB8 !important;
-        color: white !important;
+    /* Reset và style chung */
+    body {
+<!--        background: linear-gradient(to right, #E6F0FA, #FFFFFF);-->
+        font-family: 'Roboto', sans-serif;
+    }
+    .container {
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+    .card {
+        background: white;
+        border-radius: 12px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        padding: 24px;
+    }
+    h2 {
+        color: #0056D2;
+        font-weight: 700;
+        font-size: 24px;
+        text-align: center;
+        margin-bottom: 24px;
+    }
+    .current-time {
+        text-align: center;
+        font-size: 14px;
+        color: #4A90E2;
+        margin-bottom: 16px;
+    }
+
+    /* Tabs chính */
+    .main-tabs .nav-link {
+        flex: 1;
+        text-align: center;
+        padding: 10px;
+        font-size: 18px;
+        font-weight: 500;
+        color: black;
+        border: none;
+        border-radius: 8px 8px 0 0;
+        transition: background-color 0.3s;
+    }
+    .main-tabs .nav-item {
+    margin-right: 10px; /* Thêm khoảng cách 10px giữa các tab chính */
+}
+    .main-tabs .nav-link.active {
+        background-color: #4A90E2;
+        color: white
+    }
+
+    .main-tabs .nav-link:hover {
+        background-color: #003BB5;
+    }
+
+    /* Tabs phụ */
+    .sub-tabs .nav-link {
+        padding: 12px 24px;
+        font-size: 16px;
+        color: #0056D2;
+        border: none;
+        border-bottom: 2px solid transparent;
+        transition: all 0.3s;
+    }
+    .sub-tabs .nav-link.active {
+        border-bottom: 2px solid #0056D2;
+        font-weight: 600;
+    }
+    .sub-tabs .nav-link:hover {
+        color: #003BB5;
+        border-bottom: 2px solid #003BB5;
+    }
+
+    /* Nút điều hướng */
+    .action-btn {
+        padding: 10px 20px;
+        font-size: 14px;
+        font-weight: 500;
+        border-radius: 20px;
+        transition: all 0.3s;
+        margin-left: 8px;
+    }
+    .btn-info {
+        background-color: #4A90E2;
+        color: white;
+        border: none;
+    }
+    .btn-primary {
+        background-color: #0056D2;
+        color: white;
+        border: none;
+    }
+    .action-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+        .main-tabs .nav-link {
+            font-size: 16px;
+            padding: 12px;
+        }
+        .sub-tabs .nav-link {
+            font-size: 14px;
+            padding: 10px 16px;
+        }
+        .action-btn {
+            padding: 8px 16px;
+            font-size: 12px;
+        }
     }
 </style>
 
-            <!-- Nội dung của các tab chính -->
+<main class="p-4" style="flex-grow: 1;">
+    <div class="container">
+        <div class="card">
+            <h2>KỶ LUẬT & KHEN THƯỞNG</h2>
+            <!-- Hiển thị thời gian hiện tại -->
+
+
+            <!-- Tabs chính -->
+            <ul class="nav nav-tabs main-tabs mb-4" id="mainTabs" role="tablist">
+                <li class="nav-item" role="presentation">
+                    <a class="nav-link active" id="danh-sach-ky-luat-tab" data-bs-toggle="tab" href="#danh-sach-ky-luat" role="tab" aria-controls="danh-sach-ky-luat" aria-selected="true">Danh sách kỷ luật</a>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <a class="nav-link" id="danh-sach-khen-thuong-tab" data-bs-toggle="tab" href="#danh-sach-khen-thuong" role="tab" aria-controls="danh-sach-khen-thuong" aria-selected="false">Danh sách khen thưởng</a>
+                </li>
+            </ul>
+
+            <!-- Nội dung tabs chính -->
             <div class="tab-content" id="mainTabsContent">
-                <!-- Tab: Danh sách kỷ luật -->
+                <!-- Tab Kỷ luật -->
                 <div class="tab-pane fade show active" id="danh-sach-ky-luat" role="tabpanel" aria-labelledby="danh-sach-ky-luat-tab">
-                    <!-- Thanh điều hướng phụ: Kỷ luật của tôi và Kỷ luật của nhân viên -->
-                    {% if has_permission %}
-                    <ul class="nav nav-tabs mb-4" id="kyLuatTabs" role="tablist">
+                    <!-- Tabs phụ -->
+                    <ul class="nav nav-tabs sub-tabs mb-4" id="kyLuatTabs" role="tablist">
                         <li class="nav-item" role="presentation">
                             <a class="nav-link active" id="ky-luat-cua-toi-tab" data-bs-toggle="tab" href="#ky-luat-cua-toi" role="tab" aria-controls="ky-luat-cua-toi" aria-selected="true">Kỷ luật của tôi</a>
                         </li>
+                        {% if has_permission %}
                         <li class="nav-item" role="presentation">
                             <a class="nav-link" id="ky-luat-cua-nhan-vien-tab" data-bs-toggle="tab" href="#ky-luat-cua-nhan-vien" role="tab" aria-controls="ky-luat-cua-nhan-vien" aria-selected="false">Kỷ luật của nhân viên</a>
                         </li>
-                    </ul>
-                    {% else %}
-                    <ul class="nav nav-tabs mb-4" id="kyLuatTabs" role="tablist">
-                        <li class="nav-item" role="presentation">
-                            <a class="nav-link active" id="ky-luat-cua-toi-tab" data-bs-toggle="tab" href="#ky-luat-cua-toi" role="tab" aria-controls="ky-luat-cua-toi" aria-selected="true">Kỷ luật của tôi</a>
-                        </li>
-                    </ul>
-                    {% endif %}
-                    <div class="d-flex justify-content-end mb-4">
-                        {% if has_permission %}
-                        <a href="{% url 'ky_luat_cho_duyet' %}" class="btn btn-info me-2" style="border-radius: 20px; padding: 10px 20px; font-weight: 500;">
-                            <i class="fas fa-eye me-2"></i>Xem đơn chờ duyệt
-                        </a>
-                        <a href="{% url 'add_ky_luat' %}" class="btn btn-primary" style="border-radius: 20px; padding: 10px 20px; font-weight: 500;">
-                            <i class="fas fa-plus me-2"></i>Thêm mới
-                        </a>
                         {% endif %}
-                    </div>
-                    <!-- Nội dung của các tab phụ (Kỷ luật) -->
-                    <div class="tab-content" id="kyLuatTabsContent">
-                        <!-- Tab: Kỷ luật của tôi -->
-                        <div class="tab-pane fade show active" id="ky-luat-cua-toi" role="tabpanel" aria-labelledby="ky-luat-cua-toi-tab">
-                            <div class="row g-4">
-                                <div class="col-md-8">
-                                    <h2 class="fw-bold text-center mb-4">KỶ LUẬT CỦA TÔI</h2>
-                                    {% if ky_luat_cua_toi %}
-                                        <div class="row gy-3" id="ky-luat-cua-toi-list">
-                                            {% for ky_luat in ky_luat_cua_toi %}
-                                                <div class="col-12 ky-luat-item" data-date="{{ ky_luat.ngay_ra_quyet_dinh|date:'Y-m' }}">
-                                                    <div class="card h-100" style="background: linear-gradient(to right, #ddf0ff, #ffffff); border: none; transition: transform 0.2s;">
-                                                        <div class="card-body p-3">
-                                                            <div class="row">
-                                                                <div class="col-12">
-                                                                    <p class="mb-2"><span class="fw-bold" style="color: #3A7DB8;">Ngày ra quyết định:</span> {{ ky_luat.ngay_ra_quyet_dinh|default:"Chưa xác định" }}</p>
-                                                                    <p class="mb-2"><span class="fw-bold" style="color: #3A7DB8;">Ngày bắt đầu:</span> {{ ky_luat.ngay_bat_dau }}</p>
-                                                                    {% if ky_luat.ngay_ket_thuc %}
-                                                                        <p class="mb-2"><span class="fw-bold" style="color: #3A7DB8;">Ngày kết thúc:</span> {{ ky_luat.ngay_ket_thuc }}</p>
-                                                                    {% endif %}
-                                                                    <p class="mb-2"><span class="fw-bold" style="color: #3A7DB8;">Mức độ:</span> {{ ky_luat.get_muc_do_display }}</p>
-                                                                    {% if ky_luat.muc_do == 'PHAT_TIEN' and ky_luat.so_tien_phat %}
-                                                                        <p class="mb-2"><span class="fw-bold" style="color: #3A7DB8;">Số tiền phạt:</span> {{ ky_luat.so_tien_phat }} VNĐ</p>
-                                                                    {% endif %}
-                                                                    <p class="mb-2"><span class="fw-bold" style="color: #3A7DB8;">Người tạo:</span> {{ ky_luat.nguoi_tao_don.ten_nv }} ({{ ky_luat.nguoi_tao_don.chuc_vu|default:"N/A" }})</p>
-                                                                    <p class="mb-2"><span class="fw-bold" style="color: #3A7DB8;">Người duyệt:</span> {{ ky_luat.nguoi_duyet_don.ten_nv|default:"Chưa duyệt" }} {% if ky_luat.nguoi_duyet_don %}({{ ky_luat.nguoi_duyet_don.chuc_vu|default:"N/A" }}) {% endif %}</p>
-                                                                    <p class="mb-2"><span class="fw-bold" style="color: #3A7DB8;">Trạng thái:</span> {{ ky_luat.get_trang_thai_display }}</p>
-                                                                    <p class="mb-2">
-                                                                        <span class="fw-bold" style="color: #3A7DB8;">Minh chứng:</span>
-                                                                        {% if ky_luat.minh_chung_file %}
-                                                                            <a href="{{ ky_luat.minh_chung_file.url }}" target="_blank">Tải tệp</a>
-                                                                        {% elif ky_luat.minh_chung_url %}
-                                                                            <a href="{{ ky_luat.minh_chung_url }}" target="_blank">Xem liên kết</a>
-                                                                        {% else %}
-                                                                            Không có
-                                                                        {% endif %}
-                                                                    </p>
-                                                                    <p><strong style="color: #3A7DB8;">Lý do:</strong> {{ ky_luat.ly_do }}</p>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            {% endfor %}
-                                        </div>
-                                    {% else %}
-                                        <div class="col-12 text-center py-5">
-                                            <p class="text-muted">Bạn chưa có kỷ luật nào.</p>
-                                        </div>
-                                    {% endif %}
-                                </div>
-                                <div class="col-md-4">
-                                    <div class="card p-4" style="border: none; background: #fff; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);">
-                                        <h5 class="fw-bold mb-4" style="color: #066BBB;">LỌC KỶ LUẬT</h5>
-                                        <form id="filter-ky-luat-toi" onsubmit="filterKyLuatCuaToi(event)">
-                                            <div class="mb-3">
-                                                <label for="thang_ky_luat_toi" class="form-label fw-medium">Tháng</label>
-                                                <select id="thang_ky_luat_toi" name="thang" class="form-select" style="border-radius: 10px;">
-                                                    <option value="">Chọn tháng</option>
-                                                    {% for thang in thang_list %}
-                                                        <option value="{{ thang }}" {% if request.GET.thang|add:"0" == thang %}selected{% endif %}>{{ thang }}</option>
-                                                    {% endfor %}
-                                                </select>
-                                            </div>
-                                            <div class="mb-3">
-                                                <label for="nam_ky_luat_toi" class="form-label fw-medium">Năm</label>
-                                                <select id="nam_ky_luat_toi" name="nam" class="form-select" style="border-radius: 10px;">
-                                                    <option value="">Chọn năm</option>
-                                                    {% for nam in nam_list %}
-                                                        <option value="{{ nam }}" {% if request.GET.nam|add:"0" == nam %}selected{% endif %}>{{ nam }}</option>
-                                                    {% endfor %}
-                                                </select>
-                                            </div>
-                                            <button type="submit" class="btn btn-primary w-100" style="border-radius: 15px; padding: 10px;">
-                                                <i class="fas fa-filter me-2"></i>Lọc
-                                            </button>
-                                        </form>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                    </ul>
 
-                        <!-- Tab: Kỷ luật của nhân viên (chỉ hiển thị nếu có quyền) -->
+                    <!-- Nút điều hướng -->
+                    {% if has_permission %}
+                    <div class="d-flex justify-content-end mb-4">
+                        <a href="{% url 'ky_luat_cho_duyet' %}" class="btn btn-info action-btn"><i class="fas fa-eye me-2"></i>Xem đơn chờ duyệt</a>
+                        <a href="{% url 'add_ky_luat' %}" class="btn btn-primary action-btn"><i class="fas fa-plus me-2"></i>Thêm mới</a>
+                    </div>
+                    {% endif %}
+
+                    <!-- Nội dung tabs phụ (Kỷ luật) -->
+                    <div class="tab-content" id="kyLuatTabsContent">
+                        <div class="tab-pane fade show active" id="ky-luat-cua-toi" role="tabpanel" aria-labelledby="ky-luat-cua-toi-tab">
+                            {% include 'KyLuat/KLNV.html' %}
+                        </div>
                         {% if has_permission %}
                         <div class="tab-pane fade" id="ky-luat-cua-nhan-vien" role="tabpanel" aria-labelledby="ky-luat-cua-nhan-vien-tab">
-                            <div class="row g-4">
-                                <div class="col-md-8">
-                                    <h2 class="fw-bold text-center mb-4">DANH SÁCH KỶ LUẬT</h2>
-                                    {% if ky_luat_list %}
-                                        <div class="row gy-3" id="ky-luat-nhan-vien-list">
-                                            {% for ky_luat in ky_luat_list %}
-                                            <div class="col-12 ky-luat-item" data-date="{{ ky_luat.ngay_ra_quyet_dinh|date:'Y-m' }}" data-nhan-vien="{{ ky_luat.nhan_vien.id }}">
-                                                <div class="card h-100" style="background: linear-gradient(to right, #ddf0ff, #ffffff); border: none; transition: transform 0.2s; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);">
-                                                    <div class="card-body p-3">
-                                                        <div class="row">
-                                                            <div class="col-12">
-                                                                <p><strong style="color: #3A7DB8;">Mã nhân viên:</strong> <strong style="font-size: 18px;">{{ ky_luat.nhan_vien.id }}</strong></p>
-                                                                <p><strong style="color: #3A7DB8;">Tên nhân viên:</strong> <strong style="font-size: 18px;">{{ ky_luat.nhan_vien.ten_nv }}</strong></p>
-                                                                <p class="mb-2"><span class="fw-bold" style="color: #3A7DB8;">Ngày ra quyết định:</span> {{ ky_luat.ngay_ra_quyet_dinh|default:"Chưa xác định" }}</p>
-                                                                <p class="mb-2"><span class="fw-bold" style="color: #3A7DB8;">Ngày bắt đầu:</span> {{ ky_luat.ngay_bat_dau }}</p>
-                                                                {% if ky_luat.ngay_ket_thuc %}
-                                                                    <p class="mb-2"><span class="fw-bold" style="color: #3A7DB8;">Ngày kết thúc:</span> {{ ky_luat.ngay_ket_thuc }}</p>
-                                                                {% endif %}
-                                                                <p class="mb-2"><span class="fw-bold" style="color: #3A7DB8;">Mức độ:</span> {{ ky_luat.get_muc_do_display }}</p>
-                                                                {% if ky_luat.muc_do == 'PHAT_TIEN' and ky_luat.so_tien_phat %}
-                                                                    <p class="mb-2"><span class="fw-bold" style="color: #3A7DB8;">Số tiền phạt:</span> {{ ky_luat.so_tien_phat }} VNĐ</p>
-                                                                {% endif %}
-                                                                <p class="mb-2"><span class="fw-bold" style="color: #3A7DB8;">Người tạo:</span> {{ ky_luat.nguoi_tao_don.ten_nv }} ({{ ky_luat.nguoi_tao_don.chuc_vu|default:"N/A" }})</p>
-                                                                <p class="mb-2"><span class="fw-bold" style="color: #3A7DB8;">Người duyệt:</span> {{ ky_luat.nguoi_duyet_don.ten_nv|default:"Chưa duyệt" }} {% if ky_luat.nguoi_duyet_don %}({{ ky_luat.nguoi_duyet_don.chuc_vu|default:"N/A" }}) {% endif %}</p>
-                                                                <p class="mb-2"><span class="fw-bold" style="color: #3A7DB8;">Trạng thái:</span> {{ ky_luat.get_trang_thai_display }}</p>
-                                                                <p class="mb-2">
-                                                                    <span class="fw-bold" style="color: #3A7DB8;">Minh chứng:</span>
-                                                                    {% if ky_luat.minh_chung_file %}
-                                                                        <a href="{{ ky_luat.minh_chung_file.url }}" target="_blank">Tải tệp</a>
-                                                                    {% elif ky_luat.minh_chung_url %}
-                                                                        <a href="{{ ky_luat.minh_chung_url }}" target="_blank">Xem liên kết</a>
-                                                                    {% else %}
-                                                                        Không có
-                                                                    {% endif %}
-                                                                </p>
-                                                            </div>
-                                                            <div class="d-flex justify-content-between align-items-center">
-                                                                <p><strong style="color: #3A7DB8;">Lý do:</strong> {{ ky_luat.ly_do }}</p>
-                                                                <div>
-                                                                    <a href="{% url 'edit_ky_luat' ky_luat.id %}" class="btn btn-warning me-2">Sửa</a>
-                                                                    <form method="post" action="{% url 'xoa_ky_luat' ky_luat.id %}" style="display: inline;" onsubmit="return confirm('Bạn có chắc muốn xóa kỷ luật này?');">
-                                                                        {% csrf_token %}
-                                                                        <button type="submit" class="btn btn-danger">Xóa</button>
-                                                                    </form>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            {% endfor %}
-                                        </div>
-                                    {% else %}
-                                        <p class="text-muted text-center py-5">Không có dữ liệu kỷ luật.</p>
-                                    {% endif %}
-                                </div>
-                                <div class="col-md-4">
-                                    <div class="card p-4" style="border: none; background: #fff; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);">
-                                        <h5 class="fw-bold mb-4" style="color: #066BBB;">LỌC KỶ LUẬT</h5>
-                                        <form id="filter-ky-luat-nhan-vien" onsubmit="filterKyLuatNhanVien(event)">
-                                            <div class="mb-3">
-                                                <label for="nhan_vien_ky_luat" class="form-label fw-medium">Nhân viên</label>
-                                                <select id="nhan_vien_ky_luat" name="nhan_vien" class="form-select" style="border-radius: 10px;">
-                                                    <option value="">Chọn nhân viên</option>
-                                                    {% for nhan_vien in nhan_vien_list %}
-                                                    {% if nhan_vien.id != user_nhan_vien.id %}
-                                                    <option value="{{ nhan_vien.id }}" {% if request.GET.nhan_vien|add:"0" == nhan_vien.id %}selected{% endif %}>
-                                                        {{ nhan_vien.ten_nv }} ({{ nhan_vien.id }})
-                                                    </option>
-                                                    {% endif %}
-                                                    {% endfor %}
-                                                </select>
-                                            </div>
-                                            <div class="mb-3">
-                                                <label for="thang_ky_luat_nhan_vien" class="form-label fw-medium">Tháng</label>
-                                                <select id="thang_ky_luat_nhan_vien" name="thang" class="form-select" style="border-radius: 10px;">
-                                                    <option value="">Chọn tháng</option>
-                                                    {% for thang in thang_list %}
-                                                    <option value="{{ thang }}" {% if request.GET.thang|add:"0" == thang %}selected{% endif %}>{{ thang }}</option>
-                                                    {% endfor %}
-                                                </select>
-                                            </div>
-                                            <div class="mb-3">
-                                                <label for="nam_ky_luat_nhan_vien" class="form-label fw-medium">Năm</label>
-                                                <select id="nam_ky_luat_nhan_vien" name="nam" class="form-select" style="border-radius: 10px;">
-                                                    <option value="">Chọn năm</option>
-                                                    {% for nam in nam_list %}
-                                                    <option value="{{ nam }}" {% if request.GET.nam|add:"0" == nam %}selected{% endif %}>{{ nam }}</option>
-                                                    {% endfor %}
-                                                </select>
-                                            </div>
-                                            <button type="submit" class="btn btn-primary w-100" style="border-radius: 15px; padding: 10px;">
-                                                <i class="fas fa-filter me-2"></i>Lọc
-                                            </button>
-                                        </form>
-                                    </div>
-                                </div>
-                            </div>
+                            {% include 'KyLuat/Kyluat_list.html' %}
                         </div>
                         {% endif %}
                     </div>
                 </div>
 
-                <!-- Tab: Danh sách khen thưởng -->
+                <!-- Tab Khen thưởng -->
                 <div class="tab-pane fade" id="danh-sach-khen-thuong" role="tabpanel" aria-labelledby="danh-sach-khen-thuong-tab">
-                    <!-- Thanh điều hướng phụ: Khen thưởng của tôi và Khen thưởng của nhân viên -->
-                    {% if has_permission %}
-                    <ul class="nav nav-tabs mb-4" id="rewardTabs" role="tablist">
+                    <!-- Tabs phụ -->
+                    <ul class="nav nav-tabs sub-tabs mb-4" id="rewardTabs" role="tablist">
                         <li class="nav-item" role="presentation">
                             <a class="nav-link active" id="khen-thuong-cua-toi-tab" data-bs-toggle="tab" href="#khen-thuong-cua-toi" role="tab" aria-controls="khen-thuong-cua-toi" aria-selected="true">Khen thưởng của tôi</a>
                         </li>
+                        {% if has_permission %}
                         <li class="nav-item" role="presentation">
                             <a class="nav-link" id="khen-thuong-cua-nhan-vien-tab" data-bs-toggle="tab" href="#khen-thuong-cua-nhan-vien" role="tab" aria-controls="khen-thuong-cua-nhan-vien" aria-selected="false">Khen thưởng của nhân viên</a>
                         </li>
-                    </ul>
-                    {% else %}
-                    <ul class="nav nav-tabs mb-4" id="rewardTabs" role="tablist">
-                        <li class="nav-item" role="presentation">
-                            <a class="nav-link active" id="khen-thuong-cua-toi-tab" data-bs-toggle="tab" href="#khen-thuong-cua-toi" role="tab" aria-controls="khen-thuong-cua-toi" aria-selected="true">Khen thưởng của tôi</a>
-                        </li>
-                    </ul>
-                    {% endif %}
-                    <div class="d-flex justify-content-end mb-4">
-                        {% if has_permission %}
-                        <a href="{% url 'khen_thuong_cho_duyet' %}" class="btn btn-info me-2" style="border-radius: 20px; padding: 10px 20px; font-weight: 500;">
-                            <i class="fas fa-eye me-2"></i>Xem đơn chờ duyệt
-                        </a>
-                        <a href="{% url 'add_khen_thuong' %}" class="btn btn-primary" style="border-radius: 20px; padding: 10px 20px; font-weight: 500;">
-                            <i class="fas fa-plus me-2"></i>Thêm mới
-                        </a>
                         {% endif %}
-                    </div>
-                    <!-- Nội dung của các tab phụ (Khen thưởng) -->
-                    <div class="tab-content" id="rewardTabsContent">
-                        <!-- Tab: Khen thưởng của tôi -->
-                        <div class="tab-pane fade show active" id="khen-thuong-cua-toi" role="tabpanel" aria-labelledby="khen-thuong-cua-toi-tab">
-                            <div class="row g-4">
-                                <div class="col-md-8">
-                                    <h2 class="fw-bold text-center mb-4">KHEN THƯỞNG CỦA TÔI</h2>
-                                    {% if khen_thuong_list %}
-                                        <div class="row gy-3" id="khen-thuong-cua-toi-list">
-                                            {% for khen_thuong in khen_thuong_list %}
-                                                <div class="col-12 khen-thuong-item" data-date="{{ khen_thuong.ngay_tao|date:'Y-m' }}">
-                                                    <div class="card h-100" style="background: linear-gradient(to right, #ddf0ff, #ffffff); border: none; transition: transform 0.2s; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);">
-                                                        <div class="card-body p-3">
-                                                            <div class="row">
-                                                                <div class="col-12">
-                                                                    <p class="mb-2"><span class="fw-bold" style="color: #3A7DB8;">Ngày ra quyết định:</span> {{ khen_thuong.ngay_tao|date:"d/m/Y H:i" }}</p>
-                                                                    <p class="mb-2"><span class="fw-bold" style="color: #3A7DB8;">Giá trị:</span> {{ khen_thuong.gia_tri }} VNĐ</p>
-                                                                    <p class="mb-2"><span class="fw-bold" style="color: #3A7DB8;">Người tạo:</span> {{ khen_thuong.nguoi_tao_don.ten_nv }} ({{ khen_thuong.nguoi_tao_don.chuc_vu|default:'N/A' }})</p>
-                                                                    <p class="mb-2"><span class="fw-bold" style="color: #3A7DB8;">Người duyệt:</span> {{ khen_thuong.nguoi_xac_nhan.ten_nv|default:"Chưa duyệt" }} {% if khen_thuong.nguoi_xac_nhan %}({{ khen_thuong.nguoi_xac_nhan.chuc_vu|default:'N/A' }}){% endif %}</p>
-                                                                    <p class="mb-2"><span class="fw-bold" style="color: #3A7DB8;">Trạng thái:</span> {{ khen_thuong.get_trang_thai_display }}</p>
-                                                                    <p class="mb-2">
-                                                                        <span class="fw-bold" style="color: #3A7DB8;">Minh chứng:</span>
-                                                                        {% if khen_thuong.minh_chung_file %}
-                                                                            <a href="{{ khen_thuong.minh_chung_file.url }}" target="_blank">Xem file</a>
-                                                                        {% elif khen_thuong.minh_chung_url %}
-                                                                            <a href="{{ khen_thuong.minh_chung_url }}" target="_blank">Xem URL</a>
-                                                                        {% else %}
-                                                                            Không có
-                                                                        {% endif %}
-                                                                    </p>
-                                                                    <p><strong style="color: #3A7DB8;">Lý do:</strong> {{ khen_thuong.ly_do }}</p>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            {% endfor %}
-                                        </div>
-                                    {% else %}
-                                        <div class="col-12 text-center py-5">
-                                            <p class="text-muted">Bạn chưa có khen thưởng nào.</p>
-                                        </div>
-                                    {% endif %}
-                                </div>
-                                <div class="col-md-4">
-                                    <div class="card p-4" style="border: none; background: #fff; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);">
-                                        <h5 class="fw-bold mb-4" style="color: #066BBB;">LỌC KHEN THƯỞNG</h5>
-                                        <form id="filter-khen-thuong-toi" onsubmit="filterKhenThuongCuaToi(event)">
-                                            <div class="mb-3">
-                                                <label for="thang_khen_thuong_toi" class="form-label fw-medium">Tháng</label>
-                                                <select id="thang_khen_thuong_toi" name="thang" class="form-select" style="border-radius: 10px;">
-                                                    <option value="">Chọn tháng</option>
-                                                    {% for thang in thang_list %}
-                                                        <option value="{{ thang }}" {% if request.GET.thang|add:"0" == thang %}selected{% endif %}>{{ thang }}</option>
-                                                    {% endfor %}
-                                                </select>
-                                            </div>
-                                            <div class="mb-3">
-                                                <label for="nam_khen_thuong_toi" class="form-label fw-medium">Năm</label>
-                                                <select id="nam_khen_thuong_toi" name="nam" class="form-select" style="border-radius: 10px;">
-                                                    <option value="">Chọn năm</option>
-                                                    {% for nam in nam_list %}
-                                                        <option value="{{ nam }}" {% if request.GET.nam|add:"0" == nam %}selected{% endif %}>{{ nam }}</option>
-                                                    {% endfor %}
-                                                </select>
-                                            </div>
-                                            <button type="submit" class="btn btn-primary w-100" style="border-radius: 15px; padding: 10px;">
-                                                <i class="fas fa-filter me-2"></i>Lọc
-                                            </button>
-                                        </form>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                    </ul>
 
-                        <!-- Tab: Khen thưởng của nhân viên -->
+                    <!-- Nút điều hướng -->
+                    {% if has_permission %}
+                    <div class="d-flex justify-content-end mb-4">
+                        <a href="{% url 'khen_thuong_cho_duyet' %}" class="btn btn-info action-btn"><i class="fas fa-eye me-2"></i>Xem đơn chờ duyệt</a>
+                        <a href="{% url 'add_khen_thuong' %}" class="btn btn-primary action-btn"><i class="fas fa-plus me-2"></i>Thêm mới</a>
+                    </div>
+                    {% endif %}
+
+                    <!-- Nội dung tabs phụ (Khen thưởng) -->
+                    <div class="tab-content" id="rewardTabsContent">
+                        <div class="tab-pane fade show active" id="khen-thuong-cua-toi" role="tabpanel" aria-labelledby="khen-thuong-cua-toi-tab">
+                            {% include 'KhenThuong/KTNV.html' %}
+                        </div>
                         {% if has_permission %}
                         <div class="tab-pane fade" id="khen-thuong-cua-nhan-vien" role="tabpanel" aria-labelledby="khen-thuong-cua-nhan-vien-tab">
-                            <div class="row g-4">
-                                <div class="col-md-8">
-                                    <h2 class="fw-bold text-center mb-4">DANH SÁCH KHEN THƯỞNG</h2>
-                                    {% if rewards %}
-                                        <div class="row gy-3" id="khen-thuong-nhan-vien-list">
-                                            {% for reward in rewards %}
-                                            <div class="col-12 khen-thuong-item" data-date="{{ reward.ngay_tao|date:'Y-m' }}" data-nhan-vien="{{ reward.nhan_vien.id }}">
-                                                <div class="card h-100" style="background: linear-gradient(to right, #ddf0ff, #ffffff); border: none; transition: transform 0.2s; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);">
-                                                    <div class="card-body p-3">
-                                                        <div class="row">
-                                                            <div class="col-8">
-                                                                <p><strong style="color: #3A7DB8;">Mã nhân viên:</strong> <strong style="font-size: 18px;">{{ reward.nhan_vien.id }}</strong></p>
-                                                                <p><strong style="color: #3A7DB8;">Tên nhân viên:</strong> <strong style="font-size: 18px;">{{ reward.nhan_vien.ten_nv }}</strong></p>
-                                                                <p class="mb-2"><span class="fw-bold" style="color: #3A7DB8;">Ngày ra quyết định:</span> {{ reward.ngay_tao|date:"d/m/Y H:i" }}</p>
-                                                                <p class="mb-2"><span class="fw-bold" style="color: #3A7DB8;">Giá trị:</span> {{ reward.gia_tri }} VNĐ</p>
-                                                                <p class="mb-2"><span class="fw-bold" style="color: #3A7DB8;">Người tạo:</span> {{ reward.nguoi_tao_don.ten_nv }} ({{ reward.nguoi_tao_don.chuc_vu|default:'N/A' }})</p>
-                                                                <p class="mb-2"><span class="fw-bold" style="color: #3A7DB8;">Người duyệt:</span> {{ reward.nguoi_xac_nhan.ten_nv|default:"Chưa duyệt" }} {% if reward.nguoi_xac_nhan %}({{ reward.nguoi_xac_nhan.chuc_vu|default:'N/A' }}){% endif %}</p>
-                                                                <p class="mb-2"><span class="fw-bold" style="color: #3A7DB8;">Trạng thái:</span> {{ reward.get_trang_thai_display }}</p>
-                                                                <p class="mb-2">
-                                                                    <span class="fw-bold" style="color: #3A7DB8;">Minh chứng:</span>
-                                                                    {% if reward.minh_chung_file %}
-                                                                        <a href="{{ reward.minh_chung_file.url }}" target="_blank">Xem file</a>
-                                                                    {% elif reward.minh_chung_url %}
-                                                                        <a href="{{ reward.minh_chung_url }}" target="_blank">Xem URL</a>
-                                                                    {% else %}
-                                                                        Không có
-                                                                    {% endif %}
-                                                                </p>
-                                                            </div>
-                                                            <div class="d-flex justify-content-between align-items-center">
-                                                                <p><strong style="color: #3A7DB8;">Lý do:</strong> {{ reward.ly_do }}</p>
-                                                                <div>
-                                                    <a href="{% url 'edit_khen_thuong' reward.id %}" class="btn btn-warning me-2">Sửa</a>
-                                                    <form method="post" action="{% url 'xoa_khen_thuong' reward.id %}" style="display: inline;" onsubmit="return confirm('Bạn có chắc muốn xóa khen thưởng này?');">
-                                                        {% csrf_token %}
-                                                        <button type="submit" class="btn btn-danger">Xóa</button>
-                                                    </form>
-                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            {% endfor %}
-                                        </div>
-                                    {% else %}
-                                        <p class="text-muted text-center py-5">Không có dữ liệu khen thưởng.</p>
-                                    {% endif %}
-                                </div>
-                                <div class="col-md-4">
-                                    <div class="card p-4" style="border: none; background: #fff; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);">
-                                        <h5 class="fw-bold mb-4" style="color: #066BBB;">LỌC KHEN THƯỞNG</h5>
-                                        <form id="filter-khen-thuong-nhan-vien" onsubmit="filterKhenThuongNhanVien(event)">
-                                            <div class="mb-3">
-                                                <label for="nhan_vien_khen_thuong" class="form-label fw-medium">Nhân viên</label>
-                                                <select id="nhan_vien_khen_thuong" name="nhan_vien" class="form-select" style="border-radius: 10px;">
-                                                    <option value="">Chọn nhân viên</option>
-                                                    {% for nhan_vien in nhan_vien_list %}
-                                                    <option value="{{ nhan_vien.id }}" {% if request.GET.nhan_vien|add:"0" == nhan_vien.id %}selected{% endif %}>
-                                                        {{ nhan_vien.ten_nv }} ({{ nhan_vien.id }})
-                                                    </option>
-                                                    {% endfor %}
-                                                </select>
-                                            </div>
-                                            <div class="mb-3">
-                                                <label for="thang_khen_thuong_nhan_vien" class="form-label fw-medium">Tháng</label>
-                                                <select id="thang_khen_thuong_nhan_vien" name="thang" class="form-select" style="border-radius: 10px;">
-                                                    <option value="">Chọn tháng</option>
-                                                    {% for thang in thang_list %}
-                                                    <option value="{{ thang }}" {% if request.GET.thang|add:"0" == thang %}selected{% endif %}>{{ thang }}</option>
-                                                    {% endfor %}
-                                                </select>
-                                            </div>
-                                            <div class="mb-3">
-                                                <label for="nam_khen_thuong_nhan_vien" class="form-label fw-medium">Năm</label>
-                                                <select id="nam_khen_thuong_nhan_vien" name="nam" class="form-select" style="border-radius: 10px;">
-                                                    <option value="">Chọn năm</option>
-                                                    {% for nam in nam_list %}
-                                                    <option value="{{ nam }}" {% if request.GET.nam|add:"0" == nam %}selected{% endif %}>{{ nam }}</option>
-                                                    {% endfor %}
-                                                </select>
-                                            </div>
-                                            <button type="submit" class="btn btn-primary w-100" style="border-radius: 15px; padding: 10px;">
-                                                <i class="fas fa-filter me-2"></i>Lọc
-                                            </button>
-                                        </form>
-                                    </div>
-                                </div>
-                            </div>
+                            {% include 'KhenThuong/Khenthuong_list.html' %}
                         </div>
                         {% endif %}
                     </div>
@@ -451,7 +208,6 @@
     </div>
 </main>
 
-<!-- Đảm bảo Bootstrap JS và JavaScript tùy chỉnh -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script src="{% static 'js/filter.js' %}"></script>
 {% endblock %}
