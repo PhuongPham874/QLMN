@@ -2,153 +2,35 @@
 {% load static %}
 
 {% block page_background %}
-<style>
-    /* Reset và style chung */
-    body {
-<!--        background: linear-gradient(to right, #E6F0FA, #FFFFFF);-->
-        font-family: 'Roboto', sans-serif;
-    }
-    .container {
-        max-width: 1200px;
-        margin: 0 auto;
-    }
-    .card {
-        background: white;
-        border-radius: 12px;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-        padding: 24px;
-    }
-    h2 {
-        color: #0056D2;
-        font-weight: 700;
-        font-size: 24px;
-        text-align: center;
-        margin-bottom: 24px;
-    }
-    .current-time {
-        text-align: center;
-        font-size: 14px;
-        color: #4A90E2;
-        margin-bottom: 16px;
-    }
-
-    /* Tabs chính */
-    .main-tabs .nav-link {
-        flex: 1;
-        text-align: center;
-        padding: 10px;
-        font-size: 18px;
-        font-weight: 500;
-        color: black;
-        border: none;
-        border-radius: 8px 8px 0 0;
-        transition: background-color 0.3s;
-    }
-    .main-tabs .nav-item {
-    margin-right: 10px; /* Thêm khoảng cách 10px giữa các tab chính */
-}
-    .main-tabs .nav-link.active {
-        background-color: #4A90E2;
-        color: white
-    }
-
-    .main-tabs .nav-link:hover {
-        background-color: #003BB5;
-    }
-
-    /* Tabs phụ */
-    .sub-tabs .nav-link {
-        padding: 12px 24px;
-        font-size: 16px;
-        color: #0056D2;
-        border: none;
-        border-bottom: 2px solid transparent;
-        transition: all 0.3s;
-    }
-    .sub-tabs .nav-link.active {
-        border-bottom: 2px solid #0056D2;
-        font-weight: 600;
-    }
-    .sub-tabs .nav-link:hover {
-        color: #003BB5;
-        border-bottom: 2px solid #003BB5;
-    }
-
-    /* Nút điều hướng */
-    .action-btn {
-        padding: 10px 20px;
-        font-size: 14px;
-        font-weight: 500;
-        border-radius: 20px;
-        transition: all 0.3s;
-        margin-left: 8px;
-    }
-    .btn-info {
-        background-color: #4A90E2;
-        color: white;
-        border: none;
-    }
-    .btn-primary {
-        background-color: #0056D2;
-        color: white;
-        border: none;
-    }
-    .action-btn:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
-    }
-
-    /* Responsive */
-    @media (max-width: 768px) {
-        .main-tabs .nav-link {
-            font-size: 16px;
-            padding: 12px;
-        }
-        .sub-tabs .nav-link {
-            font-size: 14px;
-            padding: 10px 16px;
-        }
-        .action-btn {
-            padding: 8px 16px;
-            font-size: 12px;
-        }
-    }
-</style>
-
-<main class="p-4" style="flex-grow: 1;">
+<main class="discipline-rewards-container p-4" style="flex-grow: 1;">
     <div class="container">
         <div class="card">
             <h2>KỶ LUẬT & KHEN THƯỞNG</h2>
-            <!-- Hiển thị thời gian hiện tại -->
-
 
             <!-- Tabs chính -->
             <ul class="nav nav-tabs main-tabs mb-4" id="mainTabs" role="tablist">
                 <li class="nav-item" role="presentation">
-                    <a class="nav-link active" id="danh-sach-ky-luat-tab" data-bs-toggle="tab" href="#danh-sach-ky-luat" role="tab" aria-controls="danh-sach-ky-luat" aria-selected="true">Danh sách kỷ luật</a>
+                    <a class="nav-link" id="danh-sach-ky-luat-tab" data-bs-toggle="tab" href="#danh-sach-ky-luat" role="tab" aria-controls="danh-sach-ky-luat" aria-selected="false">Danh sách kỷ luật</a>
                 </li>
                 <li class="nav-item" role="presentation">
                     <a class="nav-link" id="danh-sach-khen-thuong-tab" data-bs-toggle="tab" href="#danh-sach-khen-thuong" role="tab" aria-controls="danh-sach-khen-thuong" aria-selected="false">Danh sách khen thưởng</a>
                 </li>
             </ul>
 
-            <!-- Nội dung tabs chính -->
             <div class="tab-content" id="mainTabsContent">
                 <!-- Tab Kỷ luật -->
-                <div class="tab-pane fade show active" id="danh-sach-ky-luat" role="tabpanel" aria-labelledby="danh-sach-ky-luat-tab">
-                    <!-- Tabs phụ -->
+                <div class="tab-pane fade" id="danh-sach-ky-luat" role="tabpanel" aria-labelledby="danh-sach-ky-luat-tab">
                     <ul class="nav nav-tabs sub-tabs mb-4" id="kyLuatTabs" role="tablist">
                         <li class="nav-item" role="presentation">
-                            <a class="nav-link active" id="ky-luat-cua-toi-tab" data-bs-toggle="tab" href="#ky-luat-cua-toi" role="tab" aria-controls="ky-luat-cua-toi" aria-selected="true">Kỷ luật của tôi</a>
+                            <a class="nav-link active" id="ky-luat-cua-toi-tab" data-bs-toggle="tab" href="#ky-luat-cua-toi" role="tab">Kỷ luật của tôi</a>
                         </li>
                         {% if has_permission %}
                         <li class="nav-item" role="presentation">
-                            <a class="nav-link" id="ky-luat-cua-nhan-vien-tab" data-bs-toggle="tab" href="#ky-luat-cua-nhan-vien" role="tab" aria-controls="ky-luat-cua-nhan-vien" aria-selected="false">Kỷ luật của nhân viên</a>
+                            <a class="nav-link" id="ky-luat-cua-nhan-vien-tab" data-bs-toggle="tab" href="#ky-luat-cua-nhan-vien" role="tab">Kỷ luật của nhân viên</a>
                         </li>
                         {% endif %}
                     </ul>
 
-                    <!-- Nút điều hướng -->
                     {% if has_permission %}
                     <div class="d-flex justify-content-end mb-4">
                         <a href="{% url 'ky_luat_cho_duyet' %}" class="btn btn-info action-btn"><i class="fas fa-eye me-2"></i>Xem đơn chờ duyệt</a>
@@ -156,13 +38,12 @@
                     </div>
                     {% endif %}
 
-                    <!-- Nội dung tabs phụ (Kỷ luật) -->
                     <div class="tab-content" id="kyLuatTabsContent">
-                        <div class="tab-pane fade show active" id="ky-luat-cua-toi" role="tabpanel" aria-labelledby="ky-luat-cua-toi-tab">
+                        <div class="tab-pane fade show active" id="ky-luat-cua-toi" role="tabpanel">
                             {% include 'KyLuat/KLNV.html' %}
                         </div>
                         {% if has_permission %}
-                        <div class="tab-pane fade" id="ky-luat-cua-nhan-vien" role="tabpanel" aria-labelledby="ky-luat-cua-nhan-vien-tab">
+                        <div class="tab-pane fade" id="ky-luat-cua-nhan-vien" role="tabpanel">
                             {% include 'KyLuat/Kyluat_list.html' %}
                         </div>
                         {% endif %}
@@ -171,19 +52,17 @@
 
                 <!-- Tab Khen thưởng -->
                 <div class="tab-pane fade" id="danh-sach-khen-thuong" role="tabpanel" aria-labelledby="danh-sach-khen-thuong-tab">
-                    <!-- Tabs phụ -->
                     <ul class="nav nav-tabs sub-tabs mb-4" id="rewardTabs" role="tablist">
                         <li class="nav-item" role="presentation">
-                            <a class="nav-link active" id="khen-thuong-cua-toi-tab" data-bs-toggle="tab" href="#khen-thuong-cua-toi" role="tab" aria-controls="khen-thuong-cua-toi" aria-selected="true">Khen thưởng của tôi</a>
+                            <a class="nav-link active" id="khen-thuong-cua-toi-tab" data-bs-toggle="tab" href="#khen-thuong-cua-toi" role="tab">Khen thưởng của tôi</a>
                         </li>
                         {% if has_permission %}
                         <li class="nav-item" role="presentation">
-                            <a class="nav-link" id="khen-thuong-cua-nhan-vien-tab" data-bs-toggle="tab" href="#khen-thuong-cua-nhan-vien" role="tab" aria-controls="khen-thuong-cua-nhan-vien" aria-selected="false">Khen thưởng của nhân viên</a>
+                            <a class="nav-link" id="khen-thuong-cua-nhan-vien-tab" data-bs-toggle="tab" href="#khen-thuong-cua-nhan-vien" role="tab">Khen thưởng của nhân viên</a>
                         </li>
                         {% endif %}
                     </ul>
 
-                    <!-- Nút điều hướng -->
                     {% if has_permission %}
                     <div class="d-flex justify-content-end mb-4">
                         <a href="{% url 'khen_thuong_cho_duyet' %}" class="btn btn-info action-btn"><i class="fas fa-eye me-2"></i>Xem đơn chờ duyệt</a>
@@ -191,13 +70,12 @@
                     </div>
                     {% endif %}
 
-                    <!-- Nội dung tabs phụ (Khen thưởng) -->
                     <div class="tab-content" id="rewardTabsContent">
-                        <div class="tab-pane fade show active" id="khen-thuong-cua-toi" role="tabpanel" aria-labelledby="khen-thuong-cua-toi-tab">
+                        <div class="tab-pane fade show active" id="khen-thuong-cua-toi" role="tabpanel">
                             {% include 'KhenThuong/KTNV.html' %}
                         </div>
                         {% if has_permission %}
-                        <div class="tab-pane fade" id="khen-thuong-cua-nhan-vien" role="tabpanel" aria-labelledby="khen-thuong-cua-nhan-vien-tab">
+                        <div class="tab-pane fade" id="khen-thuong-cua-nhan-vien" role="tabpanel">
                             {% include 'KhenThuong/Khenthuong_list.html' %}
                         </div>
                         {% endif %}
@@ -207,7 +85,30 @@
         </div>
     </div>
 </main>
-
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<link rel="stylesheet" href="{% static 'css/ky_luat_khen_thuong.css' %}">
+{% block extra_js %}
 <script src="{% static 'js/filter.js' %}"></script>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    const hash = window.location.hash;
+    if (hash) {
+        const trigger = document.querySelector(`a[href=\"${hash}\"]`);
+        if (trigger) {
+            new bootstrap.Tab(trigger).show();
+        }
+    }
+
+    document.querySelectorAll('a[data-bs-toggle=\"tab\"]').forEach(el => {
+        el.addEventListener('shown.bs.tab', function (e) {
+            const newHash = e.target.getAttribute('href');
+            if (history.pushState) {
+                history.pushState(null, null, newHash);
+            } else {
+                location.hash = newHash;
+            }
+        });
+    });
+});
+</script>
+{% endblock %}
 {% endblock %}
