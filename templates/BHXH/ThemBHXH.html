@@ -193,11 +193,8 @@
                     <i class="fas fa-user"></i> Thông tin nhân viên
                 </div>
                 <div class="form-group">
-                    <label for="{{ form.ten_nv.id_for_label }}" class="form-label">Tên nhân viên</label>
-                    <input type="text" name="{{ form.ten_nv.name }}" id="{{ form.ten_nv.id_for_label }}" value="{{ form.ten_nv.value|default:'' }}" class="form-control" placeholder="Chọn nhân viên để kỷ luật">
-                    {% if form.ten_nv.errors %}
-                        <div class="text-danger">{{ form.ten_nv.errors }}</div>
-                    {% endif %}
+                    <label class="form-label">Tên nhân viên</label>
+                     {{ form.ten_nv }}
                 </div>
             </div>
 
@@ -207,40 +204,26 @@
                     <i class="fas fa-calendar-alt"></i> Thông tin thời gian
                 </div>
                 <div class="form-group">
-                    <label for="{{ form.thoi_gian_bat_dau.id_for_label }}" class="form-label">Ngày bắt đầu đóng</label>
-                    <input type="date" name="{{ form.thoi_gian_bat_dau.name }}" id="{{ form.thoi_gian_bat_dau.id_for_label }}" value="{{ form.thoi_gian_bat_dau.value|default:'' }}" class="form-control" placeholder="mm/dd/yyyy">
-                    <small class="form-text">Ngày bắt đầu đóng BHXH</small>
-                    {% if form.thoi_gian_bat_dau.errors %}
-                        <div class="text-danger">{{ form.thoi_gian_bat_dau.errors }}</div>
-                    {% endif %}
+                    <label class="form-label">Ngày tham gia</label>
+                    {{ form.thoi_gian_bat_dau }}
                 </div>
             </div>
-
             <!-- Thông tin BHXH -->
             <div class="section-container">
                 <div class="section-title">
                     <i class="fas fa-info-circle"></i> Thông tin BHXH
                 </div>
                 <div class="form-group">
-                    <label for="{{ form.ma_BHXH.id_for_label }}" class="form-label">Mã BHXH</label>
-                    <input type="text" name="{{ form.ma_BHXH.name }}" id="{{ form.ma_BHXH.id_for_label }}" value="{{ form.ma_BHXH.value|default:'' }}" class="form-control" placeholder="Nhập mã BHXH">
-                    {% if form.ma_BHXH.errors %}
-                        <div class="text-danger">{{ form.ma_BHXH.errors }}</div>
-                    {% endif %}
+                    <label class="form-label">Mã BHXH</label>
+                    {{ form.ma_BHXH }}
                 </div>
                 <div class="form-group">
-                    <label for="{{ form.nhan_vien_dong.id_for_label }}" class="form-label">Mức đóng của nhân viên (%)</label>
-                    <input type="text" name="{{ form.nhan_vien_dong.name }}" id="{{ form.nhan_vien_dong.id_for_label }}" value="{{ form.nhan_vien_dong.value|default:'' }}" class="form-control" placeholder="Nhập mức đóng của nhân viên">
-                    {% if form.nhan_vien_dong.errors %}
-                        <div class="text-danger">{{ form.nhan_vien_dong.errors }}</div>
-                    {% endif %}
+                    <label class="form-label">Mức đóng của nhân viên (%)</label>
+                    {{ form.nhan_vien_dong }}
                 </div>
                 <div class="form-group">
-                    <label for="{{ form.truong_dong.id_for_label }}" class="form-label">Mức đóng của trường (%)</label>
-                    <input type="text" name="{{ form.truong_dong.name }}" id="{{ form.truong_dong.id_for_label }}" value="{{ form.truong_dong.value|default:'' }}" class="form-control" placeholder="Nhập mức đóng của trường">
-                    {% if form.truong_dong.errors %}
-                        <div class="text-danger">{{ form.truong_dong.errors }}</div>
-                    {% endif %}
+                    <label class="form-label">Mức đóng của trường (%)</label>
+                    {{ form.truong_dong }}
                 </div>
             </div>
 
@@ -252,5 +235,5 @@
         </form>
     </div>
 </div>
-
 {% endblock %}
+

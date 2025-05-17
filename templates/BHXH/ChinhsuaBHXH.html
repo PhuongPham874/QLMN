@@ -115,16 +115,6 @@
         background-color: #0b5ed7;
     }
 
-    .btn-outline-secondary {
-        background-color: #f8f9fa;
-        border: 1px solid #ced4da;
-        color: #6c757d;
-    }
-
-    .btn-outline-secondary:hover {
-        background-color: #e9ecef;
-    }
-
     .alert {
         padding: 12px 20px;
         border-radius: 4px;
@@ -182,18 +172,14 @@
             <i class="fas fa-arrow-left"></i> Quay lại
         </a>
     </div>
-
     {% if messages %}
         {% for message in messages %}
-            <div class="alert alert-{% if message.tags == 'success' %}success{% else %}danger{% endif %}">
-                {{ message }}
-            </div>
+            <div class="alert alert-{% if message.tags == 'success' %}success{% else %}danger{% endif %}">{{ message }}</div>
         {% endfor %}
     {% endif %}
 
     <div class="form-container">
         <h2 class="page-title">CHỈNH SỬA BHXH</h2>
-
         <form method="POST">
             {% csrf_token %}
 
@@ -204,11 +190,7 @@
                 </div>
                 <div class="form-group">
                     <label class="form-label">Tên nhân viên</label>
-                    <div class="form-control-static">{{ bhxh.nhan_vien.ten_nv }}</div>
-                </div>
-                <div class="form-group">
-                    <label class="form-label">Mã nhân viên</label>
-                    <div class="form-control-static">{{ bhxh.nhan_vien.id }}</div>
+                    {{ bhxh.nhan_vien.ten_nv }}
                 </div>
             </div>
 
@@ -218,9 +200,8 @@
                     <i class="fas fa-calendar-alt"></i> Thông tin thời gian
                 </div>
                 <div class="form-group">
-                    <label class="form-label">Ngày bắt đầu đóng</label>
-                    <div class="form-control-static">{{ bhxh.thoi_gian_bat_dau|date:'d/m/Y' }}</div>
-                    <small class="form-text">Ngày bắt đầu đóng BHXH</small>
+                    <label class="form-label">Ngày tham gia</label>
+                    {{ bhxh.thoi_gian_bat_dau|date:'d/m/Y' }}
                 </div>
             </div>
 
@@ -230,22 +211,18 @@
                     <i class="fas fa-info-circle"></i> Thông tin BHXH
                 </div>
                 <div class="form-group">
-                    <label for="{{ form.ma_BHXH.id_for_label }}" class="form-label">Mã BHXH</label>
-                    <input type="text" name="{{ form.ma_BHXH.name }}" id="{{ form.ma_BHXH.id_for_label }}" value="{{ form.ma_BHXH.value|default:'' }}" class="form-control" placeholder="Nhập mã BHXH">
-                    {% if form.ma_BHXH.errors %}
-                        <div class="text-danger">{{ form.ma_BHXH.errors }}</div>
-                    {% endif %}
+                    <label class="form-label">Mã BHXH</label>
+                    {{ form.ma_BHXH }}
                 </div>
                 <div class="form-group">
                     <label class="form-label">Mức đóng của nhân viên (%)</label>
-                    <div class="form-control-static">{{ bhxh.nhan_vien_dong }}</div>
+                    {{ bhxh.nhan_vien_dong }}
                 </div>
                 <div class="form-group">
                     <label class="form-label">Mức đóng của trường (%)</label>
-                    <div class="form-control-static">{{ bhxh.truong_dong }}</div>
+                    {{ bhxh.truong_dong }}
                 </div>
             </div>
-
             <div class="form-actions">
                 <button type="submit" class="btn btn-primary">
                     <i class="fas fa-save me-2"></i>Lưu
@@ -256,3 +233,4 @@
 </div>
 
 {% endblock %}
+

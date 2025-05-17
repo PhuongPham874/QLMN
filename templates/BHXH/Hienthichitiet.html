@@ -1,12 +1,10 @@
 {% extends 'home.html' %}
 {% load static %}
-
-{% block page_background %}
+{% block extra_css %}
 <style>
     body {
         background-color: #f8f9fa;
     }
-
     .container {
         max-width: 1000px;
         margin: 0 auto;
@@ -41,9 +39,9 @@
 
     .page-subtitle {
         color: #6c757d;
-        font-size: 16px;
-        margin-bottom: 25px;
+        font-size: 25px;
         text-align: center;
+        font-weight:bold;
     }
 
     .section-title {
@@ -70,11 +68,11 @@
     }
 
     .info-label {
-        color: #6c757d;
+        color: #000000;
         font-size: 14px;
         margin-bottom: 5px;
-    }
-
+        font-weight:bold;
+     }
     .info-value {
         color: #212529;
         font-weight: 500;
@@ -95,7 +93,7 @@
     .table th {
         background-color: #f8f9fa;
         color: #495057;
-        font-weight: 600;
+        font-weight: bold;
         text-align: left;
         padding: 12px 15px;
         border-bottom: 2px solid #dee2e6;
@@ -212,21 +210,6 @@
         margin-bottom: 25px;
     }
 
-    .employee-avatar {
-        width: 60px;
-        height: 60px;
-        background-color: #0d6efd;
-        color: white;
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-weight: bold;
-        font-size: 24px;
-        margin-right: 15px;
-        box-shadow: 0 3px 6px rgba(0,0,0,0.1);
-    }
-
     .employee-title {
         flex: 1;
     }
@@ -250,30 +233,25 @@
         background-color: #0d6efd;
         border-radius: 3px;
     }
-
     .page-subtitle {
         color: #6c757d;
         font-size: 16px;
         margin: 0;
     }
 </style>
-
+{% endblock %}
+{% block page_background %}
 <div class="container">
     <div class="header-actions">
         <a href="{% url 'bhxh_list' %}" class="back-btn">
             <i class="fas fa-arrow-left"></i> Quay lại
         </a>
     </div>
-
     <div class="card">
         <div class="card-body">
             <div class="employee-header">
-                <div class="employee-avatar">
-                    {{ bh.nhan_vien.ten_nv|slice:":1" }}
-                </div>
                 <div class="employee-title">
-                    <h2 class="employee-name">{{ bh.nhan_vien.ten_nv }}</h2>
-                    <p class="page-subtitle">THÔNG TIN BHXH</p>
+                    <h1 class="page-subtitle">THÔNG TIN BHXH - {{ bh.nhan_vien.ten_nv }}</h1>
                 </div>
             </div>
 
@@ -316,30 +294,31 @@
                 </div>
             </div>
 
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th>Ngày bắt đầu</th>
-                        <th>Ngày kết thúc</th>
-                        <th class="amount">Tổng tiền (VNĐ)</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for dong in dongbh %}
-                    <tr>
-                        <td>{{ dong.ngay_bat_dau|date:"d/m/Y" }}</td>
-                        <td>{{ dong.ngay_ket_thuc|date:"d/m/Y" }}</td>
-                        <td class="amount">{{ dong.tong_tien|floatformat:0|stringformat:',d'|slice:':-2' }}</td>
-                    </tr>
-                    {% endfor %}
-                    <tr class="table-footer total-row">
-                        <td colspan="2" style="text-align: right;">Tổng cộng</td>
-                        <td class="amount">{{ Total|floatformat:0|stringformat:',d'|slice:':-2' }}</td>
-                    </tr>
-                </tbody>
-            </table>
+    <table class="table">
+    <thead>
+        <tr>
+            <th>Ngày bắt đầu</th>
+            <th>Ngày kết thúc</th>
+            <th style="text-align: right;">Tổng tiền (VNĐ)</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for dong in dongbh %}
+        <tr>
+            <td>{{ dong.ngay_bat_dau|date:"d/m/Y" }}</td>
+            <td>{{ dong.ngay_ket_thuc|date:"d/m/Y" }}</td>
+            <td style="text-align: right;">{{ dong.tong_tien|floatformat:0 }}</td>
+        </tr>
+        {% endfor %}
+        <tr>
+            <td colspan="2" style="text-align:center;font-weight: bold;color: #495057;">Tổng</td>
+            <td style="text-align: right; font-weight: bold;">{{ Total|floatformat:0 }}</td>
+        </tr>
+    </tbody>
+    </table>
         </div>
     </div>
 </div>
 
 {% endblock %}
+
