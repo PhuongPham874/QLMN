@@ -22,7 +22,7 @@ class NhanVienForm(forms.ModelForm):
 class HopDongLaoDongForm(forms.ModelForm):
     class Meta:
         model = HopDongLaoDong
-        exclude = ['nhan_vien']
+        exclude = ['to_phong_ban', 'vi_tri_lam_viec', 'nhan_vien']
 
     def __init__(self, *args, **kwargs):
         self.nhan_vien_instance = kwargs.pop('nhan_vien', None)

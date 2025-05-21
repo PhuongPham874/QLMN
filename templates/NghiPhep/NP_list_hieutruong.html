@@ -1,19 +1,7 @@
 {% extends 'NghiPhep/NP_list_admin.html' %}
 
-{% block btnAdd %}
-<form method="get"
-      action="{% url 'DanhSachNP_HT' %}"
-      style="width:10%; height: 15px" xmlns:nv.id xmlns:nv.id>
-            <select name="year" class="form-control" onchange="this.form.submit()">
-                {% for y in years %}
-                    <option value="{{ y }}" {% if y == year %}selected{% endif %}>{{ y }}</option>
-                {% endfor %}
-            </select>
-    </form>
-{% endblock %}
-
 {% block locdanhsach %}
-<div class="ndungloc" style="width:30%; max-height: 500px;">
+<div class="ndungloc" style="width:20%; max-height: 500px;">
 
    <div class="TitleLoc" style="display: flex; gap: 10px; align-items: left;">
         <i class="fa-sharp fa-solid fa-filter" style="font-size: 20px;"></i>
@@ -58,4 +46,14 @@
             {% endfor %}
           </select>
     </form>
+
+    <form method="get"
+          action="{% url 'DanhSachNP_HT' %}"
+          style="width:30%; height: 15px" xmlns:nv.id xmlns:nv.id>
+            <select name="year" class="form-control" onchange="this.form.submit()"  style="height: 30px; font-size: 14px; padding: 0px 20px;border-radius: 5px;width: 50%;">
+                {% for y in years %}
+                    <option value="{{ y }}" {% if y == year %}selected{% endif %}>{{ y }}</option>
+                {% endfor %}
+            </select>
+        </form>
 {% endblock %}

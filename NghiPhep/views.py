@@ -18,9 +18,9 @@ def tinh_so_nghi_phep_nam(ngay_bat_dau_lam: date, nam: int, tong_so_ngay_phep_na
     so_thang_lam_viec = 12 - thang_bat_dau + 1
     return round((so_thang_lam_viec / 12) * tong_so_ngay_phep_nam)
 
-def ThongTinNPYear(request, year):
+def ThongTinNPYear( year):
     years = NghiPhep.objects.values_list('ngay_tao_don__year', flat=True).distinct().order_by('-ngay_tao_don__year')
-    #year = request.GET.get('year')
+
     if year is None:
         year = now().year
     else:
@@ -28,10 +28,9 @@ def ThongTinNPYear(request, year):
     return {'year':year,
             'years': years}
 
-def ThongTinNP( request,nhanvien, danh_sach, nam):
-    thong_tin = ThongTinNPYear(request,nam)
+def ThongTinNP( nhanvien, danh_sach, nam):
+    thong_tin = ThongTinNPYear(nam)
     year = thong_tin['year']
-    today = timezone.now().date()
     so_ngay_da_nghi = 0
     so_ngay_da_nghi_PN=0
     so_ngay = 0
@@ -39,7 +38,6 @@ def ThongTinNP( request,nhanvien, danh_sach, nam):
         if don.trang_thai_don =="Đã duyệt":
             so_ngay = (don.ngay_ket_thuc - don.ngay_bat_dau).days
             so_ngay_da_nghi += so_ngay
-
 
         # Nếu là loại nghỉ phép năm thì cộng thêm riêng
         if don.loai_nghi == 'Nghỉ phép năm' and don.trang_thai_don =="Đã duyệt":
@@ -49,9 +47,8 @@ def ThongTinNP( request,nhanvien, danh_sach, nam):
     ngay_vao_lam = hop_dong.tu_ngay
     so_nghi_phep_nam = tinh_so_nghi_phep_nam(ngay_vao_lam, year)
 
-
-
     Pn_conlai = so_nghi_phep_nam - so_ngay_da_nghi_PN;
+
     so_don = danh_sach.count();
     so_don_dang_cho_duyet = NghiPhep.objects.filter(nhan_vien=nhanvien, trang_thai_don='Đang chờ duyệt',
                                                     ngay_tao_don__year=year)
@@ -66,7 +63,7 @@ def ThongTinNP( request,nhanvien, danh_sach, nam):
         'so_don_dang_duyet': so_don_dang_cho_duyet,
         'so_don_da_duyet': so_don_da_duyet,
         'so_don_dang_bi_tu_choi': so_don_dang_bi_tu_choi,
-        **ThongTinNPYear(request, nam)
+        **ThongTinNPYear( nam)
     }
 
 
@@ -75,19 +72,19 @@ def ThongTinNP( request,nhanvien, danh_sach, nam):
 @login_required
 def NghiPhep_list_nv(request):
     nam = request.GET.get('year')
-    thong_tin = ThongTinNPYear(request, nam)
+    thong_tin = ThongTinNPYear( nam)
     year = thong_tin['year']
     nhanvien = get_object_or_404(NhanVien, user = request.user)
     nghiphep_list_nv = NghiPhep.objects.filter(nhan_vien = nhanvien, ngay_tao_don__year=year).order_by('-ngay_tao_don')
     form = SearchForm(request.GET)
 
-    ThongTinNP(request,nhanvien, nghiphep_list_nv, year)
+    ThongTinNP(nhanvien, nghiphep_list_nv, year)
 
     context = {
         'NP_list': nghiphep_list_nv,
         'nhan_vien': nhanvien,
         'form': form,
-        **ThongTinNP(request, nhanvien, nghiphep_list_nv, year)
+        **ThongTinNP( nhanvien, nghiphep_list_nv, year)
     }
     return render(request, 'NghiPhep/NP_list.html', context)
 
@@ -103,13 +100,13 @@ def NP_nv_search(request):
         nghiphep_all_nv = NghiPhep.objects.filter(nhan_vien=nhanvien,ngay_tao_don__year=year )
         danh_sach = nghiphep_all_nv.filter(ngay_bat_dau__lte=search, ngay_ket_thuc__gte=search)
     return render(request, "NghiPhep/search.html",
-                  {"search_text": search, "form" : form, "NP_list" : danh_sach, 'nhan_vien': nhanvien, **ThongTinNP(request, nhanvien, nghiphep_all_nv, year)})
+                  {"search_text": search, "form" : form, "NP_list" : danh_sach, 'nhan_vien': nhanvien, **ThongTinNP( nhanvien, nghiphep_all_nv, year)})
 
 @login_required
 def NP_delete (request,nghiphep_pk=None):
     if nghiphep_pk is not None:
-        sach = get_object_or_404(NghiPhep, pk=nghiphep_pk)
-        sach.delete()
+        np = get_object_or_404(NghiPhep, pk=nghiphep_pk)
+        np.delete()
     return redirect("DanhSachNP_NV")
 
 
@@ -123,11 +120,11 @@ def loc_don_nghi_phep_theo_trang_thai(request):
     danh_sach = NghiPhep.objects.filter(nhan_vien=nhanvien, ngay_tao_don__year=year).order_by('-ngay_tao_don')
     danh_sach_don = NghiPhep.objects.filter(nhan_vien=nhanvien, trang_thai_don=trang_thai,ngay_tao_don__year=year).order_by('-ngay_tao_don')
 
-    ThongTinNP(request, nhanvien, danh_sach, year)
+    ThongTinNP(nhanvien, danh_sach, year)
     context = {
         'NP_list': danh_sach_don,
         'nhan_vien':nhanvien,
-        **ThongTinNP(request, nhanvien, danh_sach, year)
+        **ThongTinNP( nhanvien, danh_sach, year)
     }
     return render(request, 'NghiPhep/FilterNP.html', context)
 
@@ -146,7 +143,7 @@ def DS_NV_quan_ly(request,nhanvien):
     elif nhanvien.chuc_vu =="Hiệu Trưởng":
         nhan_vien_BGH = NhanVien.objects.filter(vi_tri_cong_viec__in=["Hiệu phó chuyên môn", "Hiệu phó hoạt động"]).exclude(id=nhanvien.id)
         nhan_vien_quan_ly = NhanVien.objects.exclude(user=user.id)
-    thong_tin = ThongTinNPYear(request, year)
+    thong_tin = ThongTinNPYear(year)
     year = thong_tin['year']
     years=thong_tin['years']
     return {
@@ -158,7 +155,7 @@ def DS_NV_quan_ly(request,nhanvien):
 
 def ThongTinNP_admin(request, nhanvien):
     nam = request.GET.get('year')
-    thong_tin = ThongTinNPYear(request,nam)
+    thong_tin = ThongTinNPYear(nam)
     year = thong_tin['year']
     thong_tin = DS_NV_quan_ly(request, nhanvien)
     nhan_vien_quan_ly = thong_tin['nhan_vien_quan_ly']
@@ -291,7 +288,6 @@ def loc_don_nghi_phep_theo_trang_thai_admin(request):
     thong_tin = DS_NV_quan_ly(request, nhanvien)
     nhan_vien = thong_tin['nhan_vien_quan_ly']
     danh_sach_don = {}
-    danh_sach = NghiPhep.objects.filter(nhan_vien__in=nhan_vien, ngay_tao_don__year=year).order_by('-ngay_tao_don')
     danh_sach_don[trang_thai] = NghiPhep.objects.filter(nhan_vien__in=nhan_vien, trang_thai_don=trang_thai,ngay_tao_don__year=year).order_by('-ngay_tao_don')
 
     context = {
@@ -357,7 +353,7 @@ def EditNghiPhep (request, nghiphep_pk=None):
         year = int(year)
     nhanvien = get_object_or_404(NhanVien, user = request.user)
     nghiphep_list_nv = NghiPhep.objects.filter(nhan_vien=nhanvien, ngay_tao_don__year=year).order_by('-ngay_tao_don')
-    thong_tin = ThongTinNP(request, nhanvien, nghiphep_list_nv, year)
+    thong_tin = ThongTinNP( nhanvien, nghiphep_list_nv, year)
     pn_con_lai = thong_tin['PN_con_lai']
     if nghiphep_pk is not None:
         nghiphep = get_object_or_404(NghiPhep, pk=nghiphep_pk, nhan_vien=nhanvien)
@@ -389,13 +385,7 @@ def EditNghiPhep (request, nghiphep_pk=None):
                         return redirect("DanhSachNP_NV")
     else:
         form = NghiPhepForm(instance=nghiphep)
-    return render(request, "NghiPhep/formNghiPhep.html", {"model_type": "Nghỉ Phép", "form": form, "instance": nghiphep, "nhan_vien": nhanvien, **ThongTinNP(request, nhanvien, nghiphep_list_nv, year)})
-
-
-
-
-
-
+    return render(request, "NghiPhep/formNghiPhep.html", {"model_type": "Nghỉ Phép", "form": form, "instance": nghiphep, "nhan_vien": nhanvien, **ThongTinNP( nhanvien, nghiphep_list_nv, year)})
 
 
 
@@ -417,7 +407,6 @@ def XulyNP(request, nghiphep_pk):
                     nghiphep.nguoi_duyet = nhanvien
                     nghiphep.ghi_chu = ghi_chu
                     nghiphep.save()
-
                     return redirect("DanhSachNP")
         elif action == "duyet":
             if form.is_valid():
@@ -428,8 +417,6 @@ def XulyNP(request, nghiphep_pk):
                 nghiphep.nguoi_duyet = nhanvien
                 nghiphep.save()
                 return redirect("DanhSachNP")
-    else:
-        form = Ghichu()
     return redirect("DanhSachNP")
 
 

@@ -1,6 +1,6 @@
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, get_object_or_404, redirect
-from HOME.models import NhanVien, HopDongLaoDong, PhuCapNhanVien, User
+from HOME.models import NhanVien, HopDongLaoDong, PhuCapNhanVien, User, PhuCap
 from datetime import datetime
 from django.contrib.auth.models import User
 from .forms import NhanVienForm, HopDongLaoDongForm
@@ -56,39 +56,27 @@ def danh_sach_nhan_vien(request):
     })
 
 
-def Add_Edit_ho_so(request, nhan_vien_id = None):
-    print(f"nhan_vien_id: {nhan_vien_id}")
-    if nhan_vien_id is not None:
-        hoso = get_object_or_404(NhanVien, pk=nhan_vien_id)
+def Add_ho_so(request):
+    form = NhanVienForm(request.POST, request.FILES)
+    # Kiểm tra xem form có hợp lệ không
+    if form.is_valid():
+        # Lưu nhân viên mới
+        nhan_vien = form.save(commit=False)
+            # Lấy dữ liệu từ form
+            # Tạo User mới (nếu cần) từ email (hoặc thông tin khác)
+        user = User.objects.create_user(
+            username=nhan_vien.email.split('@')[0],  # Tạo username từ email (bạn có thể tùy chỉnh)
+            email=nhan_vien.email,
+            password="defaultpassword"  # Có thể sử dụng password mặc định hoặc yêu cầu người dùng nhập
+        )
+        # Gán User cho nhân viên
+        nhan_vien.user = user
+        nhan_vien.save()
+        # Sau khi lưu thành công, chuyển hướng về danh sách nhân viên
+        return redirect('themmoi_hdld', nhan_vien_id=nhan_vien.id)
     else:
-        hoso = None
-    if request.method == "POST":
-        form = NhanVienForm(request.POST, request.FILES, instance=hoso)
-        # Kiểm tra xem form có hợp lệ không
-        if form.is_valid():
-            # Lưu nhân viên mới
-            nhan_vien = form.save(commit=False)
-            if hoso is None:
-                # Lấy dữ liệu từ form
-                # Tạo User mới (nếu cần) từ email (hoặc thông tin khác)
-                user = User.objects.create_user(
-                    username=nhan_vien.email.split('@')[0],  # Tạo username từ email (bạn có thể tùy chỉnh)
-                    email=nhan_vien.email,
-                    password="defaultpassword"  # Có thể sử dụng password mặc định hoặc yêu cầu người dùng nhập
-                )
-                # Gán User cho nhân viên
-                nhan_vien.user = user
-                nhan_vien.save()
-            else:
-                nhan_vien.save()
-            # Sau khi lưu thành công, chuyển hướng về danh sách nhân viên
-            return redirect('themmoi_hdld', nhan_vien_id=nhan_vien.id)
-        else:
-            # Nếu form không hợp lệ, in ra lỗi để kiểm tra
-            print(form.errors)
-    else:
-        # Nếu phương thức GET, tạo form trống
-        form = NhanVienForm(instance=hoso)
+        # Nếu form không hợp lệ, in ra lỗi để kiểm tra
+        print(form.errors)
 
     # Trả về template để hiển thị form
     return render(request, 'HoSo/ThemMoiHoSo.html', {'form': form})
@@ -97,18 +85,31 @@ def Add_Edit_ho_so(request, nhan_vien_id = None):
 def them_moi_hop_dong(request, nhan_vien_id):
     nhan_vien = NhanVien.objects.get(id=nhan_vien_id)
     form = HopDongLaoDongForm(request.POST or None, request.FILES or None, nhan_vien=nhan_vien)
+    danh_sach_phu_cap = PhuCap.objects.all()
+    phu_cap_da_chon = PhuCapNhanVien.objects.filter(nhan_vien=nhan_vien).values_list('phu_cap_id', flat=True)
 
+    selected_ids = request.POST.getlist('phu_cap_ids')
     if form.is_valid():
         hopdong = form.save(commit=False)
         hopdong.nhan_vien = nhan_vien
         hopdong.vi_tri_lam_viec = nhan_vien.vi_tri_cong_viec
         hopdong.to_phong_ban = nhan_vien.to_phong_ban
+
+        print("To/Phòng ban của nhân viên:", nhan_vien.to_phong_ban)
+        print("Type:", type(nhan_vien.to_phong_ban))
+        print("Trường gán vào hợp đồng:", hopdong.to_phong_ban)
+
         hopdong.save()
+
+        for phu_cap_id in selected_ids:
+            phu_cap_obj = PhuCap.objects.get(id=phu_cap_id)
+            PhuCapNhanVien.objects.create(nhan_vien=nhan_vien, phu_cap=phu_cap_obj)
+
         return redirect('DanhSachNhanVien')  # Chuyển hướng sau khi lưu hợp đồng
     else:
         # Nếu form không hợp lệ, in ra lỗi để kiểm tra
         print(form.errors)
-    return render(request, 'HoSo/ThemMoiHoSo_HDLD.html', {'form': form, 'nhan_vien': nhan_vien})
+    return render(request, 'HoSo/ThemMoiHoSo_HDLD.html', {'form': form, 'nhan_vien': nhan_vien, 'danh_sach_phu_cap': danh_sach_phu_cap,})
 
 
 @login_required
@@ -181,13 +182,19 @@ def edit_hdld(request, nhan_vien_id):
     # Lấy thông tin nhân viên và hợp đồng lao động của nhân viên đó
     nhan_vien = get_object_or_404(NhanVien, id=nhan_vien_id)
     hop_dong = get_object_or_404(HopDongLaoDong, nhan_vien=nhan_vien)
-
+    danh_sach_phu_cap = PhuCap.objects.all()
+    phu_cap_da_chon = PhuCapNhanVien.objects.filter(nhan_vien=nhan_vien).values_list('phu_cap_id', flat=True)
     # Kiểm tra nếu yêu cầu là POST (lưu thông tin)
     if request.method == "POST":
         form = HopDongLaoDongForm(request.POST, instance=hop_dong)
 
         # Kiểm tra form hợp lệ
         if form.is_valid():
+            selected_ids = request.POST.getlist('phu_cap_ids')
+            PhuCapNhanVien.objects.filter(nhan_vien=nhan_vien).delete()
+            for phu_cap_id in selected_ids:
+                phu_cap_obj = PhuCap.objects.get(id=phu_cap_id)
+                PhuCapNhanVien.objects.create(nhan_vien=nhan_vien, phu_cap=phu_cap_obj)
             form.save()  # Lưu thông tin hợp đồng vào cơ sở dữ liệu
             return redirect('QLXemHoSoHDLD', nhan_vien_id=nhan_vien.id)  # Quay lại trang xem hợp đồng
 
@@ -198,5 +205,16 @@ def edit_hdld(request, nhan_vien_id):
     return render(request, 'HoSo/edit_hdld.html', {
         'form': form,
         'nhan_vien': nhan_vien,
-        'hop_dong': hop_dong
+        'hop_dong': hop_dong,
+        'phu_cap_da_chon': list(phu_cap_da_chon),
+        'danh_sach_phu_cap': danh_sach_phu_cap
     })
+
+
+@login_required
+def redirect_hoso_view(request):
+    user = get_object_or_404(NhanVien, user=request.user)
+    if user.vi_tri_cong_viec in [ 'Nhân sự', 'Hiệu phó chuyên môn', 'Hiệu phó hoạt động', 'Hiệu Trưởng']:
+        return redirect('DanhSachNhanVien')
+    else:
+        return redirect('NVXemHoSo')

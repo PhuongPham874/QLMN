@@ -339,53 +339,63 @@
                         <div class="form-grid">
                             <div class="form-field">
                                 <label for="so_hop_dong">Số hợp đồng:</label>
-                                <input type="text" class="form-input" id="so_hop_dong" name="so_hop_dong" placeholder="Nhập số hợp đồng">
+                                <input type="text" class="form-input" id="so_hop_dong" name="so_hop_dong"
+                                       value="{{ form.data.so_hop_dong }}">
                             </div>
 
                             <div class="form-field">
                                 <label for="loai_hop_dong">Loại hợp đồng:</label>
                                 <select class="form-input" id="loai_hop_dong" name="loai_hop_dong">
-                                    <option value="Hợp đồng thử việc">Hợp đồng thử việc</option>
-                                    <option value="Hợp đồng có thời hạn">Hợp đồng có thời hạn</option>
+                                    <option value="Hợp đồng thử việc" {% if form.data.loai_hop_dong == 'Hợp đồng thử việc' %}selected{% endif %}>
+                                        Hợp đồng thử việc
+                                    </option>
+                                    <option value="Hợp đồng có thời hạn" {% if form.data.loai_hop_dong == 'Hợp đồng có thời hạn' %}selected{% endif %}>
+                                        Hợp đồng có thời hạn
+                                    </option>
                                 </select>
                             </div>
 
                             <div class="form-field">
-                                <label for="thoi_han_hop_dong">Thời hạn HĐ:</label>
-                                <div style="display: flex; gap: 10px; align-items: center;">
-                                    <input type="text" class="form-input" id="thoi_han_hop_dong" name="thoi_han_hop_dong" placeholder="Nhập thời hạn">
-                                    <span>Tháng</span>
-                                </div>
+                                <label for="thoi_han_hop_dong">Thời hạn HĐ (tháng):</label>
+                                <input type="number" class="form-input" id="thoi_han_hop_dong" name="thoi_han_hop_dong"
+                                       value="{{ form.data.thoi_han_hop_dong }}">
                             </div>
 
                             <div class="form-field">
                                 <label for="luong">Lương:</label>
-                                <input type="text" class="form-input" id="luong" name="luong" placeholder="Nhập lương">
+                                <input type="number" class="form-input" id="luong" name="luong" step="0.01"
+                                       value="{{ form.data.luong }}">
                             </div>
 
                             <div class="form-field">
                                 <label for="tu_ngay">Từ ngày:</label>
-                                <input type="date" class="form-input" id="tu_ngay" name="tu_ngay">
+                                <input type="date" class="form-input" id="tu_ngay" name="tu_ngay"
+                                       value="{{ form.data.tu_ngay }}">
                             </div>
 
                             <div class="form-field">
                                 <label for="den_ngay">Đến ngày:</label>
-                                <input type="date" class="form-input" id="den_ngay" name="den_ngay">
+                                <input type="date" class="form-input" id="den_ngay" name="den_ngay"
+                                       value="{{ form.data.den_ngay }}">
                             </div>
 
                             <div class="form-field">
                                 <label for="ngay_ky">Ngày ký:</label>
-                                <input type="date" class="form-input" id="ngay_ky" name="ngay_ky">
+                                <input type="date" class="form-input" id="ngay_ky" name="ngay_ky"
+                                       value="{{ form.data.ngay_ky }}">
                             </div>
 
                             <div class="form-field">
                                 <label for="trang_thai_hop_dong">Trạng thái HĐ:</label>
                                 <select class="form-input" id="trang_thai_hop_dong" name="trang_thai_hop_dong">
-                                    <option value="Đang hiệu lực">Đang hiệu lực</option>
-                                    <option value="Sắp hết hạn">Sắp hết hạn</option>
-                                    <option value="Hết hiệu lực">Hết hiệu lực</option>
+                                    <option value="">-- Chọn trạng thái --</option>
+                                    <option value="Đang hiệu lực" {% if form.data.trang_thai_hop_dong == 'Đang hiệu lực' %}selected{% endif %}>Đang hiệu lực</option>
+                                    <option value="Sắp hết hạn" {% if form.data.trang_thai_hop_dong == 'Sắp hết hạn' %}selected{% endif %}>Sắp hết hạn</option>
+                                    <option value="Hết hiệu lực" {% if form.data.trang_thai_hop_dong == 'Hết hiệu lực' %}selected{% endif %}>Hết hiệu lực</option>
                                 </select>
                             </div>
+
+                        </div>
                         </div>
                     </div>
                 </div>
@@ -402,34 +412,21 @@
                             <div class="form-field">
                                 <label for="danh_sach_phu_cap">DS phụ cấp:</label>
                                 <div class="checkbox-group">
+                                    {% for phu_cap in danh_sach_phu_cap %}
                                     <div class="checkbox-item">
-                                        <input type="checkbox" id="phu_cap_tham_nien" name="phu_cap_tham_nien">
-                                        <label for="phu_cap_tham_nien">Phụ cấp thâm niên</label>
+                                        <input type="checkbox"
+                                               id="phu_cap_{{ phu_cap.id }}"
+                                               name="phu_cap_ids"
+                                               value="{{ phu_cap.id }}"
+                                               {% if phu_cap.id in phu_cap_da_chon %}checked{% endif %}>
+                                        <label for="phu_cap_{{ phu_cap.id }}">{{ phu_cap.ten_phu_cap }}</label>
                                     </div>
-                                    <div class="checkbox-item">
-                                        <input type="checkbox" id="phu_cap_di_lai" name="phu_cap_di_lai">
-                                        <label for="phu_cap_di_lai">Phụ cấp đi lại</label>
-                                    </div>
-                                    <div class="checkbox-item">
-                                        <input type="checkbox" id="phu_cap_dung_lop" name="phu_cap_dung_lop">
-                                        <label for="phu_cap_dung_lop">Phụ cấp đứng lớp</label>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="form-field">
-                                <label for="gia_tri_phu_cap">Giá trị phụ cấp:</label>
-                                <div class="allowance-values">
-                                    <input type="text" class="form-input" id="gia_tri_phu_cap1" name="gia_tri_phu_cap1" placeholder="Giá trị phụ cấp thâm niên">
-                                    <input type="text" class="form-input" id="gia_tri_phu_cap2" name="gia_tri_phu_cap2" placeholder="Giá trị phụ cấp đi lại">
-                                    <input type="text" class="form-input" id="gia_tri_phu_cap3" name="gia_tri_phu_cap3" placeholder="Giá trị phụ cấp đứng lớp">
+                                    {% endfor %}
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
-
             <div class="card-footer">
                 <button type="submit" class="btn-save">
                     <i class="fas fa-save"></i> Lưu
