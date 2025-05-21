@@ -128,12 +128,12 @@
 
                         <div class="form-group" style="display: flex; align-items: center; margin-bottom: 15px;">
                             <label for="tu_ngay" style="width: 180px; font-weight: bold; font-size: 16px; color: #333; margin-right: 10px; text-align: left;">Từ ngày:</label>
-                            <input style="font-size: 16px;" type="date" class="form-control" id="tu_ngay"  name="tu_ngay" value="{{ nhan_vien.tu_ngay|date:'Y-m-d' }}">
+                            <input type="date" class="form-control" id="tu_ngay" name="tu_ngay" value="{{ hop_dong.tu_ngay|date:'Y-m-d' }}">
                         </div>
 
                         <div class="form-group" style="display: flex; align-items: center; margin-bottom: 15px;">
                             <label for="ngay_ky" style="width: 180px; font-weight: bold; font-size: 16px; color: #333; margin-right: 10px; text-align: left;">Ngày ký:</label>
-                            <input style="font-size: 16px;" type="date" class="form-control" id="ngay_ky"  name="ngay_ky" value="{{ nhan_vien.ngay_ky|date:'Y-m-d' }}">
+                            <input type="date" class="form-control" id="ngay_ky" name="ngay_ky" value="{{ hop_dong.ngay_ky|date:'Y-m-d' }}">
                         </div>
                         <div class="form-group" style="display: flex; align-items: center; margin-bottom: 15px;">
                             <label for="danh_sach_phu_cap" style="width: 180px; font-weight: bold; font-size: 16px; color: #333; margin-right: 10px; text-align: left;">Danh sách phụ cấp:</label>
@@ -157,7 +157,7 @@
 
                         <div class="form-group" style="display: flex; align-items: center; margin-bottom: 10px;">
                             <label for="den_ngay" style="width: 180px; font-weight: bold; font-size: 16px; color: #333; margin-right: 10px; text-align: left;">Đến ngày:</label>
-                            <input style="font-size: 16px;" type="date" class="form-control" id="den_ngay"  name="den_ngay" value="{{ nhan_vien.den_ngay|date:'Y-m-d' }}">
+                            <input type="date" class="form-control" id="den_ngay" name="den_ngay" value="{{ hop_dong.den_ngay|date:'Y-m-d' }}">
                         </div>
 
                         <div class="form-group" style="display: flex; align-items: center; margin-bottom: 15px;">
@@ -167,30 +167,32 @@
                         </div>
                     </div>
                 </div>
-
-                <table border="1" cellpadding="5" cellspacing="0" STYLE="">
-                        <thead>
-                            <tr>
-                                <th>Số thứ tự</th>
-                                <th>Tên phụ cấp</th>
-                                <th>Giá trị</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {% for phu_cap_nv in phu_cap_nhan_vien_list %}
-                            <tr>
-                                <td>{{ forloop.counter }}</td>
-                                <td>{{ phu_cap_nv.phu_cap.ten_phu_cap }}</td>
-                                <td>{{ phu_cap_nv.phu_cap.gia_tri|floatformat:2 }}</td>
-                            </tr>
-                            {% empty %}
-                            <tr>
-                                <td colspan="3" style="text-align:center;">Không có phụ cấp</td>
-                            </tr>
-                            {% endfor %}
-                        </tbody>
-                    </table>
-
+                <div class="form-section">
+                    <div class="section-header">
+                        <i class="fas fa-money-bill-wave"></i>
+                        <span style="margin-left: 10px;">PHỤ CẤP</span>
+                        <i class="fas fa-chevron-down section-chevron"></i>
+                    </div>
+                    <div class="section-content">
+                        <div class="form-grid">
+                            <div class="form-field">
+                                <label for="danh_sach_phu_cap">DS phụ cấp:</label>
+                                <div class="checkbox-group">
+                                    {% for phu_cap in danh_sach_phu_cap %}
+                                    <div class="checkbox-item">
+                                        <input type="checkbox"
+                                               id="phu_cap_{{ phu_cap.id }}"
+                                               name="phu_cap_ids"
+                                               value="{{ phu_cap.id }}"
+                                               {% if phu_cap.id in phu_cap_da_chon %}checked{% endif %}>
+                                        <label for="phu_cap_{{ phu_cap.id }}">{{ phu_cap.ten_phu_cap }}</label>
+                                    </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 <div style="display: flex; justify-content: flex-end; gap: 10px;">
                     <button type="submit" style="background-color: #00CC00; color: white; padding: 10px 20px; font-size: 16px;font-weight: bold; border: 0px solid #333; border-radius: 5px; cursor: pointer;">
                         Lưu
