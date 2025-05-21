@@ -3,6 +3,7 @@ from django.db.models import Sum
 from HOME.models import NhanVien, ChamCong, HopDongLaoDong, PhuCap, BHXH, KhenThuong, KyLuat, PhuCapNhanVien
 from django.contrib.auth.decorators import login_required
 from decimal import Decimal
+from django.contrib.auth.decorators import (login_required,permission_required)
 
 
 def bang_luong_thang(request, nhan_vien_id, thang, nam):
@@ -146,6 +147,7 @@ def xem_bang_luong_cua_toi(request):
         'years' : years
     })
 @login_required
+@permission_required('KeToan')
 def danh_sach_nhan_vien_va_luong(request):
     nhan_vien = get_object_or_404(NhanVien, user=request.user)
     if nhan_vien.vi_tri_cong_viec not in ['Kế toán']:

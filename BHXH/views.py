@@ -152,11 +152,15 @@ def tinh_tien_bhxh_ajax(request):
 @login_required
 def redirect_bhxh_view(request):
     nhanvien = get_object_or_404(NhanVien, user=request.user)
+
     if nhanvien.vi_tri_cong_viec in ['Hiệu Trưởng', 'Hiệu phó chuyên môn', 'Hiệu phó hoạt động', 'Kế toán']:
         return redirect('bhxh_list')
-    else:
-        return redirect('info_bhxh',ma_nv=nhanvien.id)
 
+    elif not BHXH.objects.filter(nhan_vien=nhanvien).exists():
+        return redirect('khong_co_bhxh')  # 👉 Đường dẫn riêng khi không có BHXH
+
+    else:
+        return redirect('info_bhxh', ma_nv=nhanvien.id)
 @login_required
 def bhxh_cua_toi(request):
     nhanvien = get_object_or_404(NhanVien, user=request.user)
@@ -165,4 +169,9 @@ def bhxh_cua_toi(request):
         bhxh_list = BHXH.objects.filter(nhan_vien=nhanvien)
     return render(request, 'BHXH/BHXH.html', {'bhxh_list': bhxh_list, 'nhan_vien': nhanvien})
 
+
+@login_required
+def khong_co_bhxh_view(request):
+    nhanvien = get_object_or_404(NhanVien, user=request.user)
+    return render(request, 'bhxh/NoBHXH.html',{'nhan_vien': nhanvien})
 

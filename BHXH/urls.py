@@ -9,6 +9,7 @@ urlpatterns = [
     path('ajax/tinh-tien-bhxh/', tinh_tien_bhxh_ajax, name='tinh_tien_bhxh_ajax'),
     path('home/BHXH',redirect_bhxh_view,name='redirectBHXH'),
     path('bhxhcuatoi/', bhxh_cua_toi, name='bhxh_me'),
+    path('bhxh/khong-co-thong-tin/', khong_co_bhxh_view, name='khong_co_bhxh'),
 #
 
 ]

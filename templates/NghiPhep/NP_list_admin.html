@@ -123,7 +123,7 @@
 
                                                 <div id="historyContent-{{ item.id }}" style="display: none; margin-top: 10px;">
                                                     <div class="history-block">
-                                                        <img src="{{ item.nhan_vien.anh_ca_nhan }}" class="avatar" alt="Avatar">
+                                                        <img src="{{ item.nhan_vien.anh_ca_nhan.url }}" class="avatar" alt="Avatar">
                                                         <div>
                                                             <strong>{{ item.nhan_vien.ten_nv }}</strong> đã tạo đơn vào {{ item.ngay_tao_don }}<br>
                                                             <span class="history_loainghi">Loại nghỉ: {{ item.loai_nghi }}</span>
@@ -131,7 +131,7 @@
                                                     </div>
                                                     {% if item.nguoi_duyet %}
                                                     <div class="history-block" style="margin-left: 40px; margin-top: 10px;">
-                                                        <img src="{{ item.nguoi_duyet.anh_ca_nhan }}" class="avatar" alt="Avatar">
+                                                        <img src="{{ item.nguoi_duyet.anh_ca_nhan.url }}" class="avatar" alt="Avatar">
                                                         <div>
                                                             <strong>{{ item.nguoi_duyet.ten_nv }}</strong> đã xử lý vào {{ item.ngay_duyet }}<br>
                                                             <span class="history_nguoiduyet">{{ item.nguoi_duyet.chuc_vu }} {{ item.nguoi_duyet.to_phong_ban }}</span>

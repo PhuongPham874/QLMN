@@ -1,0 +1,308 @@
+/* Modern black and white color scheme */
+.edit-hdld-page {
+    --primary: #000000;
+    --secondary: #333333;
+    --light-gray: #f5f5f5;
+    --medium-gray: #e0e0e0;
+    --dark-gray: #666666;
+    --white: #ffffff;
+    --blue: #0066CC;
+    --light-blue: #65ABE3;
+    --dark-blue: #066BBB;
+    --green: #00CC00;
+}
+
+/* Main container */
+.edit-hdld-page .hdld-content {
+    width: 1100px;
+    margin-left:  50px;
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+
+/* Main title */
+.edit-hdld-page .hdld-main-title {
+    color: var(--primary);
+    text-align: center;
+    font-size: 25px;
+    font-weight: bold;
+    margin-left: 10px;
+}
+
+/* Tab styling */
+.edit-hdld-page .hdld-tab-container {
+    display: flex;
+    margin-bottom: 20px;
+    border-bottom: 1px solid var(--medium-gray);
+}
+
+.edit-hdld-page .hdld-tab-item {
+    padding: 12px 20px;
+    font-size: 18px;
+    font-weight: 500;
+    text-decoration: none;
+    text-align: center;
+    cursor: pointer;
+    color: var(--dark-gray);
+    position: relative;
+    margin-right: 20px;
+    width: 50%;
+}
+
+.hdld-tab-active {
+    color: var(--blue);
+    font-weight: bold;
+}
+
+.hdld-tab-active::after {
+    content: '';
+    position: absolute;
+    bottom: -1px;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background-color: var(--blue);
+}
+
+/* Form section styling */
+.hdld-form-section {
+    margin-bottom: 20px;
+    border: 1px solid var(--medium-gray);
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+.hdld-section-header {
+    background-color: var(--light-gray);
+    padding: 15px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    color: var(--primary);
+    transition: all 0.2s ease;
+}
+
+.hdld-section-header:hover {
+    background-color: var(--medium-gray);
+}
+
+.hdld-section-header i {
+    margin-right: 10px;
+}
+
+.hdld-section-header span {
+    margin-left: 10px;
+}
+
+/* Chevron for section toggle */
+.hdld-section-chevron {
+    margin-left: auto;
+    transition: transform 0.3s ease;
+}
+
+.hdld-section-content {
+    padding: 20px;
+    background-color: var(--white);
+}
+
+/* Form field styling */
+.hdld-form-field {
+    margin-bottom: 25px;
+}
+
+.hdld-form-field label {
+    display: block;
+    font-weight: 500;
+    font-size: 16px;
+    color: var(--secondary);
+    margin-bottom: 8px;
+}
+
+.hdld-form-input {
+    width: 100%;
+    font-size: 16px;
+    padding: 10px 12px;
+    border-radius: 4px;
+    border: 1px solid var(--medium-gray);
+    transition: border-color 0.2s ease;
+}
+
+.hdld-form-input:focus {
+    outline: none;
+    border-color: var(--secondary);
+    box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.1);
+}
+
+/* Form grid for two columns */
+.hdld-form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 30px;
+}
+
+/* Employee info card */
+.hdld-employee-info-card {
+    background-color: #F8F8F8;
+    border: 3px solid #DCDCDC;
+    border-radius: 5px;
+    padding: 10px;
+    margin-bottom: 20px;
+}
+
+.hdld-employee-info-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+}
+
+.hdld-employee-info-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+    padding: 0 10px;
+}
+
+.hdld-employee-info-label {
+    font-weight: bold;
+    font-size: 16px;
+    color: #333;
+    width: 180px;
+    margin-right: 10px;
+    text-align: left;
+}
+
+.hdld-employee-info-value {
+    font-size: 16px;
+}
+
+/* Checkbox styling */
+.hdld-checkbox-group {
+    margin-top: 10px;
+}
+
+.hdld-checkbox-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.hdld-checkbox-item input[type="checkbox"] {
+    margin-right: 10px;
+}
+
+/* Card styling */
+.hdld-card {
+    width: 100%;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    overflow: hidden;
+    margin-bottom: 20px;
+    background-color: var(--white);
+}
+
+.hdld-card-body {
+    padding: 25px;
+    background-color: var(--white);
+}
+
+.hdld-card-footer {
+    display: flex;
+    justify-content: flex-end;
+    padding: 15px 25px;
+    background-color: var(--light-gray);
+    border-top: 1px solid var(--medium-gray);
+    gap: 10px;
+}
+
+/* Button styling */
+.hdld-btn-back {
+    background-color: #555555;
+    color: white;
+    padding: 10px 15px;
+    border-radius: 4px;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    min-width: 110px;
+    justify-content: center;
+}
+
+.hdld-btn-back i {
+    margin-right: 8px;
+}
+
+.hdld-btn-back:hover {
+    background-color: var(--secondary);
+}
+
+.hdld-btn-save {
+    background-color: var(--green);
+    color: var(--white);
+    border: none;
+    padding: 10px 20px;
+    border-radius: 4px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.hdld-btn-save:hover {
+    background-color: #00AA00;
+}
+
+.hdld-btn-cancel {
+    background-color: #BA0000;
+    color: var(--white);
+    border: none;
+    padding: 10px 20px;
+    border-radius: 4px;
+    font-weight: 500;
+    cursor: pointer;
+    text-decoration: none;
+    transition: background-color 0.2s ease;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.hdld-btn-cancel:hover {
+    background-color: #990000;
+}
+
+/* Header with back button */
+.hdld-header-container {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    gap: 80px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .hdld-content {
+        width: 95%;
+    }
+
+    .hdld-form-grid,
+    .hdld-employee-info-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .hdld-header-container {
+        flex-direction: column;
+        gap: 20px;
+        align-items: flex-start;
+    }
+
+    .hdld-main-title {
+        font-size: 20px;
+    }
+}

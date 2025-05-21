@@ -147,8 +147,8 @@
     <div class="content-row">
         <!-- Danh sách khen thưởng -->
         <div class="list-container" id="khen-thuong-cua-toi-list">
-            {% if khen_thuong_cua_toi %}
-                {% for khen_thuong in khen_thuong_cua_toi %}
+            {% if khen_thuong_list %}
+                {% for khen_thuong in khen_thuong_list %}
                 <div class="card khen-thuong-item" data-date="{{ khen_thuong.ngay_tao|date:'Y-m' }}">
                     <div class="content-two-columns" style="margin-top: 16px;">
                         <!-- Cột trái -->

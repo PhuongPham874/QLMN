@@ -3,6 +3,7 @@ from django.contrib.auth.decorators import login_required
 from HOME.models import NhanVien, ChamCong
 from django.utils import timezone
 import time
+from django.contrib.auth.decorators import (login_required,permission_required)
 
 @login_required
 def cham_cong_view(request, nhanvien_id=None):
@@ -70,7 +71,8 @@ def cham_cong_view(request, nhanvien_id=None):
 
     return render(request, 'ChamCong/cham_cong.html', {
         'is_super': current_user.vi_tri_cong_viec == 'Nhân sự',
-        'nhan_vien': nhan_vien,
+        'nhan_vien_duoc_xem': nhan_vien,
+        'nhan_vien' : current_user,
         'cham_cong_theo_thang': sorted_cham_cong_theo_thang,
         'months': months,
         'years': years

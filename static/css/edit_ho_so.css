@@ -1,0 +1,320 @@
+/* Scoped CSS for employee form - all selectors are prefixed with employee-form- */
+
+/* Modern black and white color scheme */
+.employee-form-container {
+    --primary: #000000;
+    --secondary: #333333;
+    --light-gray: #f5f5f5;
+    --medium-gray: #e0e0e0;
+    --dark-gray: #666666;
+    --white: #ffffff;
+    --blue: #0066CC;
+    --light-blue: #65ABE3;
+    --dark-blue: #066BBB;
+
+    width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+
+    padding: 10px;
+    font-family: inherit;
+}
+
+/* Main title */
+.employee-form-title {
+    color: #000000;
+    text-align: center;
+    font-size: 25px;
+    font-weight: bold;
+    margin-left: 100px;
+}
+
+/* Tab styling */
+.employee-form-tab-container {
+    display: flex;
+    margin-bottom: 20px;
+    border-bottom: 1px solid var(--medium-gray);
+}
+
+.employee-form-tab-item {
+    padding: 12px 20px;
+    font-size: 18px;
+    font-weight: 500;
+    text-decoration: none;
+    text-align: center;
+    cursor: pointer;
+    color: var(--dark-gray);
+    position: relative;
+    margin-right: 20px;
+    width: 50%;
+}
+
+.employee-form-tab-active {
+    color: var(--blue);
+    font-weight: bold;
+}
+
+.employee-form-tab-active::after {
+    content: '';
+    position: absolute;
+    bottom: -1px;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background-color: var(--blue);
+}
+
+/* Form section styling */
+.employee-form-section {
+    margin-bottom: 20px;
+    border: 1px solid var(--medium-gray);
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+.employee-form-section-header {
+    background-color: var(--light-gray);
+    padding: 15px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    color: var(--primary);
+    transition: all 0.2s ease;
+}
+
+.employee-form-section-header:hover {
+    background-color: var(--medium-gray);
+}
+
+.employee-form-section-header i {
+    margin-right: 10px;
+}
+
+.employee-form-section-content {
+    padding: 20px;
+    background-color: var(--white);
+}
+
+/* Form field styling */
+.employee-form-field {
+    margin-bottom: 15px;
+}
+
+.employee-form-field label {
+    display: block;
+    font-weight: 500;
+    font-size: 16px;
+    color: var(--secondary);
+    margin-bottom: 8px;
+}
+
+.employee-form-input, .employee-form-select {
+    width: 100%;
+    font-size: 16px;
+    padding: 10px 12px;
+    border-radius: 4px;
+    border: 1px solid var(--medium-gray);
+    transition: border-color 0.2s ease;
+}
+
+.employee-form-input:focus, .employee-form-select:focus {
+    outline: none;
+    border-color: var(--secondary);
+    box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.1);
+}
+
+/* Radio buttons */
+.employee-form-radio-group {
+    display: flex;
+    gap: 20px;
+}
+
+.employee-form-radio-option {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.employee-form-radio-option label {
+    margin-bottom: 0;
+    font-weight: normal;
+}
+
+.employee-form-card {
+    width: 100%;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    overflow: hidden;
+    margin-bottom: 20px;
+    background-color: var(--white);
+}
+
+.employee-form-card-body {
+    padding: 25px;
+    background-color: var(--white);
+}
+
+.employee-form-card-footer {
+    display: flex;
+    justify-content: flex-end;
+    padding: 15px 25px;
+    background-color: var(--light-gray);
+    border-top: 1px solid var(--medium-gray);
+    gap: 10px;
+}
+
+.employee-form-btn-back {
+    background-color: #555555;
+    color: var(--white);
+    border: none;
+    padding: 10px 15px;
+    border-radius: 4px;
+    font-weight: 500;
+    text-decoration: none;
+    transition: background-color 0.2s ease;
+    display: flex;
+    align-items: center;
+    min-width: 110px;
+    justify-content: center;
+}
+
+.employee-form-btn-back i {
+    margin-right: 8px;
+}
+
+.employee-form-btn-back:hover {
+    background-color: var(--secondary);
+}
+
+.employee-form-btn-save {
+    background-color: #00CC00;
+    color: var(--white);
+    border: none;
+    padding: 10px 20px;
+    border-radius: 4px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.employee-form-btn-save:hover {
+    background-color: #00AA00;
+}
+
+.employee-form-btn-cancel {
+    background-color: #BA0000;
+    color: var(--white);
+    border: none;
+    padding: 10px 20px;
+    border-radius: 4px;
+    font-weight: 500;
+    cursor: pointer;
+    text-decoration: none;
+    transition: background-color 0.2s ease;
+}
+
+.employee-form-btn-cancel:hover {
+    background-color: #990000;
+}
+
+/* Avatar styling */
+.employee-form-avatar-container {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 30px;
+}
+
+.employee-form-avatar-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.employee-form-avatar-circle {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    background-color: var(--light-gray);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid var(--medium-gray);
+    cursor: pointer;
+    overflow: hidden;
+    position: relative;
+}
+
+.employee-form-avatar-icon {
+    font-size: 48px;
+    color: #999;
+}
+
+.employee-form-avatar-preview {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.employee-form-avatar-label {
+    margin-top: 10px;
+    color: var(--dark-gray);
+    font-size: 14px;
+    text-align: center;
+}
+
+.employee-form-avatar-input {
+    display: none;
+}
+
+.employee-form-avatar-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.3);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+}
+
+.employee-form-avatar-circle:hover .employee-form-avatar-overlay {
+    opacity: 1;
+}
+
+.employee-form-avatar-overlay i {
+    color: white;
+    font-size: 24px;
+}
+
+/* Chevron for section toggle */
+.employee-form-section-chevron {
+    margin-left: auto;
+    transition: transform 0.3s ease;
+}
+
+.employee-form-section-header.active .employee-form-section-chevron {
+    transform: rotate(180deg);
+}
+
+/* Header with back button */
+.employee-form-header {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    width: 100%;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    gap: 100px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .employee-form-container {
+        width: 95%;
+    }
+}

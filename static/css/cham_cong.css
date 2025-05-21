@@ -3,6 +3,7 @@
   color: #333;
   background-color: #FFFFF;
   padding-left: 50px;
+
 }
 
 .attendance-page .container {
@@ -12,6 +13,7 @@
   align-items: flex-start;
   gap: 40px;
   padding: 20px;
+
   flex-wrap: nowrap; /* Không cho xuống dòng */
 }
 
@@ -76,6 +78,7 @@
 .calendar-column {
   flex: 1;
   min-width: 0;
+  width: 720px;
 }
 
 .calendar-wrapper {

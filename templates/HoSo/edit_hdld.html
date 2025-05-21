@@ -1,442 +1,113 @@
 {% extends "home.html" %}
-
-{% block extra_css %}
-<style>
-    /* Modern black and white color scheme */
-    :root {
-        --primary: #000000;
-        --secondary: #333333;
-        --light-gray: #f5f5f5;
-        --medium-gray: #e0e0e0;
-        --dark-gray: #666666;
-        --white: #ffffff;
-        --blue: #0066CC;
-        --light-blue: #65ABE3;
-        --dark-blue: #066BBB;
-        --green: #00CC00;
-    }
-
-    .content {
-        width: 80%;
-        margin: 0 auto;
-        display: flex;
-        flex-direction: column;
-    }
-
-    /* Main title */
-    .main-title {
-        color: var(--blue);
-        text-align: center;
-        font-size: 28px;
-        font-weight: bold;
-        margin: 20px 0;
-    }
-
-    /* Tab styling */
-    .tab-container {
-        display: flex;
-        margin-bottom: 20px;
-        border-bottom: 1px solid var(--medium-gray);
-    }
-
-    .tab-item {
-        padding: 12px 20px;
-        font-size: 18px;
-        font-weight: 500;
-        text-decoration: none;
-        text-align: center;
-        cursor: pointer;
-        color: var(--dark-gray);
-        position: relative;
-        margin-right: 20px;
-        width: 50%;
-    }
-
-    .tab-active {
-        color: var(--blue);
-        font-weight: bold;
-    }
-
-    .tab-active::after {
-        content: '';
-        position: absolute;
-        bottom: -1px;
-        left: 0;
-        width: 100%;
-        height: 3px;
-        background-color: var(--blue);
-    }
-
-    /* Form section styling */
-    .form-section {
-        margin-bottom: 20px;
-        border: 1px solid var(--medium-gray);
-        border-radius: 5px;
-        overflow: hidden;
-    }
-
-    .section-header {
-        background-color: var(--light-gray);
-        padding: 15px;
-        font-weight: 600;
-        display: flex;
-        align-items: center;
-        cursor: pointer;
-        color: var(--primary);
-        transition: all 0.2s ease;
-    }
-
-    .section-header:hover {
-        background-color: var(--medium-gray);
-    }
-
-    .section-header i {
-        margin-right: 10px;
-    }
-
-    /* Chevron for section toggle */
-    .section-chevron {
-        margin-left: auto;
-        transition: transform 0.3s ease;
-    }
-
-    .section-content {
-        padding: 20px;
-        background-color: var(--white);
-    }
-
-    /* Form field styling */
-    .form-field {
-        margin-bottom: 25px;
-    }
-
-    .form-field label {
-        display: block;
-        font-weight: 500;
-        font-size: 16px;
-        color: var(--secondary);
-        margin-bottom: 8px;
-    }
-
-    .form-input {
-        width: 100%;
-        font-size: 16px;
-        padding: 10px 12px;
-        border-radius: 4px;
-        border: 1px solid var(--medium-gray);
-        transition: border-color 0.2s ease;
-    }
-
-    .form-input:focus {
-        outline: none;
-        border-color: var(--secondary);
-        box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.1);
-    }
-
-    /* Form grid for two columns */
-    .form-grid {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 30px;
-    }
-
-    /* Employee info card */
-    .employee-info-card {
-        background-color: #F8F8F8;
-        border: 3px solid #DCDCDC;
-        border-radius: 5px;
-        padding: 10px;
-        margin-bottom: 20px;
-    }
-
-    .employee-info-grid {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 15px;
-    }
-
-    .employee-info-item {
-        display: flex;
-        align-items: center;
-        margin-bottom: 15px;
-        padding: 0 10px;
-    }
-
-    .employee-info-label {
-        font-weight: bold;
-        font-size: 16px;
-        color: #333;
-        width: 180px;
-        margin-right: 10px;
-        text-align: left;
-    }
-
-    .employee-info-value {
-        font-size: 16px;
-    }
-
-    /* Checkbox styling */
-    .checkbox-group {
-        margin-top: 10px;
-    }
-
-    .checkbox-item {
-        display: flex;
-        align-items: center;
-        margin-bottom: 10px;
-    }
-
-    .checkbox-item input[type="checkbox"] {
-        margin-right: 10px;
-    }
-
-    /* Allowance section */
-    .allowance-container {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 20px;
-        align-items: start;
-    }
-
-    .allowance-list {
-        padding-right: 20px;
-    }
-
-    .allowance-values {
-        display: flex;
-        flex-direction: column;
-        gap: 25px;
-    }
-
-    .allowance-table {
-        width: 100%;
-        border-collapse: collapse;
-        margin-top: 20px;
-        background-color: #f2f9fd;
-    }
-
-    .allowance-table th,
-    .allowance-table td {
-        padding: 12px;
-        text-align: center;
-        border: 1px solid #ddd;
-    }
-
-    .allowance-table th {
-        background-color: #cce7ff;
-        font-weight: bold;
-    }
-
-    .allowance-table tr:nth-child(even) {
-        background-color: #e6f7ff;
-    }
-
-    .allowance-table tr:hover {
-        background-color: #f1f8ff;
-    }
-
-    .card {
-        width: 100%;
-        border-radius: 8px;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-        overflow: hidden;
-        margin-bottom: 20px;
-        background-color: var(--white);
-    }
-
-    .card-body {
-        padding: 25px;
-        background-color: var(--white);
-    }
-
-    .card-footer {
-        display: flex;
-        justify-content: flex-end;
-        padding: 15px 25px;
-        background-color: var(--light-gray);
-        border-top: 1px solid var(--medium-gray);
-        gap: 10px;
-    }
-
-    .btn-back {
-        background-color: var(--dark-gray);
-        color: var(--white);
-        border: none;
-        padding: 10px 16px;
-        border-radius: 4px;
-        font-weight: 500;
-        text-decoration: none;
-        transition: background-color 0.2s ease;
-    }
-
-    .btn-back:hover {
-        background-color: var(--secondary);
-    }
-
-    .btn-save {
-        background-color: var(--green);
-        color: var(--white);
-        border: none;
-        padding: 10px 20px;
-        border-radius: 4px;
-        font-weight: 500;
-        cursor: pointer;
-        transition: background-color 0.2s ease;
-    }
-
-    .btn-save:hover {
-        background-color: #00AA00;
-    }
-
-    .btn-cancel {
-        background-color: #BA0000;
-        color: var(--white);
-        border: none;
-        padding: 10px 20px;
-        border-radius: 4px;
-        font-weight: 500;
-        cursor: pointer;
-        text-decoration: none;
-        transition: background-color 0.2s ease;
-    }
-
-    .btn-cancel:hover {
-        background-color: #990000;
-    }
-
-    /* Header with back button */
-    .header-container {
-        display: flex;
-        justify-content: flex-start;
-        align-items: center;
-        width: 100%;
-        margin-top: 20px;
-        margin-bottom: 20px;
-    }
-
-    /* Responsive adjustments */
-    @media (max-width: 768px) {
-        .content {
-            width: 95%;
-        }
-
-        .form-grid,
-        .employee-info-grid {
-            grid-template-columns: 1fr;
-        }
-    }
-</style>
-<!-- Add Font Awesome for icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-{% endblock %}
-
+{% load static %}
 {% block page_background %}
-<main class="content" style="background-color: #ffffff; padding: 10px;">
-    <div class="header-container" style="display: flex; align-items: center; width: 100%; margin-top: 20px; margin-bottom: 20px; gap: 80px;">
-        <a href="{% url 'DanhSachNhanVien' %}" class="btn-back" style="background-color: #555555; color: white; padding: 10px 15px; border-radius: 4px; text-decoration: none; display: flex; align-items: center; min-width: 110px; justify-content: center;">
-            <i class="fas fa-arrow-left" style="margin-right: 8px;"></i> Quay lại
+<div class="edit-hdld-page">
+<main class="hdld-content">
+    <div class="hdld-header-container">
+        <a href="{% url 'DanhSachNhanVien' %}" class="hdld-btn-back">
+            <i class="fas fa-arrow-left"></i> Quay lại
         </a>
-        <h1 class="main-title" style="color:#000000; font-size: 25px; font-weight: bold; margin: 0;">CHỈNH SỬA THÔNG TIN HỢP ĐỒNG LAO ĐỘNG</h1>
+        <h1 class="hdld-main-title">CHỈNH SỬA THÔNG TIN HỢP ĐỒNG LAO ĐỘNG</h1>
     </div>
-    <div class="card">
+    <div class="hdld-card">
         <form method="POST" enctype="multipart/form-data">
             {% csrf_token %}
-            <div class="card-body">
+            <div class="hdld-card-body">
                 <!-- Tabs styled like the screenshot -->
-                <div class="tab-container">
-                    <a href="{% url 'QLXemHoSo' nhan_vien.id %}" class="tab-item">
+                <div class="hdld-tab-container">
+                    <a href="{% url 'edit_ho_so' nhan_vien.id %}" class="hdld-tab-item">
                         Thông tin cá nhân
                     </a>
-                    <a href="{% url 'edit_hdld' nhan_vien.id %}" class="tab-item tab-active">
+                    <a href="{% url 'edit_hdld' nhan_vien.id %}" class="hdld-tab-item hdld-tab-active">
                         Hợp đồng lao động
                     </a>
                 </div>
 
                 <!-- Employee Information Card -->
-                <div class="employee-info-card">
-                    <div class="employee-info-grid">
-                        <div class="employee-info-item">
-                            <div class="employee-info-label">Họ và tên:</div>
-                            <div class="employee-info-value">{{ nhan_vien.ten_nv }}</div>
+                <div class="hdld-employee-info-card">
+                    <div class="hdld-employee-info-grid">
+                        <div class="hdld-employee-info-item">
+                            <div class="hdld-employee-info-label">Họ và tên:</div>
+                            <div class="hdld-employee-info-value">{{ nhan_vien.ten_nv }}</div>
                         </div>
-                        <div class="employee-info-item">
-                            <div class="employee-info-label">Vị trí làm việc:</div>
-                            <div class="employee-info-value">{{ nhan_vien.vi_tri_cong_viec }}</div>
+                        <div class="hdld-employee-info-item">
+                            <div class="hdld-employee-info-label">Vị trí làm việc:</div>
+                            <div class="hdld-employee-info-value">{{ nhan_vien.vi_tri_cong_viec }}</div>
                         </div>
-                        <div class="employee-info-item">
-                            <div class="employee-info-label">Mã nhân viên:</div>
-                            <div class="employee-info-value">{{ nhan_vien.id }}</div>
+                        <div class="hdld-employee-info-item">
+                            <div class="hdld-employee-info-label">Mã nhân viên:</div>
+                            <div class="hdld-employee-info-value">{{ nhan_vien.id }}</div>
                         </div>
-                        <div class="employee-info-item">
-                            <div class="employee-info-label">Tổ (Phòng ban):</div>
-                            <div class="employee-info-value">{{ nhan_vien.to_phong_ban }}</div>
+                        <div class="hdld-employee-info-item">
+                            <div class="hdld-employee-info-label">Tổ (Phòng ban):</div>
+                            <div class="hdld-employee-info-value">{{ nhan_vien.to_phong_ban }}</div>
                         </div>
                     </div>
                 </div>
 
                 <!-- Contract Information -->
-                <div class="form-section">
-                    <div class="section-header">
+                <div class="hdld-form-section">
+                    <div class="hdld-section-header">
                         <i class="fas fa-file-contract"></i>
-                        <span style="margin-left: 10px;">THÔNG TIN HỢP ĐỒNG</span>
-                        <i class="fas fa-chevron-down section-chevron"></i>
+                        <span>THÔNG TIN HỢP ĐỒNG</span>
+                        <i class="fas fa-chevron-down hdld-section-chevron"></i>
                     </div>
-                    <div class="section-content">
-                        <div class="form-grid">
-                            <div class="form-field">
+                    <div class="hdld-section-content">
+                        <div class="hdld-form-grid">
+                            <div class="hdld-form-field">
                                 <label for="so_hop_dong">Số hợp đồng:</label>
-                                <input type="text" class="form-input" id="so_hop_dong" name="so_hop_dong" value="{{ hop_dong.so_hop_dong }}">
+                                <input type="text" class="hdld-form-input" id="so_hop_dong" name="so_hop_dong" value="{{ hop_dong.so_hop_dong }}">
                             </div>
 
-                            <div class="form-field">
+                            <div class="hdld-form-field">
                                 <label for="loai_hop_dong">Loại hợp đồng:</label>
-                                <input type="text" class="form-input" id="loai_hop_dong" name="loai_hop_dong" value="{{ hop_dong.loai_hop_dong }}">
+                                <input type="text" class="hdld-form-input" id="loai_hop_dong" name="loai_hop_dong" value="{{ hop_dong.loai_hop_dong }}">
                             </div>
 
-                            <div class="form-field">
+                            <div class="hdld-form-field">
                                 <label for="thoi_han_hop_dong">Thời hạn HĐ:</label>
-                                <input type="text" class="form-input" id="thoi_han_hop_dong" name="thoi_han_hop_dong" value="{{ hop_dong.thoi_han_hop_dong }}">
+                                <input type="text" class="hdld-form-input" id="thoi_han_hop_dong" name="thoi_han_hop_dong" value="{{ hop_dong.thoi_han_hop_dong }}">
                             </div>
 
-                            <div class="form-field">
+                            <div class="hdld-form-field">
                                 <label for="luong">Lương:</label>
-                                <input type="text" class="form-input" id="luong" name="luong" value="{{ hop_dong.luong }}">
+                                <input type="text" class="hdld-form-input" id="luong" name="luong" value="{{ hop_dong.luong }}">
                             </div>
 
-                            <div class="form-field">
+                            <div class="hdld-form-field">
                                 <label for="tu_ngay">Từ ngày:</label>
-                                <input type="date" class="form-input" id="tu_ngay" name="tu_ngay" value="{{ hop_dong.tu_ngay|date:'Y-m-d' }}">
+                                <input type="date" class="hdld-form-input" id="tu_ngay" name="tu_ngay" value="{{ hop_dong.tu_ngay|date:'Y-m-d' }}">
                             </div>
 
-                            <div class="form-field">
+                            <div class="hdld-form-field">
                                 <label for="den_ngay">Đến ngày:</label>
-                                <input type="date" class="form-input" id="den_ngay" name="den_ngay" value="{{ hop_dong.den_ngay|date:'Y-m-d' }}">
+                                <input type="date" class="hdld-form-input" id="den_ngay" name="den_ngay" value="{{ hop_dong.den_ngay|date:'Y-m-d' }}">
                             </div>
 
-                            <div class="form-field">
+                            <div class="hdld-form-field">
                                 <label for="ngay_ky">Ngày ký:</label>
-                                <input type="date" class="form-input" id="ngay_ky" name="ngay_ky" value="{{ hop_dong.ngay_ky|date:'Y-m-d' }}">
+                                <input type="date" class="hdld-form-input" id="ngay_ky" name="ngay_ky" value="{{ hop_dong.ngay_ky|date:'Y-m-d' }}">
                             </div>
 
-                            <div class="form-field">
+                            <div class="hdld-form-field">
                                 <label for="trang_thai_hop_dong">Trạng thái HĐ:</label>
-                                <input type="text" class="form-input" id="trang_thai_hop_dong" name="trang_thai_hop_dong" value="{{ hop_dong.trang_thai_hop_dong }}">
+                                <input type="text" class="hdld-form-input" id="trang_thai_hop_dong" name="trang_thai_hop_dong" value="{{ hop_dong.trang_thai_hop_dong }}">
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <!-- Allowance Information - Keeping original functionality -->
-                <div class="form-section">
-                    <div class="section-header">
+                <!-- Allowance Information -->
+                <div class="hdld-form-section">
+                    <div class="hdld-section-header">
                         <i class="fas fa-money-bill-wave"></i>
-                        <span style="margin-left: 10px;">PHỤ CẤP</span>
-                        <i class="fas fa-chevron-down section-chevron"></i>
+                        <span>PHỤ CẤP</span>
+                        <i class="fas fa-chevron-down hdld-section-chevron"></i>
                     </div>
-                    <div class="section-content">
-                        <div class="checkbox-group">
+                    <div class="hdld-section-content">
+                        <div class="hdld-checkbox-group">
                             {% for phu_cap in danh_sach_phu_cap %}
-                            <div class="checkbox-item">
+                            <div class="hdld-checkbox-item">
                                 <input type="checkbox"
                                        id="phu_cap_{{ phu_cap.id }}"
                                        name="phu_cap_ids"
@@ -450,22 +121,23 @@
                 </div>
             </div>
 
-            <div class="card-footer">
-                <button type="submit" class="btn-save">
+            <div class="hdld-card-footer">
+                <button type="submit" class="hdld-btn-save">
                     <i class="fas fa-save"></i> Lưu
                 </button>
-                <a href="{% url 'QLXemHoSoHDLD' nhan_vien.id %}" class="btn-cancel">
+                <a href="{% url 'QLXemHoSoHDLD' nhan_vien.id %}" class="hdld-btn-cancel">
                     <i class="fas fa-times"></i> Hủy
                 </a>
             </div>
         </form>
     </div>
 </main>
-
+</div>
+<link rel="stylesheet" href="{% static 'css/edit_hdld.css' %}">
 <script>
     // Add toggle functionality for section headers
     document.addEventListener('DOMContentLoaded', function() {
-        const sectionHeaders = document.querySelectorAll('.section-header');
+        const sectionHeaders = document.querySelectorAll('.hdld-section-header');
 
         sectionHeaders.forEach(header => {
             header.addEventListener('click', function() {
@@ -481,8 +153,8 @@
         });
 
         // Show all sections by default
-        const allHeaders = document.querySelectorAll('.section-header');
-        const allContents = document.querySelectorAll('.section-content');
+        const allHeaders = document.querySelectorAll('.hdld-section-header');
+        const allContents = document.querySelectorAll('.hdld-section-content');
 
         allHeaders.forEach((header, index) => {
             header.classList.add('active');
