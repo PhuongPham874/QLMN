@@ -91,62 +91,6 @@ from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.urls import reverse
 import datetime
-# @csrf_exempt
-# def tinh_tien_bhxh_ajax(request):
-#     if request.method != "POST":
-#         return JsonResponse({"error": "Phương thức không hợp lệ"}, status=400)
-#
-#     try:
-#         start = request.POST.get("ngay_bat_dau")
-#         end = request.POST.get("ngay_ket_thuc")
-#         start_date = datetime.datetime.strptime(start, "%Y-%m-%d").date()
-#         end_date = datetime.datetime.strptime(end, "%Y-%m-%d").date()
-#
-#         if start_date >= end_date:
-#             return JsonResponse({"error": "Ngày bắt đầu phải nhỏ hơn ngày kết thúc"}, status=400)
-#
-#         # Kiểm tra khoảng thời gian trùng
-#         if DONGBHXH.objects.filter(
-#             ngay_bat_dau__lte=end_date,
-#             ngay_ket_thuc__gte=start_date,
-#         ).exists():
-#             return JsonResponse({"error": "Khoảng thời gian đã tồn tại"}, status=400)
-#
-#         bhxh_list = BHXH.objects.select_related("nhan_vien")
-#         tong_tien = 0
-#         so_nguoi = bhxh_list.count()
-#
-#         # Tính tổng tiền tất cả nhân viên
-#         for bhxh in bhxh_list:
-#             nhan_vien = bhxh.nhan_vien
-#             tong_tien += int(tinh_tong_tien_bhxh(nhan_vien, bhxh.nhan_vien_dong, bhxh.truong_dong))
-#
-#         # Nếu submit thì lưu từng bản ghi riêng cho từng người
-#         if "submit" in request.POST:
-#             for bhxh in bhxh_list:
-#                 nhan_vien = bhxh.nhan_vien
-#                 tien_bhxh = int(tinh_tong_tien_bhxh(nhan_vien, bhxh.nhan_vien_dong, bhxh.truong_dong))
-#                 DONGBHXH.objects.create(
-#                     nhan_vien=nhan_vien,
-#                     ngay_bat_dau=start_date,
-#                     ngay_ket_thuc=end_date,
-#                     tong_tien=tien_bhxh,
-#                 )
-#             return JsonResponse({
-#                 "message": f"Đã nộp BHXH cho {so_nguoi} người, tổng tiền {tong_tien:,} VNĐ",
-#                 "tong_tien": tong_tien,
-#                 "redirect_url": reverse("bhxh_list"),
-#             })
-#
-#         # Trả về tổng tiền và số người nếu chưa submit
-#         return JsonResponse({
-#             "tong_tien": tong_tien,
-#             'so_nguoi_dong': so_nguoi,
-#             "redirect_url": reverse("bhxh_list"),
-#         })
-#
-#     except Exception as e:
-#         return JsonResponse({"error": str(e)}, status=400)
 @csrf_exempt
 def tinh_tien_bhxh_ajax(request):
     if request.method == "POST":
@@ -162,11 +106,16 @@ def tinh_tien_bhxh_ajax(request):
             ngay_ket_thuc__gte=start_date,
         ).exists():
             return JsonResponse({"error": "Khoảng thời gian đã tồn tại"}, status=400)
+        ds_nhan_vien_hieu_luc = HopDongLaoDong.objects.filter(
+            trang_thai_hop_dong__in=["Đang hiệu lực", "Sắp hết hạn"]
+        ).values_list("nhan_vien_id", flat=True)
 
-        bhxh_list = BHXH.objects.select_related("nhan_vien")
+        # Lọc BHXH theo nhân viên hợp lệ
+        bhxh_list = BHXH.objects.select_related("nhan_vien").filter(
+            nhan_vien_id__in=ds_nhan_vien_hieu_luc
+        )
         tong_tien = 0
         so_nguoi = bhxh_list.count()
-
         # Tính tổng tiền tất cả nhân viên
         for bhxh in bhxh_list:
             nhan_vien = bhxh.nhan_vien
