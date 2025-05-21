@@ -1,145 +1,174 @@
 {% extends "home.html" %}
 {% load static %}
-
 {% block page_background %}
-<main class="employee-profile">
-    <div class="profile-container">
-        <form method="POST" enctype="multipart/form-data">
-            {% csrf_token %}
-            <div class="header-container">
-                <a href="{% url 'DanhSachNhanVien' %}" class="back-button">
-                    <i class="fas fa-arrow-left"></i> Quay lại
-                </a>
-                <h1 class="header-title">THÔNG TIN CHI TIẾT HỒ SƠ NHÂN VIÊN</h1>
-            </div>
+<div class="contract-page">
+  <!-- Page Header -->
+  <div class="page-header">
+    <h1 class="page-title">THÔNG TIN HỒ SƠ CHI TIẾT</h1>
+  </div>
 
-            <div class="profile-card">
-                <div class="profile-tabs">
-                    <a href="{% url 'QLXemHoSo' nhan_vien.id %}" class="tab-link">
-                        Thông Tin Cá Nhân
-                    </a>
-                    {% if hop_dong %}
-                    <a href="{% url 'QLXemHoSoHDLD' nhan_vien.id %}" class="tab-link active">
-                        Hợp Đồng Lao Động
-                    </a>
-                    {% endif %}
-                </div>
+  <!-- Tab Navigation -->
+  <div class="tab-navigation">
+    <a href="{% url 'QLXemHoSo' nhan_vien.id %}" class="tab-link inactive">
+      <svg class="tab-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+        <circle cx="12" cy="7" r="4"></circle>
+      </svg>
+      Thông Tin Cá Nhân
+    </a>
+    <a href="{% url 'QLXemHoSoHDLD' nhan_vien.id %}" class="tab-link active">
+      <svg class="tab-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+        <polyline points="14 2 14 8 20 8"></polyline>
+        <line x1="16" y1="13" x2="8" y2="13"></line>
+        <line x1="16" y1="17" x2="8" y2="17"></line>
+        <polyline points="10 9 9 9 8 9"></polyline>
+      </svg>
+      Hợp Đồng Lao Động
+    </a>
+  </div>
 
-                <div class="profile-content">
-                    <!-- Basic Employee Info Section -->
-                    <div class="info-section">
-                        <div class="profile-grid">
-                            <div class="profile-column">
-                                <div class="profile-field">
-                                    <label>Họ và tên:</label>
-                                    <div class="field-value">{{ nhan_vien.ten_nv }}</div>
-                                </div>
+  <!-- Contract Card -->
+  <div class="contract-card">
+    <!-- Employee Info Section -->
+    <div class="employee-info-section">
+      <h3 class="section-title">
+        <svg class="section-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+          <circle cx="12" cy="7" r="4"></circle>
+        </svg>
+        Thông Tin Nhân Viên
+      </h3>
 
-                                <div class="profile-field">
-                                    <label>Mã nhân viên:</label>
-                                    <div class="field-value">{{ nhan_vien.id }}</div>
-                                </div>
-                            </div>
+      <div class="info-grid">
+        <div class="info-field">
+          <div class="field-label">Họ và tên</div>
+          <div class="field-value">{{ nhan_vien.ten_nv }}</div>
+        </div>
 
-                            <div class="profile-column">
-                                <div class="profile-field">
-                                    <label>Vị trí làm việc:</label>
-                                    <div class="field-value">{{ nhan_vien.vi_tri_cong_viec }}</div>
-                                </div>
+        <div class="info-field">
+          <div class="field-label">Mã nhân viên</div>
+          <div class="field-value">{{ nhan_vien.id }}</div>
+        </div>
 
-                                <div class="profile-field">
-                                    <label>Tổ (Phòng ban):</label>
-                                    <div class="field-value">{{ nhan_vien.to_phong_ban }}</div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+        <div class="info-field">
+          <div class="field-label">Vị trí làm việc</div>
+          <div class="field-value">{{ nhan_vien.vi_tri_cong_viec }}</div>
+        </div>
 
-                    <!-- Contract Details Section -->
-                    <div class="profile-grid">
-                        <div class="profile-column">
-                            <div class="profile-field">
-                                <label>Số hợp đồng:</label>
-                                <div class="field-value">{{ hop_dong.so_hop_dong }}</div>
-                            </div>
-
-                            <div class="profile-field">
-                                <label>Thời hạn HĐ:</label>
-                                <div class="field-value">{{ hop_dong.thoi_han_hop_dong }}</div>
-                            </div>
-
-                            <div class="profile-field">
-                                <label>Từ ngày:</label>
-                                <div class="field-value">{{ hop_dong.tu_ngay }}</div>
-                            </div>
-
-                            <div class="profile-field">
-                                <label>Ngày ký:</label>
-                                <div class="field-value">{{ hop_dong.ngay_ky }}</div>
-                            </div>
-                        </div>
-
-                        <div class="profile-column">
-                            <div class="profile-field">
-                                <label>Loại hợp đồng:</label>
-                                <div class="field-value">{{ hop_dong.loai_hop_dong }}</div>
-                            </div>
-
-                            <div class="profile-field">
-                                <label>Lương:</label>
-                                <div class="field-value">{{ hop_dong.luong }}</div>
-                            </div>
-
-                            <div class="profile-field">
-                                <label>Đến ngày:</label>
-                                <div class="field-value">{{ hop_dong.den_ngay }}</div>
-                            </div>
-
-                            <div class="profile-field">
-                                <label>Trạng thái HĐ:</label>
-                                <div class="field-value">{{ hop_dong.trang_thai_hop_dong }}</div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Allowance Table Section -->
-                    <div class="allowance-section">
-                        <h3 class="section-title">Danh sách phụ cấp</h3>
-                        <div class="table-container">
-                            <table class="allowance-table">
-                                <thead>
-                                    <tr>
-                                        <th>Số thứ tự</th>
-                                        <th>Tên phụ cấp</th>
-                                        <th>Giá trị</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {% for phu_cap_nv in phu_cap_nhan_vien_list %}
-                                    <tr>
-                                        <td>{{ forloop.counter }}</td>
-                                        <td>{{ phu_cap_nv.phu_cap.ten_phu_cap }}</td>
-                                        <td>{{ phu_cap_nv.phu_cap.gia_tri|floatformat:2 }}</td>
-                                    </tr>
-                                    {% empty %}
-                                    <tr>
-                                        <td colspan="3" class="empty-message">Không có phụ cấp</td>
-                                    </tr>
-                                    {% endfor %}
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-
-                    <div class="profile-actions">
-                        <a href="{% url 'edit_hdld' nhan_vien.id %}" class="edit-button" title="Chỉnh sửa">
-                            <i class="fa-solid fa-pen-to-square"></i>
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </form>
+        <div class="info-field">
+          <div class="field-label">Tổ (Phòng ban)</div>
+          <div class="field-value">{{ nhan_vien.to_phong_ban }}</div>
+        </div>
+      </div>
     </div>
-</main>
-<link rel="stylesheet" href="{% static 'css/hosochitietHDLD.css' %}">
+
+    <!-- Contract Details Section -->
+    <div class="contract-details-section">
+      <h3 class="section-title">
+        <svg class="section-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+          <polyline points="14 2 14 8 20 8"></polyline>
+          <line x1="16" y1="13" x2="8" y2="13"></line>
+          <line x1="16" y1="17" x2="8" y2="17"></line>
+          <polyline points="10 9 9 9 8 9"></polyline>
+        </svg>
+        Chi Tiết Hợp Đồng
+      </h3>
+
+      <div class="info-grid">
+        <div class="info-field">
+          <div class="field-label">Số hợp đồng</div>
+          <div class="field-value">{{ hop_dong.so_hop_dong }}</div>
+        </div>
+
+        <div class="info-field">
+          <div class="field-label">Loại hợp đồng</div>
+          <div class="field-value">{{ hop_dong.loai_hop_dong }}</div>
+        </div>
+
+        <div class="info-field">
+          <div class="field-label">Thời hạn hợp đồng</div>
+          <div class="field-value">{{ hop_dong.thoi_han_hop_dong }}</div>
+        </div>
+
+        <div class="info-field">
+          <div class="field-label">Lương</div>
+          <div class="field-value salary">{{ hop_dong.luong }}</div>
+        </div>
+
+        <div class="info-field">
+          <div class="field-label">Từ ngày</div>
+          <div class="field-value">{{ hop_dong.tu_ngay }}</div>
+        </div>
+
+        <div class="info-field">
+          <div class="field-label">Đến ngày</div>
+          <div class="field-value">{{ hop_dong.den_ngay }}</div>
+        </div>
+
+        <div class="info-field">
+          <div class="field-label">Ngày ký</div>
+          <div class="field-value">{{ hop_dong.ngay_ky }}</div>
+        </div>
+
+        <div class="info-field">
+          <div class="field-label">Trạng thái hợp đồng</div>
+          <div class="field-value status">{{ hop_dong.trang_thai_hop_dong }}</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Allowances Section -->
+    <div class="allowances-section">
+      <h3 class="section-title">
+        <svg class="section-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="12" y1="1" x2="12" y2="23"></line>
+          <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+        </svg>
+        Danh Sách Phụ Cấp
+      </h3>
+
+      <div class="table-container">
+        <table class="allowances-table">
+          <thead>
+            <tr>
+              <th>STT</th>
+              <th>Tên phụ cấp</th>
+              <th>Giá trị</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for phu_cap_nv in phu_cap_nhan_vien_list %}
+            <tr>
+              <td>{{ forloop.counter }}</td>
+              <td>{{ phu_cap_nv.phu_cap.ten_phu_cap }}</td>
+              <td class="amount">{{ phu_cap_nv.phu_cap.gia_tri|floatformat:2 }}</td>
+            </tr>
+            {% empty %}
+            <tr class="empty-row">
+              <td colspan="3">
+                <div class="empty-state">
+                  <svg class="empty-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <line x1="12" y1="8" x2="12" y2="12"></line>
+                    <line x1="12" y1="16" x2="12.01" y2="16"></line>
+                  </svg>
+                  <p>Không có phụ cấp</p>
+                </div>
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+        <div class="profile-action" style="text-align: right; margin-top: 20px;">
+          <a href="{% url 'edit_hdld' nhan_vien.id %}" class="edit-button" title="Chỉnh sửa" >
+              <i class="fa-solid fa-pen-to-square" style="font-size: 18px; color: #0066CC;"></i>
+          </a>
+      </div>
+    </div>
+  </div>
+</div>
+<link rel="stylesheet" href="{% static 'css/HDLDnhanvien.css' %}">
 {% endblock %}
