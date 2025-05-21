@@ -172,6 +172,7 @@ class KyLuat(models.Model):
   TRANG_THAI_CHOICES = (
       ('DANG_CHO_DUYET', 'Đang chờ duyệt'),
       ('DA_DUYET', 'Đã duyệt'),
+      ('DA_TU_CHOI', 'Đã từ chối'),
   )
   nhan_vien = models.ForeignKey('NhanVien', on_delete=models.CASCADE, related_name='ky_luat_nhan_vien')
   ngay_bat_dau = models.DateField(null=True)
@@ -210,6 +211,7 @@ class KhenThuong(models.Model):
   TRANG_THAI_CHOICES = (
       ('DANG_CHO_DUYET', 'Đang chờ duyệt'),
       ('DA_DUYET', 'Đã duyệt'),
+      ('DA_TU_CHOI', 'Đã từ chối'),
   )
   ngay_tao = models.DateTimeField(auto_now_add=True)
   nhan_vien = models.ForeignKey('NhanVien', on_delete=models.CASCADE, related_name='khen_thuong_nhan_vien')

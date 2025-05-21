@@ -37,49 +37,43 @@ document.addEventListener('DOMContentLoaded', function() {
             soTienPhatContainer.style.display = 'none';
             soTienPhatInput.setAttribute('disabled', 'disabled');
             soTienPhatInput.removeAttribute('required');
-            soTienPhatInput.value = ''; // Xóa giá trị để không gửi dữ liệu rỗng
+            soTienPhatInput.value = '';
         }
     }
 
     // Hàm áp dụng thuộc tính required cho minh chứng
     function toggleMinhChungRequired() {
-        const isRequired = mucDoSelect.value === 'KY_LUAT_3_THANG' || mucDoSelect.value === 'KY_LUAT_6_THANG';
-        minhChungFileInput.required = isRequired && !minhChungUrlInput.value.trim();
-        minhChungUrlInput.required = isRequired && !minhChungFileInput.files.length;
-        minhChungFileContainer.classList.toggle('required', isRequired);
-        minhChungUrlContainer.classList.toggle('required', isRequired);
+        const isDisciplinary = mucDoSelect.value === 'KY_LUAT_3_THANG' || mucDoSelect.value === 'KY_LUAT_6_THANG';
+        minhChungFileInput.required = isDisciplinary && (!minhChungFileInput.files.length && !minhChungUrlInput.value.trim());
+        minhChungUrlInput.required = isDisciplinary && (!minhChungFileInput.files.length && !minhChungUrlInput.value.trim());
+        minhChungFileContainer.classList.toggle('required', isDisciplinary);
+        minhChungUrlContainer.classList.toggle('required', isDisciplinary);
     }
 
-    // Hàm xử lý logic chỉ cho phép một loại minh chứng
+    // Hàm xử lý logic minh chứng
     function handleMinhChungInputs() {
         const hasFile = minhChungFileInput.files.length > 0;
         const hasUrl = minhChungUrlInput.value.trim() !== '';
 
-        if (hasFile) {
-            if (!isValidFile(minhChungFileInput.files[0])) {
-                alert('Vui lòng chọn file PDF hoặc hình ảnh (JPG/PNG) có kích thước dưới 5MB.');
-                minhChungFileInput.value = '';
-                minhChungFileInput.focus();
-                return;
-            }
-            minhChungUrlInput.value = '';
-            minhChungUrlInput.setAttribute('disabled', 'disabled');
-        } else {
-            minhChungUrlInput.removeAttribute('disabled');
+        // Kiểm tra file hợp lệ
+        if (hasFile && !isValidFile(minhChungFileInput.files[0])) {
+            alert('Vui lòng chọn file PDF hoặc hình ảnh (JPG/PNG) có kích thước dưới 5MB.');
+            minhChungFileInput.value = '';
+            minhChungFileInput.focus();
+            return;
         }
 
-        if (hasUrl) {
-            if (!isValidUrl(minhChungUrlInput.value)) {
-                alert('Vui lòng nhập URL hợp lệ (bắt đầu bằng http:// hoặc https://).');
-                minhChungUrlInput.value = '';
-                minhChungUrlInput.focus();
-                return;
-            }
-            minhChungFileInput.value = '';
-            minhChungFileInput.setAttribute('disabled', 'disabled');
-        } else {
-            minhChungFileInput.removeAttribute('disabled');
+        // Kiểm tra URL hợp lệ
+        if (hasUrl && !isValidUrl(minhChungUrlInput.value)) {
+            alert('Vui lòng nhập URL hợp lệ (bắt đầu bằng http:// hoặc https://).');
+            minhChungUrlInput.value = '';
+            minhChungUrlInput.focus();
+            return;
         }
+
+        // Cho phép cả hai loại minh chứng trong mọi trường hợp
+        minhChungFileInput.removeAttribute('disabled');
+        minhChungUrlInput.removeAttribute('disabled');
 
         toggleMinhChungRequired();
     }
@@ -122,8 +116,8 @@ document.addEventListener('DOMContentLoaded', function() {
             return;
         }
 
-        const isRequired = mucDoSelect.value === 'KY_LUAT_3_THANG' || mucDoSelect.value === 'KY_LUAT_6_THANG';
-        if (isRequired && !minhChungFileInput.files.length && !minhChungUrlInput.value.trim()) {
+        const isDisciplinary = mucDoSelect.value === 'KY_LUAT_3_THANG' || mucDoSelect.value === 'KY_LUAT_6_THANG';
+        if (isDisciplinary && !minhChungFileInput.files.length && !minhChungUrlInput.value.trim()) {
             e.preventDefault();
             alert('Vui lòng cung cấp ít nhất một minh chứng (file hoặc URL) cho kỷ luật 3 tháng hoặc 6 tháng.');
             minhChungFileInput.focus();
@@ -144,7 +138,7 @@ document.addEventListener('DOMContentLoaded', function() {
             return;
         }
 
-        if (isRequired && !ngayKetThucInput.value) {
+        if (isDisciplinary && !ngayKetThucInput.value) {
             e.preventDefault();
             alert('Vui lòng nhập ngày kết thúc hợp lệ cho kỷ luật 3 tháng hoặc 6 tháng.');
             ngayKetThucInput.focus();
