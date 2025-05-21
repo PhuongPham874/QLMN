@@ -1,0 +1,445 @@
+/* BHXH Styles - Scoped to prevent affecting home.html */
+.bhxh-container {
+
+    width: 1200px;
+    margin: 0 auto;
+    padding: 1.5rem;
+}
+
+/* Header */
+.bhxh-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+}
+
+.bhxh-title {
+    font-size: 1.75rem;
+    font-weight: 700;
+    margin: 0;
+    color: #212529;
+}
+
+.bhxh-actions {
+    display: flex;
+    gap: 0.5rem;
+}
+
+/* Buttons */
+.bhxh-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    line-height: 1.5;
+    text-align: center;
+    text-decoration: none;
+    vertical-align: middle;
+    cursor: pointer;
+    user-select: none;
+    border: 1px solid transparent;
+    border-radius: 0.25rem;
+    transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+.bhxh-btn-primary {
+    background-color: #0d6efd;
+    border-color: #0d6efd;
+    color: #fff;
+}
+
+.bhxh-btn-primary:hover {
+    background-color: #0b5ed7;
+    border-color: #0a58ca;
+}
+
+.bhxh-btn-dark {
+    background-color: #212529;
+    border-color: #212529;
+    color: #fff;
+}
+
+.bhxh-btn-dark:hover {
+    background-color: #1c1f23;
+    border-color: #1a1e21;
+}
+
+.bhxh-btn-outline-secondary {
+    border-color: #e0e0e0;
+    color: #6c757d;
+    background-color: transparent;
+}
+
+.bhxh-btn-outline-secondary:hover {
+    background-color: #f8f9fa;
+    color: #5c636a;
+}
+
+/* Navigation tabs */
+.bhxh-nav-tabs {
+    display: flex;
+    flex-wrap: wrap;
+    padding-left: 0;
+    margin-bottom: 1.5rem;
+    list-style: none;
+    border-bottom: 1px solid #dee2e6;
+}
+
+.bhxh-nav-item {
+    margin-bottom: -1px;
+}
+
+.bhxh-nav-link {
+    display: block;
+    padding: 0.75rem 1.25rem;
+    font-weight: 500;
+    color: #6c757d;
+    text-decoration: none;
+    background: none;
+    border: none;
+    border-bottom: 2px solid transparent;
+}
+
+.bhxh-nav-link.active {
+    color: #0d6efd;
+    border-bottom: 2px solid #0d6efd;
+}
+
+.bhxh-nav-link:hover:not(.active) {
+    color: #0a58ca;
+    border-bottom: 2px solid #dee2e6;
+}
+
+/* Filter form */
+.bhxh-filter-form {
+    margin-bottom: 1.5rem;
+}
+
+.bhxh-filter-row {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.bhxh-custom-select {
+    position: relative;
+    display: inline-block;
+    width: 300px;
+}
+
+.bhxh-form-select {
+    width: 100%;
+    padding: 0.625rem 1rem;
+    font-size: 0.875rem;
+    font-weight: 400;
+    line-height: 1.5;
+    color: #212529;
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 1px solid #ced4da;
+    border-radius: 0.25rem;
+    appearance: none;
+}
+
+.bhxh-custom-select::after {
+    content: '\25BC';
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    pointer-events: none;
+    font-size: 12px;
+    color: #6c757d;
+}
+
+/* BHXH Card */
+.bhxh-card {
+    background-color: #fff;
+    border-radius: 8px;
+    border: none;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    transition: box-shadow 0.3s;
+    margin-bottom: 1rem;
+    overflow: hidden;
+}
+
+.bhxh-card:hover {
+    box-shadow: 0 3px 6px rgba(0,0,0,0.15);
+}
+
+.bhxh-card-body {
+    padding: 0;
+}
+
+.bhxh-card-row {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.bhxh-employee-info {
+    flex: 0 0 30%;
+    background-color: #f0f7ff;
+    padding: 1.5rem;
+    border-radius: 8px 0 0 8px;
+}
+
+.bhxh-employee-name {
+    font-size: 1.25rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+}
+
+.bhxh-link {
+    color: #0d6efd;
+    text-decoration: none;
+}
+
+.bhxh-link:hover {
+    color: #0a58ca;
+    text-decoration: underline;
+}
+
+.bhxh-text-muted {
+    color: #6c757d;
+    font-size: 0.875rem;
+}
+
+.bhxh-details {
+    flex: 0 0 70%;
+    padding: 1.5rem;
+}
+
+.bhxh-details-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.bhxh-detail-item {
+    margin-bottom: 0.5rem;
+}
+
+.bhxh-info-label {
+    color: #6c757d;
+    font-size: 0.875rem;
+    margin-bottom: 0.25rem;
+}
+
+.bhxh-info-value {
+    font-weight: 500;
+    font-size: 1rem;
+    color: #212529;
+}
+
+.bhxh-info-value.bhxh-highlight {
+    color: #0d6efd;
+}
+
+.bhxh-actions-bottom {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.bhxh-empty-message {
+    text-align: center;
+    color: #6c757d;
+    font-style: italic;
+    padding: 2rem 0;
+}
+
+/* Alerts */
+.bhxh-alert-container {
+    margin-bottom: 1rem;
+}
+
+.bhxh-alert {
+    position: relative;
+    padding: 0.75rem 1.25rem;
+    margin-bottom: 1rem;
+    border: 1px solid transparent;
+    border-radius: 0.25rem;
+}
+
+.bhxh-alert-success {
+    color: #155724;
+    background-color: #d4edda;
+    border-color: #c3e6cb;
+}
+
+.bhxh-alert-danger {
+    color: #721c24;
+    background-color: #f8d7da;
+    border-color: #f5c6cb;
+}
+
+/* Popup form */
+.bhxh-popup-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.4);
+    z-index: 999;
+    display: none; /* ✅ KHẮC PHỤC VẤN ĐỀ  */
+}
+
+.bhxh-popup-form {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1000;
+    padding: 2rem;
+    border-radius: 10px;
+    width: 450px;
+    background: linear-gradient(to right, #DDF0FF, #FFFFFF);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.bhxh-info-row {
+    display: flex;
+    align-items: center;
+    margin-bottom: 1.25rem;
+}
+
+.bhxh-label-wrapper {
+    width: 40%;
+    text-align: left;
+}
+
+.bhxh-label-wrapper label {
+    font-weight: 600;
+    color: #066BBB;
+    font-family: 'Roboto Slab', serif;
+    white-space: nowrap;
+}
+
+.bhxh-input-wrapper {
+    width: 60%;
+}
+
+.bhxh-input-wrapper input {
+    width: 100%;
+    padding: 0.5rem;
+    height: 38px;
+    border: 1px solid #ced4da;
+    border-radius: 5px;
+    font-size: 0.875rem;
+    background-color: #FFFFFF;
+    color: #000000;
+}
+
+.bhxh-input-wrapper input:focus {
+    outline: none;
+    border: 2px solid #007BFF;
+    box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+}
+
+.bhxh-total-amount-row {
+    display: flex;
+    align-items: center;
+}
+
+#tongTienDisplay {
+    font-weight: 700;
+    color: #28a745;
+    font-size: 1rem;
+    white-space: nowrap;
+}
+
+.bhxh-action-buttons {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 1.5rem;
+    gap: 0.75rem;
+}
+
+.bhxh-button {
+    background-color: #066BBB;
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: background-color 0.15s ease-in-out;
+}
+
+.bhxh-button:hover {
+    background-color: #0353a4;
+}
+
+.bhxh-button-cancel {
+    background-color: #D9D9D9;
+    color: #212529;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: background-color 0.15s ease-in-out;
+}
+
+.bhxh-button-cancel:hover {
+    background-color: #c1c1c1;
+}
+
+/* Responsive adjustments */
+@media (max-width: 992px) {
+    .bhxh-details-grid {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .bhxh-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+    }
+
+    .bhxh-card-row {
+        flex-direction: column;
+    }
+
+    .bhxh-employee-info {
+        flex: 0 0 100%;
+        border-radius: 8px 8px 0 0;
+    }
+
+    .bhxh-details {
+        flex: 0 0 100%;
+    }
+
+    .bhxh-filter-row {
+        justify-content: stretch;
+    }
+
+    .bhxh-custom-select {
+        width: 100%;
+    }
+
+    .bhxh-popup-form {
+        width: 90%;
+        padding: 1.5rem;
+    }
+
+    .bhxh-info-row {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .bhxh-label-wrapper,
+    .bhxh-input-wrapper {
+        width: 100%;
+    }
+
+    .bhxh-label-wrapper {
+        margin-bottom: 0.5rem;
+    }
+}
