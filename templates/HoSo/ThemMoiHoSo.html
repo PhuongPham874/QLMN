@@ -1,6 +1,6 @@
 {% extends "home.html" %}
 
-  {% block extra_css %}
+{% block extra_css %}
 <style>
     /* Modern black and white color scheme */
     :root {
@@ -64,6 +64,29 @@
         width: 100%;
         height: 3px;
         background-color: var(--blue);
+    }
+
+    /* Disabled tab styling for "Hợp đồng lao động" */
+    .tab-disabled {
+        cursor: not-allowed;
+        color: var(--dark-gray);
+        position: relative;
+    }
+
+    /* Tooltip for warning message */
+    .tab-disabled:hover::after {
+        content: "Phải lưu thông tin nhân viên trước khi thêm mới Hợp đồng lao động!";
+        position: absolute;
+        top: 100%;
+        left: 50%;
+        transform: translateX(-50%);
+        background-color: #ff4444;
+        color: var(--white);
+        padding: 8px 12px;
+        border-radius: 4px;
+        font-size: 14px;
+        white-space: nowrap;
+        z-index: 10;
     }
 
     /* Form section styling */
@@ -181,7 +204,7 @@
     }
 
     .btn-save {
-        background-color: var(--primary);
+        background-color: #0066CC;
         color: var(--white);
         border: none;
         padding: 10px 20px;
@@ -191,9 +214,6 @@
         transition: background-color 0.2s ease;
     }
 
-    .btn-save:hover {
-        background-color: #333;
-    }
 
     /* Avatar styling */
     .avatar-container {
@@ -316,7 +336,8 @@
                     <a href="{% url 'ThemMoiHoSo' %}" class="tab-item tab-active">
                         Thông tin cá nhân
                     </a>
-                    <div class="tab-item">
+                    <!-- Modified "Hợp đồng lao động" tab to be disabled with hover tooltip -->
+                    <div class="tab-item tab-disabled">
                         Hợp đồng lao động
                     </div>
                 </div>
@@ -505,8 +526,8 @@
             firstContent.style.display = 'block';
         }
 
-        // Tab functionality
-        const tabs = document.querySelectorAll('.tab-item');
+        // Tab functionality (excluding the disabled tab)
+        const tabs = document.querySelectorAll('.tab-item:not(.tab-disabled)');
         tabs.forEach(tab => {
             tab.addEventListener('click', function() {
                 tabs.forEach(t => t.classList.remove('tab-active'));
