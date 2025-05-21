@@ -1,13 +1,13 @@
  body {
         background-color: #f8f9fa;
     }
-    .container {
+ .container {
         max-width: 1000px;
         margin: 0 auto;
         padding: 30px;
     }
 
-    .card {
+ .card {
         background-color: #fff;
         border-radius: 8px;
         box-shadow: 0 1px 3px rgba(0,0,0,0.1);
@@ -15,17 +15,17 @@
         overflow: hidden;
     }
 
-    .card-header {
+ .card-header {
         background-color: #f8f9fa;
         padding: 15px 20px;
         border-bottom: 1px solid #e9ecef;
     }
 
-    .card-body {
+ .card-body {
         padding: 20px;
     }
 
-    .page-title {
+ .page-title {
         color: #0d6efd;
         font-weight: 700;
         font-size: 24px;
@@ -33,14 +33,14 @@
         text-align: center;
     }
 
-    .page-subtitle {
+ .page-subtitle {
         color: #6c757d;
         font-size: 25px;
         text-align: center;
         font-weight:bold;
     }
 
-    .section-title {
+ .section-title {
         color: #0d6efd;
         font-weight: 600;
         font-size: 18px;
@@ -49,44 +49,44 @@
         align-items: center;
     }
 
-    .section-title i {
+ .section-title i {
         margin-right: 10px;
     }
 
-    .info-grid {
+ .info-grid {
         display: grid;
         grid-template-columns: repeat(2, 1fr);
         gap: 15px;
     }
 
-    .info-item {
+ .info-item {
         margin-bottom: 10px;
     }
 
-    .info-label {
+ .info-label {
         color: #000000;
         font-size: 14px;
         margin-bottom: 5px;
         font-weight:bold;
      }
-    .info-value {
+ .info-value {
         color: #212529;
         font-weight: 500;
         font-size: 16px;
     }
 
-    .highlight {
+ .highlight {
         color: #0d6efd;
         font-weight: 600;
     }
 
-    .table {
+ .table {
         width: 100%;
         border-collapse: collapse;
         margin-top: 15px;
     }
 
-    .table th {
+ .table th {
         background-color: #f8f9fa;
         color: #495057;
         font-weight: bold;
@@ -96,27 +96,27 @@
         font-size: 14px;
     }
 
-    .table td {
+ .table td {
         padding: 12px 15px;
         border-bottom: 1px solid #dee2e6;
         color: #212529;
         font-size: 14px;
     }
 
-    .table tr:last-child td {
+ .table tr:last-child td {
         border-bottom: none;
     }
 
-    .table-footer {
+ .table-footer {
         background-color: #f8f9fa;
         font-weight: 600;
     }
 
-    .table-footer td {
+ .table-footer td {
         border-top: 2px solid #dee2e6;
     }
 
-    .badge {
+ .badge {
         display: inline-block;
         padding: 5px 10px;
         border-radius: 20px;
@@ -124,17 +124,17 @@
         font-weight: 500;
     }
 
-    .badge-primary {
+ .badge-primary {
         background-color: #cfe2ff;
         color: #0d6efd;
     }
 
-    .header-actions {
+ .header-actions {
         display: flex;
         margin-bottom: 20px;
     }
 
-    .back-btn {
+ .back-btn {
         display: flex;
         align-items: center;
         gap: 8px;
@@ -148,69 +148,62 @@
         transition: all 0.2s;
     }
 
-    .back-btn:hover {
+ .back-btn:hover {
         background-color: #e9ecef;
         color: #0d6efd;
     }
 
-    .summary-box {
+ .summary-box {
         background-color: #f8f9fa;
         border-radius: 8px;
         padding: 15px;
         margin-bottom: 20px;
     }
 
-    .summary-title {
+ .summary-title {
         color: #0d6efd;
         font-weight: 600;
         font-size: 16px;
         margin-bottom: 10px;
     }
 
-    .summary-item {
+ .summary-item {
         display: flex;
         align-items: center;
         margin-bottom: 8px;
     }
 
-    .summary-item i {
+ .summary-item i {
         color: #0d6efd;
         margin-right: 10px;
         font-size: 14px;
     }
 
-    .summary-text {
+ .summary-text {
         color: #212529;
         font-weight: 500;
     }
 
-    .amount {
+ .amount {
         text-align: right;
         font-family: 'Roboto Mono', monospace;
     }
 
-    .total-row {
+ .total-row {
         color: #0d6efd;
         font-weight: 600;
     }
-
-    @media (max-width: 768px) {
-        .info-grid {
-            grid-template-columns: 1fr;
-        }
-    }
-
-    .employee-header {
+.employee-header {
         display: flex;
         align-items: center;
         margin-bottom: 25px;
     }
 
-    .employee-title {
+.employee-title {
         flex: 1;
     }
 
-    .employee-name {
+.employee-name {
         font-size: 28px;
         font-weight: 700;
         color: #212529;
