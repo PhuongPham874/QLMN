@@ -9,6 +9,8 @@
         box-shadow: 0 1px 3px rgba(0,0,0,0.1);
         background-color: #fff;
         margin-bottom: 16px;
+        padding: 16px;
+        margin-left: 200px;
     }
 
     .employee-avatar {
@@ -22,17 +24,6 @@
         justify-content: center;
         font-weight: bold;
         font-size: 20px;
-    }
-
-    .info-row {
-        display: flex;
-        margin-bottom: 8px;
-    }
-
-    .info-label {
-        color: black;
-        font-weight: 700;
-        min-width: 140px;
     }
 
     .status-badge {
@@ -54,24 +45,6 @@
 
     .status-rejected {
         background-color: #6c757d;
-    }
-
-    .action-btn {
-        border-radius: 20px;
-        padding: 8px 20px;
-        font-weight: 500;
-    }
-
-    .btn-approve {
-        background-color: #28a745;
-        border: none;
-        color: white;
-    }
-
-    .btn-reject {
-        background-color: #dc3545;
-        border: none;
-        color: white;
     }
 
     .link-btn {
@@ -106,11 +79,112 @@
         padding: 8px 16px;
         font-size: 14px;
         transition: all 0.2s;
+        margin-top: 16px;
+        margin-left: 100px;
     }
 
     .back-btn:hover {
         background-color: #e9ecef;
         color: #0d6efd;
+    }
+
+    .content-two-columns {
+        display: flex;
+        gap: 24px;
+        flex-wrap: wrap;
+        justify-content: center;
+        margin: 0 auto;
+        max-width: 1000px;
+    }
+
+    .column-left, .column-right {
+        flex: 1;
+        min-width: 300px;
+        max-width: 450px;
+        padding: 8px;
+    }
+
+    .info-row {
+        display: flex;
+        margin-bottom: 16px;
+        align-items: center;
+        gap: 12px;
+    }
+
+    .info-label {
+        color: #333;
+        font-weight: 600;
+        min-width: 150px;
+        font-size: 15px;
+    }
+
+    .filter-btn {
+        background-color: #0d6efd;
+        color: white;
+        border: none;
+        border-radius: 8px;
+        padding: 10px 20px;
+        font-weight: 500;
+        font-size: 14px;
+        transition: background-color 0.3s ease;
+        margin-left: 8px;
+    }
+
+    .filter-btn:hover {
+        background-color: #005cbf;
+    }
+
+    .filter-btn.approve {
+        background-color: #2ecc71;
+    }
+
+    .filter-btn.approve:hover {
+        background-color: #27ae60;
+    }
+
+    @media (max-width: 768px) {
+        .content-two-columns {
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .column-left, .column-right {
+            min-width: 100%;
+            max-width: 100%;
+            padding: 4px;
+        }
+
+        .info-row {
+            flex-direction: column;
+            align-items: flex-start;
+            margin-bottom: 12px;
+        }
+
+        .info-label {
+            min-width: 100%;
+            margin-bottom: 4px;
+        }
+
+        .filter-btn {
+            width: 100%;
+            margin-bottom: 8px;
+            margin-left: 0;
+        }
+    }
+
+    @media (max-width: 576px) {
+        .info-row {
+            margin-bottom: 10px;
+        }
+
+        .info-label {
+            font-size: 14px;
+        }
+
+        .filter-btn {
+            padding: 8px 16px;
+            font-size: 13px;
+        }
     }
 </style>
 
@@ -124,98 +198,92 @@
     <h2 class="page-title">DUYỆT ĐƠN KỶ LUẬT</h2>
 
     <div class="card">
-        <div class="card-body p-4">
-            <div class="d-flex justify-content-between">
-                <div class="d-flex gap-3">
-                    <div class="employee-avatar">
-                        {{ ky_luat.nhan_vien.ten_nv|slice:":1" }}
-                    </div>
-                    <div>
-                        <h5 class="fw-bold mb-1">{{ ky_luat.nhan_vien.ten_nv }}</h5>
-                        <p class="text-muted mb-0">Mã NV: {{ ky_luat.nhan_vien.user_id }}</p>
-                    </div>
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+            <div style="display: flex; align-items: center; gap: 12px;">
+                <div class="employee-avatar">
+                    {{ ky_luat.nhan_vien.ten_nv|slice:":1" }}
                 </div>
                 <div>
-                    <span class="status-badge {% if ky_luat.trang_thai == 'DA_DUYET' %}status-approved{% elif ky_luat.trang_thai == 'DANG_CHO_DUYET' %}status-pending{% else %}status-rejected{% endif %}">
-                        {{ ky_luat.get_trang_thai_display }}
+                    <strong>{{ ky_luat.nhan_vien.ten_nv }}</strong><br>
+                    <span style="font-size: 14px;">Mã NV: {{ ky_luat.nhan_vien.user_id }}</span>
+                </div>
+            </div>
+            <div>
+                <span class="status-badge {% if ky_luat.trang_thai == 'DA_DUYET' %}status-approved{% elif ky_luat.trang_thai == 'DANG_CHO_DUYET' %}status-pending{% else %}status-rejected{% endif %}">
+                    {{ ky_luat.get_trang_thai_display }}
+                </span>
+            </div>
+        </div>
+
+        <div class="content-two-columns" style="margin-top: 16px;">
+            <!-- Cột trái -->
+            <div class="column-left">
+                <div class="info-row">
+                    <span class="info-label">Ngày ra quyết định:</span>
+                    <span>{{ ky_luat.ngay_ra_quyet_dinh|default:"Chưa xác định" }}</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">Ngày bắt đầu:</span>
+                    <span>{{ ky_luat.ngay_bat_dau }}</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">Ngày kết thúc:</span>
+                    <span>{{ ky_luat.ngay_ket_thuc|default:"" }}</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">Minh chứng:</span>
+                    <span>
+                        {% if ky_luat.minh_chung_file %}
+                            <a href="{{ ky_luat.minh_chung_file.url }}" target="_blank" class="link-btn">Xem liên kết</a>
+                        {% elif ky_luat.minh_chung_url %}
+                            <a href="{{ ky_luat.minh_chung_url }}" target="_blank" class="link-btn">Xem liên kết</a>
+                        {% else %}
+                            Không có
+                        {% endif %}
                     </span>
                 </div>
             </div>
 
-            <div class="row mt-4">
-                <div class="col-md-6">
-                    <div class="info-row">
-                        <span class="info-label">Ngày ra quyết định:</span>
-                        <span>{{ ky_luat.ngay_ra_quyet_dinh|default:"Chưa xác định" }}</span>
-                    </div>
-                    <div class="info-row">
-                        <span class="info-label">Ngày bắt đầu:</span>
-                        <span>{{ ky_luat.ngay_bat_dau }}</span>
-                    </div>
-                    <div class="info-row">
-                        <span class="info-label">Ngày kết thúc:</span>
-                        <span>{{ ky_luat.ngay_ket_thuc|default:"" }}</span>
-                    </div>
-                    <div class="info-row">
-                        <span class="info-label">Minh chứng:</span>
-                        <span>
-                            {% if ky_luat.minh_chung_file %}
-                                <a href="{{ ky_luat.minh_chung_file.url }}" target="_blank" class="link-btn">
-                                    <i class="fas fa-download"></i> Tải tệp
-                                </a>
-                            {% elif ky_luat.minh_chung_url %}
-                                <a href="{{ ky_luat.minh_chung_url }}" target="_blank" class="link-btn">
-                                    <i class="fas fa-link"></i> Xem liên kết
-                                </a>
-                            {% else %}
-                                Không có
-                            {% endif %}
-                        </span>
-                    </div>
+            <!-- Cột phải -->
+            <div class="column-right">
+                <div class="info-row">
+                    <span class="info-label">Mức độ:</span>
+                    <span>{{ ky_luat.get_muc_do_display }}</span>
                 </div>
-                <div class="col-md-6">
-                    <div class="info-row">
-                        <span class="info-label">Mức độ:</span>
-                        <span>{{ ky_luat.get_muc_do_display }}</span>
-                    </div>
-                    {% if ky_luat.muc_do == 'PHAT_TIEN' and ky_luat.so_tien_phat %}
-                    <div class="info-row">
-                        <span class="info-label">Số tiền phạt:</span>
-                        <span>{{ ky_luat.so_tien_phat }} VNĐ</span>
-                    </div>
-                    {% endif %}
-                    <div class="info-row">
-                        <span class="info-label">Người tạo:</span>
-                        <span>{{ ky_luat.nguoi_tao_don.ten_nv }} ({{ ky_luat.nguoi_tao_don.chuc_vu }})</span>
-                    </div>
-                    <div class="info-row">
-                        <span class="info-label">Người duyệt:</span>
-                        <span>{{ ky_luat.nguoi_duyet_don.ten_nv|default:"Chưa duyệt" }} {% if ky_luat.nguoi_duyet_don %}({{ ky_luat.nguoi_duyet_don.chuc_vu }}){% endif %}</span>
-                    </div>
+                {% if ky_luat.muc_do == 'PHAT_TIEN' and ky_luat.so_tien_phat %}
+                <div class="info-row">
+                    <span class="info-label">Số tiền phạt:</span>
+                    <span>{{ ky_luat.so_tien_phat }} VNĐ</span>
                 </div>
-            </div>
-
-            <div class="mt-3">
+                {% endif %}
+                <div class="info-row">
+                    <span class="info-label">Người tạo:</span>
+                    <span>{{ ky_luat.nguoi_tao_don.ten_nv }} ({{ ky_luat.nguoi_tao_don.chuc_vu|default:'N/A' }})</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">Người duyệt:</span>
+                    <span>{{ ky_luat.nguoi_duyet_don.ten_nv|default:"Chưa duyệt" }} {% if ky_luat.nguoi_duyet_don %}({{ ky_luat.nguoi_duyet_don.chuc_vu|default:'N/A' }}){% endif %}</span>
+                </div>
                 <div class="info-row">
                     <span class="info-label">Lý do:</span>
                     <span>{{ ky_luat.ly_do }}</span>
                 </div>
             </div>
-
-            {% if ky_luat.trang_thai == 'DANG_CHO_DUYET' %}
-            <form method="post" class="mt-4">
-                {% csrf_token %}
-                <div class="d-flex justify-content-end gap-2">
-                    <button type="submit" name="action" value="approve" class="btn action-btn btn-approve" onclick="return confirm('Bạn có chắc muốn duyệt đơn kỷ luật này?');">
-                        <i class="fas fa-check-circle me-2"></i>Duyệt
-                    </button>
-                    <button type="submit" name="action" value="reject" class="btn action-btn btn-reject" onclick="return confirm('Bạn có chắc muốn từ chối đơn kỷ luật này?');">
-                        <i class="fas fa-times-circle me-2"></i>Từ chối
-                    </button>
-                </div>
-            </form>
-            {% endif %}
         </div>
+
+        {% if ky_luat.trang_thai == 'DANG_CHO_DUYET' %}
+        <form method="post" class="mt-4">
+            {% csrf_token %}
+            <div class="d-flex justify-content-end gap-2">
+                <button type="submit" name="action" value="approve" class="filter-btn approve" onclick="return confirm('Bạn có chắc muốn duyệt đơn kỷ luật này?');">
+                    <i class="fas fa-check-circle me-2"></i>Duyệt
+                </button>
+                <button type="submit" name="action" value="reject" class="filter-btn" onclick="return confirm('Bạn có chắc muốn từ chối đơn kỷ luật này?');">
+                    <i class="fas fa-times-circle me-2"></i>Từ chối
+                </button>
+            </div>
+        </form>
+        {% endif %}
     </div>
 </div>
 {% endblock %}

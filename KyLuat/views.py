@@ -40,17 +40,22 @@ def ky_luat_khen_thuong(request):
     nhan_vien_list = NhanVien.objects.none()
     if has_permission:
         if nhan_vien.chuc_vu == 'Tổ trưởng':
-            ky_luat_list = KyLuat.objects.filter(nhan_vien__to_phong_ban=nhan_vien.to_phong_ban).order_by('-ngay_ra_quyet_dinh')
-            nhan_vien_list = NhanVien.objects.filter(to_phong_ban=nhan_vien.to_phong_ban).exclude(id=nhan_vien.id)
+            ky_luat_list = KyLuat.objects.filter(nhan_vien__to_phong_ban=nhan_vien.to_phong_ban).order_by(
+                '-ngay_ra_quyet_dinh')
+            nhan_vien_list = NhanVien.objects.filter(to_phong_ban=nhan_vien.to_phong_ban)  # Bỏ .exclude
         elif nhan_vien.chuc_vu == 'Hiệu phó chuyên môn':
-            ky_luat_list = KyLuat.objects.filter(nhan_vien__vi_tri_cong_viec__in=['Giáo viên', 'Kế toán', 'Nhân sự', 'Tuyển sinh']).order_by('-ngay_ra_quyet_dinh')
-            nhan_vien_list = NhanVien.objects.filter(vi_tri_cong_viec__in=['Giáo viên', 'Kế toán', 'Nhân sự', 'Tuyển sinh']).exclude(id=nhan_vien.id)
+            ky_luat_list = KyLuat.objects.filter(
+                nhan_vien__vi_tri_cong_viec__in=['Giáo viên', 'Kế toán', 'Nhân sự', 'Tuyển sinh']).order_by(
+                '-ngay_ra_quyet_dinh')
+            nhan_vien_list = NhanVien.objects.filter(
+                vi_tri_cong_viec__in=['Giáo viên', 'Kế toán', 'Nhân sự', 'Tuyển sinh'])  # Bỏ .exclude
         elif nhan_vien.chuc_vu == 'Hiệu phó hoạt động':
-            ky_luat_list = KyLuat.objects.filter(nhan_vien__vi_tri_cong_viec__in=['Bếp', 'Y - tế']).order_by('-ngay_ra_quyet_dinh')
-            nhan_vien_list = NhanVien.objects.filter(vi_tri_cong_viec__in=['Bếp', 'Y - tế']).exclude(id=nhan_vien.id)
+            ky_luat_list = KyLuat.objects.filter(nhan_vien__vi_tri_cong_viec__in=['Bếp', 'Y - tế']).order_by(
+                '-ngay_ra_quyet_dinh')
+            nhan_vien_list = NhanVien.objects.filter(vi_tri_cong_viec__in=['Bếp', 'Y - tế'])  # Bỏ .exclude
         else:  # Hiệu Trưởng
             ky_luat_list = KyLuat.objects.all().order_by('-ngay_ra_quyet_dinh')
-            nhan_vien_list = NhanVien.objects.all().exclude(id=nhan_vien.id)
+            nhan_vien_list = NhanVien.objects.all()  # Bỏ .exclude
 
         # Lọc kỷ luật của nhân viên theo nhân viên/tháng/năm
         nhan_vien_id = request.GET.get('nhan_vien')

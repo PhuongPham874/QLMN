@@ -7,12 +7,13 @@
         box-shadow: 0 1px 3px rgba(0,0,0,0.1);
         background-color: #fff;
         margin-bottom: 16px;
+        padding: 16px;
     }
 
     .employee-avatar {
         width: 50px;
         height: 50px;
-        background-color: #4A90E2;
+        background-color: #0d6efd;
         color: white;
         border-radius: 50%;
         display: flex;
@@ -24,7 +25,7 @@
 
     .info-row {
         display: flex;
-        margin-bottom: 8px;
+        margin-bottom: 12px;
     }
 
     .info-label {
@@ -58,6 +59,7 @@
         border-radius: 20px;
         padding: 6px 16px;
         font-weight: 500;
+        margin-left: 10px;
     }
 
     .btn-edit {
@@ -69,42 +71,16 @@
     .btn-delete {
         background-color: #dc3545;
         border: none;
-    }
-
-    .filter-card {
-        border-radius: 8px;
-        border: none;
-        box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-        padding: 20px;
-    }
-
-    .filter-title {
-        color: black;
-        font-weight: 600;
-        margin-bottom: 20px;
-    }
-
-    .form-select {
-        border-radius: 6px;
-        padding: 10px;
-        margin-bottom: 16px;
-    }
-
-    .filter-btn {
-        background-color: #4A90E2;
-        border: none;
-        border-radius: 6px;
-        padding: 10px;
-        font-weight: 500;
+        color: white;
     }
 
     .link-btn {
-        color: #4A90E2;
+        color: #0d6efd;
         text-decoration: none;
         display: inline-flex;
         align-items: center;
         gap: 6px;
-        border: 1px solid #4A90E2;
+        border: 1px solid #0d6efd;
         border-radius: 20px;
         padding: 4px 12px;
         font-size: 14px;
@@ -118,113 +94,143 @@
         text-align: center;
     }
 
-    .header-actions {
+    .content-row {
         display: flex;
-        justify-content: flex-end;
-        gap: 10px;
+        flex-wrap: wrap;
+        gap: 20px;
+    }
+
+    .list-container {
+        flex: 2;
+        min-width: 0;
+    }
+
+    .filter-container {
+        flex: 1;
+        min-width: 280px;
+    }
+
+    .filter-card {
+        border-radius: 8px;
+        border: none;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        padding: 20px;
+        margin-bottom: 16px;
+        background-color: #f8f9fa;
+    }
+
+    .filter-title {
+        color: black;
+        font-weight: 600;
         margin-bottom: 20px;
     }
 
-    .header-btn {
+    .form-select,
+    .form-label,
+    .form-control {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 12px;
+        font-size: 14px;
+    }
+
+    .filter-btn {
+        background-color: #0d6efd;
+        color: white;
+        border: none;
         border-radius: 6px;
-        padding: 8px 16px;
+        padding: 10px;
         font-weight: 500;
+        width: 100%;
+    }
+
+    .content-two-columns {
         display: flex;
-        align-items: center;
-        gap: 8px;
+        gap: 32px;
+        flex-wrap: wrap;
     }
 
-    .btn-view {
-        background-color: #17a2b8;
-        border: none;
-        color: white;
+    .column-left, .column-right {
+        flex: 1;
+        min-width: 280px;
     }
 
-    .btn-add {
-        background-color: #4A90E2;
-        border: none;
-        color: white;
+    .no-data-message {
+        display: none;
     }
 </style>
+
 <div class="container py-4">
+    <h2 class="page-title">DANH SÁCH KHEN THƯỞNG</h2>
 
-    <div class="row">
-        <div class="col-md-8">
-            <h2 class="page-title">DANH SÁCH KHEN THƯỞNG</h2>
-
+    <div class="content-row">
+        <!-- Danh sách khen thưởng -->
+        <div class="list-container" id="khen-thuong-nhan-vien-list">
             {% if rewards %}
                 {% for reward in rewards %}
-                <div class="card">
-                    <div class="card-body p-4">
-                        <div class="d-flex justify-content-between">
-                            <div class="d-flex gap-3">
-                                <div class="employee-avatar">
-                                    {{ reward.nhan_vien.ten_nv|slice:":1" }}
-                                </div>
-                                <div>
-                                    <h5 class="fw-bold mb-1">{{ reward.nhan_vien.ten_nv }}</h5>
-                                    <p class="text-muted mb-0">Mã NV: {{ reward.nhan_vien.user_id }}</p>
-                                </div>
+                <div class="card khen-thuong-item" data-date="{{ reward.ngay_tao|date:'Y-m' }}" data-nhan-vien="{{ reward.nhan_vien.id }}">
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <div style="display: flex; align-items: center; gap: 12px;">
+                            <div class="employee-avatar">
+                                {{ reward.nhan_vien.ten_nv|slice:":1" }}
                             </div>
                             <div>
-                                <a href="{% url 'edit_khen_thuong' reward.id %}" class="btn action-btn btn-edit me-2">
-                                    <i class="fas fa-edit"></i> Sửa
-                                </a>
+                                <strong>{{ reward.nhan_vien.ten_nv }}</strong><br>
+                                <span style="font-size: 14px;">Mã NV: {{ reward.nhan_vien.user_id }}</span>
+                            </div>
+                        </div>
+                        <div>
+                            {% if reward.trang_thai == 'DANG_CHO_DUYET' %}
+                                <a href="{% url 'edit_khen_thuong' reward.id %}" class="btn action-btn btn-edit">Sửa</a>
                                 <form method="post" action="{% url 'xoa_khen_thuong' reward.id %}" style="display: inline;" onsubmit="return confirm('Bạn có chắc muốn xóa khen thưởng này?');">
                                     {% csrf_token %}
-                                    <button type="submit" class="btn action-btn btn-delete">
-                                        <i class="fas fa-trash-alt"></i> Xóa
-                                    </button>
+                                    <button type="submit" class="btn action-btn btn-delete">Xóa</button>
                                 </form>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <div class="content-two-columns" style="margin-top: 16px;">
+                        <!-- Cột trái -->
+                        <div class="column-left">
+                            <div class="info-row">
+                                <span class="info-label">Ngày ra quyết định:</span>
+                                <span>{{ reward.ngay_tao|date:"d/m/Y H:i" }}</span>
+                            </div>
+                            <div class="info-row">
+                                <span class="info-label">Giá trị:</span>
+                                <span>{{ reward.gia_tri }} VNĐ</span>
+                            </div>
+                            <div class="info-row">
+                                <span class="info-label">Trạng thái:</span>
+                                <span class="status-badge {% if reward.trang_thai == 'DA_DUYET' %}status-approved{% elif reward.trang_thai == 'DANG_CHO_DUYET' %}status-pending{% else %}status-rejected{% endif %}">
+                                    {{ reward.get_trang_thai_display }}
+                                </span>
+                            </div>
+                            <div class="info-row">
+                                <span class="info-label">Minh chứng:</span>
+                                <span>
+                                    {% if reward.minh_chung_file %}
+                                        <a href="{{ reward.minh_chung_file.url }}" target="_blank" class="link-btn">Xem liên kết</a>
+                                    {% elif reward.minh_chung_url %}
+                                        <a href="{{ reward.minh_chung_url }}" target="_blank" class="link-btn">Xem liên kết</a>
+                                    {% else %}
+                                        Không có
+                                    {% endif %}
+                                </span>
                             </div>
                         </div>
 
-                        <div class="row mt-4">
-                            <div class="col-md-6">
-                                <div class="info-row">
-                                    <span class="info-label">Ngày ra quyết định:</span>
-                                    <span>{{ reward.ngay_tao|date:"d/m/Y H:i" }}</span>
-                                </div>
-                                <div class="info-row">
-                                    <span class="info-label">Giá trị:</span>
-                                    <span>{{ reward.gia_tri }} VNĐ</span>
-                                </div>
-                                <div class="info-row">
-                                    <span class="info-label">Trạng thái:</span>
-                                    <span class="status-badge {% if reward.trang_thai == 'DA_DUYET' %}status-approved{% elif reward.trang_thai == 'DANG_CHO_DUYET' %}status-pending{% else %}status-rejected{% endif %}">
-                                        {{ reward.get_trang_thai_display }}
-                                    </span>
-                                </div>
-                                <div class="info-row">
-                                    <span class="info-label">Minh chứng:</span>
-                                    <span>
-                                        {% if reward.minh_chung_file %}
-                                            <a href="{{ reward.minh_chung_file.url }}" target="_blank" class="link-btn">
-                                                <i class="fas fa-download"></i> Tải tệp
-                                            </a>
-                                        {% elif reward.minh_chung_url %}
-                                            <a href="{{ reward.minh_chung_url }}" target="_blank" class="link-btn">
-                                                <i class="fas fa-link"></i> Xem liên kết
-                                            </a>
-                                        {% else %}
-                                            Không có
-                                        {% endif %}
-                                    </span>
-                                </div>
+                        <!-- Cột phải -->
+                        <div class="column-right">
+                            <div class="info-row">
+                                <span class="info-label">Người tạo:</span>
+                                <span>{{ reward.nguoi_tao_don.ten_nv }} ({{ reward.nguoi_tao_don.chuc_vu|default:'N/A' }})</span>
                             </div>
-                            <div class="col-md-6">
-                                <div class="info-row">
-                                    <span class="info-label">Người tạo:</span>
-                                    <span>{{ reward.nguoi_tao_don.ten_nv }} ({{ reward.nguoi_tao_don.chuc_vu|default:'N/A' }})</span>
-                                </div>
-                                <div class="info-row">
-                                    <span class="info-label">Người duyệt:</span>
-                                    <span>{{ reward.nguoi_xac_nhan.ten_nv|default:"Chưa duyệt" }} {% if reward.nguoi_xac_nhan %}({{ reward.nguoi_xac_nhan.chuc_vu|default:'N/A' }}){% endif %}</span>
-                                </div>
+                            <div class="info-row">
+                                <span class="info-label">Người duyệt:</span>
+                                <span>{{ reward.nguoi_xac_nhan.ten_nv|default:"Chưa duyệt" }} {% if reward.nguoi_xac_nhan %}({{ reward.nguoi_xac_nhan.chuc_vu|default:'N/A' }}){% endif %}</span>
                             </div>
-                        </div>
-
-                        <div class="mt-3">
                             <div class="info-row">
                                 <span class="info-label">Lý do:</span>
                                 <span>{{ reward.ly_do }}</span>
@@ -234,49 +240,41 @@
                 </div>
                 {% endfor %}
             {% else %}
-                <div class="text-center py-5 bg-light rounded">
+                <div class="no-data-message text-center py-5 bg-light rounded">
                     <p class="text-muted mb-0">Không có dữ liệu khen thưởng.</p>
                 </div>
             {% endif %}
         </div>
 
-        <!-- Filter -->
-        <div class="col-md-4">
+        <!-- Bộ lọc -->
+        <div class="filter-container">
             <div class="filter-card">
                 <h5 class="filter-title">LỌC KHEN THƯỞNG</h5>
-                <form method="get" action="{% url 'khen_thuong_list' %}">
-                    <div class="mb-3">
-                        <label for="nhan_vien" class="form-label">Nhân viên</label>
-                        <select id="nhan_vien" name="nhan_vien" class="form-select">
-                            <option value="">Chọn nhân viên</option>
-                            {% for nhan_vien in nhan_vien_list %}
-                            <option value="{{ nhan_vien.id }}" {% if request.GET.nhan_vien == nhan_vien.id|stringformat:"s" %}selected{% endif %}>
-                                {{ nhan_vien.ten_nv }} ({{ nhan_vien.user_id }})
-                            </option>
-                            {% endfor %}
-                        </select>
-                    </div>
-                    <div class="mb-3">
-                        <label for="thang" class="form-label">Tháng</label>
-                        <select id="thang" name="thang" class="form-select">
-                            <option value="">Chọn tháng</option>
-                            {% for thang in thang_list %}
-                            <option value="{{ thang }}" {% if request.GET.thang == thang|stringformat:"s" %}selected{% endif %}>{{ thang }}</option>
-                            {% endfor %}
-                        </select>
-                    </div>
-                    <div class="mb-3">
-                        <label for="nam" class="form-label">Năm</label>
-                        <select id="nam" name="nam" class="form-select">
-                            <option value="">Chọn năm</option>
-                            {% for nam in nam_list %}
-                            <option value="{{ nam }}" {% if request.GET.nam == nam|stringformat:"s" %}selected{% endif %}>{{ nam }}</option>
-                            {% endfor %}
-                        </select>
-                    </div>
-                    <button type="submit" class="btn filter-btn w-100">
-                        <i class="fas fa-filter me-2"></i>Lọc
-                    </button>
+                <form id="khen-thuong-nhan-vien-filter">
+                    <label for="nhan_vien_khen_thuong" class="form-label">Nhân viên</label>
+                    <select id="nhan_vien_khen_thuong" name="nhan_vien" class="form-select">
+                        <option value="">Chọn nhân viên</option>
+                        {% for nhan_vien in nhan_vien_list %}
+                        <option value="{{ nhan_vien.id }}">{{ nhan_vien.ten_nv }} ({{ nhan_vien.user_id }})</option>
+                        {% endfor %}
+                    </select>
+
+                    <label for="thang_khen_thuong_nhan_vien" class="form-label">Tháng</label>
+                    <select id="thang_khen_thuong_nhan_vien" name="thang" class="form-select">
+                        <option value="">Chọn tháng</option>
+                        {% for thang in thang_list %}
+                        <option value="{{ thang }}">{{ thang }}</option>
+                        {% endfor %}
+                    </select>
+
+                    <label for="nam_khen_thuong_nhan_vien" class="form-label">Năm</label>
+                    <select id="nam_khen_thuong_nhan_vien" name="nam" class="form-select">
+                        <option value="">Chọn năm</option>
+                        {% for nam in nam_list %}
+                        <option value="{{ nam }}">{{ nam }}</option>
+                        {% endfor %}
+                    </select>
+
                 </form>
             </div>
         </div>
