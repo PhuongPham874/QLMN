@@ -32,7 +32,7 @@ urlpatterns = [
     path('', include('BHXH.urls')),
     path('', include('HoSo.urls')),
     path('', include('luong.urls')),
-    # path('', include('chamcong.urls')),
+    path('', include('chamcong.urls')),
 ]
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

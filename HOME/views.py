@@ -4,7 +4,7 @@ from django.contrib.auth import authenticate, login
 from django.contrib import messages
 from django.contrib.messages import get_messages
 
-from HOME.models import NhanVien
+from HOME.models import NhanVien, BHXH
 
 
 def login_view(request):
@@ -33,8 +33,10 @@ from django.contrib.auth.decorators import login_required
 @login_required
 def home_view(request):
     nhanvien = NhanVien.objects.get(user=request.user)
+    nhan_vien_co_bhxh = BHXH.objects.filter(nhan_vien_id=nhanvien.id).exists()
     return render(request, 'home.html',{
-        'nhan_vien' : nhanvien
+        'nhan_vien' : nhanvien,
+        'nhan_vien_co_bhxh': nhan_vien_co_bhxh
     })
 #Trang LOGOUT
 from django.contrib.auth import logout

@@ -1,161 +1,183 @@
-body {
-        background-color: #f8f9fa;
+/* Scoped styles for ThemBHXH page */
+.bhxh-add-container {
+    width: 1200px;
+    margin: 0 auto;
+    padding: 30px;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+
+.bhxh-form-container {
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    padding: 30px;
+    margin-bottom: 20px;
+}
+
+.bhxh-page-title {
+    color: #0d6efd;
+    font-weight: 700;
+    font-size: 24px;
+    margin-bottom: 30px;
+    text-align: center;
+    border-bottom: 2px solid #0d6efd;
+    padding-bottom: 10px;
+    width: fit-content;
+    margin: 0 auto 30px;
+}
+
+.bhxh-section-title {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+    color: #0d6efd;
+    font-weight: 600;
+    font-size: 16px;
+}
+
+.bhxh-section-title i {
+    margin-right: 10px;
+}
+
+.bhxh-section-container {
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 25px;
+}
+
+.bhxh-form-group {
+    margin-bottom: 15px;
+}
+
+.bhxh-form-label {
+    display: block;
+    color: #212529;
+    font-weight: 500;
+    margin-bottom: 8px;
+    font-size: 14px;
+}
+
+/* Style Django form inputs */
+.bhxh-form-group input,
+.bhxh-form-group select,
+.bhxh-form-group textarea {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+    font-size: 14px;
+    transition: border-color 0.15s ease-in-out;
+}
+
+.bhxh-form-group input:focus,
+.bhxh-form-group select:focus,
+.bhxh-form-group textarea:focus {
+    border-color: #0d6efd;
+    box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.25);
+    outline: none;
+}
+
+.bhxh-form-text {
+    color: #6c757d;
+    font-size: 12px;
+    margin-top: 4px;
+}
+
+.bhxh-btn {
+    padding: 10px 20px;
+    border-radius: 4px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-size: 14px;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.bhxh-btn-primary {
+    background-color: #0d6efd;
+    border: none;
+    color: white;
+}
+
+.bhxh-btn-primary:hover {
+    background-color: #0b5ed7;
+}
+
+.bhxh-btn-outline-secondary {
+    background-color: #f8f9fa;
+    border: 1px solid #ced4da;
+    color: #6c757d;
+}
+
+.bhxh-btn-outline-secondary:hover {
+    background-color: #e9ecef;
+}
+
+.bhxh-alert {
+    padding: 12px 20px;
+    border-radius: 4px;
+    margin-bottom: 20px;
+    font-weight: 500;
+    font-size: 14px;
+}
+
+.bhxh-alert-success {
+    background-color: #d1e7dd;
+    color: #0f5132;
+    border: 1px solid #badbcc;
+}
+
+.bhxh-alert-danger {
+    background-color: #f8d7da;
+    color: #842029;
+    border: 1px solid #f5c2c7;
+}
+
+.bhxh-header-actions {
+    display: flex;
+    margin-bottom: 20px;
+}
+
+.bhxh-back-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    text-decoration: none;
+    color: #6c757d;
+    font-size: 14px;
+    transition: color 0.2s;
+}
+
+.bhxh-back-btn:hover {
+    color: #0d6efd;
+}
+
+.bhxh-text-danger {
+    color: #dc3545;
+    font-size: 13px;
+    margin-top: 5px;
+}
+
+.bhxh-form-actions {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 30px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .bhxh-add-container {
+        padding: 15px;
     }
 
-    .container {
-        max-width: 1000px;
-        margin: 0 auto;
-        padding: 30px;
-    }
-
-    .form-container {
-        background-color: #fff;
-        border-radius: 8px;
-        box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-        padding: 30px;
-        margin-bottom: 20px;
-    }
-
-    .page-title {
-        color: #0d6efd;
-        font-weight: 700;
-        font-size: 24px;
-        margin-bottom: 30px;
-        text-align: center;
-        border-bottom: 2px solid #0d6efd;
-        padding-bottom: 10px;
-        width: fit-content;
-        margin: 0 auto 30px;
-    }
-
-    .section-title {
-        display: flex;
-        align-items: center;
-        margin-bottom: 20px;
-        color: #0d6efd;
-        font-weight: 600;
-        font-size: 16px;
-    }
-
-    .section-title i {
-        margin-right: 10px;
-    }
-
-    .section-container {
-        background-color: #f8f9fa;
-        border-radius: 8px;
+    .bhxh-form-container {
         padding: 20px;
-        margin-bottom: 25px;
     }
 
-    .form-group {
-        margin-bottom: 15px;
+    .bhxh-page-title {
+        font-size: 20px;
     }
-
-    .form-label {
-        display: block;
-        color: #212529;
-        font-weight: 500;
-        margin-bottom: 8px;
-        font-size: 14px;
-    }
-
-    .form-control {
-        width: 100%;
-        padding: 10px 12px;
-        border: 1px solid #ced4da;
-        border-radius: 4px;
-        font-size: 14px;
-        transition: border-color 0.15s ease-in-out;
-    }
-
-    .form-control:focus {
-        border-color: #0d6efd;
-        box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.25);
-        outline: none;
-    }
-
-    .form-text {
-        color: #6c757d;
-        font-size: 12px;
-        margin-top: 4px;
-    }
-
-    .btn {
-        padding: 10px 20px;
-        border-radius: 4px;
-        font-weight: 500;
-        cursor: pointer;
-        transition: all 0.2s;
-        font-size: 14px;
-    }
-
-    .btn-primary {
-        background-color: #0d6efd;
-        border: none;
-        color: white;
-    }
-
-    .btn-primary:hover {
-        background-color: #0b5ed7;
-    }
-
-    .btn-outline-secondary {
-        background-color: #f8f9fa;
-        border: 1px solid #ced4da;
-        color: #6c757d;
-    }
-
-    .btn-outline-secondary:hover {
-        background-color: #e9ecef;
-    }
-
-    .alert {
-        padding: 12px 20px;
-        border-radius: 4px;
-        margin-bottom: 20px;
-        font-weight: 500;
-        font-size: 14px;
-    }
-
-    .alert-success {
-        background-color: #d1e7dd;
-        color: #0f5132;
-        border: 1px solid #badbcc;
-    }
-
-    .alert-danger {
-        background-color: #f8d7da;
-        color: #842029;
-        border: 1px solid #f5c2c7;
-    }
-
-    .header-actions {
-        display: flex;
-        margin-bottom: 20px;
-    }
-
-    .back-btn {
-        display: flex;
-        align-items: center;
-        gap: 8px;
-        text-decoration: none;
-        color: #6c757d;
-        font-size: 14px;
-    }
-
-    .back-btn:hover {
-        color: #0d6efd;
-    }
-
-    .text-danger {
-        color: #dc3545;
-        font-size: 13px;
-        margin-top: 5px;
-    }
-
-    .form-actions {
-        display: flex;
-        justify-content: flex-end;
-        margin-top: 30px;
-    }
+}

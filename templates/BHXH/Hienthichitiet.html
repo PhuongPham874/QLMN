@@ -1,83 +1,86 @@
 {% extends 'home.html' %}
 {% load static %}
+
 {% block page_background %}
-<div class="container">
-    <div class="header-actions">
-        <a href="{% url 'bhxh_list' %}" class="back-btn">
+<link rel="stylesheet" href="{% static 'css/Hienthichitiet.css' %}">
+
+<div class="bhxh-detail-container">
+    <div class="bhxh-header-actions">
+        <a href="{% url 'bhxh_list' %}" class="bhxh-back-btn">
             <i class="fas fa-arrow-left"></i> Quay lại
         </a>
     </div>
-    <div class="card">
-        <div class="card-body">
-            <div class="employee-header">
-                <div class="employee-title">
-                    <h1 class="page-subtitle">THÔNG TIN BHXH - {{ bh.nhan_vien.ten_nv }}</h1>
+
+    <div class="bhxh-card">
+        <div class="bhxh-card-body">
+            <div class="bhxh-employee-header">
+                <div class="bhxh-employee-title">
+                    <h1 class="bhxh-page-subtitle">THÔNG TIN BHXH - {{ bh.nhan_vien.ten_nv }}</h1>
                 </div>
             </div>
 
-            <div class="info-grid">
-                <div class="info-item">
-                    <div class="info-label">Mã nhân viên</div>
-                    <div class="info-value">{{ bh.nhan_vien.id }}</div>
+            <div class="bhxh-info-grid">
+                <div class="bhxh-info-item">
+                    <div class="bhxh-info-label">Mã nhân viên</div>
+                    <div class="bhxh-info-value">{{ bh.nhan_vien.id }}</div>
                 </div>
-                <div class="info-item">
-                    <div class="info-label">Mức đóng của nhân viên</div>
-                    <div class="info-value highlight">{{ bh.nhan_vien_dong }}%</div>
+                <div class="bhxh-info-item">
+                    <div class="bhxh-info-label">Mức đóng của nhân viên</div>
+                    <div class="bhxh-info-value ">{{ bh.nhan_vien_dong }}%</div>
                 </div>
-                <div class="info-item">
-                    <div class="info-label">Mã BHXH</div>
-                    <div class="info-value">{{ bh.ma_BHXH }}</div>
+                <div class="bhxh-info-item">
+                    <div class="bhxh-info-label">Mã BHXH</div>
+                    <div class="bhxh-info-value">{{ bh.ma_BHXH }}</div>
                 </div>
-                <div class="info-item">
-                    <div class="info-label">Mức đóng của trường</div>
-                    <div class="info-value highlight">{{ bh.truong_dong }}%</div>
+                <div class="bhxh-info-item">
+                    <div class="bhxh-info-label">Mức đóng của trường</div>
+                    <div class="bhxh-info-value ">{{ bh.truong_dong }}%</div>
                 </div>
-                <div class="info-item">
-                    <div class="info-label">Ngày tham gia BHXH</div>
-                    <div class="info-value">{{ bh.thoi_gian_bat_dau|date:"d/m/Y" }}</div>
+                <div class="bhxh-info-item">
+                    <div class="bhxh-info-label">Ngày tham gia BHXH</div>
+                    <div class="bhxh-info-value">{{ bh.thoi_gian_bat_dau|date:"d/m/Y" }}</div>
                 </div>
             </div>
         </div>
     </div>
 
-    <div class="card">
-        <div class="card-header">
-            <div class="section-title">
+    <div class="bhxh-card">
+        <div class="bhxh-card-header">
+            <div class="bhxh-section-title">
                 <i class="fas fa-history"></i> Quá trình tham gia bảo hiểm xã hội
             </div>
         </div>
-        <div class="card-body">
-            <div class="summary-box">
-                <div class="summary-item">
+        <div class="bhxh-card-body">
+            <div class="bhxh-summary-box">
+                <div class="bhxh-summary-item">
                     <i class="fas fa-calendar-check"></i>
-                    <div class="summary-text">Số lần tham gia: <span class="highlight">{{ solanthamgia }}</span></div>
+                    <div class="bhxh-summary-text">Số lần tham gia: <span class="bhxh-highlight">{{ solanthamgia }}</span></div>
                 </div>
             </div>
-    <table class="table">
-    <thead>
-        <tr>
-            <th>Ngày bắt đầu</th>
-            <th>Ngày kết thúc</th>
-            <th style="text-align: right;">Tổng tiền (VNĐ)</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for dong in dongbh %}
-        <tr>
-            <td>{{ dong.ngay_bat_dau|date:"d/m/Y" }}</td>
-            <td>{{ dong.ngay_ket_thuc|date:"d/m/Y" }}</td>
-            <td style="text-align: right;">{{ dong.tong_tien|floatformat:0 }}</td>
-        </tr>
-        {% endfor %}
-        <tr>
-            <td colspan="2" style="text-align:center;font-weight: bold;color: #495057;">Tổng</td>
-            <td style="text-align: right; font-weight: bold;">{{ Total|floatformat:0 }}</td>
-        </tr>
-    </tbody>
-    </table>
+
+            <table class="bhxh-table">
+                <thead>
+                    <tr>
+                        <th>Ngày bắt đầu</th>
+                        <th>Ngày kết thúc</th>
+                        <th class="bhxh-amount" r>Tổng tiền (VNĐ)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for dong in dongbh %}
+                    <tr>
+                        <td>{{ dong.ngay_bat_dau|date:"d/m/Y" }}</td>
+                        <td>{{ dong.ngay_ket_thuc|date:"d/m/Y" }}</td>
+                        <td class="bhxh-amount">{{ dong.tong_tien|floatformat:0 }}</td>
+                    </tr>
+                    {% endfor %}
+                    <tr class="bhxh-total-row">
+                        <td colspan="2" class="bhxh-total-label">Tổng</td>
+                        <td class="bhxh-amount">{{ Total|floatformat:0 }}</td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
     </div>
 </div>
-<link rel="stylesheet" href="{% static 'css/Hienthichitiet.css' %}">
 {% endblock %}
-

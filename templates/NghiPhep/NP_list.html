@@ -53,26 +53,28 @@
     {% url 'DanhSachNP' as url_np %}
     {% url 'DanhSachNP_HT' as url_np_ht %}
 
-    <ul class="custom-nav-tabs">
-        {% if nhan_vien.chuc_vu == 'Hiệu Trưởng' %}
-        <li>
-            <a class="{% if request.path == url_np_ht %}active{% endif %}" href="{{ url_np_ht }}">
-                Nghỉ phép của BGH
-            </a>
-        </li>
-        {% else %}
-        <li>
-            <a class="{% if request.path == url_np_nv %}active{% endif %}" href="{{ url_np_nv }}">
-                Nghỉ phép của tôi
-            </a>
-        </li>
-        {% endif %}
-        <li>
-            <a class="{% if request.path == url_np %}active{% endif %}" href="{{ url_np }}">
-                Duyệt nghỉ phép
-            </a>
-        </li>
-    </ul>
+    {% if nhan_vien.chuc_vu == 'Hiệu Trưởng' or nhan_vien.chuc_vu == 'Hiệu phó' or nhan_vien.chuc_vu == 'Tổ trưởng' %}
+        <ul class="custom-nav-tabs">
+            {% if nhan_vien.chuc_vu == 'Hiệu Trưởng' %}
+            <li>
+                <a class="{% if request.path == url_np_ht %}active{% endif %}" href="{{ url_np_ht }}">
+                    Nghỉ phép của BGH
+                </a>
+            </li>
+            {% else %}
+            <li>
+                <a class="{% if request.path == url_np_nv %}active{% endif %}" href="{{ url_np_nv }}">
+                    Nghỉ phép của tôi
+                </a>
+            </li>
+            {% endif %}
+            <li>
+                <a class="{% if request.path == url_np %}active{% endif %}" href="{{ url_np }}">
+                    Duyệt nghỉ phép
+                </a>
+            </li>
+        </ul>
+    {% endif %}
     {% block content %}
     <div class="button">
         {% block titleNP %}
