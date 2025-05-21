@@ -5,9 +5,12 @@
 {% block page_background %}
 <div class="profile-page">
   <!-- Page Header -->
-  <div class="page-header">
-    <h1 class="page-title">THÔNG TIN HỒ SƠ CHI TIẾT</h1>
-  </div>
+    <div class="header-container" style="display: flex; align-items: center; width: 100%; margin-top: 20px; margin-bottom: 20px; gap: 170px;">
+        <a href="{% url 'DanhSachNhanVien' %}" class="btn-back" style="background-color: #555555; color: white; padding: 10px 15px; border-radius: 4px; text-decoration: none; display: flex; align-items: center; min-width: 110px; justify-content: center;">
+            <i class="fas fa-arrow-left" style="margin-right: 8px;"></i> Quay lại
+        </a>
+        <h1 class="main-title" style="font-size: 25px; font-weight: bold; margin: 0;">THÔNG TIN CHI TIẾT HỒ SƠ NHÂN VIÊN</h1>
+    </div>
 
   <!-- Tab Navigation -->
   <div class="tab-navigation">
@@ -172,10 +175,10 @@
           </div>
 
         </div>
-        <div class="profile-actions">
-            <a href="{% url 'edit_ho_so' nhan_vien.id %}" class="edit-button" title="Chỉnh sửa">
-                <i class="fa-solid fa-pen-to-square"></i>
-            </a>
+        <div class="profile-action" style="text-align: right; margin-top: 20px;">
+          <a href="{% url 'edit_ho_so' nhan_vien.id %}" class="edit-button" title="Chỉnh sửa" >
+              <i class="fa-solid fa-pen-to-square" style="font-size: 18px; color: #0066CC;"></i>
+          </a>
         </div>
       </div>
     </div>

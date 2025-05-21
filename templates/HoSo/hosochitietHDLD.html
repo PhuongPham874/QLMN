@@ -3,9 +3,12 @@
 {% block page_background %}
 <div class="contract-page">
   <!-- Page Header -->
-  <div class="page-header">
-    <h1 class="page-title">THÔNG TIN HỒ SƠ CHI TIẾT</h1>
-  </div>
+  <div class="header-container" style="display: flex; align-items: center; width: 100%; margin-top: 20px; margin-bottom: 20px; gap: 140px;">
+        <a href="{% url 'DanhSachNhanVien' %}" class="btn-back" style="background-color: #555555; color: white; padding: 10px 15px; border-radius: 4px; text-decoration: none; display: flex; align-items: center; min-width: 110px; justify-content: center;">
+            <i class="fas fa-arrow-left" style="margin-right: 8px;"></i> Quay lại
+        </a>
+        <h1 class="main-title" style="font-size: 25px; font-weight: bold; margin: 0;">THÔNG TIN CHI TIẾT HỢP ĐỒNG LAO ĐỘNG</h1>
+    </div>
 
   <!-- Tab Navigation -->
   <div class="tab-navigation">

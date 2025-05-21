@@ -1,188 +1,577 @@
 {% extends "home.html" %}
 
 {% block extra_css %}
-    <style>
-
-        .content{
-            width: 1150px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: flex-start;
-
-        }
-        .ndung{
-            width: 1100px;
-            padding: 20px;
-            margin-left: 20px;
-            display: flex;
-            flex-direction: column;
-        }
+<style>
+    /* Modern black and white color scheme */
+    :root {
+        --primary: #000000;
+        --secondary: #333333;
+        --light-gray: #f5f5f5;
+        --medium-gray: #e0e0e0;
+        --dark-gray: #666666;
+        --white: #ffffff;
+        --blue: #0066CC;
+        --light-blue: #65ABE3;
+        --dark-blue: #066BBB;
     }
 
-        table{
-        width: 450px;
-        align-items: center;
-        margin-bottom: 20px;
-        justify-content: space-between;
+    .content {
+        width: 80%;
+        margin: 0 auto;
+        display: flex;
+        flex-direction: column;
     }
-        .btn{
-        padding: 10px ;
-        border-radius:5px;
-        font-size: 15px;
+
+    /* Main title */
+    .main-title {
+        color: var(--blue);
         text-align: center;
-        background-color:#D9D9D9 ;
-        color: black;
-        border: 1px solid;
+        font-size: 28px;
+        font-weight: bold;
+        margin: 20px 0;
     }
-        .button{
-            padding: 20px;
-        }
 
-    </style>
+    /* Tab styling */
+    .tab-container {
+        display: flex;
+        margin-bottom: 20px;
+        border-bottom: 1px solid var(--medium-gray);
+    }
+
+    .tab-item {
+        padding: 12px 20px;
+        font-size: 18px;
+        font-weight: 500;
+        text-decoration: none;
+        text-align: center;
+        cursor: pointer;
+        color: var(--dark-gray);
+        position: relative;
+        margin-right: 20px;
+        width: 50%;
+    }
+
+    .tab-active {
+        color: var(--blue);
+        font-weight: bold;
+    }
+
+    .tab-active::after {
+        content: '';
+        position: absolute;
+        bottom: -1px;
+        left: 0;
+        width: 100%;
+        height: 3px;
+        background-color: var(--blue);
+    }
+
+    /* Form section styling */
+    .form-section {
+        margin-bottom: 20px;
+        border: 1px solid var(--medium-gray);
+        border-radius: 5px;
+        overflow: hidden;
+    }
+
+    .section-header {
+        background-color: var(--light-gray);
+        padding: 15px;
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        cursor: pointer;
+        color: var(--primary);
+        transition: all 0.2s ease;
+    }
+
+    .section-header:hover {
+        background-color: var(--medium-gray);
+    }
+
+    .section-header i {
+        margin-right: 10px;
+    }
+
+    .section-content {
+        padding: 20px;
+        background-color: var(--white);
+    }
+
+    /* Form field styling */
+    .form-field {
+        margin-bottom: 15px;
+    }
+
+    .form-field label {
+        display: block;
+        font-weight: 500;
+        font-size: 16px;
+        color: var(--secondary);
+        margin-bottom: 8px;
+    }
+
+    .form-input, .form-select {
+        width: 100%;
+        font-size: 16px;
+        padding: 10px 12px;
+        border-radius: 4px;
+        border: 1px solid var(--medium-gray);
+        transition: border-color 0.2s ease;
+    }
+
+    .form-input:focus, .form-select:focus {
+        outline: none;
+        border-color: var(--secondary);
+        box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Radio buttons */
+    .radio-group {
+        display: flex;
+        gap: 20px;
+    }
+
+    .radio-option {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+    }
+
+    .radio-option label {
+        margin-bottom: 0;
+        font-weight: normal;
+    }
+
+    .card {
+        width: 100%;
+        border-radius: 8px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        overflow: hidden;
+        margin-bottom: 20px;
+        background-color: var(--white);
+    }
+
+    .card-body {
+        padding: 25px;
+        background-color: var(--white);
+    }
+
+    .card-footer {
+        display: flex;
+        justify-content: flex-end;
+        padding: 15px 25px;
+        background-color: var(--light-gray);
+        border-top: 1px solid var(--medium-gray);
+        gap: 10px;
+    }
+
+    .btn-back {
+        background-color: var(--dark-gray);
+        color: var(--white);
+        border: none;
+        padding: 10px 16px;
+        border-radius: 4px;
+        font-weight: 500;
+        text-decoration: none;
+        transition: background-color 0.2s ease;
+    }
+
+    .btn-back:hover {
+        background-color: var(--secondary);
+    }
+
+    .btn-save {
+        background-color: #00CC00;
+        color: var(--white);
+        border: none;
+        padding: 10px 20px;
+        border-radius: 4px;
+        font-weight: 500;
+        cursor: pointer;
+        transition: background-color 0.2s ease;
+    }
+
+    .btn-save:hover {
+        background-color: #00AA00;
+    }
+
+    .btn-cancel {
+        background-color: #BA0000;
+        color: var(--white);
+        border: none;
+        padding: 10px 20px;
+        border-radius: 4px;
+        font-weight: 500;
+        cursor: pointer;
+        text-decoration: none;
+        transition: background-color 0.2s ease;
+    }
+
+    .btn-cancel:hover {
+        background-color: #990000;
+    }
+
+    /* Avatar styling */
+    .avatar-container {
+        display: flex;
+        justify-content: center;
+        margin-bottom: 30px;
+    }
+
+    .avatar-wrapper {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .avatar-circle {
+        width: 120px;
+        height: 120px;
+        border-radius: 50%;
+        background-color: var(--light-gray);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border: 1px solid var(--medium-gray);
+        cursor: pointer;
+        overflow: hidden;
+        position: relative;
+    }
+
+    .avatar-icon {
+        font-size: 48px;
+        color: #999;
+    }
+
+    .avatar-preview {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .avatar-label {
+        margin-top: 10px;
+        color: var(--dark-gray);
+        font-size: 14px;
+        text-align: center;
+    }
+
+    .avatar-input {
+        display: none;
+    }
+
+    .avatar-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.3);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        opacity: 0;
+        transition: opacity 0.2s ease;
+    }
+
+    .avatar-circle:hover .avatar-overlay {
+        opacity: 1;
+    }
+
+    .avatar-overlay i {
+        color: white;
+        font-size: 24px;
+    }
+
+    /* Chevron for section toggle */
+    .section-chevron {
+        margin-left: auto;
+        transition: transform 0.3s ease;
+    }
+
+    .section-header.active .section-chevron {
+        transform: rotate(180deg);
+    }
+
+    /* Header with back button */
+    .header-container {
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        width: 100%;
+        margin-top: 20px;
+        margin-bottom: 20px;
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+        .content {
+            width: 95%;
+        }
+    }
+</style>
+<!-- Add Font Awesome for icons -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 {% endblock %}
+
 {% block page_background %}
 <main class="content" style="background-color: #ffffff; padding: 10px;">
-       <form method="POST" enctype="multipart/form-data">
+    <div class="header-container" style="display: flex; align-items: center; width: 100%; margin-top: 20px; margin-bottom: 20px; gap: 100px;">
+        <a href="{% url 'DanhSachNhanVien' %}" class="btn-back" style="background-color: #555555; color: white; padding: 10px 15px; border-radius: 4px; text-decoration: none; display: flex; align-items: center; min-width: 110px; justify-content: center;">
+            <i class="fas fa-arrow-left" style="margin-right: 8px;"></i> Quay lại
+        </a>
+        <h1 class="main-title" style="Color:#000000; font-size: 25px; font-weight: bold; margin: 0;">CHỈNH SỬA THÔNG TIN HỒ SƠ CHI TIẾT </h1>
+    </div>
+
+    <div class="card">
+        <form method="POST" enctype="multipart/form-data">
             {% csrf_token %}
-           <div class="header-container" style="display: flex; justify-content: flex-start; align-items: center; width: 100%; margin-top: 20px;">
-                <a href="{% url 'DanhSachNhanVien' %}" class="btn btn-secondary" style="font-size: 17px; font-weight: bold; padding: 7px 15px; margin-right: 20px; border: none;">Quay lại</a>
-                <h1 class="header-title" style="color: #000000; font-size: 30px; font-weight: bold; text-align: center; margin: 0; flex-grow: 1; text-align: center;">CHỈNH SỬA HỒ SƠ NHÂN VIÊN</h1>
+            <div class="card-body">
+                <!-- Tabs styled like the screenshot -->
+                <div class="tab-container">
+                    <a href="{% url 'edit_ho_so' nhan_vien.id %}" class="tab-item tab-active">
+                        Thông tin cá nhân
+                    </a>
+                    <a href="{% url 'QLXemHoSoHDLD' nhan_vien.id %}" class="tab-item">
+                        Hợp đồng lao động
+                    </a>
+                </div>
+
+                <!-- Avatar upload section -->
+                <div class="avatar-container">
+                    <div class="avatar-wrapper">
+                        <div class="avatar-circle">
+                            {% if nhan_vien.anh_ca_nhan %}
+                                <img src="{{ nhan_vien.anh_ca_nhan }}" alt="User Avatar" class="avatar-preview" style="display: block;">
+                                <div class="avatar-overlay">
+                                    <i class="fas fa-camera"></i>
+                                </div>
+                            {% else %}
+                                <i class="fas fa-user avatar-icon" id="avatar-placeholder"></i>
+                                <div class="avatar-overlay">
+                                    <i class="fas fa-camera"></i>
+                                </div>
+                            {% endif %}
+                        </div>
+                        <input type="file" id="anh_ca_nhan" name="anh_ca_nhan" class="avatar-input" accept="image/*">
+                        <label for="anh_ca_nhan" class="avatar-label">Ảnh cá nhân</label>
+                    </div>
+                </div>
+
+                <!-- THÔNG TIN CÁ NHÂN -->
+                <div class="form-section">
+                    <div class="section-header">
+                        <i class="fas fa-id-card"></i>
+                        <span style="margin-left: 10px;">THÔNG TIN CÁ NHÂN</span>
+                        <i class="fas fa-chevron-down section-chevron"></i>
+                    </div>
+                    <div class="section-content">
+                        <div class="form-field">
+                            <label for="ten_nv">Họ và tên:</label>
+                            <input type="text" class="form-input" id="ten_nv" name="ten_nv" value="{{ nhan_vien.ten_nv }}">
+                        </div>
+
+                        <div class="form-field">
+                            <label for="gioi_tinh">Giới tính:</label>
+                            <div class="radio-group">
+                                <div class="radio-option">
+                                    <input type="radio" id="nam" name="gioi_tinh" value="2">
+                                    <label for="nam">Nam</label>
+                                </div>
+                                <div class="radio-option">
+                                    <input type="radio" id="nu" name="gioi_tinh" value="1" checked>
+                                    <label for="nu">Nữ</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-field">
+                            <label for="ngay_sinh">Ngày sinh:</label>
+                            <input type="date" class="form-input" id="ngay_sinh" name="ngay_sinh" value="{{ nhan_vien.ngay_sinh|date:'Y-m-d' }}">
+                        </div>
+
+                        <div class="form-field">
+                            <label for="so_dien_thoai">Số điện thoại:</label>
+                            <input type="text" class="form-input" id="so_dien_thoai" name="so_dien_thoai" value="{{ nhan_vien.so_dien_thoai }}">
+                        </div>
+
+                        <div class="form-field">
+                            <label for="email">Email:</label>
+                            <input type="email" class="form-input" id="email" name="email" value="{{ nhan_vien.email }}">
+                        </div>
+
+                        <div class="form-field">
+                            <label for="so_cccd">Số CCCD:</label>
+                            <input type="text" class="form-input" id="so_cccd" name="so_cccd" value="{{ nhan_vien.so_cccd }}">
+                        </div>
+
+                        <div class="form-field">
+                            <label for="ngay_cap">Ngày cấp:</label>
+                            <input type="date" class="form-input" id="ngay_cap" name="ngay_cap" value="{{ nhan_vien.ngay_cap|date:'Y-m-d' }}">
+                        </div>
+
+                        <div class="form-field">
+                            <label for="noi_cap">Nơi cấp:</label>
+                            <input type="text" class="form-input" id="noi_cap" name="noi_cap" value="{{ nhan_vien.noi_cap }}">
+                        </div>
+
+                        <div class="form-field">
+                            <label for="dia_chi_tam_tru">Địa chỉ tạm trú:</label>
+                            <input type="text" class="form-input" id="dia_chi_tam_tru" name="dia_chi_tam_tru" value="{{ nhan_vien.dia_chi_tam_tru }}">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- THÔNG TIN VỊ TRÍ VIỆC LÀM -->
+                <div class="form-section">
+                    <div class="section-header">
+                        <i class="fas fa-briefcase"></i>
+                        <span style="margin-left: 10px;">THÔNG TIN VỊ TRÍ VIỆC LÀM</span>
+                        <i class="fas fa-chevron-down section-chevron"></i>
+                    </div>
+                    <div class="section-content" style="display: none;">
+                        <div class="form-field">
+                            <label for="vi_tri_cong_viec">Vị trí làm việc:</label>
+                            <input type="text" class="form-input" id="vi_tri_cong_viec" name="vi_tri_cong_viec" value="{{ nhan_vien.vi_tri_cong_viec }}">
+                        </div>
+
+                        <div class="form-field">
+                            <label for="chuc_vu">Chức vụ:</label>
+                            <input type="text" class="form-input" id="chuc_vu" name="chuc_vu" value="{{ nhan_vien.chuc_vu }}">
+                        </div>
+
+                        <div class="form-field">
+                            <label for="to_phong_ban">Tổ (Phòng ban):</label>
+                            <select class="form-select" id="to_phong_ban" name="to_phong_ban">
+                                <option value="">-- Chọn phòng ban --</option>
+                                <option value="Lớp mầm" {% if nhan_vien.to_phong_ban == "Lớp mầm" %}selected{% endif %}>Lớp mầm</option>
+                                <option value="Lớp chồi" {% if nhan_vien.to_phong_ban == "Lớp chồi" %}selected{% endif %}>Lớp chồi</option>
+                                <option value="Lớp lá" {% if nhan_vien.to_phong_ban == "Lớp lá" %}selected{% endif %}>Lớp lá</option>
+                                <option value="Văn phòng" {% if nhan_vien.to_phong_ban == "Văn phòng" %}selected{% endif %}>Văn phòng</option>
+                                <option value="Y tế - Hậu cần" {% if nhan_vien.to_phong_ban == "Y tế - Hậu cần" %}selected{% endif %}>Y tế - Hậu cần</option>
+                                <option value="BGH" {% if nhan_vien.to_phong_ban == "BGH" %}selected{% endif %}>BGH</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- TRÌNH ĐỘ HỌC VẤN -->
+                <div class="form-section">
+                    <div class="section-header">
+                        <i class="fas fa-graduation-cap"></i>
+                        <span style="margin-left: 10px;">TRÌNH ĐỘ HỌC VẤN</span>
+                        <i class="fas fa-chevron-down section-chevron"></i>
+                    </div>
+                    <div class="section-content" style="display: none;">
+                        <div class="form-field">
+                            <label for="trinh_do_hoc_van">Trình độ học vấn:</label>
+                            <select class="form-select" id="trinh_do_hoc_van" name="trinh_do_hoc_van">
+                                <option value="">-- Chọn trình độ học vấn --</option>
+                                <option value="Dưới trung cấp" {% if nhan_vien.trinh_do_hoc_van == "Dưới trung cấp" %}selected{% endif %}>Dưới trung cấp</option>
+                                <option value="Trung cấp" {% if nhan_vien.trinh_do_hoc_van == "Trung cấp" %}selected{% endif %}>Trung cấp</option>
+                                <option value="Cao đẳng" {% if nhan_vien.trinh_do_hoc_van == "Cao đẳng" %}selected{% endif %}>Cao đẳng</option>
+                                <option value="Đại học" {% if nhan_vien.trinh_do_hoc_van == "Đại học" %}selected{% endif %}>Đại học</option>
+                                <option value="Thạc sĩ" {% if nhan_vien.trinh_do_hoc_van == "Thạc sĩ" %}selected{% endif %}>Thạc sĩ</option>
+                            </select>
+                        </div>
+
+                        <div class="form-field">
+                            <label for="nam_tn">Năm TN:</label>
+                            <input type="number" class="form-input" id="nam_tn" name="nam_tn" value="{{ nhan_vien.nam_tn }}">
+                        </div>
+
+                        <div class="form-field">
+                            <label for="chuyen_nganh">Chuyên ngành:</label>
+                            <input type="text" class="form-input" id="chuyen_nganh" name="chuyen_nganh" value="{{ nhan_vien.chuyen_nganh }}">
+                        </div>
+
+                        <div class="form-field">
+                            <label for="noi_dao_tao">Nơi đào tạo:</label>
+                            <input type="text" class="form-input" id="noi_dao_tao" name="noi_dao_tao" value="{{ nhan_vien.noi_dao_tao }}">
+                        </div>
+                    </div>
+                </div>
             </div>
-           <div class="container mt-4" style="background-color: #f0f8ff; padding: 40px; border-radius: 10px;">
-                <h4 class="header-title" style="display: flex; justify-content: space-between; font-size: 30px; font-weight: bold; margin-bottom: 20px; margin-top: -39px; margin-right:-40px;margin-left:-40px;">
-                    <a href="{% url 'edit_ho_so' nhan_vien.id %}"
-                       style="border: 3px solid #000000; background-color:#066BBB; color: white; width: 50%; text-align: center; padding: 10px;
-                              border-top-left-radius:10px; border-bottom-left-radius: 10x; text-decoration: none;">
-                       Thông Tin Cá Nhân
-                    </a>
 
-
-                    <a href="{% url 'QLXemHoSoHDLD' nhan_vien.id %}"
-                       style="background-color: #65ABE3; color: white; width: 50%; text-align: center; padding: 10px; border-top-right-radius: 10px; border-bottom-right-radius: 10px; text-decoration: none;">
-                        Hợp Đồng Lao Động
-                    </a>
-
-                </h4>
-
-
-                <div class="row">
-                    <div class="col-md-6 left-column" style="padding: 10px;">
-                        <div class="form-group" style="display: flex; align-items: center; margin-bottom: 15px;">
-                            <label for="anh_ca_nhan" style="width: 180px; font-weight: bold; font-size: 16px; color: #333; margin-right: 10px; text-align: left;">Ảnh cá nhân</label>
-                            <img src="{{ nhan_vien.anh_ca_nhan }}" alt="User Avatar" class="rounded-circle" width="80" height="80">
-
-                        </div>
-
-
-                        <div class="form-group" style="display: flex; align-items: center; margin-bottom: 15px;">
-                            <label for="ten_nv" style="width: 180px; font-weight: bold; font-size: 16px; color: #333; margin-right: 10px; text-align: left;">Họ và tên:</label>
-                            <input style="font-size: 16px;" type="text" class="form-control" id="ten_nv" name="ten_nv" value="{{ nhan_vien.ten_nv }}">
-                        </div>
-
-                        <div class="form-group" style="display: flex; align-items: center; margin-bottom: 15px;">
-                            <label for="gioi_tinh" style="width: 180px; font-weight: bold; font-size: 16px; color: #333; margin-right: 10px; text-align: left;">Giới tính:</label>
-                            <input type="radio" name="gioi_tinh" value="2" style="margin-right: 20px;"> Nam
-                            <input type="radio" name="gioi_tinh" value="1" style="margin-right: 20px;margin-left: 20px;" checked> Nữ
-                        </div>
-
-                        <div class="form-group" style="display: flex; align-items: center; margin-bottom: 15px;">
-                            <label for="ngay_sinh" style="width: 180px; font-weight: bold; font-size: 16px; color: #333; margin-right: 10px; text-align: left;">Ngày sinh:</label>
-                            <input style="font-size: 16px;" type="date" class="form-control" id="ngay_sinh" name="ngay_sinh" value="{{ nhan_vien.ngay_sinh|date:'Y-m-d' }}">
-                        </div>
-
-                        <div class="form-group" style="display: flex; align-items: center; margin-bottom: 15px;">
-                            <label for="so_dien_thoai" style="width: 180px; font-weight: bold; font-size: 16px; color: #333; margin-right: 10px; text-align: left;">Số điện thoại:</label>
-                            <input style="font-size: 16px;" type="text" class="form-control" id="so_dien_thoai" name="so_dien_thoai" value="{{ nhan_vien.so_dien_thoai }}">
-
-                        </div>
-
-                        <div class="form-group" style="display: flex; align-items: center; margin-bottom: 15px;">
-                            <label for="email" style="width: 180px; font-weight: bold; font-size: 16px; color: #333; margin-right: 10px; text-align: left;">Email:</label>
-                            <input style="font-size: 16px;" type="email" class="form-control" id="email" name="email" value="{{ nhan_vien.email }}">
-                        </div>
-
-                        <div class="form-group" style="display: flex; align-items: center; margin-bottom: 15px;">
-                            <label for="so_cccd" style="width: 180px; font-weight: bold; font-size: 16px; color: #333; margin-right: 10px; text-align: left;">Số CCCD:</label>
-
-                            <input style="font-size: 16px;" type="text" class="form-control" id="so_cccd" name="so_cccd" value="{{ nhan_vien.so_cccd }}">
-                        </div>
-                    </div>
-
-                    <div class="col-md-6 right-column" style="padding: 10px; margin-top: 91px">
-                        <div class="form-group" style="display: flex; align-items: center; margin-bottom: 10px;">
-                            <label for="vi_tri_cong_viec" style="width:300px; font-weight: bold; font-size: 16px; color: #333; text-align: left;">Vị trí làm việc:</label>
-                            <input style="font-size: 14px; width:150px;;" type="text" class="form-control" id="vi_tri_cong_viec;margin-left:10px"name="vi_tri_cong_viec" value="{{ nhan_vien.vi_tri_cong_viec}}">
-                            <div class="form-group" style="display: flex; align-items: center; margin-bottom: 0px;text-align: right;">
-                                <label for="chuc_vu" style="width: 90px; font-weight: bold; font-size: 16px; color: #333; ">Chức vụ:</label>
-                                 <input style=" ;font-size: 14px; width: 100px;margin-left:20px" type="text" class="form-control" id="chuc_vu" name="chuc_vu" value="{{ nhan_vien.chuc_vu }}">
-                            </div>
-                        </div>
-
-                        <div class="form-group" style="display: flex; align-items: center; margin-top: 15px;">
-                            <label for="to_phong_ban" style="width: 180px; font-weight: bold; font-size: 16px; color: #333; margin-right: 10px; text-align: left;">Tổ (Phòng ban):</label>
-                            <input style="font-size: 16px;" type="text" class="form-control" id="to_phong_ban" name="to_phong_ban"value="{{ nhan_vien.to_phong_ban }}">
-                        </div>
-                        <div class="form-group" style="display: flex; align-items: center; margin-bottom: 10px;Margin-top: 15px;">
-                            <label for="trinh_do_hoc_van" style="width: 250px; font-weight: bold; font-size: 16px; color: #333; margin-right: 10px; text-align: left;">Học vấn:</label>
-                            <input style="font-size: 16px;width: 150px;" type="text" class="form-control" id="trinh_do_hoc_van"  name="trinh_do_hoc_van"  value="{{ nhan_vien.trinh_do_hoc_van }}">
-                            <div class="form-group" style="display: flex; align-items: center; margin-bottom: 0px;">
-                                <label for="nam_tn" style="width: 80px; font-weight: bold; font-size: 16px; color: #333; margin-left: 30px; margin-right: 0px; ">Năm TN:</label>
-                                <input style="font-size: 16px;width: 100px;" type="number" class="form-control" id="nam_tn"name="nam_tn"value="{{ nhan_vien.nam_tn}}">
-                            </div>
-                        </div>
-
-                        <div class="form-group" style="display: flex; align-items: center; margin-bottom: 15px; margin-top: 15px;">
-                            <label for="chuyen_nganh" style="width: 180px; font-weight: bold; font-size: 16px; color: #333; margin-right: 10px; text-align: left;">Chuyên ngành:</label>
-
-                            <input style="font-size: 16px;" type="text" class="form-control" id="chuyen_nganh" name="chuyen_nganh" value="{{ nhan_vien.chuyen_nganh}}">
-
-                        </div>
-
-                        <div class="form-group" style="display: flex; align-items: center; margin-bottom: 10px;">
-                            <label for="noi_dao_tao" style="width: 180px; font-weight: bold; font-size: 16px; color: #333; margin-right: 10px; text-align: left;">Nơi đào tạo:</label>
-                            <input style="font-size: 16px;" type="text" class="form-control" id="noi_dao_tao" name="noi_dao_tao"value="{{ nhan_vien.noi_dao_tao}}">
-
-
-                        </div>
-
-                        <div class="form-group" style="display: flex; align-items: center; margin-bottom: 10px; margin-top: 15px;">
-                            <label for="ngay_cap" style="width: 180px; font-weight: bold; font-size: 16px; color: #333; margin-right: 10px; text-align: left;">Ngày cấp:</label>
-                            <input style="font-size: 16px;" type="date" class="form-control" id="ngay_cap"  name="ngay_cap"  value="{{ nhan_vien.ngay_cap |date:'Y-m-d'}}">
-
-
-                        </div>
-
-                    </div>
-                </div>
-
-                <!-- Nơi cấp và Địa chỉ tạm trú kéo dài -->
-                <div class="form-group" style="display: flex; align-items: center; margin-bottom: 15px;">
-                    <label for="noi_cap" style="width: 100px; font-weight: bold; font-size: 16px; color: #333; margin-right: 47px; text-align: left;">Nơi cấp:</label>
-                    <input style="font-size: 16px;" type="text" class="form-control" id="noi_cap"name="noi_cap" value="{{ nhan_vien.noi_cap}}">
-
-
-                </div>
-
-                <div class="form-group" style="display: flex; align-items: center; margin-bottom: 15px;">
-                    <label for="dia_chi_tam_tru" style="width: 150px; font-weight: bold; font-size: 16px; color: #333; margin-right:10px; text-align: left;">Địa chỉ tạm trú:</label>
-                    <input style="font-size: 16px;" type="text" class="form-control" id="dia_chi_tam_tru"  name="dia_chi_tam_tru"  value="{{ nhan_vien.dia_chi_tam_tru}}">
-
-
-                </div>
-
-                <div style="display: flex; justify-content: flex-end; gap: 10px;">
-                    <button type="submit" style="background-color: #00CC00; color: white; padding: 10px 20px; font-size: 16px;font-weight: bold; border: 0px solid #333; border-radius: 5px; cursor: pointer;">
-                        Lưu
-                    </button>
-                    <a href="{% url 'QLXemHoSo' nhan_vien.id %}" style="background-color: #BA0000; color: white; border: 0px solid #333; padding: 10px 20px; font-size: 16px; border-radius: 5px; color: #FFFFFF; text-decoration: none; cursor: pointer; font-weight: bold;">
-                        Hủy
-                    </a>
-                </div>
-
+            <div class="card-footer">
+                <button type="submit" class="btn-save">
+                    <i class="fas fa-save"></i> Lưu
+                </button>
+                <a href="{% url 'QLXemHoSo' nhan_vien.id %}" class="btn-cancel">
+                    <i class="fas fa-times"></i> Hủy
+                </a>
             </div>
         </form>
-        </div>
     </div>
 </main>
+
+<script>
+    // Add toggle functionality for section headers
+    document.addEventListener('DOMContentLoaded', function() {
+        const sectionHeaders = document.querySelectorAll('.section-header');
+
+        sectionHeaders.forEach(header => {
+            header.addEventListener('click', function() {
+                this.classList.toggle('active');
+                const content = this.nextElementSibling;
+
+                if (content.style.display === 'none' || content.style.display === '') {
+                    content.style.display = 'block';
+                } else {
+                    content.style.display = 'none';
+                }
+            });
+        });
+
+        // Show the first section by default
+        const firstHeader = document.querySelector('.section-header');
+        const firstContent = document.querySelector('.section-content');
+        if (firstHeader && firstContent) {
+            firstHeader.classList.add('active');
+            firstContent.style.display = 'block';
+        }
+
+        // Avatar upload functionality
+        const avatarInput = document.getElementById('anh_ca_nhan');
+        const avatarCircle = document.querySelector('.avatar-circle');
+
+        // Make the entire avatar circle clickable
+        if (avatarCircle) {
+            avatarCircle.addEventListener('click', function() {
+                avatarInput.click();
+            });
+        }
+
+        // Handle image preview
+        if (avatarInput) {
+            avatarInput.addEventListener('change', function(e) {
+                if (e.target.files && e.target.files[0]) {
+                    const reader = new FileReader();
+
+                    reader.onload = function(e) {
+                        // Create or update the preview image
+                        let preview = avatarCircle.querySelector('.avatar-preview');
+                        const placeholder = avatarCircle.querySelector('.avatar-icon');
+
+                        if (!preview) {
+                            preview = document.createElement('img');
+                            preview.className = 'avatar-preview';
+                            avatarCircle.appendChild(preview);
+                        }
+
+                        preview.src = e.target.result;
+                        preview.style.display = 'block';
+
+                        if (placeholder) {
+                            placeholder.style.display = 'none';
+                        }
+                    }
+
+                    reader.readAsDataURL(e.target.files[0]);
+                }
+            });
+        }
+    });
+</script>
 {% endblock %}
