@@ -2,255 +2,76 @@
 {% load static %}
 
 {% block page_background %}
-<style>
-    body {
-        background-color: #f8f9fa;
-    }
+<link rel="stylesheet" href="{% static 'css/ThemBHXH.css' %}">
 
-    .container {
-        max-width: 1000px;
-        margin: 0 auto;
-        padding: 30px;
-    }
-
-    .form-container {
-        background-color: #fff;
-        border-radius: 8px;
-        box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-        padding: 30px;
-        margin-bottom: 20px;
-    }
-
-    .page-title {
-        color: #0d6efd;
-        font-weight: 700;
-        font-size: 24px;
-        margin-bottom: 30px;
-        text-align: center;
-        border-bottom: 2px solid #0d6efd;
-        padding-bottom: 10px;
-        width: fit-content;
-        margin: 0 auto 30px;
-    }
-
-    .section-title {
-        display: flex;
-        align-items: center;
-        margin-bottom: 20px;
-        color: #0d6efd;
-        font-weight: 600;
-        font-size: 16px;
-    }
-
-    .section-title i {
-        margin-right: 10px;
-    }
-
-    .section-container {
-        background-color: #f8f9fa;
-        border-radius: 8px;
-        padding: 20px;
-        margin-bottom: 25px;
-    }
-
-    .form-group {
-        margin-bottom: 15px;
-    }
-
-    .form-label {
-        display: block;
-        color: #212529;
-        font-weight: 500;
-        margin-bottom: 8px;
-        font-size: 14px;
-    }
-
-    .form-control {
-        width: 100%;
-        padding: 10px 12px;
-        border: 1px solid #ced4da;
-        border-radius: 4px;
-        font-size: 14px;
-        transition: border-color 0.15s ease-in-out;
-    }
-
-    .form-control:focus {
-        border-color: #0d6efd;
-        box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.25);
-        outline: none;
-    }
-
-    .form-text {
-        color: #6c757d;
-        font-size: 12px;
-        margin-top: 4px;
-    }
-
-    .btn {
-        padding: 10px 20px;
-        border-radius: 4px;
-        font-weight: 500;
-        cursor: pointer;
-        transition: all 0.2s;
-        font-size: 14px;
-    }
-
-    .btn-primary {
-        background-color: #0d6efd;
-        border: none;
-        color: white;
-    }
-
-    .btn-primary:hover {
-        background-color: #0b5ed7;
-    }
-
-    .btn-outline-secondary {
-        background-color: #f8f9fa;
-        border: 1px solid #ced4da;
-        color: #6c757d;
-    }
-
-    .btn-outline-secondary:hover {
-        background-color: #e9ecef;
-    }
-
-    .alert {
-        padding: 12px 20px;
-        border-radius: 4px;
-        margin-bottom: 20px;
-        font-weight: 500;
-        font-size: 14px;
-    }
-
-    .alert-success {
-        background-color: #d1e7dd;
-        color: #0f5132;
-        border: 1px solid #badbcc;
-    }
-
-    .alert-danger {
-        background-color: #f8d7da;
-        color: #842029;
-        border: 1px solid #f5c2c7;
-    }
-
-    .header-actions {
-        display: flex;
-        margin-bottom: 20px;
-    }
-
-    .back-btn {
-        display: flex;
-        align-items: center;
-        gap: 8px;
-        text-decoration: none;
-        color: #6c757d;
-        font-size: 14px;
-    }
-
-    .back-btn:hover {
-        color: #0d6efd;
-    }
-
-    .text-danger {
-        color: #dc3545;
-        font-size: 13px;
-        margin-top: 5px;
-    }
-
-    .form-actions {
-        display: flex;
-        justify-content: flex-end;
-        margin-top: 30px;
-    }
-</style>
-
-<div class="container">
-    <div class="header-actions">
-        <a href="{% url 'bhxh_list' %}" class="back-btn">
+<div class="bhxh-add-container">
+    <div class="bhxh-header-actions">
+        <a href="{% url 'bhxh_list' %}" class="bhxh-back-btn">
             <i class="fas fa-arrow-left"></i> Quay lại
         </a>
     </div>
 
     {% if messages %}
         {% for message in messages %}
-            <div class="alert alert-{% if message.tags == 'success' %}success{% else %}danger{% endif %}">
+            <div class="bhxh-alert bhxh-alert-{% if message.tags == 'success' %}success{% else %}danger{% endif %}">
                 {{ message }}
             </div>
         {% endfor %}
     {% endif %}
 
-    <div class="form-container">
-        <h2 class="page-title">THÊM MỚI BHXH</h2>
+    <div class="bhxh-form-container">
+        <h2 class="bhxh-page-title">THÊM MỚI BHXH</h2>
 
         <form method="POST">
             {% csrf_token %}
 
             <!-- Thông tin nhân viên -->
-            <div class="section-container">
-                <div class="section-title">
+            <div class="bhxh-section-container">
+                <div class="bhxh-section-title">
                     <i class="fas fa-user"></i> Thông tin nhân viên
                 </div>
-                <div class="form-group">
-                    <label for="{{ form.ten_nv.id_for_label }}" class="form-label">Tên nhân viên</label>
-                    <input type="text" name="{{ form.ten_nv.name }}" id="{{ form.ten_nv.id_for_label }}" value="{{ form.ten_nv.value|default:'' }}" class="form-control" placeholder="Chọn nhân viên để kỷ luật">
-                    {% if form.ten_nv.errors %}
-                        <div class="text-danger">{{ form.ten_nv.errors }}</div>
-                    {% endif %}
+                <div class="bhxh-form-group">
+                    <label class="bhxh-form-label">Tên nhân viên</label>
+                    {{ form.ten_nv }}
                 </div>
             </div>
 
             <!-- Thông tin thời gian -->
-            <div class="section-container">
-                <div class="section-title">
+            <div class="bhxh-section-container">
+                <div class="bhxh-section-title">
                     <i class="fas fa-calendar-alt"></i> Thông tin thời gian
                 </div>
-                <div class="form-group">
-                    <label for="{{ form.thoi_gian_bat_dau.id_for_label }}" class="form-label">Ngày bắt đầu đóng</label>
-                    <input type="date" name="{{ form.thoi_gian_bat_dau.name }}" id="{{ form.thoi_gian_bat_dau.id_for_label }}" value="{{ form.thoi_gian_bat_dau.value|default:'' }}" class="form-control" placeholder="mm/dd/yyyy">
-                    <small class="form-text">Ngày bắt đầu đóng BHXH</small>
-                    {% if form.thoi_gian_bat_dau.errors %}
-                        <div class="text-danger">{{ form.thoi_gian_bat_dau.errors }}</div>
-                    {% endif %}
+                <div class="bhxh-form-group">
+                    <label class="bhxh-form-label">Ngày tham gia</label>
+                    {{ form.thoi_gian_bat_dau }}
                 </div>
             </div>
 
             <!-- Thông tin BHXH -->
-            <div class="section-container">
-                <div class="section-title">
+            <div class="bhxh-section-container">
+                <div class="bhxh-section-title">
                     <i class="fas fa-info-circle"></i> Thông tin BHXH
                 </div>
-                <div class="form-group">
-                    <label for="{{ form.ma_BHXH.id_for_label }}" class="form-label">Mã BHXH</label>
-                    <input type="text" name="{{ form.ma_BHXH.name }}" id="{{ form.ma_BHXH.id_for_label }}" value="{{ form.ma_BHXH.value|default:'' }}" class="form-control" placeholder="Nhập mã BHXH">
-                    {% if form.ma_BHXH.errors %}
-                        <div class="text-danger">{{ form.ma_BHXH.errors }}</div>
-                    {% endif %}
+                <div class="bhxh-form-group">
+                    <label class="bhxh-form-label">Mã BHXH</label>
+                    {{ form.ma_BHXH }}
                 </div>
-                <div class="form-group">
-                    <label for="{{ form.nhan_vien_dong.id_for_label }}" class="form-label">Mức đóng của nhân viên (%)</label>
-                    <input type="text" name="{{ form.nhan_vien_dong.name }}" id="{{ form.nhan_vien_dong.id_for_label }}" value="{{ form.nhan_vien_dong.value|default:'' }}" class="form-control" placeholder="Nhập mức đóng của nhân viên">
-                    {% if form.nhan_vien_dong.errors %}
-                        <div class="text-danger">{{ form.nhan_vien_dong.errors }}</div>
-                    {% endif %}
+                <div class="bhxh-form-group">
+                    <label class="bhxh-form-label">Mức đóng của nhân viên (%)</label>
+                    {{ form.nhan_vien_dong }}
                 </div>
-                <div class="form-group">
-                    <label for="{{ form.truong_dong.id_for_label }}" class="form-label">Mức đóng của trường (%)</label>
-                    <input type="text" name="{{ form.truong_dong.name }}" id="{{ form.truong_dong.id_for_label }}" value="{{ form.truong_dong.value|default:'' }}" class="form-control" placeholder="Nhập mức đóng của trường">
-                    {% if form.truong_dong.errors %}
-                        <div class="text-danger">{{ form.truong_dong.errors }}</div>
-                    {% endif %}
+                <div class="bhxh-form-group">
+                    <label class="bhxh-form-label">Mức đóng của trường (%)</label>
+                    {{ form.truong_dong }}
                 </div>
             </div>
 
-            <div class="form-actions">
-                <button type="submit" class="btn btn-primary">
+            <div class="bhxh-form-actions">
+                <button type="submit" class="bhxh-btn bhxh-btn-primary">
                     <i class="fas fa-save me-2"></i>Lưu
                 </button>
             </div>
         </form>
     </div>
 </div>
-
 {% endblock %}

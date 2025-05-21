@@ -1,197 +1,174 @@
 {% extends "home.html" %}
-
-{% block extra_css %}
-    <style>
-        .content {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: flex-start;
-        }
-
-        .ndung {
-            padding: 20px;
-            margin-left: 20px;
-            display: flex;
-            flex-direction: column;
-        }
-
-        table {
-            width: 50%; /* Giảm chiều dài bảng */
-            margin-left: 180px ; /* Căn giữa bảng trên trang */
-            border-collapse: collapse; /* Gộp các đường viền của bảng */
-            background-color: #f2f9fd; /* Nền màu sáng nhẹ */
-            }
-
-            th, td {
-                padding: 8px; /* Giảm khoảng cách bên trong các ô */
-                text-align: center; /* Căn giữa nội dung của tất cả các ô trong bảng */
-                border: 1px solid #ddd; /* Khung viền nhẹ cho bảng */
-                font-size: 14px; /* Giảm kích thước chữ */
-            }
-
-            th {
-                background-color: #cce7ff; /* Màu nền nhẹ cho tiêu đề */
-                font-weight: bold;
-            }
-
-            tr:nth-child(even) {
-                background-color: #e6f7ff; /* Đổi màu nền cho hàng chẵn để dễ đọc */
-            }
-
-            tr:hover {
-                background-color: #f1f8ff; /* Hiệu ứng khi hover */
-            }
-
-        .btn {
-            padding: 10px;
-            border-radius: 5px;
-            font-size: 15px;
-            text-align: center;
-            background-color: #D9D9D9;
-            color: black;
-            border: 1px solid;
-        }
-
-        .button {
-            padding: 20px;
-        }
-    </style>
-{% endblock %}
-
+{% load static %}
 {% block page_background %}
+<div class="contract-page">
+  <!-- Page Header -->
+  <div class="page-header">
+    <h1 class="page-title">THÔNG TIN HỒ SƠ CHI TIẾT</h1>
+  </div>
 
-<main class="content" style="padding: 10px;width: 80%">
+  <!-- Tab Navigation -->
+  <div class="tab-navigation">
+    <a href="{% url 'QLXemHoSo' nhan_vien.id %}" class="tab-link inactive">
+      <svg class="tab-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+        <circle cx="12" cy="7" r="4"></circle>
+      </svg>
+      Thông Tin Cá Nhân
+    </a>
+    <a href="{% url 'QLXemHoSoHDLD' nhan_vien.id %}" class="tab-link active">
+      <svg class="tab-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+        <polyline points="14 2 14 8 20 8"></polyline>
+        <line x1="16" y1="13" x2="8" y2="13"></line>
+        <line x1="16" y1="17" x2="8" y2="17"></line>
+        <polyline points="10 9 9 9 8 9"></polyline>
+      </svg>
+      Hợp Đồng Lao Động
+    </a>
+  </div>
 
-    <div class="ndung" style="width: 100%">
-        <form method="POST" enctype="multipart/form-data">
-            {% csrf_token %}
-            <div class="header-container" style="display: flex; justify-content: flex-start; align-items: center; width: 100%; margin-top: 20px;">
-                <a href="{% url 'DanhSachNhanVien' %}" class="btn btn-secondary" style="font-size: 17px; font-weight: bold; padding: 7px 15px; margin-right: 20px; border: none;">Quay lại</a>
-                <h1 class="header-title" style="color: #000000; font-size: 30px; font-weight: bold; text-align: center; margin: 0; flex-grow: 1; text-align: center;">THÔNG TIN CHI TIẾT HỒ SƠ NHÂN VIÊN</h1>
-            </div>
-            <div class="container mt-4" style="background-color: #f0f8ff; padding: 40px; border-radius: 10px;">
-               <h4 class="header-title" style="display: flex; justify-content: space-between; font-size: 30px; font-weight: bold; margin-bottom: 20px; margin-top: -39px; margin-right:-40px;margin-left:-40px;">
-                    <a href="{% url 'QLXemHoSo' nhan_vien.id %}" style="background-color: #65ABE3; color: white; width: 50%; text-align: center; padding: 10px; border-top-left-radius: 10px; border-bottom-left-radius: 10px; text-decoration: none;">
-                        Thông Tin Cá Nhân
-                    </a>
+  <!-- Contract Card -->
+  <div class="contract-card">
+    <!-- Employee Info Section -->
+    <div class="employee-info-section">
+      <h3 class="section-title">
+        <svg class="section-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+          <circle cx="12" cy="7" r="4"></circle>
+        </svg>
+        Thông Tin Nhân Viên
+      </h3>
 
-                    {% if hop_dong %}
-                    <a href="{% url 'QLXemHoSoHDLD' nhan_vien.id %}"
-                       style="border: 3px solid #000000; background-color: #066BBB; color: white; width: 50%; text-align: center; padding: 10px;
-                              border-top-right-radius: 10px; border-bottom-right-radius: 10px; text-decoration: none;">
-                        Hợp Đồng Lao Động
-                    </a>
-                    {% endif %}
-                </h4>
+      <div class="info-grid">
+        <div class="info-field">
+          <div class="field-label">Họ và tên</div>
+          <div class="field-value">{{ nhan_vien.ten_nv }}</div>
+        </div>
 
-                <div class="row"style="border-radius: 5px; border: 3px solid #DCDCDC; padding: 10px; BACKGROUND-COLOR:#F8F8F8">
-                    <div class="col-md-6 left-column" style="padding: 10px;">
-                        <div class="form-group" style="display: flex; align-items: center; margin-bottom: 15px;">
-                            <label for="ten_nv" style="width: 180px; font-weight: bold; font-size: 16px; color: #333; margin-right: 10px; text-align: left;">Họ và tên:</label>
-                            <div style="font-size: 16px;">{{ nhan_vien.ten_nv }}</div>
-                        </div>
+        <div class="info-field">
+          <div class="field-label">Mã nhân viên</div>
+          <div class="field-value">{{ nhan_vien.id }}</div>
+        </div>
 
-                        <div class="form-group" style="display: flex; align-items: center; margin-bottom: 15px;">
-                            <label for="ma_nv" style="width: 180px; font-weight: bold; font-size: 16px; color: #333; margin-right: 10px; text-align: left;">Mã nhân viên:</label>
-                            <div style="font-size: 16px;">{{ nhan_vien.id }}</div>
-                        </div>
-                    </div>
+        <div class="info-field">
+          <div class="field-label">Vị trí làm việc</div>
+          <div class="field-value">{{ nhan_vien.vi_tri_cong_viec }}</div>
+        </div>
 
-                    <div class="col-md-6 left-column" style="padding: 10px;">
-                        <div class="form-group" style="display: flex; align-items: center; margin-bottom: 15px;">
-                            <label for="vi_tri_cong_viec" style="width: 180px; font-weight: bold; font-size: 16px; color: #333; margin-right: 10px; text-align: left;">Vị trí làm việc:</label>
-                            <div style="font-size: 16px;">{{ nhan_vien.vi_tri_cong_viec }}</div>
-                        </div>
-
-                        <div class="form-group" style="display: flex; align-items: center; margin-bottom: 15px;">
-                            <label for="to_phong_ban" style="width: 180px; font-weight: bold; font-size: 16px; color: #333; margin-right: 10px; text-align: left;">Tổ (Phòng ban):</label>
-                            <div style="font-size: 16px;">{{ nhan_vien.to_phong_ban }}</div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="row">
-                    <div class="col-md-6 left-column" style="padding: 10px; margin-top: 20px;">
-                        <div class="form-group" style="display: flex; align-items: center; margin-bottom: 15px;">
-                            <label for="so_hop_dong" style="width: 180px; font-weight: bold; font-size: 16px; color: #333; margin-right: 10px; text-align: left;">Số hợp đồng:</label>
-                            <div style="font-size: 16px;">{{ hop_dong.so_hop_dong }}</div>
-                        </div>
-
-                        <div class="form-group" style="display: flex; align-items: center; margin-bottom: 10px;">
-                            <label for="thoi_han_hop_dong" style="width: 185px; font-weight: bold; font-size: 16px; color: #333; margin-right: 5px; text-align: left;">Thời hạn HĐ:</label>
-                            <div style="font-size: 16px; text-align: left;">{{ hop_dong.thoi_han_hop_dong }}</div>
-                        </div>
-
-                        <div class="form-group" style="display: flex; align-items: center; margin-bottom: 15px;">
-                            <label for="tu_ngay" style="width: 180px; font-weight: bold; font-size: 16px; color: #333; margin-right: 10px; text-align: left;">Từ ngày:</label>
-                            <div style="font-size: 16px;">{{ hop_dong.tu_ngay }}</div>
-                        </div>
-
-                        <div class="form-group" style="display: flex; align-items: center; margin-bottom: 15px;">
-                            <label for="ngay_ky" style="width: 180px; font-weight: bold; font-size: 16px; color: #333; margin-right: 10px; text-align: left;">Ngày ký:</label>
-                            <div style="font-size: 16px;">{{ hop_dong.ngay_ky }}</div>
-                        </div>
-                        <div class="form-group" style="display: flex; align-items: center; margin-bottom: 15px;">
-                            <label for="danh_sach_phu_cap" style="width: 180px; font-weight: bold; font-size: 16px; color: #333; margin-right: 10px; text-align: left;">Danh sách phụ cấp:</label>
-
-                        </div>
-                    </div>
-
-                    <div class="col-md-6 right-column" style="padding: 10px; margin-top: 20px;">
-                        <div class="form-group" style="display: flex; align-items: center; margin-bottom: 15px;">
-                            <label for="loai_hop_dong" style="width: 180px; font-weight: bold; font-size: 16px; color: #333; margin-right: 10px; text-align: left;">Loại hợp đồng:</label>
-                            <div style="font-size: 16px;">{{ hop_dong.loai_hop_dong }}</div>
-                        </div>
-
-                        <div class="form-group" style="display: flex; align-items: center; margin-bottom: 15px;">
-                            <label for="luong" style="width: 180px; font-weight: bold; font-size: 16px; color: #333; margin-right: 10px; text-align: left;">Lương:</label>
-                            <div style="font-size: 16px;">{{ hop_dong.luong }}</div>
-                        </div>
-
-                        <div class="form-group" style="display: flex; align-items: center; margin-bottom: 10px;">
-                            <label for="den_ngay" style="width: 180px; font-weight: bold; font-size: 16px; color: #333; margin-right: 10px; text-align: left;">Đến ngày:</label>
-                            <div style="font-size: 16px;">{{ hop_dong.den_ngay }}</div>
-                        </div>
-
-                        <div class="form-group" style="display: flex; align-items: center; margin-bottom: 15px;">
-                            <label for="trang_thai_hop_dong" style="width: 180px; font-weight: bold; font-size: 16px; color: #333; margin-right: 10px; text-align: left;">Trạng thái HĐ:</label>
-                            <div style="font-size: 16px;">{{ hop_dong.trang_thai_hop_dong }}</div>
-                        </div>
-                    </div>
-                </div>
-
-                <table border="1" cellpadding="5" cellspacing="0" STYLE="">
-                        <thead>
-                            <tr>
-                                <th>Số thứ tự</th>
-                                <th>Tên phụ cấp</th>
-                                <th>Giá trị</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {% for phu_cap_nv in phu_cap_nhan_vien_list %}
-                            <tr>
-                                <td>{{ forloop.counter }}</td>
-                                <td>{{ phu_cap_nv.phu_cap.ten_phu_cap }}</td>
-                                <td>{{ phu_cap_nv.phu_cap.gia_tri|floatformat:2 }}</td>
-                            </tr>
-                            {% empty %}
-                            <tr>
-                                <td colspan="3" style="text-align:center;">Không có phụ cấp</td>
-                            </tr>
-                            {% endfor %}
-                        </tbody>
-                    </table>
-
-                <div style="display: flex; justify-content: flex-end; gap: 10px;">
-                    <a href="{% url 'edit_hdld' nhan_vien.id %}" style="font-size: 24px; color: #066BBB; text-decoration: none; cursor: pointer;">
-                        <i class="fa-solid fa-pen-to-square"></i>
-                    </a>
-                </div>
-            </div>
-        </form>
+        <div class="info-field">
+          <div class="field-label">Tổ (Phòng ban)</div>
+          <div class="field-value">{{ nhan_vien.to_phong_ban }}</div>
+        </div>
+      </div>
     </div>
-</main>
 
+    <!-- Contract Details Section -->
+    <div class="contract-details-section">
+      <h3 class="section-title">
+        <svg class="section-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+          <polyline points="14 2 14 8 20 8"></polyline>
+          <line x1="16" y1="13" x2="8" y2="13"></line>
+          <line x1="16" y1="17" x2="8" y2="17"></line>
+          <polyline points="10 9 9 9 8 9"></polyline>
+        </svg>
+        Chi Tiết Hợp Đồng
+      </h3>
+
+      <div class="info-grid">
+        <div class="info-field">
+          <div class="field-label">Số hợp đồng</div>
+          <div class="field-value">{{ hop_dong.so_hop_dong }}</div>
+        </div>
+
+        <div class="info-field">
+          <div class="field-label">Loại hợp đồng</div>
+          <div class="field-value">{{ hop_dong.loai_hop_dong }}</div>
+        </div>
+
+        <div class="info-field">
+          <div class="field-label">Thời hạn hợp đồng</div>
+          <div class="field-value">{{ hop_dong.thoi_han_hop_dong }}</div>
+        </div>
+
+        <div class="info-field">
+          <div class="field-label">Lương</div>
+          <div class="field-value salary">{{ hop_dong.luong }}</div>
+        </div>
+
+        <div class="info-field">
+          <div class="field-label">Từ ngày</div>
+          <div class="field-value">{{ hop_dong.tu_ngay }}</div>
+        </div>
+
+        <div class="info-field">
+          <div class="field-label">Đến ngày</div>
+          <div class="field-value">{{ hop_dong.den_ngay }}</div>
+        </div>
+
+        <div class="info-field">
+          <div class="field-label">Ngày ký</div>
+          <div class="field-value">{{ hop_dong.ngay_ky }}</div>
+        </div>
+
+        <div class="info-field">
+          <div class="field-label">Trạng thái hợp đồng</div>
+          <div class="field-value status">{{ hop_dong.trang_thai_hop_dong }}</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Allowances Section -->
+    <div class="allowances-section">
+      <h3 class="section-title">
+        <svg class="section-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="12" y1="1" x2="12" y2="23"></line>
+          <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+        </svg>
+        Danh Sách Phụ Cấp
+      </h3>
+
+      <div class="table-container">
+        <table class="allowances-table">
+          <thead>
+            <tr>
+              <th>STT</th>
+              <th>Tên phụ cấp</th>
+              <th>Giá trị</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for phu_cap_nv in phu_cap_nhan_vien_list %}
+            <tr>
+              <td>{{ forloop.counter }}</td>
+              <td>{{ phu_cap_nv.phu_cap.ten_phu_cap }}</td>
+              <td class="amount">{{ phu_cap_nv.phu_cap.gia_tri|floatformat:2 }}</td>
+            </tr>
+            {% empty %}
+            <tr class="empty-row">
+              <td colspan="3">
+                <div class="empty-state">
+                  <svg class="empty-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <line x1="12" y1="8" x2="12" y2="12"></line>
+                    <line x1="12" y1="16" x2="12.01" y2="16"></line>
+                  </svg>
+                  <p>Không có phụ cấp</p>
+                </div>
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+        <div class="profile-action" style="text-align: right; margin-top: 20px;">
+          <a href="{% url 'edit_hdld' nhan_vien.id %}" class="edit-button" title="Chỉnh sửa" >
+              <i class="fa-solid fa-pen-to-square" style="font-size: 18px; color: #0066CC;"></i>
+          </a>
+      </div>
+    </div>
+  </div>
+</div>
+<link rel="stylesheet" href="{% static 'css/HDLDnhanvien.css' %}">
 {% endblock %}

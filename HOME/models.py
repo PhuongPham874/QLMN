@@ -29,6 +29,7 @@ TO_PHONG_BAN_CHOICES = [
      ('Lớp lá', 'Lớp lá'),
      ('Văn phòng', 'Văn phòng'),
      ('Y tế - Hậu cần', 'Y tế - Hậu cần'),
+    ('BGH', 'BGH'),
  ]
 
 class NhanVien(models.Model):
@@ -84,6 +85,8 @@ class PhuCapNhanVien(models.Model):
 class HopDongLaoDong(models.Model):
    nhan_vien = models.ForeignKey(NhanVien, on_delete=models.CASCADE)
    so_hop_dong = models.CharField(max_length=50)
+   vi_tri_lam_viec = models.CharField(max_length=50, blank=False)
+   to_phong_ban = models.CharField(max_length=50, blank=False)
    thoi_han_hop_dong = models.IntegerField(verbose_name='Thời hạn hợp đồng')
    loai_hop_dong = models.CharField(max_length=100, choices=[
        ('Hợp đồng thử việc', 'Hợp đồng thử việc'),

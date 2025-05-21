@@ -1,118 +1,485 @@
 {% extends "home.html" %}
 
 {% block extra_css %}
-    <style>
+<style>
+    /* Modern black and white color scheme */
+    :root {
+        --primary: #000000;
+        --secondary: #333333;
+        --light-gray: #f5f5f5;
+        --medium-gray: #e0e0e0;
+        --dark-gray: #666666;
+        --white: #ffffff;
+        --blue: #0066CC;
+        --light-blue: #4D94FF;
+    }
 
-        .content{
-            width: 80%;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: flex-start;
+    .content {
+        width: 95%;
+        margin: 0 auto;
+        display: flex;
+        flex-direction: column;
+    }
 
-        }
-        .ndung{
-            padding: 20px;
-            margin-left: 20px;
-            display: flex;
-            flex-direction: column;
-        }
+    /* Main title */
+    .main-title {
+        color: var(--blue);
+        text-align: center;
+        font-size: 28px;
+        font-weight: bold;
+        margin: 20px 0;
+        flex-grow: 1;
+    }
 
-        table{
-        width: 450px;
+    /* Tab styling */
+    .tab-container {
+        display: flex;
+        margin-bottom: 20px;
+        border-bottom: 1px solid var(--medium-gray);
+    }
+
+    .tab-item {
+        padding: 12px 20px;
+        font-size: 18px;
+        font-weight: 500;
+        text-decoration: none;
+        text-align: center;
+        cursor: pointer;
+        color: var(--dark-gray);
+        position: relative;
+        margin-right: 20px;
+        width: 50%;
+    }
+
+    .tab-active {
+        color: var(--blue);
+        font-weight: bold;
+    }
+
+    .tab-active::after {
+        content: '';
+        position: absolute;
+        bottom: -1px;
+        left: 0;
+        width: 100%;
+        height: 3px;
+        background-color: var(--blue);
+    }
+
+    /* Disabled tab styling for "Hợp đồng lao động" */
+    .tab-disabled {
+        cursor: not-allowed;
+        color: var(--dark-gray);
+        position: relative;
+    }
+
+    /* Tooltip for warning message */
+    .tab-disabled:hover::after {
+        content: "Phải lưu thông tin nhân viên trước khi thêm mới Hợp đồng lao động!";
+        position: absolute;
+        top: 100%;
+        left: 50%;
+        transform: translateX(-50%);
+        background-color: #ff4444;
+        color: var(--white);
+        padding: 8px 12px;
+        border-radius: 4px;
+        font-size: 14px;
+        white-space: nowrap;
+        z-index: 10;
+    }
+
+    /* Form section styling */
+    .form-section {
+        margin-bottom: 20px;
+        border: 1px solid var(--medium-gray);
+        border-radius: 5px;
+        overflow: hidden;
+    }
+
+    .section-header {
+        background-color: var(--light-gray);
+        padding: 15px;
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        cursor: pointer;
+        color: var(--primary);
+        transition: all 0.2s ease;
+    }
+
+    .section-header:hover {
+        background-color: var(--medium-gray);
+    }
+
+    .section-header i {
+        margin-right: 10px;
+    }
+
+    .section-content {
+        padding: 30px;
+        background-color: var(--white);
+    }
+
+    /* Form field styling - vertical layout */
+    .form-field {
+        margin-bottom: 20px;
+    }
+
+    .form-field label {
+        display: block;
+        font-weight: 500;
+        font-size: 16px;
+        color: var(--secondary);
+        margin-bottom: 8px;
+    }
+
+    .form-input {
+        width: 100%;
+        font-size: 16px;
+        padding: 10px 12px;
+        border-radius: 4px;
+        border: 1px solid var(--medium-gray);
+        transition: border-color 0.2s ease;
+    }
+
+    .form-input:focus {
+        outline: none;
+        border-color: var(--secondary);
+        box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Radio buttons */
+    .radio-group {
+        display: flex;
+        gap: 20px;
+    }
+
+    .radio-option {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+    }
+
+    .radio-option label {
+        margin-bottom: 0;
+        font-weight: normal;
+    }
+
+    .card {
+        width: 80%;
+        border-radius: 8px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        overflow: hidden;
+        margin-bottom: 20px;
+        background-color: var(--white);
+    }
+
+    .card-body {
+        padding: 25px;
+        background-color: var(--white);
+    }
+
+    .card-footer {
+        display: flex;
+        justify-content: flex-end;
+        padding: 15px 25px;
+        background-color: var(--light-gray);
+        border-top: 1px solid var(--medium-gray);
+    }
+
+    .btn-back {
+        background-color: var(--dark-gray);
+        color: var(--white);
+        border: none;
+        padding: 10px 16px;
+        border-radius: 4px;
+        font-weight: 500;
+        text-decoration: none;
+        transition: background-color 0.2s ease;
+    }
+
+    .btn-back:hover {
+        background-color: var(--secondary);
+    }
+
+    .btn-save {
+        background-color: #0066CC;
+        color: var(--white);
+        border: none;
+        padding: 10px 20px;
+        border-radius: 4px;
+        font-weight: 500;
+        cursor: pointer;
+        transition: background-color 0.2s ease;
+    }
+
+
+    /* Avatar styling */
+    .avatar-container {
+        display: flex;
+        justify-content: center;
+        margin-bottom: 30px;
+    }
+
+    .avatar-wrapper {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .avatar-circle {
+        width: 120px;
+        height: 120px;
+        border-radius: 50%;
+        background-color: var(--light-gray);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border: 1px solid var(--medium-gray);
+        cursor: pointer;
+        overflow: hidden;
+        position: relative;
+    }
+
+    .avatar-icon {
+        font-size: 48px;
+        color: #999;
+    }
+
+    .avatar-preview {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .avatar-label {
+        margin-top: 10px;
+        color: var(--dark-gray);
+        font-size: 14px;
+        text-align: center;
+    }
+
+    .avatar-input {
+        display: none;
+    }
+
+    .avatar-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.3);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        opacity: 0;
+        transition: opacity 0.2s ease;
+    }
+
+    .avatar-circle:hover .avatar-overlay {
+        opacity: 1;
+    }
+
+    .avatar-overlay i {
+        color: white;
+        font-size: 24px;
+    }
+
+    /* Chevron for section toggle */
+    .section-chevron {
+        margin-left: auto;
+        transition: transform 0.3s ease;
+    }
+
+    .section-header.active .section-chevron {
+        transform: rotate(180deg);
+    }
+
+    /* Header with back button */
+    .header-container {
+        display: flex;
         align-items: center;
         margin-bottom: 20px;
-        justify-content: space-between;
+        width: 100%;
     }
-        .btn{
-        padding: 10px ;
-        border-radius:5px;
-        font-size: 15px;
-        text-align: center;
-        background-color:#D9D9D9 ;
-        color: black;
-        border: 1px solid;
-    }
-        .button{
-            padding: 20px;
-        }
 
-    </style>
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+        .content {
+            width: 95%;
+        }
+    }
+</style>
+<!-- Add Font Awesome for icons -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 {% endblock %}
+
 {% block page_background %}
-<main class="content" style="    padding: 10px; width: 80%">
-    <div class="ndung" style="width: 100%">
+<main class="content">
+    <div class="header-container">
+        <a href="{% url 'DanhSachNhanVien' %}" class="btn-back">
+            <i class="fas fa-arrow-left"></i> Quay lại
+        </a>
+        <h1 class="main-title">THÊM MỚI HỒ SƠ NHÂN VIÊN</h1>
+    </div>
+
+    <h1 class="main-title"></h1>
+
+    <div class="card">
         <form method="POST" enctype="multipart/form-data">
             {% csrf_token %}
-            <div class="header-container" style="display: flex; justify-content: flex-start; align-items: center; width: 100%; margin-top: 20px;">
-                <a href="{% url 'DanhSachNhanVien' %}" class="btn btn-secondary" style="font-size: 17px; font-weight: bold; padding: 7px 15px; margin-right: 20px; border: none;">Quay lại</a>
-                <h1 class="header-title" style="color: #000000; font-size: 30px; font-weight: bold; text-align: center; margin: 0; flex-grow: 1; text-align: center;">THÊM MỚI HỒ SƠ NHÂN VIÊN</h1>
-            </div>
-
-             <div class="container mt-4" style="background-color: #f0f8ff; padding: 40px; border-radius: 10px;">
-                <h4 class="header-title" style="display: flex; justify-content: space-between; font-size: 30px; font-weight: bold; margin-bottom: 20px; margin-top: -39px;margin-right:-40px;margin-left:-40px;">
-                    <a href="{% url 'ThemMoiHoSo' %}" STYLE= "border: 3px solid #000000; background-color:#066BBB; color: white; width: 50%; text-align: center; padding: 10px;
-                              border-top-left-radius:10px; border-bottom-left-radius: 10x; text-decoration: none;">
-                        Thông Tin Cá Nhân
+            <div class="card-body">
+                <!-- Tabs styled like the screenshot -->
+                <div class="tab-container">
+                    <a href="{% url 'ThemMoiHoSo' %}" class="tab-item tab-active">
+                        Thông tin cá nhân
                     </a>
-                    <div style="text-decoration: none; color: white; width: 50%; text-align: center; padding: 10px; background-color: #65ABE3; border-top-right-radius: 5px; border-bottom-right-radius: 5px;">
-                        Hợp Đồng Lao Động
+                    <!-- Modified "Hợp đồng lao động" tab to be disabled with hover tooltip -->
+                    <div class="tab-item tab-disabled">
+                        Hợp đồng lao động
                     </div>
+                </div>
 
-                </h4>
-                <div class="row">
-                    <div class="col-md-6 left-column" style="padding: 10px;">
-                        <div class="form-group" style="display: flex; align-items: center; margin-bottom: 15px;">
-                            <label for="anh_ca_nhan" style="width: 180px; font-weight: bold; font-size: 16px; color: #333; margin-right: 10px; text-align: left;">Ảnh cá nhân</label>
-                            <input type="file" class="form-control" id="anh_ca_nhan" name="anh_ca_nhan" style="font-size: 16px; padding: 9px; border-radius: 5px; display: inline-block; width: 105%;">
+                <!-- Avatar upload section -->
+                <div class="avatar-container">
+                    <div class="avatar-wrapper">
+                        <div class="avatar-circle">
+                            <i class="fas fa-user avatar-icon" id="avatar-placeholder"></i>
+                            <img id="avatar-preview" class="avatar-preview" style="display: none;">
+                            <div class="avatar-overlay">
+                                <i class="fas fa-camera"></i>
                             </div>
-
-                        <div class="form-group" style="display: flex; align-items: center; margin-bottom: 15px;">
-                            <label for="ten_nv" style="width: 180px; font-weight: bold; font-size: 16px; color: #333; margin-right: 10px; text-align: left;">Họ và tên:</label>
-                            <input type="text" class="form-control" id="ten_nv" value="{{ form.ten_nv.value }}"  name="ten_nv" style="font-size: 16px; padding: 8px; border-radius: 5px;">
                         </div>
-
-                        <div class="form-group" style="display: flex; align-items: center; margin-bottom: 15px;">
-                            <label for="gioi_tinh" style="width: 180px; font-weight: bold; font-size: 16px; color: #333; margin-right: 10px; text-align: left;">Giới tính:</label>
-                            <input type="radio" name="gioi_tinh" value="{{ form.gioi_tinh.value }}"  style="margin-right: 20px;"> Nam
-                            <input type="radio" name="gioi_tinh" value="{{ form.gioi_tinh.value }}" style="margin-right: 20px;margin-left: 20px;" checked> Nữ
-                        </div>
-
-
-                        <div class="form-group" style="display: flex; align-items: center; margin-bottom: 15px;">
-                            <label for="ngay_sinh" style="width: 180px; font-weight: bold; font-size: 16px; color: #333; margin-right: 10px; text-align: left;">Ngày sinh:</label>
-                            <input type="date" class="form-control" value="{{ form.ngay_sinh.value|date:'Y-m-d' }}" id="ngay_sinh" name="ngay_sinh" style="font-size: 16px; padding: 8px; border-radius: 5px;">
-                        </div>
-
-                        <div class="form-group" style="display: flex; align-items: center; margin-bottom: 15px;">
-                            <label for="so_dien_thoai" style="width: 180px; font-weight: bold; font-size: 16px; color: #333; margin-right: 10px; text-align: left;">Số điện thoại:</label>
-                            <input type="text" class="form-control" id="so_dien_thoai" value="{{ form.so_dien_thoai.value }}" name="so_dien_thoai" style="font-size: 16px; padding: 8px; border-radius: 5px;">
-                        </div>
-
-                        <div class="form-group" style="display: flex; align-items: center; margin-bottom: 15px;">
-                            <label for="email" style="width: 180px; font-weight: bold; font-size: 16px; color: #333; margin-right: 10px; text-align: left;">Email:</label>
-                            <input type="email" class="form-control" id="email" value="{{ form.email.value }}" name="email" style="font-size: 16px; padding: 8px; border-radius: 5px;">
-                        </div>
-
-                        <div class="form-group" style="display: flex; align-items: center; margin-bottom: 15px;">
-                            <label for="so_cccd" style="width: 180px; font-weight: bold; font-size: 16px; color: #333; margin-right: 10px; text-align: left;">Số CCCD:</label>
-                            <input type="so_cccd" class="form-control" id="so_cccd" value="{{ form.so_cccd.value }}" name="so_cccd" style="font-size: 16px; padding: 8px; border-radius: 5px;">
-                        </div>
+                        <input type="file" id="anh_ca_nhan" name="anh_ca_nhan" class="avatar-input" accept="image/*">
+                        <label for="anh_ca_nhan" class="avatar-label">Ảnh cá nhân</label>
                     </div>
+                </div>
 
-                    <div class="col-md-6 right-column" style="padding: 10px;">
-                        <div class="form-group" style="display: flex; align-items: center; margin-bottom: 10px;">
-                            <label for="vi_tri_cong_viec" style="width: 450px; font-weight: bold; font-size: 16px; color: #333; margin-right: 10px; text-align: left;">Vị trí làm việc:</label>
-                            <input type="text" class="form-control" value="{{ form.vi_tri_cong_viec.value }}" id="vi_tri_cong_viec" name="vi_tri_cong_viec" style="font-size: 16px; padding: 8px; border-radius: 5px;">
-                            <div class="form-group" style="display: flex; align-items: center; margin-bottom: 10px;">
-                                <label for="chuc_vu" style="width: 180px; font-weight: bold; font-size: 16px; color: #333; margin-left: 10px; text-align: left;">Chức vụ:</label>
-                                <input type="text" class="form-control" id="chuc_vu" value="{{ form.chuc_vu.value }}" name="chuc_vu" style="font-size: 16px; padding: 8px; border-radius: 5px;">
+                <!-- THÔNG TIN CÁ NHÂN - Single column layout -->
+                <div class="form-section">
+                    <div class="section-header">
+                        <i class="fas fa-id-card"></i>
+                        <span style="margin-left: 10px;">THÔNG TIN CÁ NHÂN</span>
+                        <i class="fas fa-chevron-down section-chevron"></i>
+                    </div>
+                    <div class="section-content">
+                        <div class="form-field">
+                            <label for="ten_nv">Họ và tên:</label>
+                            <input type="text" class="form-input" id="ten_nv" name="ten_nv" placeholder="Nhập họ và tên">
+                        </div>
+
+                        <div class="form-field">
+                            <label for="gioi_tinh">Giới tính:</label>
+                            <div class="radio-group">
+                                <div class="radio-option">
+                                    <input type="radio" id="nam" name="gioi_tinh" value="2">
+                                    <label for="nam">Nam</label>
+                                </div>
+                                <div class="radio-option">
+                                    <input type="radio" id="nu" name="gioi_tinh" value="1" checked>
+                                    <label for="nu">Nữ</label>
+                                </div>
                             </div>
                         </div>
 
-                        <div class="form-group" style="display: flex; align-items: center; margin-bottom: 10px;">
-                            <label for="to_phong_ban" style="width: 180px; font-weight: bold; font-size: 16px; color: #333; margin-right: 10px; text-align: left;">Tổ (Phòng ban):</label>
-                            <select class="form-control" id="to_phong_ban" name="to_phong_ban" value="{{ form.to_phong_ban.value }}" style="font-size: 16px; padding: 8px; border-radius: 5px;">
+                        <div class="form-field">
+                            <label for="ngay_sinh">Ngày sinh:</label>
+                            <input type="date" class="form-input" id="ngay_sinh" name="ngay_sinh">
+                        </div>
+
+                        <div class="form-field">
+                            <label for="so_dien_thoai">Số điện thoại:</label>
+                            <input type="text" class="form-input" id="so_dien_thoai" name="so_dien_thoai" placeholder="Nhập số điện thoại">
+                        </div>
+
+                        <div class="form-field">
+                            <label for="email">Email:</label>
+                            <input type="email" class="form-input" id="email" name="email" placeholder="Nhập địa chỉ email">
+                        </div>
+
+                        <div class="form-field">
+                            <label for="so_cccd">Số CCCD:</label>
+                            <input type="text" class="form-input" id="so_cccd" name="so_cccd" placeholder="Nhập số căn cước công dân">
+                        </div>
+
+                        <div class="form-field">
+                            <label for="ngay_cap">Ngày cấp:</label>
+                            <input type="date" class="form-input" id="ngay_cap" name="ngay_cap">
+                        </div>
+
+                        <div class="form-field">
+                            <label for="noi_cap">Nơi cấp:</label>
+                            <input type="text" class="form-input" id="noi_cap" name="noi_cap" placeholder="Nhập nơi cấp CCCD">
+                        </div>
+
+                        <div class="form-field">
+                            <label for="dia_chi_tam_tru">Địa chỉ tạm trú:</label>
+                            <input type="text" class="form-input" id="dia_chi_tam_tru" name="dia_chi_tam_tru" placeholder="Nhập địa chỉ tạm trú">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- TRÌNH ĐỘ HỌC VẤN - Single column layout -->
+                <div class="form-section">
+                    <div class="section-header">
+                        <i class="fas fa-graduation-cap"></i>
+                        <span style="margin-left: 10px;">TRÌNH ĐỘ HỌC VẤN</span>
+                        <i class="fas fa-chevron-down section-chevron"></i>
+                    </div>
+                    <div class="section-content" style="display: none;">
+                        <div class="form-field">
+                            <label for="trinh_do_hoc_van">Trình độ học vấn:</label>
+                            <select class="form-input" id="trinh_do_hoc_van" name="trinh_do_hoc_van">
+                                <option value="">-- Chọn trình độ học vấn --</option>
+                                <option value="Dưới trung cấp">Dưới trung cấp</option>
+                                <option value="Trung cấp">Trung cấp</option>
+                                <option value="Cao đẳng">Cao đẳng</option>
+                                <option value="Đại học">Đại học</option>
+                                <option value="Thạc sĩ">Thạc sĩ</option>
+                            </select>
+                        </div>
+
+                        <div class="form-field">
+                            <label for="nam_tn">Năm TN:</label>
+                            <input type="text" class="form-input" id="nam_tn" name="nam_tn" placeholder="Nhập năm tốt nghiệp">
+                        </div>
+
+                        <div class="form-field">
+                            <label for="chuyen_nganh">Chuyên ngành:</label>
+                            <input type="text" class="form-input" id="chuyen_nganh" name="chuyen_nganh" placeholder="Nhập chuyên ngành">
+                        </div>
+
+                        <div class="form-field">
+                            <label for="noi_dao_tao">Nơi đào tạo:</label>
+                            <input type="text" class="form-input" id="noi_dao_tao" name="noi_dao_tao" placeholder="Nhập nơi đào tạo">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- THÔNG TIN VỊ TRÍ VIỆC LÀM - Single column layout -->
+                <div class="form-section">
+                    <div class="section-header">
+                        <i class="fas fa-briefcase"></i>
+                        <span style="margin-left: 10px;">THÔNG TIN VỊ TRÍ VIỆC LÀM</span>
+                        <i class="fas fa-chevron-down section-chevron"></i>
+                    </div>
+                    <div class="section-content" style="display: none;">
+                        <div class="form-field">
+                            <label for="vi_tri_cong_viec">Vị trí làm việc:</label>
+                            <input type="text" class="form-input" id="vi_tri_cong_viec" name="vi_tri_cong_viec" placeholder="Nhập vị trí làm việc">
+                        </div>
+
+                        <div class="form-field">
+                            <label for="chuc_vu">Chức vụ:</label>
+                            <input type="text" class="form-input" id="chuc_vu" name="chuc_vu" placeholder="Nhập chức vụ">
+                        </div>
+
+                        <div class="form-field">
+                            <label for="to_phong_ban">Tổ (Phòng ban):</label>
+                            <select class="form-input" id="to_phong_ban" name="to_phong_ban">
+                                <option value="">-- Chọn phòng ban --</option>
                                 <option value="Lớp mầm">Lớp mầm</option>
                                 <option value="Lớp chồi">Lớp chồi</option>
                                 <option value="Lớp lá">Lớp lá</option>
@@ -120,58 +487,79 @@
                                 <option value="Y tế - Hậu cần">Y tế - Hậu cần</option>
                             </select>
                         </div>
-
-                        <div class="form-group" style="display: flex; align-items: center; margin-bottom: 10px;">
-                            <label for="trinh_do_hoc_van" style="width: 450px; font-weight: bold; font-size: 16px; color: #333; margin-right: 10px; text-align: left;">Trình độ học vấn:</label>
-                            <select class="form-control" id="trinh_do_hoc_van" value="{{ form.trinh_do_hoc_van.value }}" name="trinh_do_hoc_van" style="font-size: 16px; padding: 8px; border-radius: 5px; width: 431px">
-                                <option value="Dưới trung cấp">Dưới trung cấp</option>
-                                <option value="Trung cấp">Trung cấp</option>
-                                <option value="Cao đẳng">Cao đẳng</option>
-                                <option value="Đại học">Đại học</option>
-                                <option value="Thạc sĩ">Thạc sĩ</option>
-                            </select>
-                            <div class="form-group" style="display: flex; align-items: center; margin-bottom: 10px;">
-                                <label for="nam_tn" style="width: 180px; font-weight: bold; font-size: 16px; color: #333; margin-left: 10px; text-align: left;">Năm TN:</label>
-                                <input type="text" class="form-control" id="nam_tn" value="{{ form.nam_tn.value }}" name="nam_tn" style="font-size: 16px; padding: 8px; border-radius: 5px;">
-                            </div>
-                        </div>
-
-                        <div class="form-group" style="display: flex; align-items: center; margin-bottom: 10px;">
-                            <label for="chuyen_nganh" style="width: 180px; font-weight: bold; font-size: 16px; color: #333; margin-right: 10px; text-align: left;">Chuyên ngành:</label>
-                            <input type="text" class="form-control" id="chuyen_nganh" value="{{ form.chuyen_nganh.value }}" name="chuyen_nganh" style="font-size: 16px; padding: 8px; border-radius: 5px;">
-                        </div>
-
-                        <div class="form-group" style="display: flex; align-items: center; margin-bottom: 10px;">
-                            <label for="noi_dao_tao" style="width: 180px; font-weight: bold; font-size: 16px; color: #333; margin-right: 10px; text-align: left;">Nơi đào tạo:</label>
-                            <input type="text" class="form-control" id="noi_dao_tao" value="{{ form.noi_dao_tao.value }}" name="noi_dao_tao" style="font-size: 16px; padding: 8px; border-radius: 5px;">
-                        </div>
-
-                        <div class="form-group" style="display: flex; align-items: center; margin-bottom: 10px;">
-                            <label for="ngay_cap" style="width: 180px; font-weight: bold; font-size: 16px; color: #333; margin-right: 10px; text-align: left;">Ngày cấp:</label>
-                            <input type="date" class="form-control" id="ngay_cap" value="{{ form.ngay_cap.value|date:'Y-m-d' }}" name="ngay_cap" style="font-size: 16px; padding: 8px; border-radius: 5px;">
-                        </div>
-
                     </div>
                 </div>
+            </div>
 
-                <!-- Nơi cấp và Địa chỉ tạm trú kéo dài -->
-                <div class="form-group" style="display: flex; align-items: center; margin-bottom: 15px;">
-                    <label for="noi_cap" style="width: 140px; font-weight: bold; font-size: 16px; color: #333; margin-right: 10px; text-align: left;">Nơi cấp:</label>
-                    <input type="text" class="form-control" id="noi_cap" value="{{ form.noi_cap.value }}" name="noi_cap" style="font-size: 16px; padding: 8px; border-radius: 5px; width: 100%;">
-                </div>
-
-                <div class="form-group" style="display: flex; align-items: center; margin-bottom: 15px;">
-                    <label for="dia_chi_tam_tru" style="width: 140px; font-weight: bold; font-size: 16px; color: #333; margin-right: 10px; text-align: left;">Địa chỉ tạm trú:</label>
-                    <input type="text" class="form-control" id="dia_chi_tam_tru" value="{{ form.dia_chi_tam_tru.value }}" name="dia_chi_tam_tru" style="font-size: 16px; padding: 8px; border-radius: 5px; width: 100%;">
-                </div>
-
-                <div style="display: flex; justify-content: flex-end;">
-                    <button type="submit" class="btn btn-primary btn-save" style="background-color: #00CC00; color: white; padding: 10px 20px; font-size: 16px;font-weight: bold; border: 0px solid #333; border-radius: 5px; cursor: pointer;">Lưu</button>
-                </div>
+            <div class="card-footer">
+                <button type="submit" class="btn-save">
+                    <i class="fas fa-save"></i> Lưu
+                </button>
             </div>
         </form>
     </div>
 </main>
 
+<script>
+    // Add toggle functionality for section headers
+    document.addEventListener('DOMContentLoaded', function() {
+        const sectionHeaders = document.querySelectorAll('.section-header');
 
+        sectionHeaders.forEach(header => {
+            header.addEventListener('click', function() {
+                this.classList.toggle('active');
+                const content = this.nextElementSibling;
+
+                if (content.style.display === 'none' || content.style.display === '') {
+                    content.style.display = 'block';
+                } else {
+                    content.style.display = 'none';
+                }
+            });
+        });
+
+        // Show the first section by default
+        const firstHeader = document.querySelector('.section-header');
+        const firstContent = document.querySelector('.section-content');
+        if (firstHeader && firstContent) {
+            firstHeader.classList.add('active');
+            firstContent.style.display = 'block';
+        }
+
+        // Tab functionality (excluding the disabled tab)
+        const tabs = document.querySelectorAll('.tab-item:not(.tab-disabled)');
+        tabs.forEach(tab => {
+            tab.addEventListener('click', function() {
+                tabs.forEach(t => t.classList.remove('tab-active'));
+                this.classList.add('tab-active');
+            });
+        });
+
+        // Avatar upload functionality
+        const avatarInput = document.getElementById('anh_ca_nhan');
+        const avatarPreview = document.getElementById('avatar-preview');
+        const avatarPlaceholder = document.getElementById('avatar-placeholder');
+
+        // Make the entire avatar circle clickable
+        document.querySelector('.avatar-circle').addEventListener('click', function() {
+            avatarInput.click();
+        });
+
+        // Handle image preview
+        avatarInput.addEventListener('change', function(e) {
+            if (e.target.files && e.target.files[0]) {
+                const reader = new FileReader();
+
+                reader.onload = function(e) {
+                    // Show the preview image and hide the placeholder
+                    avatarPreview.src = e.target.result;
+                    avatarPreview.style.display = 'block';
+                    avatarPlaceholder.style.display = 'none';
+                }
+
+                reader.readAsDataURL(e.target.files[0]);
+            }
+        });
+    });
+</script>
 {% endblock %}

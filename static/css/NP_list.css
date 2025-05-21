@@ -1,7 +1,7 @@
 .np-wrapper{
     margin: 0;
     font-size: 15px;
-    width:100%;
+    width:1300px;
 }
 
 .np-wrapper .content {
@@ -154,7 +154,6 @@
 
 .np-wrapper .np-content {
     padding: 6px;
-    text-align: left;
 }
 
 .np-wrapper .np-title {

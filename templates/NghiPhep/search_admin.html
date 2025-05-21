@@ -1,20 +1,6 @@
 {% extends 'NghiPhep/NP_list_admin.html' %}
 
 
-{% block CSS %}
-    <style>
-    .info {
-        display: flex;
-        flex-direction: row !important;
-        margin-top: -10px;
-        gap: 20px;
-        width: 40%;
-        align-items: center;
-        padding: 20px;
-        border-radius: 15px;
-    }
-    </style>
-{% endblock %}
 
 
 {% block titleNP %}
@@ -26,10 +12,10 @@
             <img src="{{ search_text.anh_ca_nhan }}" alt="Ảnh nhân viên"
                  style="width: 100px; height: 100px; object-fit: cover; border-radius: 50px;">
 
-        <div style="display: flex; flex-direction: column; gap: 5px;  ">
-            <span><strong>Nhân viên:</strong> {{ search_text }}</span>
-            <span><strong>Vị trí công việc:</strong> {{ search_text.vi_tri_cong_viec }}</span>
-            <span><strong>Tổ:</strong> {{ search_text.to_phong_ban }}</span>
+        <div style="display: flex; flex-direction: column; gap: 10px;  ">
+            <span style="text-decoration: None; ">Nhân viên:   {{ search_text }}</span>
+            <span style="text-decoration: None; "><strong>Vị trí công việc:</strong> {{ search_text.vi_tri_cong_viec }}</span>
+            <span style="text-decoration: None; "><strong>Tổ:</strong> {{ search_text.to_phong_ban }}</span>
         </div>
     </div>
 {% endblock %}

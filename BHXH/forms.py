@@ -38,9 +38,17 @@ class updateBHXH(forms.ModelForm):
         label="Mã BHXH",
         widget=forms.TextInput(attrs={'class': 'form-control'})
     )
+    thoi_gian_bat_dau = forms.DateField(
+        required=False,
+        label="Ngày bắt đầu đóng",
+        widget=forms.DateInput(attrs={
+            'class': 'form-control',
+            'type': 'date'
+        })
+    )
     class Meta:
         model = BHXH
-        fields = ['ma_BHXH']
+        fields = ['ma_BHXH','thoi_gian_bat_dau']
 class DongBHXHForm(forms.Form):
     ngay_bat_dau = forms.DateField(
         required=True,

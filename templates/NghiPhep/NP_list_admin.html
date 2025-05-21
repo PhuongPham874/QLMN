@@ -8,25 +8,14 @@
 
 
 {% block content %}
-<div class="np-wrapper">
+<div class="" >
     <div class="button">
         {% block titleNP %}
         <div class="titleNP" style="width: 70% " onclick="window.location.href='{% url 'DanhSachNP' %}'">DANH SÁCH ĐƠN NGHỈ PHÉP - {{year}}</div>
         {% endblock %}
-        {% block btnAdd %}
-            <form method="get"
-                  action="{% url 'DanhSachNP' %}"
-                  style="width:20%; height: 15px">
-                    <select name="year" class="form-control" onchange="this.form.submit()" style="height: 30px; font-size: 14px; padding: 0px 20px;border-radius: 5px;width: 50%;">
-                        {% for y in years %}
-                            <option value="{{ y }}" {% if y == year %}selected{% endif %}>{{ y }}</option>
-                        {% endfor %}
-                    </select>
-            </form>
-        {% endblock %}
     </div>
 
-     <div class="Search" style="width: 70%">
+     <div class="Search" style="width: 1000px; display: flex; justify-content: space-between;">
          {% block header %}
              <form  action="{% url 'TimKiemNV' %}" style="margin-bottom: 30px; display:flex; gap: 15px">
                 <label  style="font-weight: 500; margin-bottom: 0;">Chọn nhân viên:</label>
@@ -39,12 +28,21 @@
                     {% endfor %}
                   </select>
              </form>
+            <form method="get"
+                  action="{% url 'DanhSachNP' %}"
+                  style="width:30%; height: 15px">
+                    <select name="year" class="form-control" onchange="this.form.submit()" style="height: 30px; font-size: 14px; padding: 0px 20px;border-radius: 5px;width: 50%;">
+                        {% for y in years %}
+                            <option value="{{ y }}" {% if y == year %}selected{% endif %}>{{ y }}</option>
+                        {% endfor %}
+                    </select>
+            </form>
         {% endblock %}
      </div>
     {% block profile %}
     {% endblock %}
-    <div class="ndung" style='display: flex; gap: 60px; width: 100%'>
-            <div class="ndungNP" style="width: 70%">
+    <div class="ndung" style='display: flex; gap: 60px;  '>
+            <div class="ndungNP" style="width: 900px">
                 {% for status, danh_sach in nghiphep.items %}
                     <div class="card" style="margin-bottom: 30px;width:100%; background-color: #ffffff; padding: 15px; border-radius: 10px; box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);">
                         <div class="card-header">
@@ -157,7 +155,7 @@
             </div>
 
             {% block locdanhsach %}
-            <div class="ndungloc" style="width:25%; max-height: 500px;">
+            <div class="ndungloc" style="width:20%; max-height: 500px;">
 
                <div class="TitleLoc" style="display: flex; gap: 10px; align-items: left;">
                     <i class="fa-sharp fa-solid fa-filter" style="font-size: 20px;"></i>

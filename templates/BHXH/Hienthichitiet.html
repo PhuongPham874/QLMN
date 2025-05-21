@@ -2,326 +2,68 @@
 {% load static %}
 
 {% block page_background %}
-<style>
-    body {
-        background-color: #f8f9fa;
-    }
+<link rel="stylesheet" href="{% static 'css/Hienthichitiet.css' %}">
 
-    .container {
-        max-width: 1000px;
-        margin: 0 auto;
-        padding: 30px;
-    }
-
-    .card {
-        background-color: #fff;
-        border-radius: 8px;
-        box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-        margin-bottom: 25px;
-        overflow: hidden;
-    }
-
-    .card-header {
-        background-color: #f8f9fa;
-        padding: 15px 20px;
-        border-bottom: 1px solid #e9ecef;
-    }
-
-    .card-body {
-        padding: 20px;
-    }
-
-    .page-title {
-        color: #0d6efd;
-        font-weight: 700;
-        font-size: 24px;
-        margin-bottom: 5px;
-        text-align: center;
-    }
-
-    .page-subtitle {
-        color: #6c757d;
-        font-size: 16px;
-        margin-bottom: 25px;
-        text-align: center;
-    }
-
-    .section-title {
-        color: #0d6efd;
-        font-weight: 600;
-        font-size: 18px;
-        margin-bottom: 15px;
-        display: flex;
-        align-items: center;
-    }
-
-    .section-title i {
-        margin-right: 10px;
-    }
-
-    .info-grid {
-        display: grid;
-        grid-template-columns: repeat(2, 1fr);
-        gap: 15px;
-    }
-
-    .info-item {
-        margin-bottom: 10px;
-    }
-
-    .info-label {
-        color: #6c757d;
-        font-size: 14px;
-        margin-bottom: 5px;
-    }
-
-    .info-value {
-        color: #212529;
-        font-weight: 500;
-        font-size: 16px;
-    }
-
-    .highlight {
-        color: #0d6efd;
-        font-weight: 600;
-    }
-
-    .table {
-        width: 100%;
-        border-collapse: collapse;
-        margin-top: 15px;
-    }
-
-    .table th {
-        background-color: #f8f9fa;
-        color: #495057;
-        font-weight: 600;
-        text-align: left;
-        padding: 12px 15px;
-        border-bottom: 2px solid #dee2e6;
-        font-size: 14px;
-    }
-
-    .table td {
-        padding: 12px 15px;
-        border-bottom: 1px solid #dee2e6;
-        color: #212529;
-        font-size: 14px;
-    }
-
-    .table tr:last-child td {
-        border-bottom: none;
-    }
-
-    .table-footer {
-        background-color: #f8f9fa;
-        font-weight: 600;
-    }
-
-    .table-footer td {
-        border-top: 2px solid #dee2e6;
-    }
-
-    .badge {
-        display: inline-block;
-        padding: 5px 10px;
-        border-radius: 20px;
-        font-size: 12px;
-        font-weight: 500;
-    }
-
-    .badge-primary {
-        background-color: #cfe2ff;
-        color: #0d6efd;
-    }
-
-    .header-actions {
-        display: flex;
-        margin-bottom: 20px;
-    }
-
-    .back-btn {
-        display: flex;
-        align-items: center;
-        gap: 8px;
-        text-decoration: none;
-        color: #6c757d;
-        font-size: 14px;
-        padding: 8px 15px;
-        border-radius: 4px;
-        background-color: #f8f9fa;
-        border: 1px solid #dee2e6;
-        transition: all 0.2s;
-    }
-
-    .back-btn:hover {
-        background-color: #e9ecef;
-        color: #0d6efd;
-    }
-
-    .summary-box {
-        background-color: #f8f9fa;
-        border-radius: 8px;
-        padding: 15px;
-        margin-bottom: 20px;
-    }
-
-    .summary-title {
-        color: #0d6efd;
-        font-weight: 600;
-        font-size: 16px;
-        margin-bottom: 10px;
-    }
-
-    .summary-item {
-        display: flex;
-        align-items: center;
-        margin-bottom: 8px;
-    }
-
-    .summary-item i {
-        color: #0d6efd;
-        margin-right: 10px;
-        font-size: 14px;
-    }
-
-    .summary-text {
-        color: #212529;
-        font-weight: 500;
-    }
-
-    .amount {
-        text-align: right;
-        font-family: 'Roboto Mono', monospace;
-    }
-
-    .total-row {
-        color: #0d6efd;
-        font-weight: 600;
-    }
-
-    @media (max-width: 768px) {
-        .info-grid {
-            grid-template-columns: 1fr;
-        }
-    }
-
-    .employee-header {
-        display: flex;
-        align-items: center;
-        margin-bottom: 25px;
-    }
-
-    .employee-avatar {
-        width: 60px;
-        height: 60px;
-        background-color: #0d6efd;
-        color: white;
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-weight: bold;
-        font-size: 24px;
-        margin-right: 15px;
-        box-shadow: 0 3px 6px rgba(0,0,0,0.1);
-    }
-
-    .employee-title {
-        flex: 1;
-    }
-
-    .employee-name {
-        font-size: 28px;
-        font-weight: 700;
-        color: #212529;
-        margin: 0 0 5px 0;
-        position: relative;
-        display: inline-block;
-    }
-
-    .employee-name::after {
-        content: '';
-        position: absolute;
-        bottom: -5px;
-        left: 0;
-        width: 100%;
-        height: 3px;
-        background-color: #0d6efd;
-        border-radius: 3px;
-    }
-
-    .page-subtitle {
-        color: #6c757d;
-        font-size: 16px;
-        margin: 0;
-    }
-</style>
-
-<div class="container">
-    <div class="header-actions">
-        <a href="{% url 'bhxh_list' %}" class="back-btn">
+<div class="bhxh-detail-container">
+    <div class="bhxh-header-actions">
+        <a href="{% url 'bhxh_list' %}" class="bhxh-back-btn">
             <i class="fas fa-arrow-left"></i> Quay lại
         </a>
     </div>
 
-    <div class="card">
-        <div class="card-body">
-            <div class="employee-header">
-                <div class="employee-avatar">
-                    {{ bh.nhan_vien.ten_nv|slice:":1" }}
-                </div>
-                <div class="employee-title">
-                    <h2 class="employee-name">{{ bh.nhan_vien.ten_nv }}</h2>
-                    <p class="page-subtitle">THÔNG TIN BHXH</p>
+    <div class="bhxh-card">
+        <div class="bhxh-card-body">
+            <div class="bhxh-employee-header">
+                <div class="bhxh-employee-title">
+                    <h1 class="bhxh-page-subtitle">THÔNG TIN BHXH - {{ bh.nhan_vien.ten_nv }}</h1>
                 </div>
             </div>
 
-            <div class="info-grid">
-                <div class="info-item">
-                    <div class="info-label">Mã nhân viên</div>
-                    <div class="info-value">{{ bh.nhan_vien.id }}</div>
+            <div class="bhxh-info-grid">
+                <div class="bhxh-info-item">
+                    <div class="bhxh-info-label">Mã nhân viên</div>
+                    <div class="bhxh-info-value">{{ bh.nhan_vien.id }}</div>
                 </div>
-                <div class="info-item">
-                    <div class="info-label">Mức đóng của nhân viên</div>
-                    <div class="info-value highlight">{{ bh.nhan_vien_dong }}%</div>
+                <div class="bhxh-info-item">
+                    <div class="bhxh-info-label">Mức đóng của nhân viên</div>
+                    <div class="bhxh-info-value ">{{ bh.nhan_vien_dong }}%</div>
                 </div>
-                <div class="info-item">
-                    <div class="info-label">Mã BHXH</div>
-                    <div class="info-value">{{ bh.ma_BHXH }}</div>
+                <div class="bhxh-info-item">
+                    <div class="bhxh-info-label">Mã BHXH</div>
+                    <div class="bhxh-info-value">{{ bh.ma_BHXH }}</div>
                 </div>
-                <div class="info-item">
-                    <div class="info-label">Mức đóng của trường</div>
-                    <div class="info-value highlight">{{ bh.truong_dong }}%</div>
+                <div class="bhxh-info-item">
+                    <div class="bhxh-info-label">Mức đóng của trường</div>
+                    <div class="bhxh-info-value ">{{ bh.truong_dong }}%</div>
                 </div>
-                <div class="info-item">
-                    <div class="info-label">Ngày tham gia BHXH</div>
-                    <div class="info-value">{{ bh.thoi_gian_bat_dau|date:"d/m/Y" }}</div>
+                <div class="bhxh-info-item">
+                    <div class="bhxh-info-label">Ngày tham gia BHXH</div>
+                    <div class="bhxh-info-value">{{ bh.thoi_gian_bat_dau|date:"d/m/Y" }}</div>
                 </div>
             </div>
         </div>
     </div>
 
-    <div class="card">
-        <div class="card-header">
-            <div class="section-title">
+    <div class="bhxh-card">
+        <div class="bhxh-card-header">
+            <div class="bhxh-section-title">
                 <i class="fas fa-history"></i> Quá trình tham gia bảo hiểm xã hội
             </div>
         </div>
-        <div class="card-body">
-            <div class="summary-box">
-                <div class="summary-item">
+        <div class="bhxh-card-body">
+            <div class="bhxh-summary-box">
+                <div class="bhxh-summary-item">
                     <i class="fas fa-calendar-check"></i>
-                    <div class="summary-text">Số lần tham gia: <span class="highlight">{{ solanthamgia }}</span></div>
+                    <div class="bhxh-summary-text">Số lần tham gia: <span class="bhxh-highlight">{{ solanthamgia }}</span></div>
                 </div>
             </div>
 
-            <table class="table">
+            <table class="bhxh-table">
                 <thead>
                     <tr>
                         <th>Ngày bắt đầu</th>
                         <th>Ngày kết thúc</th>
-                        <th class="amount">Tổng tiền (VNĐ)</th>
+                        <th class="bhxh-amount" r>Tổng tiền (VNĐ)</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -329,17 +71,16 @@
                     <tr>
                         <td>{{ dong.ngay_bat_dau|date:"d/m/Y" }}</td>
                         <td>{{ dong.ngay_ket_thuc|date:"d/m/Y" }}</td>
-                        <td class="amount">{{ dong.tong_tien|floatformat:0|stringformat:',d'|slice:':-2' }}</td>
+                        <td class="bhxh-amount">{{ dong.tong_tien|floatformat:0 }}</td>
                     </tr>
                     {% endfor %}
-                    <tr class="table-footer total-row">
-                        <td colspan="2" style="text-align: right;">Tổng cộng</td>
-                        <td class="amount">{{ Total|floatformat:0|stringformat:',d'|slice:':-2' }}</td>
+                    <tr class="bhxh-total-row">
+                        <td colspan="2" class="bhxh-total-label">Tổng</td>
+                        <td class="bhxh-amount">{{ Total|floatformat:0 }}</td>
                     </tr>
                 </tbody>
             </table>
         </div>
     </div>
 </div>
-
 {% endblock %}
