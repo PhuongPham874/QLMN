@@ -303,6 +303,7 @@
                     </a>
                 </div>
 
+
                 <!-- Employee Information Card -->
                 <div class="employee-info-card">
                     <div class="employee-info-grid">
@@ -324,7 +325,13 @@
                         </div>
                     </div>
                 </div>
-
+                {% if form.non_field_errors %}
+                    <div class="alert alert-danger" style="font-style: italic; font-size: 15px; color: red; margin-bottom: 15px">
+                        {% for error in form.non_field_errors %}
+                            <p>{{ error }}</p>
+                        {% endfor %}
+                    </div>
+                {% endif %}
                 <!-- Contract Information -->
                 <div class="form-section">
                     <div class="section-header">
@@ -362,18 +369,39 @@
                                 <label for="luong">Lương:</label>
                                 <input type="number" class="form-input" id="luong" name="luong" step="0.01"
                                        value="{{ form.data.luong }}">
+                                {% if form.luong.errors %}
+                                  <div class="error">
+                                    {% for error in form.luong.errors %}
+                                      <p>{{ error }}</p>
+                                    {% endfor %}
+                                  </div>
+                                {% endif %}
                             </div>
 
                             <div class="form-field">
                                 <label for="tu_ngay">Từ ngày:</label>
                                 <input type="date" class="form-input" id="tu_ngay" name="tu_ngay"
                                        value="{{ form.data.tu_ngay }}">
+                                {% if form.tu_ngay.errors %}
+                                  <div class="error">
+                                    {% for error in form.tu_ngay.errors %}
+                                      <p>{{ error }}</p>
+                                    {% endfor %}
+                                  </div>
+                                {% endif %}
                             </div>
 
                             <div class="form-field">
                                 <label for="den_ngay">Đến ngày:</label>
                                 <input type="date" class="form-input" id="den_ngay" name="den_ngay"
                                        value="{{ form.data.den_ngay }}">
+                                {% if form.den_ngay.errors %}
+                                  <div class="error">
+                                    {% for error in form.den_ngay.errors %}
+                                      <p>{{ error }}</p>
+                                    {% endfor %}
+                                  </div>
+                                {% endif %}
                             </div>
 
                             <div class="form-field">

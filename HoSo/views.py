@@ -1,4 +1,5 @@
 from django.contrib.auth.decorators import login_required
+from django.contrib import messages
 from django.shortcuts import render, get_object_or_404, redirect
 from HOME.models import NhanVien, HopDongLaoDong, PhuCapNhanVien, User, PhuCap
 from datetime import datetime
@@ -60,25 +61,28 @@ def danh_sach_nhan_vien(request):
 
 def Add_ho_so(request):
     form = NhanVienForm(request.POST, request.FILES)
-    # Kiểm tra xem form có hợp lệ không
-    if form.is_valid():
-        # Lưu nhân viên mới
-        nhan_vien = form.save(commit=False)
-            # Lấy dữ liệu từ form
-            # Tạo User mới (nếu cần) từ email (hoặc thông tin khác)
-        user = User.objects.create_user(
-            username=nhan_vien.email.split('@')[0],  # Tạo username từ email (bạn có thể tùy chỉnh)
-            email=nhan_vien.email,
-            password="defaultpassword"  # Có thể sử dụng password mặc định hoặc yêu cầu người dùng nhập
-        )
-        # Gán User cho nhân viên
-        nhan_vien.user = user
-        nhan_vien.save()
-        # Sau khi lưu thành công, chuyển hướng về danh sách nhân viên
-        return redirect('themmoi_hdld', nhan_vien_id=nhan_vien.id)
+    if request.method == 'POST':
+        # Kiểm tra xem form có hợp lệ không
+        if form.is_valid():
+            # Lưu nhân viên mới
+            nhan_vien = form.save(commit=False)
+                # Lấy dữ liệu từ form
+                # Tạo User mới (nếu cần) từ email (hoặc thông tin khác)
+            user = User.objects.create_user(
+                username=nhan_vien.email.split('@')[0],  # Tạo username từ email (bạn có thể tùy chỉnh)
+                email=nhan_vien.email,
+                password="defaultpassword"  # Có thể sử dụng password mặc định hoặc yêu cầu người dùng nhập
+            )
+            # Gán User cho nhân viên
+            nhan_vien.user = user
+            nhan_vien.save()
+            # Sau khi lưu thành công, chuyển hướng về danh sách nhân viên
+            return redirect('themmoi_hdld', nhan_vien_id=nhan_vien.id)
+        else:
+            # Truyền lỗi form xuống template để hiển thị
+            messages.error(request, "Vui lòng nhập ")
     else:
-        # Nếu form không hợp lệ, in ra lỗi để kiểm tra
-        print(form.errors)
+        form = NhanVienForm()
 
     # Trả về template để hiển thị form
     return render(request, 'HoSo/ThemMoiHoSo.html', {'form': form})
@@ -91,26 +95,27 @@ def them_moi_hop_dong(request, nhan_vien_id):
     phu_cap_da_chon = PhuCapNhanVien.objects.filter(nhan_vien=nhan_vien).values_list('phu_cap_id', flat=True)
 
     selected_ids = request.POST.getlist('phu_cap_ids')
-    if form.is_valid():
-        hopdong = form.save(commit=False)
-        hopdong.nhan_vien = nhan_vien
-        hopdong.vi_tri_lam_viec = nhan_vien.vi_tri_cong_viec
-        hopdong.to_phong_ban = nhan_vien.to_phong_ban
+    if request.method == 'POST':
+        if form.is_valid():
+            hopdong = form.save(commit=False)
+            hopdong.nhan_vien = nhan_vien
+            hopdong.vi_tri_lam_viec = nhan_vien.vi_tri_cong_viec
+            hopdong.to_phong_ban = nhan_vien.to_phong_ban
 
-        print("To/Phòng ban của nhân viên:", nhan_vien.to_phong_ban)
-        print("Type:", type(nhan_vien.to_phong_ban))
-        print("Trường gán vào hợp đồng:", hopdong.to_phong_ban)
 
-        hopdong.save()
 
-        for phu_cap_id in selected_ids:
-            phu_cap_obj = PhuCap.objects.get(id=phu_cap_id)
-            PhuCapNhanVien.objects.create(nhan_vien=nhan_vien, phu_cap=phu_cap_obj)
+            hopdong.save()
 
-        return redirect('DanhSachNhanVien')  # Chuyển hướng sau khi lưu hợp đồng
+            for phu_cap_id in selected_ids:
+                phu_cap_obj = PhuCap.objects.get(id=phu_cap_id)
+                PhuCapNhanVien.objects.create(nhan_vien=nhan_vien, phu_cap=phu_cap_obj)
+
+            return redirect('DanhSachNhanVien')  # Chuyển hướng sau khi lưu hợp đồng
+        else:
+            # Nếu form không hợp lệ, in ra lỗi để kiểm tra
+            print(form.errors)
     else:
-        # Nếu form không hợp lệ, in ra lỗi để kiểm tra
-        print(form.errors)
+        form = HopDongLaoDongForm()
     return render(request, 'HoSo/ThemMoiHoSo_HDLD.html', {'form': form, 'nhan_vien': nhan_vien, 'danh_sach_phu_cap': danh_sach_phu_cap,})
 
 

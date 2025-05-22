@@ -1,5 +1,6 @@
-from django.contrib.auth.decorators import login_required
+
 from django.shortcuts import render, get_object_or_404, redirect
+from django.contrib.auth.decorators import (login_required,permission_required)
 from django.utils import timezone
 from HOME.models import NghiPhep, NhanVien, HopDongLaoDong, PhuCapNhanVien, PhuCap
 from .forms import NghiPhepForm, SearchForm, Ghichu, loai_nghi_phep, SearchNVForm
@@ -70,6 +71,7 @@ def ThongTinNP( nhanvien, danh_sach, nam):
 
 
 @login_required
+@permission_required('NhanVien')
 def NghiPhep_list_nv(request):
     nam = request.GET.get('year')
     thong_tin = ThongTinNPYear( nam)
@@ -174,6 +176,7 @@ def ThongTinNP_admin(request, nhanvien):
 
 
 @login_required
+@permission_required('Admin')
 def NghiPhep_list_admin(request):
     nhanvien = get_object_or_404(NhanVien, user=request.user)
     thong_tin = DS_NV_quan_ly(request, nhanvien)
@@ -197,6 +200,7 @@ def NghiPhep_list_admin(request):
     return render(request, 'NghiPhep/NP_list_admin.html', context)
 
 @login_required
+@permission_required('HieuTruong')
 def NghiPhep_list_hieutruong(request):
     nhanvien = get_object_or_404(NhanVien, user=request.user)
     thong_tin = DS_NV_quan_ly(request, nhanvien)
@@ -226,6 +230,9 @@ def NghiPhep_list_hieutruong(request):
     }
     return render(request, 'NghiPhep/NP_list_hieutruong.html', context)
 
+
+@login_required
+@permission_required('Admin')
 def NP_nv_search_admin(request):
     nhan_vien = get_object_or_404(NhanVien, user=request.user)
     context = DS_NV_quan_ly(request, nhan_vien)
@@ -251,7 +258,8 @@ def NP_nv_search_admin(request):
     })
     return render(request, "NghiPhep/search_admin.html", context)
 
-
+@login_required
+@permission_required('HieuTruong')
 def NP_nv_search_hieutruong(request):
     nhan_vien = get_object_or_404(NhanVien, user=request.user)
     context = DS_NV_quan_ly(request, nhan_vien)
@@ -279,7 +287,8 @@ def NP_nv_search_hieutruong(request):
 
 
 
-
+@login_required
+@permission_required('Admin')
 @login_required()
 def loc_don_nghi_phep_theo_trang_thai_admin(request):
     year = request.GET.get('year')
@@ -298,8 +307,8 @@ def loc_don_nghi_phep_theo_trang_thai_admin(request):
     }
     return render(request, 'NghiPhep/NP_list_admin.html', context)
 
-
-@login_required()
+@login_required
+@permission_required('HieuTruong')
 def loc_don_nghi_phep_theo_trang_thai_hieutruong(request):
     year = request.GET.get('year')
     trang_thai=request.GET.get('trang_thai')
@@ -345,6 +354,7 @@ def redirect_nghiphep_view(request):
 
 
 @login_required
+@permission_required('NhanVien')
 def EditNghiPhep (request, nghiphep_pk=None):
     year = request.GET.get('year')
     if year is None:
@@ -388,7 +398,8 @@ def EditNghiPhep (request, nghiphep_pk=None):
     return render(request, "NghiPhep/formNghiPhep.html", {"model_type": "Nghỉ Phép", "form": form, "instance": nghiphep, "nhan_vien": nhanvien, **ThongTinNP( nhanvien, nghiphep_list_nv, year)})
 
 
-
+@login_required
+@permission_required('Admin')
 def XulyNP(request, nghiphep_pk):
     nhanvien = get_object_or_404(NhanVien, user=request.user)
     nghiphep = get_object_or_404(NghiPhep, pk=nghiphep_pk)

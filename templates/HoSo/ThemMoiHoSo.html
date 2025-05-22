@@ -13,7 +13,11 @@
         --blue: #0066CC;
         --light-blue: #4D94FF;
     }
-
+    .error-message {
+        color: red;
+        font-size: 14px;
+        margin-top: 5px;
+    }
     .content {
         width: 95%;
         margin: 0 auto;
@@ -356,6 +360,13 @@
                         <label for="anh_ca_nhan" class="avatar-label">Ảnh cá nhân</label>
                     </div>
                 </div>
+                {% if form.non_field_errors %}
+                <div class="alert alert-danger" style="font-style: italic; font-size: 15px; color: red; margin-bottom: 15px">
+                    {% for error in form.non_field_errors %}
+                        <p>*{{ error }}</p>
+                    {% endfor %}
+                </div>
+            {% endif %}
 
                 <!-- THÔNG TIN CÁ NHÂN - Single column layout -->
                 <div class="form-section">
@@ -392,16 +403,25 @@
                         <div class="form-field">
                             <label for="so_dien_thoai">Số điện thoại:</label>
                             <input type="text" class="form-input" id="so_dien_thoai" name="so_dien_thoai" placeholder="Nhập số điện thoại">
+                            {% if form.so_dien_thoai.errors %}
+                                <div class="error-message">{{ form.so_dien_thoai.errors.0 }}</div>
+                            {% endif %}
                         </div>
 
                         <div class="form-field">
                             <label for="email">Email:</label>
                             <input type="email" class="form-input" id="email" name="email" placeholder="Nhập địa chỉ email">
+                            {% if form.email.errors %}
+                                <div class="error-message">{{ form.email.errors.0 }}</div>
+                            {% endif %}
                         </div>
 
                         <div class="form-field">
                             <label for="so_cccd">Số CCCD:</label>
                             <input type="text" class="form-input" id="so_cccd" name="so_cccd" placeholder="Nhập số căn cước công dân">
+                            {% if form.so_cccd.errors %}
+                                <div class="text-danger">{{ form.so_cccd.errors.0 }}</div>
+                            {% endif %}
                         </div>
 
                         <div class="form-field">
