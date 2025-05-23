@@ -14,14 +14,14 @@
 
   <!-- Tab Navigation -->
   <div class="tab-navigation">
-    <a href="{% url 'QLXemHoSo' nhan_vien.id %}" class="tab-link active">
+    <a href="{% url 'QLXemHoSo' nhan_vien_duoc_xem.id %}" class="tab-link active">
       <svg class="tab-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
         <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
         <circle cx="12" cy="7" r="4"></circle>
       </svg>
       Thông Tin Cá Nhân
     </a>
-    <a href="{% url 'QLXemHoSoHDLD' nhan_vien.id %}" class="tab-link inactive">
+    <a href="{% url 'QLXemHoSoHDLD' nhan_vien_duoc_xem.id %}" class="tab-link inactive">
       <svg class="tab-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
         <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
         <polyline points="14 2 14 8 20 8"></polyline>
@@ -37,12 +37,12 @@
   <div class="profile-card">
     <!-- Profile Header -->
     <div class="profile-header">
-      <img src="{{ nhan_vien.anh_ca_nhan.url }}" alt="Ảnh cá nhân" class="profile-avatar">
+      <img src="{{ nhan_vien_duoc_xem.anh_ca_nhan.url }}" alt="Ảnh cá nhân" class="profile-avatar">
 
       <div class="profile-info">
-        <h2 class="profile-name">{{ nhan_vien.ten_nv }}</h2>
-        <p class="profile-position">{{ nhan_vien.vi_tri_cong_viec }} - {{ nhan_vien.chuc_vu }}</p>
-        <p class="profile-department">{{ nhan_vien.to_phong_ban }}</p>
+        <h2 class="profile-name">{{ nhan_vien_duoc_xem.ten_nv }}</h2>
+        <p class="profile-position">{{ nhan_vien_duoc_xem.vi_tri_cong_viec }} - {{ nhan_vien_duoc_xem.chuc_vu }}</p>
+        <p class="profile-department">{{ nhan_vien_duoc_xem.to_phong_ban }}</p>
       </div>
 
       <div class="profile-actions">
@@ -71,47 +71,47 @@
         <div class="profile-grid">
           <div class="profile-field">
             <div class="field-label">Họ và tên</div>
-            <div class="field-value">{{ nhan_vien.ten_nv }}</div>
+            <div class="field-value">{{ nhan_vien_duoc_xem.ten_nv }}</div>
           </div>
 
           <div class="profile-field">
             <div class="field-label">Giới tính</div>
-            <div class="field-value">{{ nhan_vien.get_gioi_tinh_display }}</div>
+            <div class="field-value">{{ nhan_vien_duoc_xem.get_gioi_tinh_display }}</div>
           </div>
 
           <div class="profile-field">
             <div class="field-label">Ngày sinh</div>
-            <div class="field-value">{{ nhan_vien.ngay_sinh }}</div>
+            <div class="field-value">{{ nhan_vien_duoc_xem.ngay_sinh }}</div>
           </div>
 
           <div class="profile-field">
             <div class="field-label">Số điện thoại</div>
-            <div class="field-value">{{ nhan_vien.so_dien_thoai }}</div>
+            <div class="field-value">{{ nhan_vien_duoc_xem.so_dien_thoai }}</div>
           </div>
 
           <div class="profile-field">
             <div class="field-label">Email</div>
-            <div class="field-value">{{ nhan_vien.email }}</div>
+            <div class="field-value">{{ nhan_vien_duoc_xem.email }}</div>
           </div>
 
           <div class="profile-field">
             <div class="field-label">Số CCCD</div>
-            <div class="field-value">{{ nhan_vien.so_cccd }}</div>
+            <div class="field-value">{{ nhan_vien_duoc_xem.so_cccd }}</div>
           </div>
 
           <div class="profile-field">
             <div class="field-label">Ngày cấp</div>
-            <div class="field-value">{{ nhan_vien.ngay_cap }}</div>
+            <div class="field-value">{{ nhan_vien_duoc_xem.ngay_cap }}</div>
           </div>
 
           <div class="profile-field">
             <div class="field-label">Nơi cấp</div>
-            <div class="field-value">{{ nhan_vien.noi_cap }}</div>
+            <div class="field-value">{{ nhan_vien_duoc_xem.noi_cap }}</div>
           </div>
 
           <div class="profile-field" style="grid-column: 1 / -1;">
             <div class="field-label">Địa chỉ tạm trú</div>
-            <div class="field-value">{{ nhan_vien.dia_chi_tam_tru }}</div>
+            <div class="field-value">{{ nhan_vien_duoc_xem.dia_chi_tam_tru }}</div>
           </div>
         </div>
       </div>
@@ -128,17 +128,17 @@
         <div class="profile-grid">
           <div class="profile-field">
             <div class="field-label">Vị trí làm việc</div>
-            <div class="field-value">{{ nhan_vien.vi_tri_cong_viec }}</div>
+            <div class="field-value">{{ nhan_vien_duoc_xem.vi_tri_cong_viec }}</div>
           </div>
 
           <div class="profile-field">
             <div class="field-label">Chức vụ</div>
-            <div class="field-value">{{ nhan_vien.chuc_vu }}</div>
+            <div class="field-value">{{ nhan_vien_duoc_xem.chuc_vu }}</div>
           </div>
 
           <div class="profile-field">
             <div class="field-label">Tổ (Phòng ban)</div>
-            <div class="field-value">{{ nhan_vien.to_phong_ban }}</div>
+            <div class="field-value">{{ nhan_vien_duoc_xem.to_phong_ban }}</div>
           </div>
         </div>
       </div>
@@ -156,27 +156,27 @@
         <div class="profile-grid">
           <div class="profile-field">
             <div class="field-label">Trình độ học vấn</div>
-            <div class="field-value">{{ nhan_vien.trinh_do_hoc_van }}</div>
+            <div class="field-value">{{ nhan_vien_duoc_xem.trinh_do_hoc_van }}</div>
           </div>
 
           <div class="profile-field">
             <div class="field-label">Năm tốt nghiệp</div>
-            <div class="field-value">{{ nhan_vien.nam_tn }}</div>
+            <div class="field-value">{{ nhan_vien_duoc_xem.nam_tn }}</div>
           </div>
 
           <div class="profile-field">
             <div class="field-label">Chuyên ngành</div>
-            <div class="field-value">{{ nhan_vien.chuyen_nganh }}</div>
+            <div class="field-value">{{ nhan_vien_duoc_xem.chuyen_nganh }}</div>
           </div>
 
           <div class="profile-field">
             <div class="field-label">Nơi đào tạo</div>
-            <div class="field-value">{{ nhan_vien.noi_dao_tao }}</div>
+            <div class="field-value">{{ nhan_vien_duoc_xem.noi_dao_tao }}</div>
           </div>
 
         </div>
         <div class="profile-action" style="text-align: right; margin-top: 20px;">
-          <a href="{% url 'edit_ho_so' nhan_vien.id %}" class="edit-button" title="Chỉnh sửa" >
+          <a href="{% url 'edit_ho_so' nhan_vien_duoc_xem.id %}" class="edit-button" title="Chỉnh sửa" >
               <i class="fa-solid fa-pen-to-square" style="font-size: 18px; color: #0066CC;"></i>
           </a>
         </div>

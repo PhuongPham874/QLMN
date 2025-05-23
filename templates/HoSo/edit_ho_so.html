@@ -15,10 +15,10 @@
             <div class="employee-form-card-body">
                 <!-- Tabs styled like the screenshot -->
                 <div class="employee-form-tab-container">
-                    <a href="{% url 'edit_ho_so' nhan_vien.id %}" class="employee-form-tab-item employee-form-tab-active">
+                    <a href="{% url 'edit_ho_so' nhan_vien_duoc_xem.id %}" class="employee-form-tab-item employee-form-tab-active">
                         Thông tin cá nhân
                     </a>
-                    <a href="{% url 'edit_hdld' nhan_vien.id %}" class="employee-form-tab-item">
+                    <a href="{% url 'edit_hdld' nhan_vien_duoc_xem.id %}" class="employee-form-tab-item">
                         Hợp đồng lao động
                     </a>
                 </div>
@@ -27,8 +27,8 @@
                 <div class="employee-form-avatar-container">
                     <div class="employee-form-avatar-wrapper">
                         <div class="employee-form-avatar-circle">
-                            {% if nhan_vien.anh_ca_nhan.url %}
-                                <img src="{{ nhan_vien.anh_ca_nhan.url }}" alt="User Avatar" class="employee-form-avatar-preview" style="display: block;">
+                            {% if nhan_vien_duoc_xem.anh_ca_nhan.url %}
+                                <img src="{{ nhan_vien_duoc_xem.anh_ca_nhan.url }}" alt="User Avatar" class="employee-form-avatar-preview" style="display: block;">
                                 <div class="employee-form-avatar-overlay">
                                     <i class="fas fa-camera"></i>
                                 </div>
@@ -54,7 +54,7 @@
                     <div class="employee-form-section-content">
                         <div class="employee-form-field">
                             <label for="ten_nv">Họ và tên:</label>
-                            <input type="text" class="employee-form-input" id="ten_nv" name="ten_nv" value="{{ nhan_vien.ten_nv }}">
+                            <input type="text" class="employee-form-input" id="ten_nv" name="ten_nv" value="{{ nhan_vien_duoc_xem.ten_nv }}">
                         </div>
 
                         <div class="employee-form-field">
@@ -73,37 +73,37 @@
 
                         <div class="employee-form-field">
                             <label for="ngay_sinh">Ngày sinh:</label>
-                            <input type="date" class="employee-form-input" id="ngay_sinh" name="ngay_sinh" value="{{ nhan_vien.ngay_sinh|date:'Y-m-d' }}">
+                            <input type="date" class="employee-form-input" id="ngay_sinh" name="ngay_sinh" value="{{ nhan_vien_duoc_xem.ngay_sinh|date:'Y-m-d' }}">
                         </div>
 
                         <div class="employee-form-field">
                             <label for="so_dien_thoai">Số điện thoại:</label>
-                            <input type="text" class="employee-form-input" id="so_dien_thoai" name="so_dien_thoai" value="{{ nhan_vien.so_dien_thoai }}">
+                            <input type="text" class="employee-form-input" id="so_dien_thoai" name="so_dien_thoai" value="{{ nhan_vien_duoc_xem.so_dien_thoai }}">
                         </div>
 
                         <div class="employee-form-field">
                             <label for="email">Email:</label>
-                            <input type="email" class="employee-form-input" id="email" name="email" value="{{ nhan_vien.email }}">
+                            <input type="email" class="employee-form-input" id="email" name="email" value="{{ nhan_vien_duoc_xem.email }}">
                         </div>
 
                         <div class="employee-form-field">
                             <label for="so_cccd">Số CCCD:</label>
-                            <input type="text" class="employee-form-input" id="so_cccd" name="so_cccd" value="{{ nhan_vien.so_cccd }}">
+                            <input type="text" class="employee-form-input" id="so_cccd" name="so_cccd" value="{{ nhan_vien_duoc_xem.so_cccd }}">
                         </div>
 
                         <div class="employee-form-field">
                             <label for="ngay_cap">Ngày cấp:</label>
-                            <input type="date" class="employee-form-input" id="ngay_cap" name="ngay_cap" value="{{ nhan_vien.ngay_cap|date:'Y-m-d' }}">
+                            <input type="date" class="employee-form-input" id="ngay_cap" name="ngay_cap" value="{{ nhan_vien_duoc_xem.ngay_cap|date:'Y-m-d' }}">
                         </div>
 
                         <div class="employee-form-field">
                             <label for="noi_cap">Nơi cấp:</label>
-                            <input type="text" class="employee-form-input" id="noi_cap" name="noi_cap" value="{{ nhan_vien.noi_cap }}">
+                            <input type="text" class="employee-form-input" id="noi_cap" name="noi_cap" value="{{ nhan_vien_duoc_xem.noi_cap }}">
                         </div>
 
                         <div class="employee-form-field">
                             <label for="dia_chi_tam_tru">Địa chỉ tạm trú:</label>
-                            <input type="text" class="employee-form-input" id="dia_chi_tam_tru" name="dia_chi_tam_tru" value="{{ nhan_vien.dia_chi_tam_tru }}">
+                            <input type="text" class="employee-form-input" id="dia_chi_tam_tru" name="dia_chi_tam_tru" value="{{ nhan_vien_duoc_xem.dia_chi_tam_tru }}">
                         </div>
                     </div>
                 </div>
@@ -118,24 +118,24 @@
                     <div class="employee-form-section-content" style="display: none;">
                         <div class="employee-form-field">
                             <label for="vi_tri_cong_viec">Vị trí làm việc:</label>
-                            <input type="text" class="employee-form-input" id="vi_tri_cong_viec" name="vi_tri_cong_viec" value="{{ nhan_vien.vi_tri_cong_viec }}">
+                            <input type="text" class="employee-form-input" id="vi_tri_cong_viec" name="vi_tri_cong_viec" value="{{ nhan_vien_duoc_xem.vi_tri_cong_viec }}">
                         </div>
 
                         <div class="employee-form-field">
                             <label for="chuc_vu">Chức vụ:</label>
-                            <input type="text" class="employee-form-input" id="chuc_vu" name="chuc_vu" value="{{ nhan_vien.chuc_vu }}">
+                            <input type="text" class="employee-form-input" id="chuc_vu" name="chuc_vu" value="{{ nhan_vien_duoc_xem.chuc_vu }}">
                         </div>
 
                         <div class="employee-form-field">
                             <label for="to_phong_ban">Tổ (Phòng ban):</label>
                             <select class="employee-form-select" id="to_phong_ban" name="to_phong_ban">
                                 <option value="">-- Chọn phòng ban --</option>
-                                <option value="Lớp mầm" {% if nhan_vien.to_phong_ban == "Lớp mầm" %}selected{% endif %}>Lớp mầm</option>
-                                <option value="Lớp chồi" {% if nhan_vien.to_phong_ban == "Lớp chồi" %}selected{% endif %}>Lớp chồi</option>
-                                <option value="Lớp lá" {% if nhan_vien.to_phong_ban == "Lớp lá" %}selected{% endif %}>Lớp lá</option>
-                                <option value="Văn phòng" {% if nhan_vien.to_phong_ban == "Văn phòng" %}selected{% endif %}>Văn phòng</option>
-                                <option value="Y tế - Hậu cần" {% if nhan_vien.to_phong_ban == "Y tế - Hậu cần" %}selected{% endif %}>Y tế - Hậu cần</option>
-                                <option value="BGH" {% if nhan_vien.to_phong_ban == "BGH" %}selected{% endif %}>BGH</option>
+                                <option value="Lớp mầm" {% if nhan_vien_duoc_xem.to_phong_ban == "Lớp mầm" %}selected{% endif %}>Lớp mầm</option>
+                                <option value="Lớp chồi" {% if nhan_vien_duoc_xem.to_phong_ban == "Lớp chồi" %}selected{% endif %}>Lớp chồi</option>
+                                <option value="Lớp lá" {% if nhan_vien_duoc_xem.to_phong_ban == "Lớp lá" %}selected{% endif %}>Lớp lá</option>
+                                <option value="Văn phòng" {% if nhan_vien_duoc_xem.to_phong_ban == "Văn phòng" %}selected{% endif %}>Văn phòng</option>
+                                <option value="Y tế - Hậu cần" {% if nhan_vien_duoc_xem.to_phong_ban == "Y tế - Hậu cần" %}selected{% endif %}>Y tế - Hậu cần</option>
+                                <option value="BGH" {% if nhan_vien_duoc_xem.to_phong_ban == "BGH" %}selected{% endif %}>BGH</option>
                             </select>
                         </div>
                     </div>
@@ -153,27 +153,27 @@
                             <label for="trinh_do_hoc_van">Trình độ học vấn:</label>
                             <select class="employee-form-select" id="trinh_do_hoc_van" name="trinh_do_hoc_van">
                                 <option value="">-- Chọn trình độ học vấn --</option>
-                                <option value="Dưới trung cấp" {% if nhan_vien.trinh_do_hoc_van == "Dưới trung cấp" %}selected{% endif %}>Dưới trung cấp</option>
-                                <option value="Trung cấp" {% if nhan_vien.trinh_do_hoc_van == "Trung cấp" %}selected{% endif %}>Trung cấp</option>
-                                <option value="Cao đẳng" {% if nhan_vien.trinh_do_hoc_van == "Cao đẳng" %}selected{% endif %}>Cao đẳng</option>
-                                <option value="Đại học" {% if nhan_vien.trinh_do_hoc_van == "Đại học" %}selected{% endif %}>Đại học</option>
-                                <option value="Thạc sĩ" {% if nhan_vien.trinh_do_hoc_van == "Thạc sĩ" %}selected{% endif %}>Thạc sĩ</option>
+                                <option value="Dưới trung cấp" {% if nhan_vien_duoc_xem.trinh_do_hoc_van == "Dưới trung cấp" %}selected{% endif %}>Dưới trung cấp</option>
+                                <option value="Trung cấp" {% if nhan_vien_duoc_xem.trinh_do_hoc_van == "Trung cấp" %}selected{% endif %}>Trung cấp</option>
+                                <option value="Cao đẳng" {% if nhan_vien_duoc_xem.trinh_do_hoc_van == "Cao đẳng" %}selected{% endif %}>Cao đẳng</option>
+                                <option value="Đại học" {% if nhan_vien_duoc_xem.trinh_do_hoc_van == "Đại học" %}selected{% endif %}>Đại học</option>
+                                <option value="Thạc sĩ" {% if nhan_vien_duoc_xem.trinh_do_hoc_van == "Thạc sĩ" %}selected{% endif %}>Thạc sĩ</option>
                             </select>
                         </div>
 
                         <div class="employee-form-field">
                             <label for="nam_tn">Năm TN:</label>
-                            <input type="number" class="employee-form-input" id="nam_tn" name="nam_tn" value="{{ nhan_vien.nam_tn }}">
+                            <input type="number" class="employee-form-input" id="nam_tn" name="nam_tn" value="{{ nhan_vien_duoc_xem.nam_tn }}">
                         </div>
 
                         <div class="employee-form-field">
                             <label for="chuyen_nganh">Chuyên ngành:</label>
-                            <input type="text" class="employee-form-input" id="chuyen_nganh" name="chuyen_nganh" value="{{ nhan_vien.chuyen_nganh }}">
+                            <input type="text" class="employee-form-input" id="chuyen_nganh" name="chuyen_nganh" value="{{ nhan_vien_duoc_xem.chuyen_nganh }}">
                         </div>
 
                         <div class="employee-form-field">
                             <label for="noi_dao_tao">Nơi đào tạo:</label>
-                            <input type="text" class="employee-form-input" id="noi_dao_tao" name="noi_dao_tao" value="{{ nhan_vien.noi_dao_tao }}">
+                            <input type="text" class="employee-form-input" id="noi_dao_tao" name="noi_dao_tao" value="{{ nhan_vien_duoc_xem.noi_dao_tao }}">
                         </div>
                     </div>
                 </div>
@@ -183,7 +183,7 @@
                 <button type="submit" class="employee-form-btn-save">
                     <i class="fas fa-save"></i> Lưu
                 </button>
-                <a href="{% url 'QLXemHoSo' nhan_vien.id %}" class="employee-form-btn-cancel">
+                <a href="{% url 'QLXemHoSo' nhan_vien_duoc_xem.id %}" class="employee-form-btn-cancel">
                     <i class="fas fa-times"></i> Hủy
                 </a>
             </div>

@@ -5,7 +5,13 @@
 <div class="salary-page">
   <!-- Header Section -->
   <div class="header-container">
-    <h2 class="header-title">Lương của: {{ nhan_vien.ten_nv }}</h2>
+    <h2 class="header-title">
+      {% if nhan_vien.vi_tri_cong_viec == 'Kế toán' %}
+        Lương của: {{ nhan_vien_duoc_xem.ten_nv }}
+      {% else %}
+        Lương của tôi
+      {% endif %}
+    </h2>
 
     <div class="header-actions">
     </div>
