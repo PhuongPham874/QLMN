@@ -4,7 +4,7 @@ from HOME.models import NhanVien, HopDongLaoDong, PhuCapNhanVien, User, PhuCap
 from datetime import datetime
 from django.contrib.auth.models import User
 from .forms import NhanVienForm, HopDongLaoDongForm
-
+from django.contrib.auth.decorators import (login_required,permission_required)
 
 
 # Hiển thị thông tin hợp đồng lao động và phụ cấp của nhân viên
@@ -45,7 +45,8 @@ def danh_sach_nhan_vien(request):
 '''
 
 
-
+@login_required
+@permission_required('HOME.View_danh_sach_ho_so_nhan_vien')
 def danh_sach_nhan_vien(request):
     current_user = get_object_or_404(NhanVien, user=request.user)
     query = request.GET.get('q', '')  # Lấy giá trị tìm kiếm từ thanh tìm kiếm
@@ -59,8 +60,8 @@ def danh_sach_nhan_vien(request):
         'nhan_vien': current_user,
         'query': query
     })
-
-
+@login_required
+@permission_required('HOME.View_add_nhan_vien')
 def Add_ho_so(request):
     current_user = get_object_or_404(NhanVien, user=request.user)
     form = NhanVienForm(request.POST, request.FILES)
@@ -87,7 +88,8 @@ def Add_ho_so(request):
     # Trả về template để hiển thị form
     return render(request, 'HoSo/ThemMoiHoSo.html', {'form': form, 'nhan_vien': current_user})
 
-
+@login_required
+@permission_required('HOME.View_add_nhan_vien')
 def them_moi_hop_dong(request, nhan_vien_id):
     current_user = get_object_or_404(NhanVien, user=request.user)
     nhan_vien = NhanVien.objects.get(id=nhan_vien_id)
@@ -161,6 +163,8 @@ from HOME.models import NhanVien
 from .forms import NhanVienForm
 
 # Chỉnh sửa hồ sơ nhân viên
+@login_required
+@permission_required('HOME.View_add_nhan_vien')
 def edit_ho_so(request, id):
     current_user = get_object_or_404(NhanVien, user=request.user)
     # Lấy nhân viên theo ID
@@ -185,7 +189,8 @@ def edit_ho_so(request, id):
 from django.shortcuts import render, redirect, get_object_or_404
 from HOME.models import NhanVien, HopDongLaoDong
 from .forms import HopDongLaoDongForm  # Form chỉnh sửa hợp đồng lao động (nếu chưa có)
-
+@login_required
+@permission_required('HOME.View_add_nhan_vien')
 def edit_hdld(request, nhan_vien_id):
     # Lấy thông tin nhân viên và hợp đồng lao động của nhân viên đó
     nhan_vien = get_object_or_404(NhanVien, id=nhan_vien_id)

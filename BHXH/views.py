@@ -4,12 +4,16 @@ from django.shortcuts import render,redirect,get_object_or_404
 from django.contrib import messages
 from HOME.models import BHXH,NhanVien,HopDongLaoDong,DONGBHXH
 from .forms import *
+from django.contrib.auth.decorators import (login_required,permission_required)
 def tinh_tong_tien_bhxh(nhan_vien, nhan_vien_dong, truong_dong):
     hop_dong = HopDongLaoDong.objects.get(nhan_vien=nhan_vien)
     muc_luong = hop_dong.luong
         # Tính tổng tiền BHXH: (nhân viên đóng + trường đóng) * mức lương
     tong_tien = ((nhan_vien_dong / 100) * muc_luong) + ((truong_dong / 100) * muc_luong)
     return tong_tien
+
+@login_required
+@permission_required('HOME.view_bhxh')
 def bhxh(request):
     nhanvien = get_object_or_404(NhanVien, user=request.user)
     bhxh_list = BHXH.objects.all().order_by('nhan_vien__id')
@@ -30,7 +34,8 @@ def bhxh(request):
         'selected_nv_id': nv_id if nv_id else '',
     })
 
-
+@login_required
+@permission_required('HOME.add_bhxh')
 def themmoiBHXH(request):
     nhanvien = get_object_or_404(NhanVien, user=request.user)
     # Lấy danh sách nhân viên chưa có BHXH
@@ -60,6 +65,9 @@ def themmoiBHXH(request):
         form.fields['ten_nv'].queryset = nhan_vien_choices
     return render(request, 'BHXH/ThemBHXH.html', {'form': form, 'nhan_vien':nhanvien})
 
+
+@login_required
+@permission_required('HOME.change_bhxh')
 def chinhsuaBHXH(request, ma_nv):
     current_user = get_object_or_404(NhanVien, user=request.user)
     bhxh = get_object_or_404(BHXH, nhan_vien_id=ma_nv)
