@@ -91,7 +91,7 @@ import win32gui
 import win32con
 
 # Đường dẫn đến thư mục dataset
-dataset_path = r"C:\Users\HP\Desktop\LTW\Dataset"
+dataset_path = r"C:\Users\HP\Desktop\LTW\QLMN1\QLMN\Dataset"
 
 def set_window_always_on_top(window_name="Webcam"):
     hwnd = win32gui.FindWindow(None, window_name)
