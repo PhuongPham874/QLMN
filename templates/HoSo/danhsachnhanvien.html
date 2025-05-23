@@ -26,7 +26,7 @@
           </div>
         </form>
       </div>
-
+      {% if nhan_vien.vi_tri_cong_viec == 'Nhân sự' %}
       <a href="{% url 'ThemMoiHoSo' %}" class="add-button">
         <svg class="button-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <line x1="12" y1="5" x2="12" y2="19"></line>
@@ -34,6 +34,7 @@
         </svg>
         Thêm mới
       </a>
+      {% endif %}
     </div>
 
     <!-- Employee Table -->

@@ -147,6 +147,7 @@ def xem_bang_luong_cua_toi(request):
         'years' : years
     })
 @login_required
+@permission_required('HOME.view_danh_sach_nhan_vien_luong')
 def danh_sach_nhan_vien_va_luong(request):
     nhan_vien = get_object_or_404(NhanVien, user=request.user)
     if nhan_vien.vi_tri_cong_viec not in ['Kế toán']:

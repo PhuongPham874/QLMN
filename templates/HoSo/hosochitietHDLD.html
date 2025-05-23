@@ -166,9 +166,11 @@
         </table>
       </div>
         <div class="profile-action" style="text-align: right; margin-top: 20px;">
+          {% if nhan_vien.vi_tri_cong_viec == 'Nhân sự' %}
           <a href="{% url 'edit_hdld' nhan_vien.id %}" class="edit-button" title="Chỉnh sửa" >
               <i class="fa-solid fa-pen-to-square" style="font-size: 18px; color: #0066CC;"></i>
           </a>
+          {% endif %}
       </div>
     </div>
   </div>
