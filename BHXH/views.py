@@ -61,6 +61,7 @@ def themmoiBHXH(request):
     return render(request, 'BHXH/ThemBHXH.html', {'form': form, 'nhan_vien':nhanvien})
 
 def chinhsuaBHXH(request, ma_nv):
+    current_user = get_object_or_404(NhanVien, user=request.user)
     bhxh = get_object_or_404(BHXH, nhan_vien_id=ma_nv)
     if request.method == 'POST':
         form = updateBHXH(request.POST, instance=bhxh)
@@ -73,7 +74,7 @@ def chinhsuaBHXH(request, ma_nv):
             messages.error(request, "Vui lòng kiểm tra lại thông tin.")
     else:
         form = updateBHXH(instance=bhxh)
-    return render(request, "BHXH/ChinhsuaBHXH.html", {"form": form,"bhxh": bhxh})
+    return render(request, "BHXH/ChinhsuaBHXH.html", {"form": form,"bhxh": bhxh,'nhan_vien': current_user})
 
 def thongtinchitiet(request,ma_nv):
     nhanvien = get_object_or_404(NhanVien, user=request.user)

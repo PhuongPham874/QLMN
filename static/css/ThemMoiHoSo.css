@@ -1,0 +1,342 @@
+/* Modern black and white color scheme */
+:root {
+    --primary: #000000;
+    --secondary: #333333;
+    --light-gray: #f5f5f5;
+    --medium-gray: #e0e0e0;
+    --dark-gray: #666666;
+    --white: #ffffff;
+    --blue: #0066CC;
+    --light-blue: #4D94FF;
+}
+
+/* Main container */
+.sh-content {
+    width: 80%;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+
+/* Main title */
+.sh-main-title {
+    color: var(--blue);
+    text-align: center;
+    font-size: 28px;
+    font-weight: bold;
+    margin: 20px 0;
+    flex-grow: 1;
+}
+
+/* Tab styling */
+.sh-tab-container {
+    display: flex;
+    margin-bottom: 20px;
+    border-bottom: 1px solid var(--medium-gray);
+}
+
+.sh-tab-item {
+    padding: 12px 20px;
+    font-size: 18px;
+    font-weight: 500;
+    text-decoration: none;
+    text-align: center;
+    cursor: pointer;
+    color: var(--dark-gray);
+    position: relative;
+    margin-right: 20px;
+    width: 50%;
+}
+
+.sh-tab-active {
+    color: var(--blue);
+    font-weight: bold;
+}
+
+.sh-tab-active::after {
+    content: '';
+    position: absolute;
+    bottom: -1px;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background-color: var(--blue);
+}
+
+/* Disabled tab styling for "Hợp đồng lao động" */
+.sh-tab-disabled {
+    cursor: not-allowed;
+    color: var(--dark-gray);
+    position: relative;
+}
+
+/* Tooltip for warning message */
+.sh-tab-disabled:hover::after {
+    content: "Phải lưu thông tin nhân viên trước khi thêm mới Hợp đồng lao động!";
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #ff4444;
+    color: var(--white);
+    padding: 8px 12px;
+    border-radius: 4px;
+    font-size: 14px;
+    white-space: nowrap;
+    z-index: 10;
+}
+
+/* Form section styling */
+.sh-form-section {
+    margin-bottom: 20px;
+    border: 1px solid var(--medium-gray);
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+.sh-section-header {
+    background-color: var(--light-gray);
+    padding: 15px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    color: var(--primary);
+    transition: all 0.2s ease;
+}
+
+.sh-section-header:hover {
+    background-color: var(--medium-gray);
+}
+
+.sh-section-header i {
+    margin-right: 10px;
+}
+
+.sh-section-header span {
+    margin-left: 10px;
+}
+
+.sh-section-content {
+    padding: 30px;
+    background-color: var(--white);
+}
+
+/* Form field styling - vertical layout */
+.sh-form-field {
+    margin-bottom: 20px;
+}
+
+.sh-form-field label {
+    display: block;
+    font-weight: 500;
+    font-size: 16px;
+    color: var(--secondary);
+    margin-bottom: 8px;
+}
+
+.sh-form-input {
+    width: 100%;
+    font-size: 16px;
+    padding: 10px 12px;
+    border-radius: 4px;
+    border: 1px solid var(--medium-gray);
+    transition: border-color 0.2s ease;
+}
+
+.sh-form-input:focus {
+    outline: none;
+    border-color: var(--secondary);
+    box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.1);
+}
+
+/* Radio buttons */
+.sh-radio-group {
+    display: flex;
+    gap: 20px;
+}
+
+.sh-radio-option {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.sh-radio-option label {
+    margin-bottom: 0;
+    font-weight: normal;
+}
+
+/* Card styling */
+.sh-card {
+    width: 80%;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    overflow: hidden;
+    margin-bottom: 20px;
+    background-color: var(--white);
+    margin: 0 auto;
+}
+
+.sh-card-body {
+    padding: 25px;
+    background-color: var(--white);
+}
+
+.sh-card-footer {
+    display: flex;
+    justify-content: flex-end;
+    padding: 15px 25px;
+    background-color: var(--light-gray);
+    border-top: 1px solid var(--medium-gray);
+}
+
+/* Button styling */
+.sh-btn-back {
+    background-color: var(--dark-gray);
+    color: var(--white);
+    border: none;
+    padding: 10px 16px;
+    border-radius: 4px;
+    font-weight: 500;
+    text-decoration: none;
+    transition: background-color 0.2s ease;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.sh-btn-back:hover {
+    background-color: var(--secondary);
+}
+
+.sh-btn-save {
+    background-color: #0066CC;
+    color: var(--white);
+    border: none;
+    padding: 10px 20px;
+    border-radius: 4px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.sh-btn-save:hover {
+    background-color: #0055AA;
+}
+
+/* Avatar styling */
+.sh-avatar-container {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 30px;
+}
+
+.sh-avatar-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.sh-avatar-circle {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    background-color: var(--light-gray);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid var(--medium-gray);
+    cursor: pointer;
+    overflow: hidden;
+    position: relative;
+}
+
+.sh-avatar-icon {
+    font-size: 48px;
+    color: #999;
+}
+
+.sh-avatar-preview {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.sh-avatar-label {
+    margin-top: 10px;
+    color: var(--dark-gray);
+    font-size: 14px;
+    text-align: center;
+}
+
+.sh-avatar-input {
+    display: none;
+}
+
+.sh-avatar-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.3);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+}
+
+.sh-avatar-circle:hover .sh-avatar-overlay {
+    opacity: 1;
+}
+
+.sh-avatar-overlay i {
+    color: white;
+    font-size: 24px;
+}
+
+/* Chevron for section toggle */
+.sh-section-chevron {
+    margin-left: auto;
+    transition: transform 0.3s ease;
+}
+
+.sh-section-header.active .sh-section-chevron {
+    transform: rotate(180deg);
+}
+
+/* Header with back button */
+.sh-header-container {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+    width: 100%;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .sh-content {
+        width: 95%;
+    }
+
+    .sh-card {
+        width: 100%;
+    }
+
+    .sh-header-container {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 15px;
+    }
+
+    .sh-main-title {
+        font-size: 22px;
+        text-align: left;
+    }
+}

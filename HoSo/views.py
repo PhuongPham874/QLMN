@@ -26,11 +26,12 @@ def hosochitietHDLD(request, nhan_vien_id):
 
 # Hiển thị thông tin cá nhân của nhân viên
 def hosochitiet(request, id):
+    current_user = get_object_or_404(NhanVien, user=request.user)
     nhan_vien = get_object_or_404(NhanVien, id=id)
 
     hop_dong = HopDongLaoDong.objects.filter(nhan_vien=nhan_vien).first()  # Kiểm tra xem có hợp đồng lao động không
     context = {
-        'nhan_vien': nhan_vien, 'hop_dong': hop_dong
+        'nhan_vien_duoc_xem': nhan_vien, 'hop_dong': hop_dong, 'nhan_vien': current_user
     }
 
     return render(request, 'HoSo/hosochitiet.html', context)
@@ -46,6 +47,7 @@ def danh_sach_nhan_vien(request):
 
 
 def danh_sach_nhan_vien(request):
+    current_user = get_object_or_404(NhanVien, user=request.user)
     query = request.GET.get('q', '')  # Lấy giá trị tìm kiếm từ thanh tìm kiếm
     if query:
         nhan_vien_list = NhanVien.objects.filter(ten_nv__icontains=query)  # Lọc nhân viên theo tên
@@ -54,11 +56,13 @@ def danh_sach_nhan_vien(request):
 
     return render(request, 'HoSo/danhsachnhanvien.html', {
         'nhan_vien_list': nhan_vien_list,
+        'nhan_vien': current_user,
         'query': query
     })
 
 
 def Add_ho_so(request):
+    current_user = get_object_or_404(NhanVien, user=request.user)
     form = NhanVienForm(request.POST, request.FILES)
     # Kiểm tra xem form có hợp lệ không
     if form.is_valid():
@@ -81,10 +85,11 @@ def Add_ho_so(request):
         print(form.errors)
 
     # Trả về template để hiển thị form
-    return render(request, 'HoSo/ThemMoiHoSo.html', {'form': form})
+    return render(request, 'HoSo/ThemMoiHoSo.html', {'form': form, 'nhan_vien': current_user})
 
 
 def them_moi_hop_dong(request, nhan_vien_id):
+    current_user = get_object_or_404(NhanVien, user=request.user)
     nhan_vien = NhanVien.objects.get(id=nhan_vien_id)
     form = HopDongLaoDongForm(request.POST or None, request.FILES or None, nhan_vien=nhan_vien)
     danh_sach_phu_cap = PhuCap.objects.all()
@@ -111,7 +116,7 @@ def them_moi_hop_dong(request, nhan_vien_id):
     else:
         # Nếu form không hợp lệ, in ra lỗi để kiểm tra
         print(form.errors)
-    return render(request, 'HoSo/ThemMoiHoSo_HDLD.html', {'form': form, 'nhan_vien': nhan_vien, 'danh_sach_phu_cap': danh_sach_phu_cap,})
+    return render(request, 'HoSo/ThemMoiHoSo_HDLD.html', {'form': form, 'nhan_vien_duoc_xem': nhan_vien,'nhan_vien': current_user, 'danh_sach_phu_cap': danh_sach_phu_cap,})
 
 
 @login_required
@@ -157,6 +162,7 @@ from .forms import NhanVienForm
 
 # Chỉnh sửa hồ sơ nhân viên
 def edit_ho_so(request, id):
+    current_user = get_object_or_404(NhanVien, user=request.user)
     # Lấy nhân viên theo ID
     nhan_vien = get_object_or_404(NhanVien, id=id)
     # Nếu là POST request, nghĩa là người dùng đã nhấn Lưu
@@ -173,7 +179,7 @@ def edit_ho_so(request, id):
         form = NhanVienForm(instance=nhan_vien)
 
     # Render lại trang với form
-    return render(request, 'HoSo/edit_ho_so.html', {'form': form, 'nhan_vien': nhan_vien})
+    return render(request, 'HoSo/edit_ho_so.html', {'form': form, 'nhan_vien_duoc_xem': nhan_vien, 'nhan_vien':current_user})
 
 
 from django.shortcuts import render, redirect, get_object_or_404
