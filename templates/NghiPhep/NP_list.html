@@ -53,7 +53,7 @@
     {% url 'DanhSachNP' as url_np %}
     {% url 'DanhSachNP_HT' as url_np_ht %}
 
-    {% if nhan_vien.chuc_vu == 'Hiệu Trưởng' or nhan_vien.chuc_vu == 'Hiệu phó chuyên môn' or nhan_vien.chuc_vu == 'Hiệu phó hoạt động'  or nhan_vien.chuc_vu == 'Tổ trưởng' %}
+    {% if nhan_vien.chuc_vu == 'Hiệu Trưởng' or nhan_vien.chuc_vu == 'Hiệu phó chuyên môn' or nhan_vien.chuc_vu == 'Hiệu phó hoạt động' or nhan_vien.chuc_vu == 'Tổ trưởng' %}
         <ul class="custom-nav-tabs">
             {% if nhan_vien.chuc_vu == 'Hiệu Trưởng' %}
             <li>

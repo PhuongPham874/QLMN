@@ -147,7 +147,6 @@ def xem_bang_luong_cua_toi(request):
         'years' : years
     })
 @login_required
-@permission_required('KeToan')
 def danh_sach_nhan_vien_va_luong(request):
     nhan_vien = get_object_or_404(NhanVien, user=request.user)
     if nhan_vien.vi_tri_cong_viec not in ['Kế toán']:
@@ -163,6 +162,7 @@ def danh_sach_nhan_vien_va_luong(request):
 
 @login_required
 def xem_bang_luong_cua_nhan_vien(request, nhan_vien_id):
+    current_user = get_object_or_404(NhanVien, user=request.user)
     nhan_vien = get_object_or_404(NhanVien, id=nhan_vien_id)
     cham_cong_data = ChamCong.objects.filter(nhan_vien=nhan_vien)
 
@@ -204,7 +204,8 @@ def xem_bang_luong_cua_nhan_vien(request, nhan_vien_id):
 
     return render(request, 'Luong/danh_sach_luong.html', {
         'bang_luong_list': bang_luong_list,
-        'nhan_vien': nhan_vien,
+        'nhan_vien_duoc_xem': nhan_vien,
+        'nhan_vien': current_user,
         'years': years
     })
 
