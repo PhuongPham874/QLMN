@@ -62,7 +62,7 @@ class HopDongLaoDongForm(forms.ModelForm):
         cleaned_data = super().clean()
 
         required_fields = [
-            'so_hop_dong', 'vi_tri_lam_viec', 'thoi_han_hop_dong',
+            'so_hop_dong', 'thoi_han_hop_dong',
             'loai_hop_dong', 'luong', 'ngay_ky', 'tu_ngay', 'den_ngay', 'trang_thai_hop_dong'
         ]
 

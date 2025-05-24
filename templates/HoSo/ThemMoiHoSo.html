@@ -29,6 +29,14 @@
                     </div>
                 </div>
 
+                {% if form.non_field_errors %}
+                    <div class="alert alert-danger" style="font-style: italic; font-size: 15px; color: red; margin-bottom: 15px">
+                        {% for error in form.non_field_errors %}
+                            <p>*{{ error }}</p>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+
                 <!-- Avatar upload section -->
                 <div class="sh-avatar-container">
                     <div class="sh-avatar-wrapper">
@@ -79,16 +87,25 @@
                         <div class="sh-form-field">
                             <label for="so_dien_thoai">Số điện thoại:</label>
                             <input type="text" class="sh-form-input" id="so_dien_thoai" name="so_dien_thoai" placeholder="Nhập số điện thoại">
+                            {% if form.so_dien_thoai.errors %}
+                                <div class="error-message" style="font-style: italic; font-size: 12px; color: red; margin-bottom: 15px">{{ form.so_dien_thoai.errors.0 }}</div>
+                            {% endif %}
                         </div>
 
                         <div class="sh-form-field">
                             <label for="email">Email:</label>
                             <input type="email" class="sh-form-input" id="email" name="email" placeholder="Nhập địa chỉ email">
+                            {% if form.email.errors %}
+                                <div class="error-message" style="font-style: italic; font-size: 12px; color: red; margin-bottom: 15px">{{ form.email.errors.0 }}</div>
+                            {% endif %}
                         </div>
 
                         <div class="sh-form-field">
                             <label for="so_cccd">Số CCCD:</label>
                             <input type="text" class="sh-form-input" id="so_cccd" name="so_cccd" placeholder="Nhập số căn cước công dân">
+                            {% if form.so_cccd.errors %}
+                                <div class="text-danger" style="font-style: italic; font-size: 12px; color: red; margin-bottom: 15px">{{ form.so_cccd.errors.0 }}</div>
+                            {% endif %}
                         </div>
 
                         <div class="sh-form-field">
