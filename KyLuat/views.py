@@ -17,6 +17,13 @@ def ky_luat_khen_thuong(request):
         logger.error(f"Không tìm thấy nhân viên cho user {request.user.username}")
         raise PermissionDenied("Bạn không phải nhân viên hợp lệ.")
 
+    # Định nghĩa allowed_roles
+    allowed_roles = ['HieuTruong', 'HieuPho', 'ToTruong']
+    has_permission = any(request.user.groups.filter(name=group).exists() for group in allowed_roles)
+
+    # Debug: Kiểm tra thông tin user và nhóm
+    print(f"ky_luat_khen_thuong - User: {request.user.username}, Groups: {[g.name for g in request.user.groups.all()]}, vi_tri_cong_viec: {nhan_vien.vi_tri_cong_viec}")
+
     # Lấy danh sách kỷ luật của chính người dùng
     ky_luat_cua_toi = KyLuat.objects.filter(nhan_vien=nhan_vien).order_by('-ngay_ra_quyet_dinh')
     thang_list_ky_luat = KyLuat.objects.filter(nhan_vien=nhan_vien).dates('ngay_bat_dau', 'month', order='DESC')
@@ -33,13 +40,32 @@ def ky_luat_khen_thuong(request):
     # Lấy danh sách kỷ luật của nhân viên (nếu có quyền)
     ky_luat_list = KyLuat.objects.none()
     nhan_vien_list = NhanVien.objects.none()
-    if request.user.has_perm('HOME.View_danh_sach_ky_luat'):
-        if request.user.has_perm('HOME.view_all_ky_luat'):
+    error_message = None
+    if has_permission:
+        if request.user.groups.filter(name='HieuTruong').exists():
             ky_luat_list = KyLuat.objects.all().order_by('-ngay_ra_quyet_dinh')
             nhan_vien_list = NhanVien.objects.all()
-        else:
+        elif request.user.groups.filter(name='ToTruong').exists():
             ky_luat_list = KyLuat.objects.filter(nhan_vien__to_phong_ban=nhan_vien.to_phong_ban).order_by('-ngay_ra_quyet_dinh')
             nhan_vien_list = NhanVien.objects.filter(to_phong_ban=nhan_vien.to_phong_ban)
+            if not ky_luat_list.exists():
+                error_message = "Không có kỷ luật nào trong tổ/phòng ban của bạn."
+        elif request.user.groups.filter(name='HieuPho').exists():
+            if nhan_vien.vi_tri_cong_viec == 'Hiệu phó chuyên môn':
+                ky_luat_list = KyLuat.objects.filter(nhan_vien__vi_tri_cong_viec__in=['Giáo viên', 'Kế toán', 'Nhân sự', 'Tuyển sinh']).order_by('-ngay_ra_quyet_dinh')
+                nhan_vien_list = NhanVien.objects.filter(vi_tri_cong_viec__in=['Giáo viên', 'Kế toán', 'Nhân sự', 'Tuyển sinh'])
+                if not ky_luat_list.exists():
+                    error_message = "Không có kỷ luật nào cho các vị trí Giáo viên, Kế toán, Nhân sự, hoặc Tuyển sinh."
+            elif nhan_vien.vi_tri_cong_viec == 'Hiệu phó hoạt động':
+                ky_luat_list = KyLuat.objects.filter(nhan_vien__vi_tri_cong_viec__in=['Bếp', 'Y - tế']).order_by('-ngay_ra_quyet_dinh')
+                nhan_vien_list = NhanVien.objects.filter(vi_tri_cong_viec__in=['Bếp', 'Y - tế'])
+                if not ky_luat_list.exists():
+                    error_message = "Không có kỷ luật nào cho các vị trí Bếp hoặc Y - tế."
+            else:
+                error_message = f"Vị trí công việc '{nhan_vien.vi_tri_cong_viec}' không được hỗ trợ để xem danh sách kỷ luật."
+
+        # Debug: Kiểm tra số lượng kỷ luật và nhân viên
+        print(f"ky_luat_khen_thuong - ky_luat_list count: {ky_luat_list.count()}, nhan_vien_list count: {nhan_vien_list.count()}")
 
         # Lọc kỷ luật của nhân viên theo nhân viên/tháng/năm
         nhan_vien_id = request.GET.get('nhan_vien')
@@ -63,13 +89,19 @@ def ky_luat_khen_thuong(request):
 
     # Lấy danh sách khen thưởng của nhân viên (nếu có quyền)
     rewards = KhenThuong.objects.none()
-    if request.user.has_perm('HOME.View_danh_sach_khen_thuong'):
-        if request.user.has_perm('HOME.view_all_khenthuong'):
+    if has_permission:
+        if request.user.groups.filter(name='HieuTruong').exists():
             rewards = KhenThuong.objects.all().order_by('-ngay_tao')
-        else:
+        elif request.user.groups.filter(name='ToTruong').exists():
             rewards = KhenThuong.objects.filter(nhan_vien__to_phong_ban=nhan_vien.to_phong_ban).order_by('-ngay_tao')
+        elif request.user.groups.filter(name='HieuPho').exists():
+            if nhan_vien.vi_tri_cong_viec == 'Hiệu phó chuyên môn':
+                rewards = KhenThuong.objects.filter(nhan_vien__vi_tri_cong_viec__in=['Giáo viên', 'Kế toán', 'Nhân sự', 'Tuyển sinh']).order_by('-ngay_tao')
+            elif nhan_vien.vi_tri_cong_viec == 'Hiệu phó hoạt động':
+                rewards = KhenThuong.objects.filter(nhan_vien__vi_tri_cong_viec__in=['Bếp', 'Y - tế']).order_by('-ngay_tao')
 
         # Lọc khen thưởng của nhân viên theo nhân viên/tháng/năm
+        nhan_vien_id = request.GET.get('nhan_vien')
         if nhan_vien_id:
             rewards = rewards.filter(nhan_vien_id=nhan_vien_id)
         if thang:
@@ -99,7 +131,8 @@ def ky_luat_khen_thuong(request):
         'thang_list': thang_list,
         'nam_list': nam_list,
         'nhan_vien': nhan_vien,
-        'has_permission': request.user.has_perm('HOME.View_danh_sach_ky_luat') or request.user.has_perm('HOME.View_danh_sach_khen_thuong'),
+        'has_permission': has_permission,
+        'error_message': error_message,
     }
     return render(request, 'KyLuat/ky_luat_khen_thuong.html', context)
 
@@ -242,12 +275,37 @@ def ky_luat_list(request):
     except NhanVien.DoesNotExist:
         raise PermissionDenied("Bạn không phải nhân viên hợp lệ.")
 
-    if request.user.has_perm('HOME.view_all_ky_luat'):
+    ky_luat_list = KyLuat.objects.none()
+    nhan_vien_list = NhanVien.objects.none()
+    error_message = None
+
+    # Debug: Kiểm tra thông tin user và nhóm
+    print(f"ky_luat_list - User: {request.user.username}, Groups: {[g.name for g in request.user.groups.all()]}, vi_tri_cong_viec: {nhan_vien.vi_tri_cong_viec}")
+
+    if request.user.groups.filter(name='HieuTruong').exists():
         ky_luat_list = KyLuat.objects.all().order_by('-ngay_ra_quyet_dinh')
         nhan_vien_list = NhanVien.objects.all()
-    else:
+    elif request.user.groups.filter(name='ToTruong').exists():
         ky_luat_list = KyLuat.objects.filter(nhan_vien__to_phong_ban=nhan_vien.to_phong_ban).order_by('-ngay_ra_quyet_dinh')
         nhan_vien_list = NhanVien.objects.filter(to_phong_ban=nhan_vien.to_phong_ban)
+        if not ky_luat_list.exists():
+            error_message = "Không có kỷ luật nào trong tổ/phòng ban của bạn."
+    elif request.user.groups.filter(name='HieuPho').exists():
+        if nhan_vien.vi_tri_cong_viec == 'Hiệu phó chuyên môn':
+            ky_luat_list = KyLuat.objects.filter(nhan_vien__vi_tri_cong_viec__in=['Giáo viên', 'Kế toán', 'Nhân sự', 'Tuyển sinh']).order_by('-ngay_ra_quyet_dinh')
+            nhan_vien_list = NhanVien.objects.filter(vi_tri_cong_viec__in=['Giáo viên', 'Kế toán', 'Nhân sự', 'Tuyển sinh'])
+            if not ky_luat_list.exists():
+                error_message = "Không có kỷ luật nào cho các vị trí Giáo viên, Kế toán, Nhân sự, hoặc Tuyển sinh."
+        elif nhan_vien.vi_tri_cong_viec == 'Hiệu phó hoạt động':
+            ky_luat_list = KyLuat.objects.filter(nhan_vien__vi_tri_cong_viec__in=['Bếp', 'Y - tế']).order_by('-ngay_ra_quyet_dinh')
+            nhan_vien_list = NhanVien.objects.filter(vi_tri_cong_viec__in=['Bếp', 'Y - tế'])
+            if not ky_luat_list.exists():
+                error_message = "Không có kỷ luật nào cho các vị trí Bếp hoặc Y - tế."
+        else:
+            error_message = f"Vị trí công việc '{nhan_vien.vi_tri_cong_viec}' không được hỗ trợ để xem danh sách kỷ luật."
+
+    # Debug: Kiểm tra số lượng kỷ luật và nhân viên
+    print(f"ky_luat_list - ky_luat_list count: {ky_luat_list.count()}, nhan_vien_list count: {nhan_vien_list.count()}")
 
     thang_list = KyLuat.objects.dates('ngay_bat_dau', 'month', order='DESC')
     nam_list = KyLuat.objects.dates('ngay_bat_dau', 'year', order='DESC')
@@ -269,8 +327,9 @@ def ky_luat_list(request):
         'thang_list': [date.month for date in thang_list],
         'nam_list': [date.year for date in nam_list],
         'user_nhan_vien': nhan_vien,
+        'allowed_roles': ['HieuTruong', 'HieuPho', 'ToTruong'],
+        'error_message': error_message,
     })
-
 @login_required
 @permission_required('HOME.delete_kyluat')
 def xoa_ky_luat(request, ky_luat_id, **kwargs):

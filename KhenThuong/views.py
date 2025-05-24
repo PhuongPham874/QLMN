@@ -154,12 +154,37 @@ def khen_thuong_list(request):
         logger.error(f"Không tìm thấy nhân viên cho user {request.user.username}")
         raise PermissionDenied("Bạn không phải nhân viên hợp lệ.")
 
-    if request.user.has_perm('HOME.view_all_khenthuong'):
+    rewards = KhenThuong.objects.none()
+    nhan_vien_list = NhanVien.objects.none()
+    error_message = None
+
+    # Debug: Kiểm tra thông tin user và nhóm
+    print(f"khen_thuong_list - User: {request.user.username}, Groups: {[g.name for g in request.user.groups.all()]}, vi_tri_cong_viec: {nhan_vien.vi_tri_cong_viec}")
+
+    if request.user.groups.filter(name='HieuTruong').exists():
         rewards = KhenThuong.objects.all().order_by('-ngay_tao')
         nhan_vien_list = NhanVien.objects.all().exclude(id=nhan_vien.id)
-    else:
+    elif request.user.groups.filter(name='ToTruong').exists():
         rewards = KhenThuong.objects.filter(nhan_vien__to_phong_ban=nhan_vien.to_phong_ban).order_by('-ngay_tao')
         nhan_vien_list = NhanVien.objects.filter(to_phong_ban=nhan_vien.to_phong_ban).exclude(id=nhan_vien.id)
+        if not rewards.exists():
+            error_message = "Không có khen thưởng nào trong tổ/phòng ban của bạn."
+    elif request.user.groups.filter(name='HieuPho').exists():
+        if nhan_vien.vi_tri_cong_viec == 'Hiệu phó chuyên môn':
+            rewards = KhenThuong.objects.filter(nhan_vien__vi_tri_cong_viec__in=['Giáo viên', 'Kế toán', 'Nhân sự', 'Tuyển sinh']).order_by('-ngay_tao')
+            nhan_vien_list = NhanVien.objects.filter(vi_tri_cong_viec__in=['Giáo viên', 'Kế toán', 'Nhân sự', 'Tuyển sinh']).exclude(id=nhan_vien.id)
+            if not rewards.exists():
+                error_message = "Không có khen thưởng nào cho các vị trí Giáo viên, Kế toán, Nhân sự, hoặc Tuyển sinh."
+        elif nhan_vien.vi_tri_cong_viec == 'Hiệu phó hoạt động':
+            rewards = KhenThuong.objects.filter(nhan_vien__vi_tri_cong_viec__in=['Bếp', 'Y - tế']).order_by('-ngay_tao')
+            nhan_vien_list = NhanVien.objects.filter(vi_tri_cong_viec__in=['Bếp', 'Y - tế']).exclude(id=nhan_vien.id)
+            if not rewards.exists():
+                error_message = "Không có khen thưởng nào cho các vị trí Bếp hoặc Y - tế."
+        else:
+            error_message = f"Vị trí công việc '{nhan_vien.vi_tri_cong_viec}' không được hỗ trợ để xem danh sách khen thưởng."
+
+    # Debug: Kiểm tra số lượng khen thưởng và nhân viên
+    print(f"khen_thuong_list - rewards count: {rewards.count()}, nhan_vien_list count: {nhan_vien_list.count()}")
 
     thang_list = KhenThuong.objects.dates('ngay_tao', 'month', order='DESC')
     nam_list = KhenThuong.objects.dates('ngay_tao', 'year', order='DESC')
@@ -167,27 +192,23 @@ def khen_thuong_list(request):
     nhan_vien_id = request.GET.get('nhan_vien')
     thang = request.GET.get('thang')
     nam = request.GET.get('nam')
-    search = request.GET.get('search')
 
-    if search:
-        rewards = rewards.filter(
-            Q(nhan_vien__ten_nv__icontains=search) |
-            Q(nhan_vien__user_id__icontains=search)
-        )
+    if nhan_vien_id:
+        rewards = rewards.filter(nhan_vien_id=int(nhan_vien_id))
     if thang:
         rewards = rewards.filter(ngay_tao__month=int(thang))
     if nam:
         rewards = rewards.filter(ngay_tao__year=int(nam))
-    if nhan_vien_id:
-        rewards = rewards.filter(nhan_vien_id=int(nhan_vien_id))
 
     context = {
         'rewards': rewards,
+        'nhan_vien_list': nhan_vien_list,
         'thang_list': [date.month for date in thang_list],
         'nam_list': [date.year for date in nam_list],
-        'nhan_vien_list': nhan_vien_list,
-        'nhan_vien': nhan_vien,
-        'can_approve': request.user.has_perm('HOME.View_duyet_khen_thuong'),
+        'user_nhan_vien': nhan_vien,
+        'allowed_roles': ['HieuTruong', 'HieuPho', 'ToTruong'],
+        'error_message': error_message,
+        # 'can_approve': request.user.has_perm('HOME.View_duyet_khen_thuong'),
     }
     return render(request, 'KhenThuong/Khenthuong_list.html', context)
 
