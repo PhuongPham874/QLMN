@@ -15,10 +15,10 @@
             <div class="hdld-card-body">
                 <!-- Tabs styled like the screenshot -->
                 <div class="hdld-tab-container">
-                    <a href="{% url 'edit_ho_so' nhan_vien.id %}" class="hdld-tab-item">
+                    <a href="{% url 'edit_ho_so' nhan_vien_duoc_xem.id %}" class="hdld-tab-item">
                         Thông tin cá nhân
                     </a>
-                    <a href="{% url 'edit_hdld' nhan_vien.id %}" class="hdld-tab-item hdld-tab-active">
+                    <a href="{% url 'edit_hdld' nhan_vien_duoc_xem.id %}" class="hdld-tab-item hdld-tab-active">
                         Hợp đồng lao động
                     </a>
                 </div>
@@ -28,19 +28,19 @@
                     <div class="hdld-employee-info-grid">
                         <div class="hdld-employee-info-item">
                             <div class="hdld-employee-info-label">Họ và tên:</div>
-                            <div class="hdld-employee-info-value">{{ nhan_vien.ten_nv }}</div>
+                            <div class="hdld-employee-info-value">{{ nhan_vien_duoc_xem.ten_nv }}</div>
                         </div>
                         <div class="hdld-employee-info-item">
                             <div class="hdld-employee-info-label">Vị trí làm việc:</div>
-                            <div class="hdld-employee-info-value">{{ nhan_vien.vi_tri_cong_viec }}</div>
+                            <div class="hdld-employee-info-value">{{ nhan_vien_duoc_xem.vi_tri_cong_viec }}</div>
                         </div>
                         <div class="hdld-employee-info-item">
                             <div class="hdld-employee-info-label">Mã nhân viên:</div>
-                            <div class="hdld-employee-info-value">{{ nhan_vien.id }}</div>
+                            <div class="hdld-employee-info-value">{{ nhan_vien_duoc_xem.id }}</div>
                         </div>
                         <div class="hdld-employee-info-item">
                             <div class="hdld-employee-info-label">Tổ (Phòng ban):</div>
-                            <div class="hdld-employee-info-value">{{ nhan_vien.to_phong_ban }}</div>
+                            <div class="hdld-employee-info-value">{{ nhan_vien_duoc_xem.to_phong_ban }}</div>
                         </div>
                     </div>
                 </div>
@@ -125,7 +125,7 @@
                 <button type="submit" class="hdld-btn-save">
                     <i class="fas fa-save"></i> Lưu
                 </button>
-                <a href="{% url 'QLXemHoSoHDLD' nhan_vien.id %}" class="hdld-btn-cancel">
+                <a href="{% url 'QLXemHoSoHDLD' nhan_vien_duoc_xem.id %}" class="hdld-btn-cancel">
                     <i class="fas fa-times"></i> Hủy
                 </a>
             </div>

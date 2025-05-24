@@ -12,14 +12,14 @@
 
   <!-- Tab Navigation -->
   <div class="tab-navigation">
-    <a href="{% url 'QLXemHoSo' nhan_vien.id %}" class="tab-link inactive">
+    <a href="{% url 'QLXemHoSo' nhan_vien_duoc_xem.id %}" class="tab-link inactive">
       <svg class="tab-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
         <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
         <circle cx="12" cy="7" r="4"></circle>
       </svg>
       Thông Tin Cá Nhân
     </a>
-    <a href="{% url 'QLXemHoSoHDLD' nhan_vien.id %}" class="tab-link active">
+    <a href="{% url 'QLXemHoSoHDLD' nhan_vien_duoc_xem.id %}" class="tab-link active">
       <svg class="tab-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
         <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
         <polyline points="14 2 14 8 20 8"></polyline>
@@ -46,22 +46,22 @@
       <div class="info-grid">
         <div class="info-field">
           <div class="field-label">Họ và tên</div>
-          <div class="field-value">{{ nhan_vien.ten_nv }}</div>
+          <div class="field-value">{{ nhan_vien_duoc_xem.ten_nv }}</div>
         </div>
 
         <div class="info-field">
           <div class="field-label">Mã nhân viên</div>
-          <div class="field-value">{{ nhan_vien.id }}</div>
+          <div class="field-value">{{ nhan_vien_duoc_xem.id }}</div>
         </div>
 
         <div class="info-field">
           <div class="field-label">Vị trí làm việc</div>
-          <div class="field-value">{{ nhan_vien.vi_tri_cong_viec }}</div>
+          <div class="field-value">{{ nhan_vien_duoc_xem.vi_tri_cong_viec }}</div>
         </div>
 
         <div class="info-field">
           <div class="field-label">Tổ (Phòng ban)</div>
-          <div class="field-value">{{ nhan_vien.to_phong_ban }}</div>
+          <div class="field-value">{{ nhan_vien_duoc_xem.to_phong_ban }}</div>
         </div>
       </div>
     </div>
@@ -167,7 +167,7 @@
       </div>
         <div class="profile-action" style="text-align: right; margin-top: 20px;">
           {% if nhan_vien.vi_tri_cong_viec == 'Nhân sự' %}
-          <a href="{% url 'edit_hdld' nhan_vien.id %}" class="edit-button" title="Chỉnh sửa" >
+          <a href="{% url 'edit_hdld' nhan_vien_duoc_xem.id %}" class="edit-button" title="Chỉnh sửa" >
               <i class="fa-solid fa-pen-to-square" style="font-size: 18px; color: #0066CC;"></i>
           </a>
           {% endif %}

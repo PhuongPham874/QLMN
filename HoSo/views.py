@@ -11,14 +11,15 @@ from django.contrib.auth.decorators import (login_required,permission_required)
 def hosochitietHDLD(request, nhan_vien_id):
     nhan_vien = get_object_or_404(NhanVien, id=nhan_vien_id)
     hop_dong = HopDongLaoDong.objects.filter(nhan_vien=nhan_vien).first()
-
+    current_user = get_object_or_404(NhanVien, user=request.user)
     # Kiểm tra nếu không có hợp đồng lao động, chuyển hướng hoặc hiển thị thông báo lỗi
     if not hop_dong:
         return redirect('error_page')  # hoặc hiển thị thông báo lỗi nếu cần
 
     phu_cap_nhan_vien_list = PhuCapNhanVien.objects.filter(nhan_vien=nhan_vien)
     context = {
-        'nhan_vien': nhan_vien,
+        'nhan_vien_duoc_xem': nhan_vien,
+        'nhan_vien': current_user,
         'hop_dong': hop_dong,
         'phu_cap_nhan_vien_list': phu_cap_nhan_vien_list,
     }
@@ -197,6 +198,7 @@ def edit_hdld(request, nhan_vien_id):
     hop_dong = get_object_or_404(HopDongLaoDong, nhan_vien=nhan_vien)
     danh_sach_phu_cap = PhuCap.objects.all()
     phu_cap_da_chon = PhuCapNhanVien.objects.filter(nhan_vien=nhan_vien).values_list('phu_cap_id', flat=True)
+    current_user = get_object_or_404(NhanVien, user=request.user)
     # Kiểm tra nếu yêu cầu là POST (lưu thông tin)
     if request.method == "POST":
         form = HopDongLaoDongForm(request.POST, instance=hop_dong)
@@ -217,7 +219,8 @@ def edit_hdld(request, nhan_vien_id):
 
     return render(request, 'HoSo/edit_hdld.html', {
         'form': form,
-        'nhan_vien': nhan_vien,
+        'nhan_vien_duoc_xem': nhan_vien,
+        'nhan_vien': current_user,
         'hop_dong': hop_dong,
         'phu_cap_da_chon': list(phu_cap_da_chon),
         'danh_sach_phu_cap': danh_sach_phu_cap
